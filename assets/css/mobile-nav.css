@@ -1,0 +1,155 @@
+/**
+ * Mobile Bottom Navigation
+ * Sticky bottom nav for mobile devices with large touch targets
+ */
+
+/* Mobile Bottom Navigation */
+@media (max-width: 768px) {
+  .ux-refresh .mobile-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(10, 40, 24, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(74, 222, 128, 0.2);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem 0;
+    padding-bottom: env(safe-area-inset-bottom, 0.5rem);
+    z-index: 100;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+  }
+  
+  .ux-refresh .mobile-bottom-nav.hidden {
+    transform: translateY(100%);
+  }
+  
+  .ux-refresh .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    border-radius: 0.75rem;
+    transition: all 0.2s ease;
+    min-width: 64px;
+    min-height: 56px;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .ux-refresh .mobile-nav-item:active {
+    background: rgba(74, 222, 128, 0.1);
+    transform: scale(0.95);
+  }
+  
+  .ux-refresh .mobile-nav-item.active {
+    color: #4ade80;
+  }
+  
+  .ux-refresh .mobile-nav-item.active::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 32px;
+    height: 3px;
+    background: linear-gradient(90deg, #4ade80, #22c55e);
+    border-radius: 0 0 3px 3px;
+  }
+  
+  .ux-refresh .mobile-nav-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+    display: block;
+  }
+  
+  .ux-refresh .mobile-nav-label {
+    font-size: 0.625rem;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.025em;
+  }
+  
+  /* Quick Add Button - Special Styling */
+  .ux-refresh .mobile-nav-item.nav-quick-add {
+    background: linear-gradient(135deg, #4ade80, #22c55e);
+    color: #0a2818;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    margin: 0 0.5rem;
+    box-shadow: 0 4px 12px rgba(74, 222, 128, 0.4);
+  }
+  
+  .ux-refresh .mobile-nav-item.nav-quick-add:active {
+    transform: scale(0.9);
+  }
+  
+  .ux-refresh .mobile-nav-item.nav-quick-add .mobile-nav-icon {
+    font-size: 1.75rem;
+  }
+  
+  .ux-refresh .mobile-nav-item.nav-quick-add .mobile-nav-label {
+    display: none;
+  }
+  
+  /* Adjust main content for bottom nav */
+  .ux-refresh .main-content {
+    padding-bottom: calc(80px + env(safe-area-inset-bottom, 0));
+  }
+  
+  .ux-refresh .site-footer {
+    margin-bottom: calc(80px + env(safe-area-inset-bottom, 0));
+  }
+  
+  /* Hide desktop nav items on mobile */
+  .ux-refresh .desktop-nav {
+    display: none !important;
+  }
+  
+  /* Quick Add Menu Position Adjustment */
+  .ux-refresh .quick-add-container {
+    display: none; /* Hide floating FAB on mobile since we have it in bottom nav */
+  }
+}
+
+/* Desktop - Hide mobile nav */
+@media (min-width: 769px) {
+  .ux-refresh .mobile-bottom-nav {
+    display: none !important;
+  }
+}
+
+/* Accessibility - Focus states */
+.ux-refresh .mobile-nav-item:focus-visible {
+  outline: 3px solid #4ade80;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .ux-refresh .mobile-bottom-nav {
+    border-top: 2px solid currentColor;
+  }
+  
+  .ux-refresh .mobile-nav-item.active::before {
+    height: 4px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .ux-refresh .mobile-bottom-nav,
+  .ux-refresh .mobile-nav-item {
+    transition: none;
+  }
+}

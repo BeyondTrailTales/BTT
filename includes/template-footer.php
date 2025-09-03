@@ -55,6 +55,31 @@ $uxRefreshEnabled = $_SESSION['ux_refresh'] ?? $_COOKIE['ux_refresh'] ?? true;
         </footer>
     </div><!-- .main-wrapper -->
     
+    <?php if ($uxRefreshEnabled): ?>
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav" role="navigation" aria-label="Mobile navigation">
+        <a href="<?php echo route_url('dashboard'); ?>" class="mobile-nav-item <?php echo active_class('dashboard'); ?>">
+            <span class="mobile-nav-icon" aria-hidden="true">🏔️</span>
+            <span class="mobile-nav-label">Trailhead</span>
+        </a>
+        <a href="<?php echo route_url('trips'); ?>" class="mobile-nav-item <?php echo active_class('trips'); ?>">
+            <span class="mobile-nav-icon" aria-hidden="true">🗺️</span>
+            <span class="mobile-nav-label">Trips</span>
+        </a>
+        <button class="mobile-nav-item nav-quick-add" aria-label="Quick actions menu" onclick="UX.quickAdd.toggle()">
+            <span class="mobile-nav-icon" aria-hidden="true">➕</span>
+        </button>
+        <a href="<?php echo route_url('backpacks'); ?>" class="mobile-nav-item <?php echo active_class('backpacks'); ?>">
+            <span class="mobile-nav-icon" aria-hidden="true">🎒</span>
+            <span class="mobile-nav-label">Packs</span>
+        </a>
+        <a href="<?php echo route_url('backpacks'); ?>?view=gear-library" class="mobile-nav-item <?php echo active_class('gear'); ?>">
+            <span class="mobile-nav-icon" aria-hidden="true">📦</span>
+            <span class="mobile-nav-label">Gear</span>
+        </a>
+    </nav>
+    <?php endif; ?>
+    
     <!-- Toast Container for Notifications -->
     <div class="toast-container" role="region" aria-live="polite" aria-label="Notifications"></div>
     

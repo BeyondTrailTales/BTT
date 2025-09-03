@@ -445,8 +445,14 @@
             });
         }
         
+        function toggle() {
+            if (!menu) init();
+            menu.find('.btn-quick-add').click();
+        }
+        
         return {
-            init: init
+            init: init,
+            toggle: toggle
         };
     })();
     

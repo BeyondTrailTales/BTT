@@ -78,6 +78,7 @@ $uxRefreshEnabled = $_SESSION['ux_refresh'] ?? $_COOKIE['ux_refresh'] ?? true; /
     <!-- UX Refresh Styles - Task-first design for backpackers -->
     <?php if ($uxRefreshEnabled): ?>
     <link rel="stylesheet" href="<?php echo asset_url('css/ux-refresh.css'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/mobile-nav.css'); ?>">
     <?php endif; ?>
     <!-- Loading Animations and Skeleton Screens -->
     <!-- <link rel="stylesheet" href="<?php echo asset_url('css/skeleton-loader.css'); ?>"> -->
