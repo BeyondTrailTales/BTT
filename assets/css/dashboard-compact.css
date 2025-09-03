@@ -3,28 +3,41 @@
  * Optimized for 4K monitors - minimal vertical space usage
  */
 
-/* Dashboard Container */
-.dashboard-container {
+/* Body override for full-width dashboard */
+body.dashboard-page {
   max-width: 100%;
-  padding: 1rem;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-/* Welcome Section - Super Compact */
+/* Dashboard Container - Full Width */
+.dashboard-container {
+  max-width: 100%;
+  width: 100%;
+  padding: 1rem 2rem;
+  margin: 0;
+}
+
+/* Welcome Section - Gold Accent Full Width */
 .welcome-section {
-  background: linear-gradient(135deg, rgba(74, 222, 128, 0.08) 0%, rgba(34, 197, 94, 0.04) 100%);
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.12) 0%, rgba(245, 158, 11, 0.06) 100%);
   border-radius: 0.75rem;
-  padding: 0.75rem 1.5rem;
-  margin-bottom: 0.75rem;
+  padding: 0.75rem 2rem;
+  margin: 0 -1rem 0.75rem -1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid rgba(74, 222, 128, 0.15);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.1);
+  width: calc(100% + 2rem);
 }
 
 .welcome-title {
   font-size: 1.25rem;
-  color: var(--forest-mint, #4ade80);
+  color: #fbbf24;
   margin: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .welcome-subtitle {
@@ -34,14 +47,15 @@
   margin: 0;
 }
 
-/* Quick Actions Bar - Ultra Compact */
+/* Quick Actions Bar - Teal Gradient */
 .quick-actions-bar {
-  background: rgba(255, 255, 255, 0.02);
+  background: linear-gradient(135deg, rgba(20, 184, 166, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(20, 184, 166, 0.2);
   border-radius: 0.5rem;
   padding: 0.5rem;
   margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(20, 184, 166, 0.08);
 }
 
 .quick-actions-container {
@@ -92,23 +106,101 @@
 /* Primary Row - All cards in one line */
 .primary-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  width: 100%;
 }
 
-/* Compact Cards */
+/* Compact Cards - Base */
 .compact-card {
-  background: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 0.5rem;
-  padding: 0.75rem;
+  padding: 1rem;
   transition: all 150ms ease;
+  position: relative;
+  overflow: hidden;
+  min-width: 250px;
 }
 
 .compact-card:hover {
-  border-color: rgba(74, 222, 128, 0.2);
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Trips Card - Sky Blue Theme */
+.trips-card {
+  background: linear-gradient(135deg, rgba(135, 206, 235, 0.15) 0%, rgba(100, 149, 237, 0.08) 100%);
+  border: 1px solid rgba(135, 206, 235, 0.25);
+}
+
+.trips-card:hover {
+  border-color: rgba(135, 206, 235, 0.4);
+  background: linear-gradient(135deg, rgba(135, 206, 235, 0.18) 0%, rgba(100, 149, 237, 0.1) 100%);
+}
+
+.trips-card .compact-header h3 {
+  color: #87ceeb;
+}
+
+.trips-card .stat-num {
+  color: #add8e6;
+}
+
+/* Backpacks Card - Emerald Green Theme */
+.packs-card {
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.15) 0%, rgba(34, 197, 94, 0.08) 100%);
+  border: 1px solid rgba(74, 222, 128, 0.25);
+}
+
+.packs-card:hover {
+  border-color: rgba(74, 222, 128, 0.4);
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.18) 0%, rgba(34, 197, 94, 0.1) 100%);
+}
+
+.packs-card .compact-header h3 {
+  color: #4ade80;
+}
+
+.packs-card .stat-num {
+  color: #86efac;
+}
+
+/* Gear Card - Sunset Orange Theme */
+.gear-card {
+  background: linear-gradient(135deg, rgba(251, 146, 60, 0.15) 0%, rgba(249, 115, 22, 0.08) 100%);
+  border: 1px solid rgba(251, 146, 60, 0.25);
+}
+
+.gear-card:hover {
+  border-color: rgba(251, 146, 60, 0.4);
+  background: linear-gradient(135deg, rgba(251, 146, 60, 0.18) 0%, rgba(249, 115, 22, 0.1) 100%);
+}
+
+.gear-card .compact-header h3 {
+  color: #fb923c;
+}
+
+.gear-card .stat-num {
+  color: #fdba74;
+}
+
+/* Stats Card - Purple Theme */
+.stats-card {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(139, 92, 246, 0.08) 100%);
+  border: 1px solid rgba(168, 85, 247, 0.25);
+}
+
+.stats-card:hover {
+  border-color: rgba(168, 85, 247, 0.4);
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.18) 0%, rgba(139, 92, 246, 0.1) 100%);
+}
+
+.stats-card .compact-header h3 {
+  color: #a855f7;
+}
+
+.stats-card .h-num {
+  color: #c084fc;
 }
 
 .compact-header {
@@ -256,20 +348,23 @@
   text-transform: uppercase;
 }
 
-/* Secondary Row */
+/* Secondary Row - Full Width */
 .secondary-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
+  gap: 1rem;
+  width: 100%;
+  margin-top: 1rem;
 }
 
-/* Achievements Horizontal */
+/* Achievements Horizontal - Rose/Pink Theme */
 .achievements-horizontal {
-  background: rgba(255, 255, 255, 0.02);
+  background: linear-gradient(135deg, rgba(244, 63, 94, 0.12) 0%, rgba(236, 72, 153, 0.06) 100%);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(244, 63, 94, 0.2);
   border-radius: 0.5rem;
   padding: 0.75rem;
+  box-shadow: 0 2px 6px rgba(244, 63, 94, 0.08);
 }
 
 .ach-header {
@@ -283,7 +378,7 @@
 
 .ach-header h3 {
   font-size: 0.9375rem;
-  color: var(--forest-mint, #4ade80);
+  color: #f472b6;
   font-weight: 600;
   margin: 0;
 }
@@ -377,13 +472,14 @@
   font-weight: 600;
 }
 
-/* Activity Horizontal */
+/* Activity Horizontal - Indigo Theme */
 .activity-horizontal {
-  background: rgba(255, 255, 255, 0.02);
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(79, 70, 229, 0.06) 100%);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.2);
   border-radius: 0.5rem;
   padding: 0.75rem;
+  box-shadow: 0 2px 6px rgba(99, 102, 241, 0.08);
 }
 
 .activity-header {
@@ -434,7 +530,31 @@
   background: rgba(74, 222, 128, 0.05);
 }
 
-/* Responsive for smaller screens */
+/* Responsive Design */
+/* Ultra-wide screens (4K+) */
+@media (min-width: 2560px) {
+  .dashboard-container {
+    padding: 1.5rem 3rem;
+  }
+  
+  .primary-row {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .compact-card {
+    padding: 1.25rem;
+  }
+}
+
+/* Wide screens */
+@media (max-width: 1920px) {
+  .primary-row {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Medium screens */
 @media (max-width: 1400px) {
   .primary-row {
     grid-template-columns: repeat(2, 1fr);

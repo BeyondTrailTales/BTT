@@ -19,6 +19,7 @@ $pageId = 'dashboard';
 require_once __DIR__ . '/public/includes/template-header.php';
 ?>
 
+<body class="dashboard-page">
 <div class="dashboard-container">
 <!-- Welcome Section -->
     <section class="welcome-section">

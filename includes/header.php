@@ -41,6 +41,7 @@ if (AuthService::isAuthenticated()) {
       <nav class="nav-main" role="navigation" aria-label="Main Navigation">
         <a class="nav-link<?php echo ($pageId ?? '') === 'trips' ? ' active' : ''; ?>" href="<?php echo BTT_PUBLIC_URL; ?>/trips.php">Trips</a>
         <a class="nav-link<?php echo ($pageId ?? '') === 'backpacks' ? ' active' : ''; ?>" href="<?php echo BTT_PUBLIC_URL; ?>/backpacks.php">Backpacks</a>
+        <a class="nav-link<?php echo ($pageId ?? '') === 'gear' ? ' active' : ''; ?>" href="<?php echo BTT_PUBLIC_URL; ?>/gear.php">My Gear</a>
         
         <?php if ($currentUser): ?>
           <!-- User is logged in -->
