@@ -1,0 +1,379 @@
+/**
+ * Trailhead Dashboard Styles
+ * Command center layout for backpackers
+ */
+
+/* Quick Start Section */
+.ux-refresh .quick-start-section {
+  margin-bottom: var(--ux-space-8, 2rem);
+}
+
+.ux-refresh .quick-start-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--ux-space-4, 1rem);
+  margin-top: var(--ux-space-4, 1rem);
+}
+
+/* Main Dashboard Grid */
+.ux-refresh .trailhead-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--ux-space-6, 1.5rem);
+  margin-top: var(--ux-space-6, 1.5rem);
+}
+
+.ux-refresh .trailhead-left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ux-space-4, 1rem);
+}
+
+.ux-refresh .trailhead-right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ux-space-4, 1rem);
+}
+
+/* Next Trip Card */
+.ux-refresh .next-trip-card {
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.1), rgba(34, 197, 94, 0.05));
+  border: 2px solid rgba(74, 222, 128, 0.3);
+}
+
+.ux-refresh .next-trip-card .card-body {
+  min-height: 120px;
+}
+
+.ux-refresh .trip-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ux-space-3, 0.75rem);
+}
+
+.ux-refresh .trip-title {
+  font-size: var(--ux-text-xl, 1.25rem);
+  font-weight: var(--ux-font-bold, 700);
+  color: var(--ux-forest-fog, #f5f5f5);
+  margin: 0;
+}
+
+.ux-refresh .trip-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ux-space-4, 1rem);
+  color: var(--ux-forest-mist, #e0e0e0);
+  font-size: var(--ux-text-sm, 0.875rem);
+}
+
+.ux-refresh .trip-detail {
+  display: flex;
+  align-items: center;
+  gap: var(--ux-space-1, 0.25rem);
+}
+
+.ux-refresh .no-trip-message {
+  text-align: center;
+  padding: var(--ux-space-6, 1.5rem);
+}
+
+.ux-refresh .no-trip-icon {
+  font-size: 3rem;
+  margin-bottom: var(--ux-space-3, 0.75rem);
+  opacity: 0.5;
+}
+
+.ux-refresh .no-trip-text {
+  color: var(--ux-forest-mist, #e0e0e0);
+  margin-bottom: var(--ux-space-4, 1rem);
+}
+
+/* Pack Status Card */
+.ux-refresh .pack-status-card .card-header,
+.ux-refresh .gear-shortcuts-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ux-refresh .card-link {
+  color: var(--ux-primary, #4ade80);
+  text-decoration: none;
+  font-size: var(--ux-text-sm, 0.875rem);
+  font-weight: var(--ux-font-medium, 500);
+  transition: all var(--ux-transition-fast, 150ms);
+}
+
+.ux-refresh .card-link:hover {
+  color: var(--ux-primary-hover, #22c55e);
+  text-decoration: underline;
+}
+
+.ux-refresh .pack-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ux-space-4, 1rem);
+  margin-bottom: var(--ux-space-4, 1rem);
+}
+
+.ux-refresh .pack-metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--ux-space-3, 0.75rem);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--ux-radius-lg, 0.75rem);
+}
+
+.ux-refresh .metric-label {
+  font-size: var(--ux-text-sm, 0.875rem);
+  color: var(--ux-forest-mist, #e0e0e0);
+  opacity: 0.8;
+}
+
+.ux-refresh .metric-value {
+  font-size: var(--ux-text-2xl, 1.5rem);
+  font-weight: var(--ux-font-bold, 700);
+  color: var(--ux-forest-fog, #f5f5f5);
+}
+
+.ux-refresh .pack-actions {
+  display: flex;
+  gap: var(--ux-space-2, 0.5rem);
+}
+
+.ux-refresh .pack-actions .btn {
+  flex: 1;
+}
+
+/* Gear Shortcuts */
+.ux-refresh .gear-quick-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--ux-space-3, 0.75rem);
+  margin-bottom: var(--ux-space-4, 1rem);
+}
+
+.ux-refresh .gear-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--ux-space-3, 0.75rem);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--ux-radius-md, 0.5rem);
+}
+
+.ux-refresh .gear-icon {
+  font-size: 1.5rem;
+  margin-bottom: var(--ux-space-1, 0.25rem);
+}
+
+.ux-refresh .gear-count {
+  font-size: var(--ux-text-xl, 1.25rem);
+  font-weight: var(--ux-font-bold, 700);
+  color: var(--ux-forest-fog, #f5f5f5);
+}
+
+.ux-refresh .gear-label {
+  font-size: var(--ux-text-xs, 0.75rem);
+  color: var(--ux-forest-mist, #e0e0e0);
+  opacity: 0.8;
+  text-align: center;
+}
+
+/* Achievements Card */
+.ux-refresh .achievements-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ux-refresh .xp-display {
+  display: flex;
+  align-items: center;
+  gap: var(--ux-space-1, 0.25rem);
+  font-weight: var(--ux-font-bold, 700);
+  color: var(--ux-forest-honey, #fbbf24);
+}
+
+.ux-refresh .level-progress {
+  margin-bottom: var(--ux-space-4, 1rem);
+}
+
+.ux-refresh .level-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--ux-space-2, 0.5rem);
+}
+
+.ux-refresh .level-label {
+  font-size: var(--ux-text-sm, 0.875rem);
+  color: var(--ux-forest-mist, #e0e0e0);
+}
+
+.ux-refresh .level-value {
+  font-size: var(--ux-text-xl, 1.25rem);
+  font-weight: var(--ux-font-bold, 700);
+  color: var(--ux-forest-fog, #f5f5f5);
+}
+
+.ux-refresh .progress-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--ux-radius-full, 9999px);
+  overflow: hidden;
+  margin-bottom: var(--ux-space-2, 0.5rem);
+}
+
+.ux-refresh .progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--ux-primary, #4ade80), var(--ux-primary-hover, #22c55e));
+  border-radius: var(--ux-radius-full, 9999px);
+  transition: width var(--ux-transition-base, 250ms);
+}
+
+.ux-refresh .xp-needed {
+  font-size: var(--ux-text-sm, 0.875rem);
+  color: var(--ux-forest-mist, #e0e0e0);
+  opacity: 0.8;
+  text-align: center;
+}
+
+.ux-refresh .achievement-badges {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--ux-space-2, 0.5rem);
+  margin-bottom: var(--ux-space-4, 1rem);
+}
+
+.ux-refresh .badge-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--ux-space-3, 0.75rem);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--ux-radius-lg, 0.75rem);
+  opacity: 0.4;
+  transition: all var(--ux-transition-base, 250ms);
+}
+
+.ux-refresh .badge-item.earned {
+  opacity: 1;
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.1), rgba(34, 197, 94, 0.05));
+  border: 1px solid rgba(74, 222, 128, 0.2);
+}
+
+.ux-refresh .badge-icon {
+  font-size: 2rem;
+  margin-bottom: var(--ux-space-1, 0.25rem);
+}
+
+.ux-refresh .badge-name {
+  font-size: var(--ux-text-xs, 0.75rem);
+  text-align: center;
+  color: var(--ux-forest-mist, #e0e0e0);
+}
+
+.ux-refresh .streak-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ux-space-2, 0.5rem);
+  padding: var(--ux-space-3, 0.75rem);
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.05));
+  border-radius: var(--ux-radius-lg, 0.75rem);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+}
+
+.ux-refresh .streak-icon {
+  font-size: 1.5rem;
+}
+
+.ux-refresh .streak-value {
+  font-size: var(--ux-text-2xl, 1.5rem);
+  font-weight: var(--ux-font-bold, 700);
+  color: var(--ux-forest-honey, #fbbf24);
+}
+
+.ux-refresh .streak-label {
+  font-size: var(--ux-text-sm, 0.875rem);
+  color: var(--ux-forest-mist, #e0e0e0);
+}
+
+/* Trail Stats */
+.ux-refresh .trail-stats-card .stats-grid.compact {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--ux-space-3, 0.75rem);
+}
+
+.ux-refresh .stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--ux-space-3, 0.75rem);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--ux-radius-md, 0.5rem);
+}
+
+.ux-refresh .stat-icon {
+  font-size: 1.25rem;
+  margin-bottom: var(--ux-space-1, 0.25rem);
+  opacity: 0.8;
+}
+
+.ux-refresh .stat-value {
+  font-size: var(--ux-text-xl, 1.25rem);
+  font-weight: var(--ux-font-bold, 700);
+  color: var(--ux-forest-fog, #f5f5f5);
+  line-height: 1;
+}
+
+.ux-refresh .stat-label {
+  font-size: var(--ux-text-xs, 0.75rem);
+  color: var(--ux-forest-mist, #e0e0e0);
+  opacity: 0.7;
+}
+
+/* Utility Classes */
+.ux-refresh .w-full {
+  width: 100%;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .ux-refresh .trailhead-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .ux-refresh .quick-start-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .ux-refresh .trailhead-grid {
+    gap: var(--ux-space-4, 1rem);
+  }
+  
+  .ux-refresh .quick-start-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--ux-space-3, 0.75rem);
+  }
+  
+  .ux-refresh .pack-summary {
+    grid-template-columns: 1fr;
+  }
+  
+  .ux-refresh .gear-quick-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .ux-refresh .achievement-badges {
+    grid-template-columns: 1fr;
+  }
+  
+  .ux-refresh .trail-stats-card .stats-grid.compact {
+    grid-template-columns: 1fr;
+  }
+}

@@ -30,58 +30,187 @@ require_once __DIR__ . '/public/includes/template-header.php';
         </div>
     </section>
 
-    <!-- Quick Actions -->
-    <section class="quick-actions">
-        <div class="action-cards">
-            <a href="<?php echo route_url('trips'); ?>" class="action-card">
-                <div class="action-icon">🗺️</div>
-                <h3>Start a Trip</h3>
-                <p>Plan your next adventure on the trails</p>
+<!-- Quick Start Section -->
+    <section class="quick-start-section">
+        <h2 class="section-title">Quick Start</h2>
+        <div class="quick-start-grid">
+            <a href="<?php echo route_url('trips'); ?>?action=new" class="quick-action-card">
+                <div class="quick-action-icon">🗺️</div>
+                <h3 class="quick-action-title">Start a Trip</h3>
+                <p class="quick-action-desc">Plan your next adventure</p>
             </a>
             
-            <a href="<?php echo route_url('backpacks'); ?>" class="action-card">
-                <div class="action-icon">🎒</div>
-                <h3>Build Your Pack</h3>
-                <p>Get your gear ready for the journey</p>
+            <a href="<?php echo route_url('backpacks'); ?>?action=quick-pack" class="quick-action-card">
+                <div class="quick-action-icon">⚡</div>
+                <h3 class="quick-action-title">Quick Pack</h3>
+                <p class="quick-action-desc">Smart pack for your trip type</p>
             </a>
             
-            <a href="<?php echo route_url('backpacks'); ?>?action=quick-pack" class="action-card">
-                <div class="action-icon">⚡</div>
-                <h3>Quick Pack</h3>
-                <p>Smart pack suggestions for your trip type</p>
+            <button class="quick-action-card" onclick="copyLastTrip()">
+                <div class="quick-action-icon">📋</div>
+                <h3 class="quick-action-title">Copy Last Trip</h3>
+                <p class="quick-action-desc">Start from your previous adventure</p>
+            </button>
+            
+            <a href="<?php echo route_url('backpacks'); ?>" class="quick-action-card">
+                <div class="quick-action-icon">🎒</div>
+                <h3 class="quick-action-title">Build Pack</h3>
+                <p class="quick-action-desc">Create a custom pack</p>
             </a>
         </div>
     </section>
 
-    <!-- Statistics Overview -->
-    <section class="stats-overview">
-        <h2 class="section-title">Your Trail Progress</h2>
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">🏕️</div>
-                <div class="stat-value" id="trips-count">0</div>
-                <div class="stat-label">Adventures</div>
+    <!-- Main Dashboard Grid -->
+    <div class="trailhead-grid">
+        
+        <!-- Left Column -->
+        <div class="trailhead-left">
+            
+            <!-- Next Trip Card -->
+            <div class="card next-trip-card" id="next-trip-card">
+                <div class="card-header">
+                    <h2 class="card-title">Your Next Adventure</h2>
+                </div>
+                <div class="card-body" id="next-trip-content">
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text"></div>
+                </div>
             </div>
             
-            <div class="stat-card">
-                <div class="stat-icon">🎒</div>
-                <div class="stat-value" id="backpacks-count">0</div>
-                <div class="stat-label">Packs Ready</div>
+            <!-- Pack Status Card -->
+            <div class="card pack-status-card">
+                <div class="card-header">
+                    <h2 class="card-title">Pack Status</h2>
+                    <a href="<?php echo route_url('backpacks'); ?>" class="card-link">View All</a>
+                </div>
+                <div class="card-body" id="pack-status-content">
+                    <div class="pack-summary">
+                        <div class="pack-metric">
+                            <span class="metric-label">Base Weight</span>
+                            <span class="metric-value" id="base-weight">--</span>
+                        </div>
+                        <div class="pack-metric">
+                            <span class="metric-label">Total Items</span>
+                            <span class="metric-value" id="total-items">--</span>
+                        </div>
+                    </div>
+                    <div class="pack-actions">
+                        <button class="btn btn-sm btn-secondary" onclick="window.location.href='<?php echo route_url('backpacks'); ?>?action=check'">Check Pack</button>
+                        <button class="btn btn-sm btn-primary" onclick="window.location.href='<?php echo route_url('backpacks'); ?>?action=quick-pack'">Quick Pack</button>
+                    </div>
+                </div>
             </div>
             
-            <div class="stat-card">
-                <div class="stat-icon">⭐</div>
-                <div class="stat-value" id="level-display">1</div>
-                <div class="stat-label">Trail Level</div>
+            <!-- My Gear Shortcuts -->
+            <div class="card gear-shortcuts-card">
+                <div class="card-header">
+                    <h2 class="card-title">My Gear</h2>
+                    <a href="<?php echo route_url('backpacks'); ?>?view=gear-library" class="card-link">Manage</a>
+                </div>
+                <div class="card-body">
+                    <div class="gear-quick-stats">
+                        <div class="gear-stat">
+                            <span class="gear-icon">📦</span>
+                            <span class="gear-count" id="gear-total">--</span>
+                            <span class="gear-label">Total Items</span>
+                        </div>
+                        <div class="gear-stat">
+                            <span class="gear-icon">⭐</span>
+                            <span class="gear-count" id="gear-favorites">--</span>
+                            <span class="gear-label">Favorites</span>
+                        </div>
+                        <div class="gear-stat">
+                            <span class="gear-icon">🆕</span>
+                            <span class="gear-count" id="gear-recent">--</span>
+                            <span class="gear-label">New This Month</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary btn-sm w-full" onclick="window.location.href='<?php echo route_url('backpacks'); ?>?view=gear-library&action=add'">Add New Gear</button>
+                </div>
             </div>
             
-            <div class="stat-card">
-                <div class="stat-icon">🔥</div>
-                <div class="stat-value" id="streak-display">0</div>
-                <div class="stat-label">Active Days</div>
-            </div>
         </div>
-    </section>
+        
+        <!-- Right Column -->
+        <div class="trailhead-right">
+            
+            <!-- Achievements Card -->
+            <div class="card achievements-card">
+                <div class="card-header">
+                    <h2 class="card-title">Trail Achievements</h2>
+                    <div class="xp-display">
+                        <span class="xp-icon">✨</span>
+                        <span class="xp-value" id="total-xp">0</span> XP
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="level-progress">
+                        <div class="level-info">
+                            <span class="level-label">Level</span>
+                            <span class="level-value" id="user-level">1</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="level-progress" style="width: 0%"></div>
+                        </div>
+                        <div class="xp-needed">
+                            <span id="xp-current">0</span> / <span id="xp-next">100</span> XP
+                        </div>
+                    </div>
+                    
+                    <div class="achievement-badges">
+                        <div class="badge-item earned">
+                            <span class="badge-icon">🥾</span>
+                            <span class="badge-name">First Steps</span>
+                        </div>
+                        <div class="badge-item">
+                            <span class="badge-icon">🏔️</span>
+                            <span class="badge-name">Summit Seeker</span>
+                        </div>
+                        <div class="badge-item">
+                            <span class="badge-icon">🌟</span>
+                            <span class="badge-name">Trail Master</span>
+                        </div>
+                    </div>
+                    
+                    <div class="streak-display">
+                        <span class="streak-icon">🔥</span>
+                        <span class="streak-value" id="streak-days">0</span>
+                        <span class="streak-label">Day Streak</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Trail Stats -->
+            <div class="card trail-stats-card">
+                <h2 class="card-title">Trail Stats</h2>
+                <div class="card-body">
+                    <div class="stats-grid compact">
+                        <div class="stat-item">
+                            <span class="stat-icon">🏕️</span>
+                            <span class="stat-value" id="trips-total">0</span>
+                            <span class="stat-label">Trips</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">📏</span>
+                            <span class="stat-value" id="miles-total">0</span>
+                            <span class="stat-label">Miles</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">⛰️</span>
+                            <span class="stat-value" id="elevation-total">0</span>
+                            <span class="stat-label">Ft Climbed</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-icon">🎒</span>
+                            <span class="stat-value" id="packs-total">0</span>
+                            <span class="stat-label">Packs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
 
     <!-- Recent Activity -->
     <section class="recent-activity">
@@ -107,23 +236,223 @@ require_once __DIR__ . '/public/includes/template-header.php';
     </section>
 </div>
 
-<!-- Dashboard specific styles are handled by forest-theme.css -->
+<!-- Include Trailhead styles -->
+<style>
+    <?php include __DIR__ . '/assets/css/trailhead.css'; ?>
+</style>
 
 <script>
 // Load dashboard data
 document.addEventListener('DOMContentLoaded', function() {
-    loadDashboardData();
+    loadTrailheadData();
 });
 
-async function loadDashboardData() {
-    // Load statistics
-    loadStatistics();
+async function loadTrailheadData() {
+    // Load next trip
+    loadNextTrip();
     
-    // Load recent trips
+    // Load pack status
+    loadPackStatus();
+    
+    // Load gear stats
+    loadGearStats();
+    
+    // Load achievements
+    loadAchievements();
+    
+    // Load trail stats
+    loadTrailStats();
+    
+    // Load recent activity (keep existing)
     loadRecentTrips();
-    
-    // Load recent backpacks
     loadRecentBackpacks();
+}
+
+async function loadNextTrip() {
+    const container = document.getElementById('next-trip-content');
+    
+    try {
+        const response = await fetch('<?php echo BTT_API_URL; ?>?route=trips');
+        if (response.ok) {
+            const tripsData = await response.json();
+            const trips = tripsData.data || tripsData || [];
+            
+            // Find upcoming trips
+            const now = new Date();
+            const upcomingTrips = trips.filter(trip => {
+                if (trip.start_date) {
+                    const startDate = new Date(trip.start_date);
+                    return startDate >= now;
+                }
+                return false;
+            }).sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
+            
+            if (upcomingTrips.length > 0) {
+                const nextTrip = upcomingTrips[0];
+                const startDate = new Date(nextTrip.start_date).toLocaleDateString();
+                const daysUntil = Math.ceil((new Date(nextTrip.start_date) - now) / (1000 * 60 * 60 * 24));
+                
+                container.innerHTML = `
+                    <div class="trip-info">
+                        <h3 class="trip-title">${escapeHtml(nextTrip.title)}</h3>
+                        <div class="trip-details">
+                            <span class="trip-detail">📅 ${startDate}</span>
+                            <span class="trip-detail">⏳ ${daysUntil} days away</span>
+                            ${nextTrip.location ? `<span class="trip-detail">📍 ${escapeHtml(nextTrip.location)}</span>` : ''}
+                        </div>
+                        <button class="btn btn-primary btn-sm" onclick="window.location.href='<?php echo route_url('trips'); ?>?id=${nextTrip.id}'">Continue Planning</button>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="no-trip-message">
+                        <div class="no-trip-icon">🏔️</div>
+                        <p class="no-trip-text">No upcoming adventures planned</p>
+                        <button class="btn btn-primary" onclick="window.location.href='<?php echo route_url('trips'); ?>?action=new'">Plan Your Next Trip</button>
+                    </div>
+                `;
+            }
+        }
+    } catch (error) {
+        console.error('Error loading next trip:', error);
+        container.innerHTML = '<div class="error-state">Failed to load trip data</div>';
+    }
+}
+
+async function loadPackStatus() {
+    try {
+        const response = await fetch('<?php echo BTT_API_URL; ?>?route=backpacks');
+        if (response.ok) {
+            const backpacksData = await response.json();
+            const backpacks = backpacksData.data || backpacksData || [];
+            
+            if (backpacks.length > 0) {
+                // Get the most recently used pack
+                const latestPack = backpacks[0];
+                const baseWeight = latestPack.base_weight_g ? (latestPack.base_weight_g / 1000).toFixed(1) + 'kg' : '--';
+                const itemCount = latestPack.total_items || 0;
+                
+                document.getElementById('base-weight').textContent = baseWeight;
+                document.getElementById('total-items').textContent = itemCount;
+            }
+        }
+    } catch (error) {
+        console.error('Error loading pack status:', error);
+    }
+}
+
+async function loadGearStats() {
+    // This would need a gear endpoint - for now using placeholder
+    document.getElementById('gear-total').textContent = '42';
+    document.getElementById('gear-favorites').textContent = '8';
+    document.getElementById('gear-recent').textContent = '3';
+}
+
+async function loadAchievements() {
+    try {
+        const response = await fetch('/BTT/api/routes/gamification.php?action=status');
+        if (response.ok) {
+            const stats = await response.json();
+            
+            // Update XP and level
+            document.getElementById('total-xp').textContent = stats.total_xp || 0;
+            document.getElementById('user-level').textContent = stats.level || 1;
+            document.getElementById('xp-current').textContent = stats.current_xp || 0;
+            document.getElementById('xp-next').textContent = stats.next_level_xp || 100;
+            document.getElementById('streak-days').textContent = stats.streak_days || 0;
+            
+            // Update progress bar
+            const progress = ((stats.current_xp || 0) / (stats.next_level_xp || 100)) * 100;
+            document.getElementById('level-progress').style.width = progress + '%';
+        }
+    } catch (error) {
+        console.error('Error loading achievements:', error);
+    }
+}
+
+async function loadTrailStats() {
+    try {
+        // Load trips
+        const tripsResponse = await fetch('<?php echo BTT_API_URL; ?>?route=trips');
+        if (tripsResponse.ok) {
+            const tripsData = await tripsResponse.json();
+            const trips = tripsData.data || tripsData || [];
+            document.getElementById('trips-total').textContent = trips.length;
+            
+            // Calculate total miles and elevation
+            let totalMiles = 0;
+            let totalElevation = 0;
+            trips.forEach(trip => {
+                if (trip.distance && trip.distance_unit === 'miles') {
+                    totalMiles += parseFloat(trip.distance);
+                } else if (trip.distance && trip.distance_unit === 'km') {
+                    totalMiles += parseFloat(trip.distance) * 0.621371;
+                }
+                if (trip.elevation_gain) {
+                    totalElevation += parseInt(trip.elevation_gain);
+                }
+            });
+            
+            document.getElementById('miles-total').textContent = Math.round(totalMiles);
+            document.getElementById('elevation-total').textContent = totalElevation.toLocaleString();
+        }
+        
+        // Load packs
+        const packsResponse = await fetch('<?php echo BTT_API_URL; ?>?route=backpacks');
+        if (packsResponse.ok) {
+            const packsData = await packsResponse.json();
+            const packs = packsData.data || packsData || [];
+            document.getElementById('packs-total').textContent = packs.length;
+        }
+    } catch (error) {
+        console.error('Error loading trail stats:', error);
+    }
+}
+
+// Quick action: Copy Last Trip
+async function copyLastTrip() {
+    if (typeof UX !== 'undefined' && UX.loading) {
+        UX.loading.show('Finding your last adventure...');
+    }
+    
+    try {
+        // Get the most recent trip
+        const response = await fetch('<?php echo BTT_API_URL; ?>?route=trips');
+        if (response.ok) {
+            const tripsData = await response.json();
+            const trips = tripsData.data || tripsData || [];
+            
+            if (trips.length > 0) {
+                // Sort by created date or ID to get most recent
+                const lastTrip = trips[trips.length - 1];
+                
+                // Redirect to new trip form with copied data
+                const params = new URLSearchParams({
+                    action: 'new',
+                    copy_from: lastTrip.id,
+                    title: lastTrip.title + ' (Copy)',
+                    location: lastTrip.location || '',
+                    trip_type: lastTrip.trip_type || ''
+                });
+                
+                window.location.href = '<?php echo route_url('trips'); ?>?' + params.toString();
+            } else {
+                if (typeof UX !== 'undefined' && UX.toast) {
+                    UX.toast.info('No previous trips to copy. Start fresh!');
+                }
+                window.location.href = '<?php echo route_url('trips'); ?>?action=new';
+            }
+        }
+    } catch (error) {
+        console.error('Error copying trip:', error);
+        if (typeof UX !== 'undefined' && UX.toast) {
+            UX.toast.error('Failed to copy trip. Please try again.');
+        }
+    } finally {
+        if (typeof UX !== 'undefined' && UX.loading) {
+            UX.loading.hide();
+        }
+    }
 }
 
 async function loadStatistics() {
