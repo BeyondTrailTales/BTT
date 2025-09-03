@@ -364,7 +364,15 @@ $isTestPage = is_test_page();
         }
     </style>
 </head>
-<body data-page="<?php echo e($pageId); ?>" class="forest-theme">
+<?php 
+// Feature flag for UX refresh - can be toggled via session or cookie
+$uxRefreshEnabled = $_SESSION['ux_refresh'] ?? $_COOKIE['ux_refresh'] ?? true; // Default to true for development
+$bodyClasses = ['forest-theme'];
+if ($uxRefreshEnabled) {
+    $bodyClasses[] = 'ux-refresh';
+}
+?>
+<body data-page="<?php echo e($pageId); ?>" class="<?php echo implode(' ', $bodyClasses); ?>">
     <!-- Skip to main content for accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
     

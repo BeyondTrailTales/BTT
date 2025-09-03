@@ -9116,3 +9116,7 @@ Stack trace:
 [2025-09-03 21:28:23] [INFO] API Request: GET /backpacks
 [2025-09-03 21:29:14] [INFO] API Request: DELETE /gear/3
 [2025-09-03 21:29:18] [INFO] API Request: DELETE /gear/2
+[2025-09-03 21:32:33] [INFO] API Request: GET /backpacks
+[2025-09-03 21:32:33] [INFO] API Request: GET /trips
+[2025-09-03 21:37:32] [INFO] API Request: GET /trips
+[2025-09-03 21:37:32] [INFO] API Request: GET /backpacks
