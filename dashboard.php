@@ -16,7 +16,7 @@ $pageDescription = 'Your adventure command center - plan trips, manage gear, and
 $pageId = 'dashboard';
 
 // Include the unified template header
-require_once __DIR__ . '/public/includes/template-header.php';
+require_once __DIR__ . '/includes/template-header.php';
 ?>
 
 <body class="dashboard-page">

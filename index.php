@@ -57,6 +57,10 @@ switch ($request_uri) {
         require __DIR__ . '/backpacks.php';
         break;
         
+    case 'gear':
+        require __DIR__ . '/gear.php';
+        break;
+        
     case 'login':
         require __DIR__ . '/public/auth/login.php';
         break;
