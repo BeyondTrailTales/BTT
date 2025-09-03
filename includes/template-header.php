@@ -72,6 +72,10 @@ $isTestPage = is_test_page();
     <link rel="stylesheet" href="<?php echo asset_url('css/auth-nav.css'); ?>">
     <!-- Dropdown Arrow Fix - Must load after forest-enhanced.css -->
     <link rel="stylesheet" href="<?php echo asset_url('css/dropdown-fix.css'); ?>">
+    <!-- UX Refresh Styles - Task-first design for backpackers -->
+    <?php if ($uxRefreshEnabled): ?>
+    <link rel="stylesheet" href="<?php echo asset_url('css/ux-refresh.css'); ?>">
+    <?php endif; ?>
     <!-- Loading Animations and Skeleton Screens -->
     <!-- <link rel="stylesheet" href="<?php echo asset_url('css/skeleton-loader.css'); ?>"> -->
     <!-- Premium Card System -->
