@@ -33,6 +33,9 @@ $pageTitle = $pageTitle ?? page_meta('title', BTT_APP_NAME);
 $pageDescription = $pageDescription ?? page_meta('description', BTT_APP_DESCRIPTION);
 $pageId = $pageId ?? page_meta('id', 'home');
 $isTestPage = is_test_page();
+
+// Feature flag for UX refresh - can be toggled via session or cookie
+$uxRefreshEnabled = $_SESSION['ux_refresh'] ?? $_COOKIE['ux_refresh'] ?? true; // Default to true for development
 ?>
 <!DOCTYPE html>
 <html lang="en" data-theme="forest-dark">
@@ -369,8 +372,7 @@ $isTestPage = is_test_page();
     </style>
 </head>
 <?php 
-// Feature flag for UX refresh - can be toggled via session or cookie
-$uxRefreshEnabled = $_SESSION['ux_refresh'] ?? $_COOKIE['ux_refresh'] ?? true; // Default to true for development
+// Build body classes based on feature flags
 $bodyClasses = ['forest-theme'];
 if ($uxRefreshEnabled) {
     $bodyClasses[] = 'ux-refresh';
@@ -392,11 +394,19 @@ if ($uxRefreshEnabled) {
                 <!-- Desktop Navigation -->
                 <ul class="nav-menu desktop-nav">
                     <li class="nav-item">
+                        <a href="<?php echo route_url('dashboard'); ?>" 
+                           class="nav-link <?php echo active_class('dashboard'); ?>"
+                           aria-current="<?php echo aria_current('dashboard'); ?>">
+                            <span class="nav-icon">🏔️</span>
+                            <span>Trailhead</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="<?php echo route_url('trips'); ?>" 
                            class="nav-link <?php echo active_class('trips'); ?>"
                            aria-current="<?php echo aria_current('trips'); ?>">
                             <span class="nav-icon">🗺️</span>
-                            <span>Trips</span>
+                            <span>Plan Trip</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -404,7 +414,15 @@ if ($uxRefreshEnabled) {
                            class="nav-link <?php echo active_class('backpacks'); ?>"
                            aria-current="<?php echo aria_current('backpacks'); ?>">
                             <span class="nav-icon">🎒</span>
-                            <span>Backpacks</span>
+                            <span>Pack & Gear</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?php echo route_url('backpacks'); ?>?view=gear-library" 
+                           class="nav-link <?php echo active_class('gear'); ?>"
+                           aria-current="<?php echo aria_current('gear'); ?>">
+                            <span class="nav-icon">📦</span>
+                            <span>My Gear</span>
                         </a>
                     </li>
                 </ul>
@@ -454,11 +472,19 @@ if ($uxRefreshEnabled) {
             <div id="mobile-nav-menu" class="mobile-menu" role="region" aria-hidden="true">
                 <ul class="nav-menu">
                     <li class="nav-item">
+                        <a href="<?php echo route_url('dashboard'); ?>" 
+                           class="nav-link <?php echo active_class('dashboard'); ?>"
+                           aria-current="<?php echo aria_current('dashboard'); ?>">
+                            <span class="nav-icon">🏔️</span>
+                            <span>Trailhead</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="<?php echo route_url('trips'); ?>" 
                            class="nav-link <?php echo active_class('trips'); ?>"
                            aria-current="<?php echo aria_current('trips'); ?>">
                             <span class="nav-icon">🗺️</span>
-                            <span>Trips</span>
+                            <span>Plan Trip</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -466,7 +492,15 @@ if ($uxRefreshEnabled) {
                            class="nav-link <?php echo active_class('backpacks'); ?>"
                            aria-current="<?php echo aria_current('backpacks'); ?>">
                             <span class="nav-icon">🎒</span>
-                            <span>Backpacks</span>
+                            <span>Pack & Gear</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="<?php echo route_url('backpacks'); ?>?view=gear-library" 
+                           class="nav-link <?php echo active_class('gear'); ?>"
+                           aria-current="<?php echo aria_current('gear'); ?>">
+                            <span class="nav-icon">📦</span>
+                            <span>My Gear</span>
                         </a>
                     </li>
                 </ul>

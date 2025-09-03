@@ -14,8 +14,8 @@ if (file_exists(__DIR__ . '/includes/components/trip-card.php')) {
 
 // Page metadata
 $pageId = 'trips';
-$pageTitle = 'Trips';
-$pageDescription = 'Plan, track, and remember your backpacking adventures';
+$pageTitle = 'Plan Your Adventure';
+$pageDescription = 'Plan, track, and remember your backpacking adventures on the trails';
 
 // Use trip-specific styles with pack-builder base for shared components
 $pageStyles = $pageStyles ?? [];
@@ -41,18 +41,18 @@ require_once __DIR__ . '/includes/template-header.php';
 <div class="pack-builder-container" id="main-content">
   <!-- Action Bar with Tabs -->
   <div class="pack-action-bar" role="navigation" aria-label="Trip views">
-    <div class="pack-tabs" role="tablist" aria-label="Trip views">
-      <button id="tab-my-trips" class="pack-tab active" role="tab" aria-selected="true" aria-controls="panel-my-trips">🗺️ My Trips</button>
-      <button id="tab-trip-editor" class="pack-tab" role="tab" aria-selected="false" aria-controls="panel-trip-editor">✍️ Trip Editor</button>
-    </div>
+  <div class="pack-tabs" role="tablist" aria-label="Trip views">
+    <button id="tab-my-trips" class="pack-tab active" role="tab" aria-selected="true" aria-controls="panel-my-trips">🗺️ My Adventures</button>
+    <button id="tab-trip-editor" class="pack-tab" role="tab" aria-selected="false" aria-controls="panel-trip-editor">✍️ Plan New Trip</button>
+  </div>
 
     <div class="pack-actions">
       <div class="search-bar" role="search">
         <span class="search-icon" aria-hidden="true">🔍</span>
         <input id="trip-search" type="search" placeholder="Search trips by name or location" aria-label="Search trips" />
       </div>
-      <button id="btn-new-trip" class="btn-action" aria-label="Create a new trip">
-        <i class="icon">➕</i> New Trip
+      <button id="btn-new-trip" class="btn-action" aria-label="Start planning a new adventure">
+        <i class="icon">➕</i> Start Adventure
       </button>
     </div>
   </div>
@@ -62,7 +62,7 @@ require_once __DIR__ . '/includes/template-header.php';
     <!-- My Trips View -->
     <section id="panel-my-trips" class="pack-view active" role="tabpanel" aria-labelledby="tab-my-trips">
       <div class="packs-header">
-        <h2 class="view-title">My Trips</h2>
+        <h2 class="view-title">Your Trail Adventures</h2>
         <div class="view-controls">
           <div class="sort-control">
             <label for="sort-trips">Sort by:</label>
@@ -88,9 +88,9 @@ require_once __DIR__ . '/includes/template-header.php';
 
       <div id="trips-empty" class="packs-empty-state" hidden>
         <div class="packs-empty-icon">🏔️</div>
-        <div class="packs-empty-text">No trips yet</div>
-        <div class="packs-empty-subtext">Click the New Trip button to plan your first adventure.</div>
-        <button id="empty-create" class="btn-action"><i>➕</i> Create Trip</button>
+        <div class="packs-empty-text">No adventures yet</div>
+        <div class="packs-empty-subtext">Ready to hit the trails? Start planning your first adventure!</div>
+        <button id="empty-create" class="btn-action"><i>➕</i> Plan First Trip</button>
       </div>
     </section>
 

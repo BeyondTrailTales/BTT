@@ -1,3 +1,7 @@
+<?php
+// Get the uxRefreshEnabled flag from session/cookie
+$uxRefreshEnabled = $_SESSION['ux_refresh'] ?? $_COOKIE['ux_refresh'] ?? true;
+?>
             </div><!-- .container -->
         </main><!-- #main-content -->
         
@@ -8,16 +12,16 @@
                     <div class="footer-brand">
                         <span class="footer-logo">🌲</span>
                         <h3>BeyondTrailTales</h3>
-                        <p>Your adventure companion for trip planning and backpack management</p>
+                        <p>Your trail companion for planning adventures and managing gear</p>
                     </div>
                     
                     <div class="footer-links">
                         <div class="footer-column">
                             <h4>Quick Links</h4>
                             <ul>
-                                <li><a href="<?php echo route_url(); ?>">Dashboard</a></li>
-                                <li><a href="<?php echo route_url('trips'); ?>">My Trips</a></li>
-                                <li><a href="<?php echo route_url('backpacks'); ?>">My Backpacks</a></li>
+                                <li><a href="<?php echo route_url(); ?>">Trailhead</a></li>
+                                <li><a href="<?php echo route_url('trips'); ?>">Plan Trip</a></li>
+                                <li><a href="<?php echo route_url('backpacks'); ?>">Pack & Gear</a></li>
                             </ul>
                         </div>
                         
@@ -128,6 +132,10 @@
     
     <!-- Load utilities and app scripts -->
     <script src="<?php echo asset_url('js/app.js'); ?>"></script>
+    <!-- UX Refresh UI Utilities (toasts, accordions, steppers) -->
+    <?php if ($uxRefreshEnabled): ?>
+    <script src="<?php echo asset_url('js/ux-ui.js'); ?>"></script>
+    <?php endif; ?>
     <!-- Navigation handlers (dropdowns, logout, etc.) -->
     <script src="<?php echo asset_url('js/navigation.js'); ?>"></script>
     <script src="<?php echo asset_url('js/gamification.js'); ?>"></script>

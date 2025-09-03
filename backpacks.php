@@ -14,8 +14,8 @@ if (file_exists(__DIR__ . '/includes/components/pack-card.php')) {
 
 // Set page metadata
 $pageId = 'backpacks-inline';
-$pageTitle = 'Pack Builder';
-$pageDescription = 'Build and manage your backpack configurations with our intuitive pack builder';
+$pageTitle = 'Pack & Gear';
+$pageDescription = 'Build your perfect pack and manage your gear for any adventure';
 
 // Include jQuery and Bootstrap in page styles
 $pageStyles = [
@@ -55,13 +55,13 @@ require_once __DIR__ . '/includes/template-header.php';
                 <i class="icon">🎒</i> My Packs
             </button>
             <button class="pack-tab" data-view="builder">
-                <i class="icon">🔧</i> Pack Builder
+                <i class="icon">🔧</i> Build Pack
             </button>
             <button class="pack-tab" data-view="templates">
-                <i class="icon">📋</i> Templates
+                <i class="icon">📋</i> Quick Packs
             </button>
             <button class="pack-tab" data-view="gear-library">
-                <i class="icon">📦</i> Gear Library
+                <i class="icon">📦</i> My Gear
             </button>
         </div>
         
@@ -71,7 +71,7 @@ require_once __DIR__ . '/includes/template-header.php';
                 <input type="search" placeholder="Search packs or gear..." id="global-search">
             </div>
             <button class="btn-action btn-new-pack" id="btn-new-pack">
-                <i class="icon">➕</i> New Pack
+                <i class="icon">➕</i> Create Pack
             </button>
         </div>
     </div>
@@ -82,7 +82,7 @@ require_once __DIR__ . '/includes/template-header.php';
         <!-- My Packs View -->
         <div class="pack-view active" id="view-my-packs">
             <div class="packs-header">
-                <h2 class="view-title">My Backpacks</h2>
+                <h2 class="view-title">Your Trail Packs</h2>
                 <div class="view-controls">
                     <div class="sort-control">
                         <label>Sort by:</label>
@@ -109,7 +109,7 @@ require_once __DIR__ . '/includes/template-header.php';
                 <!-- Packs will be loaded here -->
                 <div class="loading-spinner">
                     <div class="spinner"></div>
-                    <p>Loading your packs...</p>
+                    <p>Getting your packs ready...</p>
                 </div>
             </div>
         </div>
@@ -288,11 +288,11 @@ require_once __DIR__ . '/includes/template-header.php';
                         <h3>Pack Details</h3>
                         <div class="form-group">
                             <label>Pack Name</label>
-                            <input type="text" id="pack-name" class="form-control" placeholder="Weekend Warrior">
+                            <input type="text" id="pack-name" class="form-control" placeholder="e.g., Weekend Adventure Pack">
                         </div>
                         <div class="form-group">
-                            <label>Description</label>
-                            <textarea id="pack-description" class="form-control" rows="2" placeholder="Perfect for 2-3 day trips..."></textarea>
+                            <label>Trail Notes</label>
+                            <textarea id="pack-description" class="form-control" rows="2" placeholder="What kind of adventures is this pack for?"></textarea>
                         </div>
                         <div class="form-row">
                             <div class="form-group">

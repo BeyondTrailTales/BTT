@@ -11,8 +11,8 @@ require_once __DIR__ . '/app/bootstrap.php';
 require_auth();
 
 // Set page metadata
-$pageTitle = 'Dashboard';
-$pageDescription = 'Your adventure hub - manage trips, backpacks, and track achievements';
+$pageTitle = 'Trailhead';
+$pageDescription = 'Your adventure command center - plan trips, manage gear, and track your progress';
 $pageId = 'dashboard';
 
 // Include the unified template header
@@ -20,13 +20,13 @@ require_once __DIR__ . '/public/includes/template-header.php';
 ?>
 
 <div class="dashboard-container">
-    <!-- Welcome Section -->
+<!-- Welcome Section -->
     <section class="welcome-section">
         <div class="welcome-content">
             <h1 class="welcome-title">
-                Welcome back, <span class="user-name"><?php echo e($_SESSION['user_name'] ?? 'Adventurer'); ?></span>! 🌲
+                Welcome to your Trailhead, <span class="user-name"><?php echo e($_SESSION['user_name'] ?? 'Explorer'); ?></span>! 🏔️
             </h1>
-            <p class="welcome-subtitle">Ready for your next adventure?</p>
+            <p class="welcome-subtitle">Let's get you ready for the trails!</p>
         </div>
     </section>
 
@@ -35,50 +35,50 @@ require_once __DIR__ . '/public/includes/template-header.php';
         <div class="action-cards">
             <a href="<?php echo route_url('trips'); ?>" class="action-card">
                 <div class="action-icon">🗺️</div>
-                <h3>Plan New Trip</h3>
-                <p>Start planning your next adventure</p>
+                <h3>Start a Trip</h3>
+                <p>Plan your next adventure on the trails</p>
             </a>
             
             <a href="<?php echo route_url('backpacks'); ?>" class="action-card">
                 <div class="action-icon">🎒</div>
-                <h3>Create Backpack</h3>
-                <p>Configure gear for your journey</p>
+                <h3>Build Your Pack</h3>
+                <p>Get your gear ready for the journey</p>
             </a>
             
-            <a href="<?php echo route_url('test'); ?>" class="action-card">
-                <div class="action-icon">🧪</div>
-                <h3>Test Features</h3>
-                <p>Try out gamification systems</p>
+            <a href="<?php echo route_url('backpacks'); ?>?action=quick-pack" class="action-card">
+                <div class="action-icon">⚡</div>
+                <h3>Quick Pack</h3>
+                <p>Smart pack suggestions for your trip type</p>
             </a>
         </div>
     </section>
 
     <!-- Statistics Overview -->
     <section class="stats-overview">
-        <h2 class="section-title">Your Adventure Stats</h2>
+        <h2 class="section-title">Your Trail Progress</h2>
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon">🏕️</div>
                 <div class="stat-value" id="trips-count">0</div>
-                <div class="stat-label">Trips Planned</div>
+                <div class="stat-label">Adventures</div>
             </div>
             
             <div class="stat-card">
                 <div class="stat-icon">🎒</div>
                 <div class="stat-value" id="backpacks-count">0</div>
-                <div class="stat-label">Backpacks Created</div>
+                <div class="stat-label">Packs Ready</div>
             </div>
             
             <div class="stat-card">
                 <div class="stat-icon">⭐</div>
                 <div class="stat-value" id="level-display">1</div>
-                <div class="stat-label">Current Level</div>
+                <div class="stat-label">Trail Level</div>
             </div>
             
             <div class="stat-card">
                 <div class="stat-icon">🔥</div>
                 <div class="stat-value" id="streak-display">0</div>
-                <div class="stat-label">Day Streak</div>
+                <div class="stat-label">Active Days</div>
             </div>
         </div>
     </section>
@@ -90,17 +90,17 @@ require_once __DIR__ . '/public/includes/template-header.php';
         <div class="activity-grid">
             <!-- Recent Trips -->
             <div class="activity-section">
-                <h3 class="activity-title">Recent Trips</h3>
+                <h3 class="activity-title">Your Adventures</h3>
                 <div id="recent-trips" class="activity-list">
-                    <div class="loading-state">Loading trips...</div>
+                    <div class="loading-state">Loading adventures...</div>
                 </div>
             </div>
             
             <!-- Recent Backpacks -->
             <div class="activity-section">
-                <h3 class="activity-title">Recent Backpacks</h3>
+                <h3 class="activity-title">Your Packs</h3>
                 <div id="recent-backpacks" class="activity-list">
-                    <div class="loading-state">Loading backpacks...</div>
+                    <div class="loading-state">Loading packs...</div>
                 </div>
             </div>
         </div>
