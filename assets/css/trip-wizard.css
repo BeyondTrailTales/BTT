@@ -1,0 +1,400 @@
+/**
+ * Trip Wizard Styles
+ * 5-step progressive disclosure for trip creation
+ */
+
+/* Wizard Container */
+.ux-refresh .trip-wizard {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Step Progress Bar */
+.ux-refresh .wizard-progress {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--ux-space-8, 2rem);
+  position: relative;
+  padding: 0 var(--ux-space-4, 1rem);
+}
+
+.ux-refresh .wizard-progress::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: var(--ux-space-8, 2rem);
+  right: var(--ux-space-8, 2rem);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-50%);
+  z-index: 0;
+}
+
+.ux-refresh .wizard-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ux-space-2, 0.5rem);
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+  transition: all var(--ux-transition-base, 250ms);
+}
+
+.ux-refresh .wizard-step-number {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  font-weight: var(--ux-font-bold, 700);
+  color: var(--ux-forest-mist, #e0e0e0);
+  transition: all var(--ux-transition-base, 250ms);
+}
+
+.ux-refresh .wizard-step-label {
+  font-size: var(--ux-text-sm, 0.875rem);
+  color: var(--ux-forest-mist, #e0e0e0);
+  opacity: 0.7;
+  text-align: center;
+  max-width: 100px;
+}
+
+/* Active Step */
+.ux-refresh .wizard-step.active .wizard-step-number {
+  background: var(--ux-primary, #4ade80);
+  border-color: var(--ux-primary, #4ade80);
+  color: var(--ux-forest-deep, #0a2818);
+  transform: scale(1.1);
+}
+
+.ux-refresh .wizard-step.active .wizard-step-label {
+  color: var(--ux-forest-fog, #f5f5f5);
+  opacity: 1;
+  font-weight: var(--ux-font-medium, 500);
+}
+
+/* Completed Step */
+.ux-refresh .wizard-step.completed .wizard-step-number {
+  background: var(--ux-primary-hover, #22c55e);
+  border-color: var(--ux-primary-hover, #22c55e);
+  color: var(--ux-forest-deep, #0a2818);
+}
+
+.ux-refresh .wizard-step.completed .wizard-step-number::after {
+  content: '✓';
+  font-size: 1.25rem;
+}
+
+.ux-refresh .wizard-step.completed .wizard-step-label {
+  color: var(--ux-forest-fog, #f5f5f5);
+  opacity: 0.9;
+}
+
+/* Progress Line */
+.ux-refresh .wizard-progress-line {
+  position: absolute;
+  top: 50%;
+  left: var(--ux-space-8, 2rem);
+  height: 2px;
+  background: linear-gradient(90deg, var(--ux-primary, #4ade80), var(--ux-primary-hover, #22c55e));
+  transform: translateY(-50%);
+  z-index: 0;
+  transition: width var(--ux-transition-slow, 350ms);
+}
+
+/* Step Content */
+.ux-refresh .wizard-content {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--ux-radius-xl, 1rem);
+  padding: var(--ux-space-8, 2rem);
+  min-height: 400px;
+}
+
+.ux-refresh .step-content {
+  display: none;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.ux-refresh .step-content.active {
+  display: block;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ux-refresh .step-header {
+  margin-bottom: var(--ux-space-6, 1.5rem);
+}
+
+.ux-refresh .step-title {
+  font-size: var(--ux-text-2xl, 1.5rem);
+  font-weight: var(--ux-font-bold, 700);
+  color: var(--ux-forest-fog, #f5f5f5);
+  margin-bottom: var(--ux-space-2, 0.5rem);
+}
+
+.ux-refresh .step-description {
+  font-size: var(--ux-text-base, 1rem);
+  color: var(--ux-forest-mist, #e0e0e0);
+  opacity: 0.9;
+}
+
+/* Form Grid for Wizard */
+.ux-refresh .wizard-form-grid {
+  display: grid;
+  gap: var(--ux-space-4, 1rem);
+}
+
+.ux-refresh .wizard-form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--ux-space-4, 1rem);
+}
+
+/* Essential vs Advanced Fields */
+.ux-refresh .essential-fields {
+  margin-bottom: var(--ux-space-6, 1.5rem);
+}
+
+.ux-refresh .advanced-fields {
+  padding-top: var(--ux-space-4, 1rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ux-refresh .show-advanced-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ux-space-2, 0.5rem);
+  color: var(--ux-primary, #4ade80);
+  background: transparent;
+  border: none;
+  padding: var(--ux-space-2, 0.5rem) 0;
+  cursor: pointer;
+  font-size: var(--ux-text-sm, 0.875rem);
+  font-weight: var(--ux-font-medium, 500);
+  transition: all var(--ux-transition-fast, 150ms);
+  margin-bottom: var(--ux-space-4, 1rem);
+}
+
+.ux-refresh .show-advanced-btn:hover {
+  color: var(--ux-primary-hover, #22c55e);
+}
+
+.ux-refresh .show-advanced-btn .chevron {
+  transition: transform var(--ux-transition-base, 250ms);
+}
+
+.ux-refresh .show-advanced-btn.expanded .chevron {
+  transform: rotate(180deg);
+}
+
+/* Quick Suggestions */
+.ux-refresh .quick-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ux-space-2, 0.5rem);
+  margin-top: var(--ux-space-2, 0.5rem);
+}
+
+.ux-refresh .suggestion-chip {
+  padding: var(--ux-space-2, 0.5rem) var(--ux-space-3, 0.75rem);
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  border-radius: var(--ux-radius-full, 9999px);
+  color: var(--ux-forest-fog, #f5f5f5);
+  font-size: var(--ux-text-sm, 0.875rem);
+  cursor: pointer;
+  transition: all var(--ux-transition-fast, 150ms);
+}
+
+.ux-refresh .suggestion-chip:hover {
+  background: rgba(74, 222, 128, 0.2);
+  border-color: var(--ux-primary, #4ade80);
+  transform: translateY(-1px);
+}
+
+/* Pack Selection in Wizard */
+.ux-refresh .pack-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--ux-space-4, 1rem);
+  margin-top: var(--ux-space-4, 1rem);
+}
+
+.ux-refresh .pack-option {
+  padding: var(--ux-space-4, 1rem);
+  background: rgba(255, 255, 255, 0.02);
+  border: 2px solid transparent;
+  border-radius: var(--ux-radius-lg, 0.75rem);
+  cursor: pointer;
+  transition: all var(--ux-transition-base, 250ms);
+  text-align: center;
+}
+
+.ux-refresh .pack-option:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.ux-refresh .pack-option.selected {
+  background: rgba(74, 222, 128, 0.1);
+  border-color: var(--ux-primary, #4ade80);
+}
+
+.ux-refresh .pack-option-icon {
+  font-size: 2rem;
+  margin-bottom: var(--ux-space-2, 0.5rem);
+}
+
+.ux-refresh .pack-option-name {
+  font-weight: var(--ux-font-medium, 500);
+  color: var(--ux-forest-fog, #f5f5f5);
+  margin-bottom: var(--ux-space-1, 0.25rem);
+}
+
+.ux-refresh .pack-option-detail {
+  font-size: var(--ux-text-sm, 0.875rem);
+  color: var(--ux-forest-mist, #e0e0e0);
+  opacity: 0.8;
+}
+
+/* Review Step */
+.ux-refresh .review-section {
+  margin-bottom: var(--ux-space-6, 1.5rem);
+}
+
+.ux-refresh .review-section-title {
+  font-size: var(--ux-text-lg, 1.125rem);
+  font-weight: var(--ux-font-semibold, 600);
+  color: var(--ux-primary, #4ade80);
+  margin-bottom: var(--ux-space-3, 0.75rem);
+}
+
+.ux-refresh .review-item {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--ux-space-2, 0.5rem) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ux-refresh .review-label {
+  color: var(--ux-forest-mist, #e0e0e0);
+  opacity: 0.8;
+}
+
+.ux-refresh .review-value {
+  color: var(--ux-forest-fog, #f5f5f5);
+  font-weight: var(--ux-font-medium, 500);
+}
+
+/* Wizard Actions */
+.ux-refresh .wizard-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--ux-space-8, 2rem);
+  padding-top: var(--ux-space-6, 1.5rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ux-refresh .wizard-actions-left {
+  display: flex;
+  gap: var(--ux-space-3, 0.75rem);
+}
+
+.ux-refresh .wizard-actions-right {
+  display: flex;
+  gap: var(--ux-space-3, 0.75rem);
+  align-items: center;
+}
+
+.ux-refresh .autosave-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--ux-space-2, 0.5rem);
+  color: var(--ux-forest-mist, #e0e0e0);
+  font-size: var(--ux-text-sm, 0.875rem);
+  opacity: 0.7;
+}
+
+.ux-refresh .autosave-indicator.saving {
+  color: var(--ux-forest-honey, #fbbf24);
+  opacity: 1;
+}
+
+.ux-refresh .autosave-indicator.saved {
+  color: var(--ux-success, #22c55e);
+  opacity: 1;
+}
+
+/* Help Tips */
+.ux-refresh .help-tip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: rgba(135, 206, 235, 0.2);
+  border: 1px solid rgba(135, 206, 235, 0.4);
+  border-radius: 50%;
+  color: var(--ux-forest-sky, #87ceeb);
+  font-size: var(--ux-text-xs, 0.75rem);
+  font-weight: var(--ux-font-bold, 700);
+  cursor: help;
+  margin-left: var(--ux-space-2, 0.5rem);
+  transition: all var(--ux-transition-fast, 150ms);
+}
+
+.ux-refresh .help-tip:hover {
+  background: rgba(135, 206, 235, 0.3);
+  transform: scale(1.1);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .ux-refresh .wizard-progress {
+    padding: 0;
+  }
+  
+  .ux-refresh .wizard-step-label {
+    font-size: var(--ux-text-xs, 0.75rem);
+    max-width: 60px;
+  }
+  
+  .ux-refresh .wizard-content {
+    padding: var(--ux-space-4, 1rem);
+  }
+  
+  .ux-refresh .wizard-form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .ux-refresh .pack-selection-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .ux-refresh .wizard-actions {
+    flex-direction: column-reverse;
+    gap: var(--ux-space-4, 1rem);
+  }
+  
+  .ux-refresh .wizard-actions-left,
+  .ux-refresh .wizard-actions-right {
+    width: 100%;
+    justify-content: center;
+  }
+}

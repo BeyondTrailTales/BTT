@@ -1,0 +1,645 @@
+/**
+ * Dashboard Clean UI
+ * Horizontal-focused layout with proper spacing and responsive design
+ */
+
+/* Dashboard Container Layout */
+.ux-refresh .dashboard-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--ux-space-4, 1rem);
+}
+
+/* Welcome Banner - More Compact */
+.ux-refresh .welcome-banner {
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.1) 0%, rgba(34, 197, 94, 0.1) 100%);
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  border-radius: var(--ux-radius-xl, 1rem);
+  padding: var(--ux-space-6, 1.5rem) var(--ux-space-8, 2rem);
+  margin-bottom: var(--ux-space-6, 1.5rem);
+  text-align: center;
+}
+
+.ux-refresh .welcome-banner h1 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  color: var(--ux-primary, #4ade80);
+  margin-bottom: var(--ux-space-2, 0.5rem);
+  font-weight: var(--ux-font-bold, 700);
+}
+
+.ux-refresh .welcome-banner p {
+  font-size: var(--ux-text-base, 1rem);
+  color: var(--ux-forest-mist, #e0e0e0);
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* Main Dashboard Grid - Horizontal Focus */
+.ux-refresh .dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "quick-start quick-start"
+    "next-trip pack-status"
+    "my-gear achievements"
+    "trail-stats trail-stats"
+    "recent recent";
+  gap: var(--ux-space-4, 1rem);
+  margin-bottom: var(--ux-space-8, 2rem);
+}
+
+/* Quick Start Section - Horizontal */
+.ux-refresh .quick-start-section {
+  grid-area: quick-start;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--ux-radius-lg, 0.75rem);
+  padding: var(--ux-space-5, 1.25rem);
+}
+
+.ux-refresh .quick-start-header {
+  display: flex;
+  align-items: center;
+  gap: var(--ux-space-2, 0.5rem);
+  margin-bottom: var(--ux-space-4, 1rem);
+  padding-bottom: var(--ux-space-3, 0.75rem);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ux-refresh .quick-start-header h2 {
+  font-size: var(--ux-text-lg, 1.125rem);
+  color: var(--ux-primary, #4ade80);
+  font-weight: var(--ux-font-semibold, 600);
+  margin: 0;
+}
+
+.ux-refresh .quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--ux-space-3, 0.75rem);
+}
+
+.ux-refresh .quick-action {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--ux-radius-md, 0.5rem);
+  padding: var(--ux-space-4, 1rem);
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--ux-transition-base, 250ms);
+  position: relative;
+  overflow: hidden;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ux-space-2, 0.5rem);
+}
+
+.ux-refresh .quick-action:hover {
+  background: rgba(74, 222, 128, 0.05);
+  border-color: var(--ux-primary, #4ade80);
+  transform: translateY(-2px);
+}
+
+.ux-refresh .quick-action-icon {
+  font-size: 1.5rem;
+}
+
+.ux-refresh .quick-action-label {
+  font-size: var(--ux-text-sm, 0.875rem);
+  color: var(--ux-forest-fog, #f5f5f5);
+  font-weight: var(--ux-font-medium, 500);
+}
+
+.ux-refresh .quick-action-sub {
+  font-size: var(--ux-text-xs, 0.75rem);
+  color: var(--ux-forest-mist, #e0e0e0);
+  opacity: 0.7;
+}
+
+/* Next Trip Card - Compact */
+.ux-refresh .next-trip-card {
+  grid-area: next-trip;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--ux-radius-lg, 0.75rem);
+  padding: var(--ux-space-5, 1.25rem);
+  position: relative;
+  overflow: hidden;
+}
+
+.ux-refresh .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--ux-space-3, 0.75rem);
+  padding-bottom: var(--ux-space-2, 0.5rem);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ux-refresh .card-title {
+  font-size: var(--ux-text-base, 1rem);
+  color: var(--ux-primary, #4ade80);
+  font-weight: var(--ux-font-semibold, 600);
+  margin: 0;
+}
+
+.ux-refresh .card-link {
+  font-size: var(--ux-text-sm, 0.875rem);
+  color: var(--ux-forest-sky, #87ceeb);
+  text-decoration: none;
+  transition: color var(--ux-transition-fast, 150ms);
+}
+
+.ux-refresh .card-link:hover {
+  color: var(--ux-primary, #4ade80);
+}
+
+.ux-refresh .trip-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ux-space-2, 0.5rem);
+}
+
+.ux-refresh .trip-name {
+  font-size: var(--ux-text-lg, 1.125rem);
+  color: var(--ux-forest-fog, #f5f5f5);
+  font-weight: var(--ux-font-medium, 500);
+  margin-bottom: var(--ux-space-1, 0.25rem);
+}
+
+.ux-refresh .trip-details {
+  display: flex;
+  gap: var(--ux-space-3, 0.75rem);
+  flex-wrap: wrap;
+  font-size: var(--ux-text-sm, 0.875rem);
+  color: var(--ux-forest-mist, #e0e0e0);
+}
+
+.ux-refresh .trip-detail {
+  display: flex;
+  align-items: center;
+  gap: var(--ux-space-1, 0.25rem);
+}
+
+.ux-refresh .countdown {
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  border-radius: var(--ux-radius-md, 0.5rem);
+  padding: var(--ux-space-2, 0.5rem) var(--ux-space-3, 0.75rem);
+  margin-top: var(--ux-space-3, 0.75rem);
+  text-align: center;
+  font-size: var(--ux-text-sm, 0.875rem);
+  color: var(--ux-primary, #4ade80);
+  font-weight: var(--ux-font-medium, 500);
+}
+
+/* Pack Status Card - Compact */
+.ux-refresh .pack-status-card {
+  grid-area: pack-status;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--ux-radius-lg, 0.75rem);
+  padding: var(--ux-space-5, 1.25rem);
+}
+
+.ux-refresh .pack-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ux-space-3, 0.75rem);
+  margin-bottom: var(--ux-space-3, 0.75rem);
+}
+
+.ux-refresh .pack-stat {
+  text-align: center;
+  padding: var(--ux-space-2, 0.5rem);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--ux-radius-md, 0.5rem);
+}
+
+.ux-refresh .pack-stat-value {
+  font-size: var(--ux-text-xl, 1.25rem);
+  color: var(--ux-forest-fog, #f5f5f5);
+  font-weight: var(--ux-font-bold, 700);
+  margin-bottom: var(--ux-space-1, 0.25rem);
+}
+
+.ux-refresh .pack-stat-label {
+  font-size: var(--ux-text-xs, 0.75rem);
+  color: var(--ux-forest-mist, #e0e0e0);
+  opacity: 0.7;
+}
+
+.ux-refresh .pack-actions {
+  display: flex;
+  gap: var(--ux-space-2, 0.5rem);
+}
+
+.ux-refresh .pack-action-btn {
+  flex: 1;
+  padding: var(--ux-space-2, 0.5rem);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--ux-radius-md, 0.5rem);
+  color: var(--ux-forest-fog, #f5f5f5);
+  font-size: var(--ux-text-sm, 0.875rem);
+  cursor: pointer;
+  transition: all var(--ux-transition-fast, 150ms);
+  text-align: center;
+  text-decoration: none;
+}
+
+.ux-refresh .pack-action-btn:hover {
+  background: rgba(74, 222, 128, 0.1);
+  border-color: var(--ux-primary, #4ade80);
+}
+
+.ux-refresh .pack-action-btn.primary {
+  background: rgba(74, 222, 128, 0.1);
+  border-color: var(--ux-primary, #4ade80);
+  color: var(--ux-primary, #4ade80);
+}
+
+/* My Gear Card - Compact */
+.ux-refresh .my-gear-card {
+  grid-area: my-gear;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--ux-radius-lg, 0.75rem);
+  padding: var(--ux-space-5, 1.25rem);
+}
+
+.ux-refresh .gear-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: var(--ux-space-4, 1rem);
+  padding-bottom: var(--ux-space-3, 0.75rem);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ux-refresh .gear-stat {
+  display: flex;
+  align-items: center;
+  gap: var(--ux-space-2, 0.5rem);
+  font-size: var(--ux-text-sm, 0.875rem);
+}
+
+.ux-refresh .gear-stat-icon {
+  font-size: 1rem;
+}
+
+.ux-refresh .gear-stat-value {
+  color: var(--ux-forest-fog, #f5f5f5);
+  font-weight: var(--ux-font-medium, 500);
+}
+
+.ux-refresh .add-gear-btn {
+  width: 100%;
+  padding: var(--ux-space-3, 0.75rem);
+  background: rgba(74, 222, 128, 0.05);
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  border-radius: var(--ux-radius-md, 0.5rem);
+  color: var(--ux-primary, #4ade80);
+  font-size: var(--ux-text-sm, 0.875rem);
+  font-weight: var(--ux-font-medium, 500);
+  cursor: pointer;
+  transition: all var(--ux-transition-fast, 150ms);
+}
+
+.ux-refresh .add-gear-btn:hover {
+  background: rgba(74, 222, 128, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Achievements Card - Compact Horizontal */
+.ux-refresh .achievements-card {
+  grid-area: achievements;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--ux-radius-lg, 0.75rem);
+  padding: var(--ux-space-5, 1.25rem);
+}
+
+.ux-refresh .level-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--ux-space-3, 0.75rem);
+}
+
+.ux-refresh .level-text {
+  font-size: var(--ux-text-base, 1rem);
+  color: var(--ux-forest-fog, #f5f5f5);
+  font-weight: var(--ux-font-medium, 500);
+}
+
+.ux-refresh .xp-text {
+  font-size: var(--ux-text-sm, 0.875rem);
+  color: var(--ux-forest-honey, #fbbf24);
+}
+
+.ux-refresh .xp-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--ux-radius-full, 9999px);
+  overflow: hidden;
+  margin-bottom: var(--ux-space-4, 1rem);
+}
+
+.ux-refresh .xp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--ux-forest-honey, #fbbf24), var(--ux-primary, #4ade80));
+  transition: width var(--ux-transition-slow, 350ms);
+}
+
+.ux-refresh .badges-row {
+  display: flex;
+  gap: var(--ux-space-2, 0.5rem);
+  justify-content: center;
+}
+
+.ux-refresh .badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ux-space-1, 0.25rem);
+  padding: var(--ux-space-2, 0.5rem);
+  opacity: 0.5;
+  transition: opacity var(--ux-transition-fast, 150ms);
+}
+
+.ux-refresh .badge.earned {
+  opacity: 1;
+}
+
+.ux-refresh .badge-icon {
+  font-size: 1.5rem;
+}
+
+.ux-refresh .badge-name {
+  font-size: var(--ux-text-xs, 0.75rem);
+  color: var(--ux-forest-mist, #e0e0e0);
+  white-space: nowrap;
+}
+
+.ux-refresh .streak-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ux-space-2, 0.5rem);
+  padding: var(--ux-space-2, 0.5rem);
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-radius: var(--ux-radius-md, 0.5rem);
+  margin-top: var(--ux-space-3, 0.75rem);
+  font-size: var(--ux-text-sm, 0.875rem);
+  color: var(--ux-forest-honey, #fbbf24);
+}
+
+/* Trail Stats - Full Width Horizontal */
+.ux-refresh .trail-stats-card {
+  grid-area: trail-stats;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--ux-radius-lg, 0.75rem);
+  padding: var(--ux-space-5, 1.25rem);
+}
+
+.ux-refresh .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--ux-space-4, 1rem);
+}
+
+.ux-refresh .stat-item {
+  display: flex;
+  align-items: center;
+  gap: var(--ux-space-3, 0.75rem);
+  padding: var(--ux-space-3, 0.75rem);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--ux-radius-md, 0.5rem);
+  transition: all var(--ux-transition-fast, 150ms);
+}
+
+.ux-refresh .stat-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-1px);
+}
+
+.ux-refresh .stat-icon {
+  font-size: 1.5rem;
+  opacity: 0.8;
+}
+
+.ux-refresh .stat-content {
+  flex: 1;
+}
+
+.ux-refresh .stat-value {
+  font-size: var(--ux-text-xl, 1.25rem);
+  color: var(--ux-forest-fog, #f5f5f5);
+  font-weight: var(--ux-font-bold, 700);
+  line-height: 1;
+  margin-bottom: var(--ux-space-1, 0.25rem);
+}
+
+.ux-refresh .stat-label {
+  font-size: var(--ux-text-xs, 0.75rem);
+  color: var(--ux-forest-mist, #e0e0e0);
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Recent Activity - Full Width */
+.ux-refresh .recent-activity-section {
+  grid-area: recent;
+  margin-top: var(--ux-space-4, 1rem);
+}
+
+.ux-refresh .section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--ux-space-4, 1rem);
+  padding-bottom: var(--ux-space-2, 0.5rem);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ux-refresh .section-title {
+  font-size: var(--ux-text-lg, 1.125rem);
+  color: var(--ux-primary, #4ade80);
+  font-weight: var(--ux-font-semibold, 600);
+}
+
+.ux-refresh .activity-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ux-space-4, 1rem);
+}
+
+.ux-refresh .activity-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--ux-radius-lg, 0.75rem);
+  padding: var(--ux-space-5, 1.25rem);
+}
+
+.ux-refresh .activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ux-space-3, 0.75rem);
+}
+
+.ux-refresh .activity-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--ux-space-3, 0.75rem);
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--ux-radius-md, 0.5rem);
+  transition: all var(--ux-transition-fast, 150ms);
+}
+
+.ux-refresh .activity-item:hover {
+  background: rgba(74, 222, 128, 0.05);
+  transform: translateX(2px);
+}
+
+.ux-refresh .activity-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ux-space-1, 0.25rem);
+}
+
+.ux-refresh .activity-name {
+  font-size: var(--ux-text-base, 1rem);
+  color: var(--ux-forest-fog, #f5f5f5);
+  font-weight: var(--ux-font-medium, 500);
+}
+
+.ux-refresh .activity-meta {
+  font-size: var(--ux-text-sm, 0.875rem);
+  color: var(--ux-forest-mist, #e0e0e0);
+  opacity: 0.7;
+}
+
+.ux-refresh .activity-action {
+  padding: var(--ux-space-2, 0.5rem) var(--ux-space-3, 0.75rem);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--ux-radius-md, 0.5rem);
+  color: var(--ux-forest-fog, #f5f5f5);
+  font-size: var(--ux-text-sm, 0.875rem);
+  cursor: pointer;
+  transition: all var(--ux-transition-fast, 150ms);
+  text-decoration: none;
+}
+
+.ux-refresh .activity-action:hover {
+  background: rgba(74, 222, 128, 0.1);
+  border-color: var(--ux-primary, #4ade80);
+  color: var(--ux-primary, #4ade80);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .ux-refresh .dashboard-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "quick-start"
+      "next-trip"
+      "pack-status"
+      "trail-stats"
+      "my-gear"
+      "achievements"
+      "recent";
+  }
+  
+  .ux-refresh .quick-actions-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .ux-refresh .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .ux-refresh .activity-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .ux-refresh .dashboard-container {
+    padding: var(--ux-space-3, 0.75rem);
+  }
+  
+  .ux-refresh .welcome-banner {
+    padding: var(--ux-space-4, 1rem);
+  }
+  
+  .ux-refresh .quick-actions-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .ux-refresh .pack-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .ux-refresh .gear-stats {
+    flex-direction: column;
+    gap: var(--ux-space-2, 0.5rem);
+  }
+  
+  .ux-refresh .badges-row {
+    flex-wrap: wrap;
+  }
+  
+  .ux-refresh .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Loading States */
+.ux-refresh .skeleton-dashboard {
+  animation: pulse 1.5s ease-in-out infinite;
+  background: linear-gradient(90deg, 
+    rgba(255, 255, 255, 0.03) 25%, 
+    rgba(255, 255, 255, 0.06) 50%, 
+    rgba(255, 255, 255, 0.03) 75%);
+  background-size: 200% 100%;
+  border-radius: var(--ux-radius-md, 0.5rem);
+}
+
+/* Empty States */
+.ux-refresh .empty-dashboard {
+  text-align: center;
+  padding: var(--ux-space-8, 2rem);
+  color: var(--ux-forest-mist, #e0e0e0);
+  opacity: 0.7;
+}
+
+.ux-refresh .empty-icon {
+  font-size: 3rem;
+  margin-bottom: var(--ux-space-4, 1rem);
+  opacity: 0.3;
+}
+
+.ux-refresh .empty-title {
+  font-size: var(--ux-text-lg, 1.125rem);
+  margin-bottom: var(--ux-space-2, 0.5rem);
+}
+
+.ux-refresh .empty-description {
+  font-size: var(--ux-text-sm, 0.875rem);
+  margin-bottom: var(--ux-space-4, 1rem);
+}

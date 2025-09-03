@@ -64,6 +64,8 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - BeyondTrailTales</title>
+    <link rel="stylesheet" href="/BTT/assets/css/ux-refresh.css">
+    <link rel="stylesheet" href="/BTT/assets/css/dashboard-clean.css">
     
     <style>
         * {
@@ -307,126 +309,243 @@ try {
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>🌲 BeyondTrailTales</h1>
-            <p class="subtitle">Your Trail Companion for Epic Adventures</p>
-        </header>
-        
-        <nav class="nav-bar">
-            <a href="dashboard.php" class="nav-link active">🏠 Dashboard</a>
-            <a href="backpacks-list.php" class="nav-link">🎒 Backpacks</a>
-            <a href="trips-list.php" class="nav-link">🏔️ Trips</a>
-            <a href="test-status.php" class="nav-link">🔧 System</a>
-        </nav>
-        
+<body class="<?php echo isset($enableUX) && $enableUX ? 'ux-refresh' : ''; ?>">
+    <div class="dashboard-container">
+        <!-- Compact Welcome Banner -->
         <div class="welcome-banner">
-            <h2>Welcome back, Trail Explorer!</h2>
-            <p>Ready for your next adventure? Check out your stats below.</p>
+            <h1>Welcome to your Trailhead! 🏔️</h1>
+            <p>Your adventure command center</p>
         </div>
         
-        <div class="quick-actions">
-            <a href="trips-list.php" class="action-btn">
-                ➕ Plan New Trip
-            </a>
-            <a href="backpacks-list.php" class="action-btn">
-                🎒 Manage Packs
-            </a>
-            <a href="test-status.php" class="action-btn">
-                📊 View Reports
-            </a>
-        </div>
-        
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-icon">🎒</div>
-                <div class="stat-value"><?php echo $stats['backpacks']; ?></div>
-                <div class="stat-label">Backpacks</div>
+        <!-- Main Dashboard Grid -->
+        <div class="dashboard-grid">
+            
+            <!-- Quick Actions Bar - Horizontal -->
+            <div class="quick-start-section">
+                <div class="quick-start-header">
+                    <h2>Quick Actions</h2>
+                </div>
+                <div class="quick-actions-grid">
+                    <a href="trips.php" class="quick-action">
+                        <div class="quick-action-icon">🗺️</div>
+                        <div class="quick-action-label">Plan Trip</div>
+                    </a>
+                    <a href="backpacks.php" class="quick-action">
+                        <div class="quick-action-icon">🎒</div>
+                        <div class="quick-action-label">Build Pack</div>
+                    </a>
+                    <a href="gear.php" class="quick-action">
+                        <div class="quick-action-icon">⛺</div>
+                        <div class="quick-action-label">Add Gear</div>
+                    </a>
+                    <a href="#" class="quick-action" onclick="UXUtils.toast('Coming soon!', 'info'); return false;">
+                        <div class="quick-action-icon">📋</div>
+                        <div class="quick-action-label">Quick List</div>
+                    </a>
+                </div>
             </div>
             
-            <div class="stat-card">
-                <div class="stat-icon">🏔️</div>
-                <div class="stat-value"><?php echo $stats['trips']; ?></div>
-                <div class="stat-label">Total Trips</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">📦</div>
-                <div class="stat-value"><?php echo $stats['gear']; ?></div>
-                <div class="stat-label">Gear Items</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">📅</div>
-                <div class="stat-value"><?php echo $stats['upcoming_trips']; ?></div>
-                <div class="stat-label">Upcoming</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">✅</div>
-                <div class="stat-value"><?php echo $stats['completed_trips']; ?></div>
-                <div class="stat-label">Completed</div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">🥾</div>
-                <div class="stat-value"><?php echo number_format($stats['total_distance']); ?></div>
-                <div class="stat-label">Miles Hiked</div>
-            </div>
-        </div>
-        
-        <div class="content-grid">
-            <div class="content-card">
-                <h2>📅 Recent Trips</h2>
-                <?php if (empty($recentTrips)): ?>
-                    <div class="empty-state">
-                        <p>No trips yet. Start planning your first adventure!</p>
+            <!-- Trips Overview -->
+            <div class="next-trip-card">
+                <div class="card-header">
+                    <h3 class="card-title">🏔️ Trips Overview</h3>
+                    <a href="trips-list.php" class="card-link">View All →</a>
+                </div>
+                <?php if (!empty($recentTrips)): ?>
+                    <?php $nextTrip = $recentTrips[0]; ?>
+                    <div class="trip-info">
+                        <div class="trip-name"><?php echo htmlspecialchars($nextTrip['title']); ?></div>
+                        <div class="trip-details">
+                            <span class="trip-detail">📍 <?php echo htmlspecialchars($nextTrip['location'] ?? 'No location'); ?></span>
+                            <span class="trip-detail">📅 <?php echo date('M j', strtotime($nextTrip['start_date'])); ?></span>
+                            <?php if (isset($nextTrip['distance']) && $nextTrip['distance'] > 0): ?>
+                                <span class="trip-detail">🥾 <?php echo $nextTrip['distance']; ?> mi</span>
+                            <?php endif; ?>
+                        </div>
+                        <?php if (strtotime($nextTrip['start_date']) > time()): ?>
+                            <div class="countdown">🔥 <?php echo floor((strtotime($nextTrip['start_date']) - time()) / 86400); ?> days to go!</div>
+                        <?php endif; ?>
                     </div>
                 <?php else: ?>
-                    <?php foreach ($recentTrips as $trip): ?>
-                        <div class="trip-item">
-                            <h3>
-                                <?php echo htmlspecialchars($trip['title']); ?>
-                                <?php if ($trip['favorite'] == 1): ?>
-                                    <span class="badge-favorite">⭐</span>
-                                <?php endif; ?>
-                            </h3>
-                            <div class="trip-meta">
-                                <span>📍 <?php echo htmlspecialchars($trip['location']); ?></span>
-                                <span>📅 <?php echo date('M j', strtotime($trip['start_date'])); ?></span>
-                                <?php if ($trip['completed'] == 1): ?>
-                                    <span class="badge badge-completed">Completed</span>
-                                <?php elseif (strtotime($trip['start_date']) > time()): ?>
-                                    <span class="badge badge-upcoming">Upcoming</span>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
+                    <div class="empty-state">
+                        <p>No trips planned yet</p>
+                        <a href="trips.php" class="pack-action-btn primary">Plan Your First Trip</a>
+                    </div>
                 <?php endif; ?>
             </div>
             
-            <div class="content-card">
-                <h2>⭐ Favorite Trips</h2>
-                <?php if (empty($favoriteTrips)): ?>
-                    <div class="empty-state">
-                        <p>Mark your favorite trips to see them here!</p>
+            <!-- Backpacks Overview -->
+            <div class="pack-status-card">
+                <div class="card-header">
+                    <h3 class="card-title">🎒 Pack Status</h3>
+                    <a href="backpacks-list.php" class="card-link">View All →</a>
+                </div>
+                <div class="pack-stats">
+                    <div class="pack-stat">
+                        <div class="pack-stat-value"><?php echo $stats['backpacks']; ?></div>
+                        <div class="pack-stat-label">Total Packs</div>
                     </div>
-                <?php else: ?>
-                    <?php foreach ($favoriteTrips as $trip): ?>
-                        <div class="trip-item">
-                            <h3><?php echo htmlspecialchars($trip['title']); ?> ⭐</h3>
-                            <div class="trip-meta">
-                                <span>📍 <?php echo htmlspecialchars($trip['location']); ?></span>
-                                <span>🥾 <?php echo $trip['distance']; ?> <?php echo $trip['distance_unit'] ?? 'mi'; ?></span>
-                                <?php if ($trip['backpack_name']): ?>
-                                    <span>🎒 <?php echo htmlspecialchars($trip['backpack_name']); ?></span>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                <?php endif; ?>
+                    <div class="pack-stat">
+                        <div class="pack-stat-value"><?php echo $stats['gear']; ?></div>
+                        <div class="pack-stat-label">Gear Items</div>
+                    </div>
+                </div>
+                <div class="pack-actions">
+                    <a href="backpacks.php" class="pack-action-btn">Check Pack</a>
+                    <a href="backpacks.php?action=new" class="pack-action-btn primary">Quick Pack</a>
+                </div>
             </div>
+            
+            <!-- Trail Stats - Horizontal Bar -->
+            <div class="trail-stats-card">
+                <div class="card-header">
+                    <h3 class="card-title">📊 Trail Stats</h3>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-icon">🏔️</div>
+                        <div class="stat-content">
+                            <div class="stat-value"><?php echo $stats['trips']; ?></div>
+                            <div class="stat-label">Trips</div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">🥾</div>
+                        <div class="stat-content">
+                            <div class="stat-value"><?php echo number_format($stats['total_distance']); ?></div>
+                            <div class="stat-label">Miles</div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">⛰️</div>
+                        <div class="stat-content">
+                            <div class="stat-value"><?php echo number_format($stats['elevation_gain'] ?? 0); ?></div>
+                            <div class="stat-label">Ft Climbed</div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-content">
+                            <div class="stat-value"><?php echo $stats['completed_trips']; ?></div>
+                            <div class="stat-label">Completed</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- My Gear Quick View -->
+            <div class="my-gear-card">
+                <div class="card-header">
+                    <h3 class="card-title">⛺ My Gear</h3>
+                    <a href="gear.php" class="card-link">Manage →</a>
+                </div>
+                <div class="gear-stats">
+                    <div class="gear-stat">
+                        <span class="gear-stat-icon">📦</span>
+                        <span class="gear-stat-value"><?php echo $stats['gear']; ?></span> Total Items
+                    </div>
+                    <div class="gear-stat">
+                        <span class="gear-stat-icon">⭐</span>
+                        <span class="gear-stat-value"><?php echo $stats['favorite_gear'] ?? 0; ?></span> Favorites
+                    </div>
+                    <div class="gear-stat">
+                        <span class="gear-stat-icon">🆕</span>
+                        <span class="gear-stat-value"><?php echo $stats['new_gear'] ?? 0; ?></span> This Month
+                    </div>
+                </div>
+                <button class="add-gear-btn" onclick="window.location.href='gear.php?action=add'">Add New Gear</button>
+            </div>
+            
+            <!-- Achievements -->
+            <div class="achievements-card">
+                <div class="card-header">
+                    <h3 class="card-title">🏆 Trail Achievements</h3>
+                    <span class="xp-text">⭐ 0 XP</span>
+                </div>
+                <div class="level-info">
+                    <span class="level-text">Level 1</span>
+                    <span class="xp-text">0 / 100 XP</span>
+                </div>
+                <div class="xp-bar">
+                    <div class="xp-fill" style="width: 0%"></div>
+                </div>
+                <div class="badges-row">
+                    <div class="badge earned">
+                        <div class="badge-icon">🥾</div>
+                        <div class="badge-name">First Steps</div>
+                    </div>
+                    <div class="badge">
+                        <div class="badge-icon">⛰️</div>
+                        <div class="badge-name">Summit Seeker</div>
+                    </div>
+                    <div class="badge">
+                        <div class="badge-icon">☀️</div>
+                        <div class="badge-name">Trail Master</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Activity Section -->
+            <div class="recent-activity-section">
+                <div class="section-header">
+                    <h2 class="section-title">Recent Activity</h2>
+                </div>
+                <div class="activity-grid">
+                    <!-- Recent Trips -->
+                    <div class="activity-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Your Adventures</h3>
+                        </div>
+                        <div class="activity-list">
+                            <?php if (!empty($recentTrips)): ?>
+                                <?php foreach(array_slice($recentTrips, 0, 3) as $trip): ?>
+                                <div class="activity-item">
+                                    <div class="activity-info">
+                                        <div class="activity-name"><?php echo htmlspecialchars($trip['title']); ?></div>
+                                        <div class="activity-meta">
+                                            <?php if ($trip['completed'] == 1): ?>
+                                                ✅ Completed
+                                            <?php else: ?>
+                                                📅 <?php echo date('M j', strtotime($trip['start_date'])); ?>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                    <a href="trips.php?id=<?php echo $trip['id']; ?>" class="activity-action">View</a>
+                                </div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <div class="empty-state">No trips yet</div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Backpacks -->
+                    <div class="activity-card">
+                        <div class="card-header">
+                            <h3 class="card-title">Your Packs</h3>
+                        </div>
+                        <div class="activity-list">
+                            <?php 
+                            // Get recent backpacks
+                            $recentPacks = $db->query("SELECT id, name, base_weight FROM backpacks WHERE user_id = ? ORDER BY created_at DESC LIMIT 3", [$_SESSION['user_id']])->fetchAll();
+                            if (!empty($recentPacks)): ?>
+                                <?php foreach($recentPacks as $pack): ?>
+                                <div class="activity-item">
+                                    <div class="activity-info">
+                                        <div class="activity-name"><?php echo htmlspecialchars($pack['name']); ?></div>
+                                        <div class="activity-meta">⚖️ <?php echo number_format($pack['base_weight'], 1); ?> lbs</div>
+                                    </div>
+                                    <a href="backpacks.php?id=<?php echo $pack['id']; ?>" class="activity-action">View</a>
+                                </div>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <div class="empty-state">No backpacks yet</div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
         </div>
     </div>
 </body>
