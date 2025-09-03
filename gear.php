@@ -21,40 +21,33 @@ $pageDescription = 'Manage your outdoor gear inventory with categories, tags, an
 // Page-specific styles
 $pageStyles = $pageStyles ?? [];
 $pageStyles[] = 'css/pack-builder.css';         // Base layout and components shared with packs
-$pageStyles[] = 'css/pack-builder-enhanced.css'; // Enhanced styling
-$pageStyles[] = 'css/gear-library.css';         // Gear-specific styles
-$pageStyles[] = 'css/gear-library-enhanced.css'; // Enhanced gear styles
-$pageStyles[] = 'css/form-inputs.css';          // Form input styles
-$pageStyles[] = 'css/gear-search.css';          // Search and filter styles
+$pageStyles[] = 'css/gear-page.css';            // Gear page specific styling
 
 // Add page-specific scripts
 $pageScripts = $pageScripts ?? [];
-$pageScripts[] = 'js/btt-utils.js';           // Utilities - must load first
-$pageScripts[] = 'js/api.js';                 // API client
-$pageScripts[] = 'js/form-validation.js';     // Form validation system
-$pageScripts[] = 'js/gear-page.js';           // Main gear page functionality (new file)
+$pageScripts[] = 'js/gear-page.js';           // Main gear page functionality
 
 // Include the unified template header
 require_once __DIR__ . '/includes/template-header.php';
 ?>
 
-<!-- Main Gear Container (following pack builder layout pattern) -->
+<!-- Main Gear Container -->
+<div class="gear-page">
 <div class="pack-builder-container" id="main-content">
   
-  <!-- Action Bar with Tools -->
-  <div class="pack-action-bar" role="region" aria-label="Gear management tools">
-    <div class="pack-tabs">
-      <h1 class="page-title">
-        <span class="page-icon" aria-hidden="true">📦</span>
-        My Gear Library
-      </h1>
-      <p id="page-description" class="page-subtitle">
-        Track and organize all your outdoor equipment
-      </p>
-    </div>
-    
-    <div class="pack-actions">
-      <button id="btn-add-gear" class="btn-action btn-new-pack" aria-label="Add new gear item">
+  <!-- Header Section -->
+  <div class="gear-header-section">
+    <div class="gear-header-content">
+      <div class="gear-title-group">
+        <h1 class="gear-page-title">
+          <span class="page-icon" aria-hidden="true">📦</span>
+          My Gear Library
+        </h1>
+        <p id="page-description" class="gear-page-subtitle">
+          Track and organize all your outdoor equipment
+        </p>
+      </div>
+      <button id="btn-add-gear" class="btn-action" aria-label="Add new gear item">
         <i class="icon">➕</i> Add Gear
       </button>
     </div>
@@ -163,6 +156,7 @@ require_once __DIR__ . '/includes/template-header.php';
       </div>
     </div>
   </div>
+</div>
 </div>
 
 <!-- Add/Edit Gear Modal -->

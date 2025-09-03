@@ -73,7 +73,7 @@ $uxRefreshEnabled = $_SESSION['ux_refresh'] ?? $_COOKIE['ux_refresh'] ?? true;
             <span class="mobile-nav-icon" aria-hidden="true">🎒</span>
             <span class="mobile-nav-label">Packs</span>
         </a>
-        <a href="<?php echo route_url('backpacks'); ?>?view=gear-library" class="mobile-nav-item <?php echo active_class('gear'); ?>">
+        <a href="<?php echo route_url('gear'); ?>" class="mobile-nav-item <?php echo active_class('gear'); ?>">
             <span class="mobile-nav-icon" aria-hidden="true">📦</span>
             <span class="mobile-nav-label">Gear</span>
         </a>

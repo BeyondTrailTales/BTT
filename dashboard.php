@@ -50,7 +50,7 @@ require_once __DIR__ . '/includes/template-header.php';
                 <span class="quick-icon">🎒</span>
                 <span class="quick-label">Build Pack</span>
             </a>
-            <a href="<?php echo route_url('backpacks'); ?>?view=gear-library" class="quick-action-item">
+            <a href="<?php echo route_url('gear'); ?>" class="quick-action-item">
                 <span class="quick-icon">⛺</span>
                 <span class="quick-label">Add Gear</span>
             </a>
@@ -121,7 +121,7 @@ require_once __DIR__ . '/includes/template-header.php';
                 <div class="compact-header">
                     <span class="card-icon">⛺</span>
                     <h3>My Gear</h3>
-                    <a href="<?php echo route_url('backpacks'); ?>?view=gear-library" class="link-arrow">→</a>
+                    <a href="<?php echo route_url('gear'); ?>" class="link-arrow">→</a>
                 </div>
                 <div class="compact-stats">
                     <div class="stat">
@@ -137,7 +137,7 @@ require_once __DIR__ . '/includes/template-header.php';
                         <span class="stat-lbl">New</span>
                     </div>
                 </div>
-                <button class="mini-btn w-full" onclick="window.location.href='<?php echo route_url('backpacks'); ?>?view=gear-library&action=add'">Add Gear</button>
+                <button class="mini-btn w-full" onclick="window.location.href='<?php echo route_url('gear'); ?>'">Add Gear</button>
             </div>
             
             <!-- Trail Stats Compact -->

@@ -49,9 +49,10 @@
          * Initialize the gear manager
          */
         init: function() {
+            console.log('GearManager.init() called');
             this.bindEvents();
-            this.loadGear();
             this.restoreUserPreferences();
+            this.loadGear();
         },
 
         /**
@@ -171,27 +172,35 @@
          */
         loadGear: function() {
             const self = this;
+            console.log('Loading gear from:', self.config.apiUrl + '/?route=gear');
             self.setLoading(true);
 
             $.ajax({
                 url: self.config.apiUrl + '/?route=gear',
                 method: 'GET',
+                dataType: 'json',
                 headers: {
                     'X-CSRF-Token': self.config.csrfToken
                 },
                 success: function(response) {
-                    if (response.success && response.data) {
+                    console.log('API Response:', response);
+                    if (response && response.success && response.data) {
                         self.state.items = response.data.items || [];
+                        console.log('Loaded', self.state.items.length, 'items');
                         self.filterAndRender();
                     } else {
+                        console.error('Invalid response format:', response);
                         self.showError('Failed to load gear items');
+                        self.setLoading(false);
                     }
                 },
-                error: function(xhr) {
-                    console.error('Load gear error:', xhr);
+                error: function(xhr, status, error) {
+                    console.error('Load gear error:', status, error, xhr);
                     self.showError('Failed to load gear. Please try again.');
+                    self.setLoading(false);
                 },
                 complete: function() {
+                    console.log('Load complete');
                     self.setLoading(false);
                 }
             });
@@ -254,6 +263,9 @@
             const $loading = $('#gear-loading');
             const $empty = $('#gear-empty');
             const $noResults = $('#gear-no-results');
+            const $itemsContainer = $('#gear-items');
+
+            console.log('Rendering items:', this.state.filteredItems.length, 'Loading:', this.state.isLoading);
 
             // Hide all states first
             $loading.hide();
@@ -281,8 +293,12 @@
                 this.renderItemCard(item)
             ).join('');
 
-            $container.html(itemsHtml);
-            $container.show();
+            // If container doesn't exist, create it
+            if ($container.length === 0) {
+                $itemsContainer.append('<div class="gear-grid" id="gear-grid"></div>');
+            }
+            
+            $('#gear-grid').html(itemsHtml).show();
 
             // Bind item-specific events
             this.bindItemEvents();
@@ -723,6 +739,8 @@
             if (isLoading) {
                 $('#gear-loading').show();
                 $('#gear-grid, #gear-empty, #gear-no-results').hide();
+            } else {
+                $('#gear-loading').hide();
             }
         },
 
@@ -780,7 +798,12 @@
 
     // Initialize when DOM is ready
     $(document).ready(function() {
-        GearManager.init();
+        console.log('Document ready, initializing GearManager...');
+        try {
+            GearManager.init();
+        } catch (error) {
+            console.error('Error initializing GearManager:', error);
+        }
     });
 
 })(jQuery, window, document);
