@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Trip Notes UI - BTT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .container {
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #4CAF50;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #333;
+            border-radius: 5px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            background: #444;
+            color: #fff;
+            border: 1px solid #666;
+            border-radius: 4px;
+        }
+        .result {
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        .success {
+            background: #155724;
+            border: 1px solid #4CAF50;
+            color: #d4edda;
+        }
+        .error {
+            background: #721c24;
+            border: 1px solid #f5c6cb;
+            color: #f8d7da;
+        }
+        pre {
+            background: #000;
+            padding: 10px;
+            overflow: auto;
+            border-radius: 4px;
+        }
+        .trip-display {
+            background: #3a3a3a;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <h1>BTT - Test Trip Notes UI</h1>
+    
+    <div class="container">
+        <h2>1. Create Trip with Notes</h2>
+        <div class="test-section">
+            <input type="text" id="trip-title" placeholder="Trip Title" value="Test Trip with Notes">
+            <input type="text" id="trip-location" placeholder="Location" value="Test Mountain">
+            <textarea id="pre-notes" placeholder="Pre-Trip Notes" rows="3">Planning to test the new trail system. Need to check weather conditions and pack extra water.</textarea>
+            <textarea id="post-notes" placeholder="Post-Trip Notes" rows="3">Trail was in excellent condition. Saw amazing views at the summit. Weather was perfect.</textarea>
+            <textarea id="lessons" placeholder="Lessons Learned" rows="3">Bring more water next time. The trail is longer than expected. Start earlier to avoid crowds.</textarea>
+            <button onclick="createTripWithNotes()">Create Trip with Notes</button>
+            <div id="create-result" class="result"></div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h2>2. Fetch and Display Trips</h2>
+        <div class="test-section">
+            <button onclick="fetchTrips()">Fetch All Trips</button>
+            <div id="trips-list"></div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h2>3. Update Trip Notes</h2>
+        <div class="test-section">
+            <input type="number" id="update-id" placeholder="Trip ID" min="1">
+            <textarea id="update-pre-notes" placeholder="Updated Pre-Trip Notes" rows="2">UPDATED: New pre-trip notes</textarea>
+            <textarea id="update-post-notes" placeholder="Updated Post-Trip Notes" rows="2">UPDATED: New post-trip notes</textarea>
+            <textarea id="update-lessons" placeholder="Updated Lessons" rows="2">UPDATED: New lessons learned</textarea>
+            <button onclick="updateTripNotes()">Update Trip Notes</button>
+            <div id="update-result" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/BTT/api';
+        
+        async function createTripWithNotes() {
+            const resultDiv = document.getElementById('create-result');
+            
+            const tripData = {
+                title: document.getElementById('trip-title').value,
+                location: document.getElementById('trip-location').value,
+                pre_trip_notes: document.getElementById('pre-notes').value,
+                post_trip_notes: document.getElementById('post-notes').value,
+                lessons_learned: document.getElementById('lessons').value,
+                start_date: new Date().toISOString().split('T')[0],
+                end_date: new Date(Date.now() + 86400000).toISOString().split('T')[0]
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE}/trips`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify(tripData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <strong>✓ Trip Created Successfully!</strong><br>
+                        ID: ${data.data.id}<br>
+                        Title: ${data.data.title}<br>
+                        Pre-Trip Notes: ${data.data.pre_trip_notes || '(empty)'}<br>
+                        Post-Trip Notes: ${data.data.post_trip_notes || '(empty)'}<br>
+                        Lessons Learned: ${data.data.lessons_learned || '(empty)'}
+                    `;
+                } else {
+                    throw new Error(data.error || 'Failed to create trip');
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `<strong>✗ Error:</strong> ${error.message}`;
+            }
+        }
+        
+        async function fetchTrips() {
+            const listDiv = document.getElementById('trips-list');
+            
+            try {
+                const response = await fetch(`${API_BASE}/trips`, {
+                    credentials: 'same-origin'
+                });
+                const data = await response.json();
+                
+                if (response.ok && data.data) {
+                    listDiv.innerHTML = '<h3>Your Trips:</h3>';
+                    
+                    data.data.forEach(trip => {
+                        const hasNotes = trip.pre_trip_notes || trip.post_trip_notes || trip.lessons_learned;
+                        
+                        listDiv.innerHTML += `
+                            <div class="trip-display">
+                                <strong>[#${trip.id}] ${trip.title}</strong> - ${trip.location || 'No location'}<br>
+                                <small>User ID: ${trip.user_id}</small><br>
+                                ${hasNotes ? '<strong>Notes:</strong><br>' : '<em>No notes</em>'}
+                                ${trip.pre_trip_notes ? `Pre-Trip: ${trip.pre_trip_notes.substring(0, 100)}...<br>` : ''}
+                                ${trip.post_trip_notes ? `Post-Trip: ${trip.post_trip_notes.substring(0, 100)}...<br>` : ''}
+                                ${trip.lessons_learned ? `Lessons: ${trip.lessons_learned.substring(0, 100)}...<br>` : ''}
+                            </div>
+                        `;
+                    });
+                    
+                    if (data.data.length === 0) {
+                        listDiv.innerHTML = '<em>No trips found. You may need to log in first.</em>';
+                    }
+                } else {
+                    throw new Error(data.error || 'Failed to fetch trips');
+                }
+            } catch (error) {
+                listDiv.innerHTML = `<div class="result error"><strong>✗ Error:</strong> ${error.message}</div>`;
+            }
+        }
+        
+        async function updateTripNotes() {
+            const resultDiv = document.getElementById('update-result');
+            const tripId = document.getElementById('update-id').value;
+            
+            if (!tripId) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = '<strong>✗ Error:</strong> Please enter a Trip ID';
+                return;
+            }
+            
+            const updateData = {
+                pre_trip_notes: document.getElementById('update-pre-notes').value,
+                post_trip_notes: document.getElementById('update-post-notes').value,
+                lessons_learned: document.getElementById('update-lessons').value
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE}/trips/${tripId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify(updateData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `
+                        <strong>✓ Trip Updated Successfully!</strong><br>
+                        ID: ${data.data.id}<br>
+                        Pre-Trip Notes: ${data.data.pre_trip_notes || '(empty)'}<br>
+                        Post-Trip Notes: ${data.data.post_trip_notes || '(empty)'}<br>
+                        Lessons Learned: ${data.data.lessons_learned || '(empty)'}
+                    `;
+                } else {
+                    throw new Error(data.error || 'Failed to update trip');
+                }
+            } catch (error) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `<strong>✗ Error:</strong> ${error.message}`;
+            }
+        }
+        
+        // Load trips on page load
+        window.addEventListener('load', fetchTrips);
+    </script>
+</body>
+</html>

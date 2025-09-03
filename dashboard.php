@@ -7,6 +7,9 @@
 // Load bootstrap
 require_once __DIR__ . '/app/bootstrap.php';
 
+// Require authentication for dashboard
+require_auth();
+
 // Set page metadata
 $pageTitle = 'Dashboard';
 $pageDescription = 'Your adventure hub - manage trips, backpacks, and track achievements';

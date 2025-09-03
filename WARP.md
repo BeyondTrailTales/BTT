@@ -185,6 +185,89 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 ```
 
+## 🔐 Authentication & Session Management
+
+### Authentication System Overview
+The BTT application uses a custom session-based authentication system with SQLite database storage.
+
+**Key Components:**
+- `AuthService` (`/app/Services/AuthService.php`) - Handles login, logout, registration
+- `DbSessionHandler` (`/app/Services/DbSessionHandler.php`) - Custom SQLite session storage
+- `Bootstrap` (`/app/bootstrap.php`) - Session initialization and configuration
+
+### Session Configuration
+```php
+// Session settings in bootstrap.php
+Session Name: BTTSESSID
+Cookie Path: /BTT/  (IMPORTANT: Must be /BTT/ not /)
+Lifetime: Session cookie (expires on browser close)
+HttpOnly: true (prevents JavaScript access)
+SameSite: Lax (CSRF protection)
+```
+
+### Login Flow
+1. User submits form at `/public/auth/login.php`
+2. AJAX request to `/api/index.php?route=auth&id=login`
+3. AuthService validates credentials and sets session:
+   ```php
+   $_SESSION['user_id'] = $user['id'];
+   $_SESSION['username'] = $user['username'];
+   $_SESSION['logged_in'] = true;
+   ```
+4. Session regenerated for security: `session_regenerate_id(true)`
+5. Force session save: `session_write_close()` then `session_start()`
+6. JavaScript redirects to `/BTT/dashboard` (not dashboard.php)
+
+### Common Authentication Issues & Fixes
+
+**Issue: Login successful but doesn't redirect**
+- **Fix**: Redirect URL should be `/BTT/dashboard` not `/BTT/dashboard.php`
+
+**Issue: Session not persisting after login**
+- **Fix**: Set session variables BEFORE `session_regenerate_id()`
+- **Fix**: Use `session_write_close()` and `session_start()` to force save
+- **Fix**: Ensure cookie path is `/BTT/` not `/`
+
+**Issue: Multiple session cookies created**
+- **Fix**: All files must include bootstrap.php first
+- **Fix**: Don't start new sessions - bootstrap handles it
+
+### Test Credentials
+```
+Username: admin     Password: Admin123!
+Username: testuser  Password: Test123!
+Username: demo      Password: Demo123!
+```
+
+### Authentication Testing Tools
+- `/test/session-debug.html` - Complete session testing interface
+- `/test/test-login.html` - Login flow tester
+- `/test/check-auth.php` - Check current auth status
+- `/test/session-test.php` - Session operations API
+
+### Protected Pages
+```php
+// Add to any page requiring authentication
+require_auth();  // Redirects to login if not authenticated
+
+// Check authentication without redirect
+if (is_authenticated()) {
+    // User is logged in
+}
+```
+
+### Session Debugging
+```php
+// View current session data
+echo '<pre>';
+print_r($_SESSION);
+print_r($_COOKIE);
+echo '</pre>';
+
+// Check session in SQLite
+sqlite3 storage/sqlite/btt.db "SELECT * FROM sessions WHERE user_id IS NOT NULL;"
+```
+
 ## Common Development Tasks
 
 ### Adding a New API Endpoint

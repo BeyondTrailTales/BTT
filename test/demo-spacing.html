@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTT - Global Spacing & Rhythm Demo</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <style>
+        /* Demo-specific styles */
+        .demo-box {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--neutral-700);
+            font-size: var(--text-sm);
+        }
+        
+        .demo-section {
+            background: white;
+            padding: var(--space-5);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-6);
+        }
+        
+        .highlight {
+            background: var(--btt-green-100);
+            border: 2px dashed var(--btt-green-400);
+        }
+    </style>
+</head>
+<body class="btt-ui-v2">
+    <!-- Enable v2 UI by default for this demo -->
+    <script>document.body.classList.add('btt-ui-v2');</script>
+    
+    <div class="page-wrapper">
+        <div class="main-content">
+            <h1 class="mb-6">Global Spacing & Rhythm Demo</h1>
+            <p class="text-measure mb-8">
+                This page demonstrates the global spacing utilities and vertical rhythm system
+                that ensures consistent, harmonious spacing throughout the BTT application.
+            </p>
+            
+            <!-- Margin Utilities Demo -->
+            <div class="demo-section">
+                <h2>Margin Utilities</h2>
+                <p class="mb-4">Demonstrating margin utilities with different values:</p>
+                
+                <div class="d-flex gap-4 flex-wrap mb-4">
+                    <div>
+                        <div class="demo-box m-1">m-1 (4px)</div>
+                        <code>.m-1</code>
+                    </div>
+                    <div>
+                        <div class="demo-box m-2">m-2 (8px)</div>
+                        <code>.m-2</code>
+                    </div>
+                    <div>
+                        <div class="demo-box m-3">m-3 (12px)</div>
+                        <code>.m-3</code>
+                    </div>
+                    <div>
+                        <div class="demo-box m-4">m-4 (16px)</div>
+                        <code>.m-4</code>
+                    </div>
+                    <div>
+                        <div class="demo-box m-5">m-5 (20px)</div>
+                        <code>.m-5</code>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Padding Utilities Demo -->
+            <div class="demo-section">
+                <h2>Padding Utilities</h2>
+                <p class="mb-4">Demonstrating padding utilities:</p>
+                
+                <div class="d-flex gap-4 flex-wrap">
+                    <div class="demo-box p-2">p-2</div>
+                    <div class="demo-box p-3">p-3</div>
+                    <div class="demo-box p-4">p-4</div>
+                    <div class="demo-box p-5">p-5</div>
+                    <div class="demo-box px-6 py-2">px-6 py-2</div>
+                </div>
+            </div>
+            
+            <!-- Vertical Rhythm Demo -->
+            <div class="demo-section">
+                <h2>Vertical Rhythm (Flow Utility)</h2>
+                <p class="mb-4">The flow utility automatically adds consistent spacing between child elements:</p>
+                
+                <div class="flow highlight p-4">
+                    <h3>Heading Level 3</h3>
+                    <p>This paragraph automatically has proper spacing from the heading above.</p>
+                    <p>Another paragraph with consistent spacing maintained.</p>
+                    <ul>
+                        <li>List item 1</li>
+                        <li>List item 2</li>
+                        <li>List item 3</li>
+                    </ul>
+                    <p>Final paragraph showing consistent rhythm throughout.</p>
+                </div>
+                
+                <h3 class="mt-6 mb-3">Flow Variants</h3>
+                <div class="grid gap-4" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                    <div class="flow--tight highlight p-3">
+                        <h4>.flow--tight</h4>
+                        <p>Tight spacing</p>
+                        <p>Between elements</p>
+                    </div>
+                    <div class="flow--normal highlight p-3">
+                        <h4>.flow--normal</h4>
+                        <p>Normal spacing</p>
+                        <p>Between elements</p>
+                    </div>
+                    <div class="flow--loose highlight p-3">
+                        <h4>.flow--loose</h4>
+                        <p>Loose spacing</p>
+                        <p>Between elements</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Gap Utilities Demo -->
+            <div class="demo-section">
+                <h2>Gap Utilities (Flexbox & Grid)</h2>
+                <p class="mb-4">Gap utilities for modern layout systems:</p>
+                
+                <h3 class="mb-3">Flexbox with gap</h3>
+                <div class="d-flex gap-3 mb-4">
+                    <div class="demo-box p-3">Item 1</div>
+                    <div class="demo-box p-3">Item 2</div>
+                    <div class="demo-box p-3">Item 3</div>
+                    <div class="demo-box p-3">Item 4</div>
+                </div>
+                
+                <h3 class="mb-3">Grid with gap</h3>
+                <div class="d-grid gap-4" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="demo-box p-4">Grid 1</div>
+                    <div class="demo-box p-4">Grid 2</div>
+                    <div class="demo-box p-4">Grid 3</div>
+                    <div class="demo-box p-4">Grid 4</div>
+                    <div class="demo-box p-4">Grid 5</div>
+                    <div class="demo-box p-4">Grid 6</div>
+                </div>
+            </div>
+            
+            <!-- Typography Rhythm Demo -->
+            <div class="demo-section">
+                <h2>Typography Rhythm</h2>
+                <p class="mb-4">Proper spacing is automatically applied to headings and text:</p>
+                
+                <article class="highlight p-5">
+                    <h1>Main Heading (H1)</h1>
+                    <p>This paragraph follows the main heading with appropriate spacing defined in our vertical rhythm system. The line height is set to loose for better readability.</p>
+                    
+                    <h2>Section Heading (H2)</h2>
+                    <p>Notice how the H2 has proper top margin to create visual separation from the content above, while maintaining harmony with the overall rhythm.</p>
+                    
+                    <h3>Subsection Heading (H3)</h3>
+                    <p>The spacing scales down appropriately as we move through the heading hierarchy, maintaining visual hierarchy while keeping consistent rhythm.</p>
+                    
+                    <blockquote>
+                        "This blockquote demonstrates how special elements like quotes maintain the vertical rhythm while having their own distinct styling."
+                    </blockquote>
+                    
+                    <p>Regular paragraph text continues with consistent spacing throughout the document.</p>
+                </article>
+            </div>
+            
+            <!-- Responsive Spacing Demo -->
+            <div class="demo-section">
+                <h2>Responsive Spacing</h2>
+                <p class="mb-4">Spacing adjusts automatically for different screen sizes:</p>
+                
+                <div class="edge-safe highlight p-4">
+                    <h3>Edge Safe Container</h3>
+                    <p>This container uses the <code>.edge-safe</code> class to ensure content never touches viewport edges on any device.</p>
+                </div>
+                
+                <div class="mt-4">
+                    <div class="demo-box mobile:p-3 tablet:p-4 desktop:p-5">
+                        Responsive padding: mobile:p-3 tablet:p-4 desktop:p-5
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Text Measure Demo -->
+            <div class="demo-section">
+                <h2>Text Measure Utilities</h2>
+                <p class="mb-4">Optimal line lengths for readability:</p>
+                
+                <div class="mb-4">
+                    <h3 class="mb-2">Normal Width</h3>
+                    <p class="text-measure highlight p-3">
+                        This text is constrained to an optimal reading width using <code>.text-measure</code> (65ch). 
+                        This ensures comfortable reading by preventing lines from becoming too long, which can cause 
+                        readers to lose their place when moving to the next line.
+                    </p>
+                </div>
+                
+                <div class="mb-4">
+                    <h3 class="mb-2">Narrow Width</h3>
+                    <p class="text-measure-narrow highlight p-3">
+                        Using <code>.text-measure-narrow</code> (45ch) for even more constrained text blocks, 
+                        useful for sidebars or secondary content areas.
+                    </p>
+                </div>
+                
+                <div>
+                    <h3 class="mb-2">Wide Width</h3>
+                    <p class="text-measure-wide highlight p-3">
+                        The <code>.text-measure-wide</code> class (80ch) allows for slightly longer lines while 
+                        still maintaining readability. This is useful for technical documentation or code examples 
+                        where more horizontal space might be beneficial.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Safe Area Demo -->
+            <div class="demo-section">
+                <h2>Safe Area Insets</h2>
+                <p class="mb-4">Respecting device safe areas (for notched devices):</p>
+                
+                <div class="safe-area-inset highlight">
+                    <p>This container uses <code>.safe-area-inset</code> to respect device safe areas on modern phones with notches or rounded corners.</p>
+                    <p>The padding automatically adjusts based on the device's safe area requirements.</p>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>

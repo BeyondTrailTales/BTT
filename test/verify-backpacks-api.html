@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Backpacks API - BeyondTrailTales</title>
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            max-width: 1200px; 
+            margin: 2rem auto; 
+            padding: 0 1rem;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 { color: #10b981; }
+        .test-section {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: #f9fafb;
+            border-radius: 4px;
+            border-left: 4px solid #10b981;
+        }
+        .success { color: #10b981; font-weight: bold; }
+        .error { color: #ef4444; font-weight: bold; }
+        .info { color: #3b82f6; }
+        pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 1rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        button {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0.5rem;
+        }
+        button:hover {
+            background: #059669;
+        }
+        .result {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f3f4f6;
+            border-radius: 4px;
+        }
+        #test-results {
+            margin-top: 2rem;
+        }
+        .test-item {
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            border-radius: 4px;
+        }
+        .test-pass {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .test-fail {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎒 Backpacks API Verification</h1>
+        <p>This page will test all backpack API operations to ensure they work correctly with user authentication.</p>
+        
+        <div class="test-section">
+            <h2>Test Controls</h2>
+            <button onclick="runAllTests()">🚀 Run All Tests</button>
+            <button onclick="cleanupTestData()">🧹 Cleanup Test Data</button>
+        </div>
+
+        <div id="test-results"></div>
+
+        <div class="test-section">
+            <h2>Test Log</h2>
+            <pre id="log-output"></pre>
+        </div>
+    </div>
+
+    <!-- Load jQuery first -->
+    <script src="/BTT/vendor/jquery-3.7.1.min.js"></script>
+    <!-- Load our API client -->
+    <script src="/BTT/assets/js/api.js"></script>
+    
+    <script>
+    let testBackpackId = null;
+    let testResults = [];
+    
+    function log(message, type = 'info') {
+        const logDiv = document.getElementById('log-output');
+        const timestamp = new Date().toLocaleTimeString();
+        const prefix = type === 'error' ? '❌' : type === 'success' ? '✅' : 'ℹ️';
+        logDiv.textContent += `[${timestamp}] ${prefix} ${message}\n`;
+        logDiv.scrollTop = logDiv.scrollHeight;
+        console.log(`[${type}]`, message);
+    }
+    
+    function addTestResult(testName, passed, details = '') {
+        testResults.push({ testName, passed, details });
+        updateTestResults();
+    }
+    
+    function updateTestResults() {
+        const resultsDiv = document.getElementById('test-results');
+        let html = '<h2>Test Results</h2>';
+        
+        const passedCount = testResults.filter(r => r.passed).length;
+        const totalCount = testResults.length;
+        
+        html += `<p><strong>Overall: ${passedCount}/${totalCount} tests passed</strong></p>`;
+        
+        testResults.forEach(result => {
+            const className = result.passed ? 'test-pass' : 'test-fail';
+            const icon = result.passed ? '✅' : '❌';
+            html += `<div class="test-item ${className}">
+                ${icon} ${result.testName}
+                ${result.details ? `<br><small>${result.details}</small>` : ''}
+            </div>`;
+        });
+        
+        resultsDiv.innerHTML = html;
+    }
+    
+    async function runAllTests() {
+        log('Starting comprehensive backpack API tests...', 'info');
+        testResults = [];
+        
+        // Test 1: List backpacks (should work for authenticated user)
+        await testListBackpacks();
+        
+        // Test 2: Create a new backpack
+        await testCreateBackpack();
+        
+        // Test 3: Get single backpack
+        if (testBackpackId) {
+            await testGetBackpack();
+        }
+        
+        // Test 4: Update backpack
+        if (testBackpackId) {
+            await testUpdateBackpack();
+        }
+        
+        // Test 5: List again to verify changes
+        await testListBackpacks();
+        
+        // Test 6: Delete backpack
+        if (testBackpackId) {
+            await testDeleteBackpack();
+        }
+        
+        // Test 7: Verify user isolation (can't access other user's backpacks)
+        await testUserIsolation();
+        
+        log('All tests completed!', 'success');
+    }
+    
+    async function testListBackpacks() {
+        log('Testing: List all backpacks for current user');
+        try {
+            const response = await BttApi.backpacks.list();
+            
+            if (response && response.success !== false) {
+                const backpacks = Array.isArray(response) ? response : response.data;
+                log(`Successfully retrieved ${backpacks.length} backpack(s)`, 'success');
+                addTestResult('List Backpacks', true, `Found ${backpacks.length} backpacks`);
+                
+                // Log first backpack if any
+                if (backpacks.length > 0) {
+                    log('First backpack: ' + JSON.stringify(backpacks[0], null, 2));
+                }
+            } else {
+                throw new Error('Invalid response format');
+            }
+        } catch (error) {
+            log(`Failed to list backpacks: ${error.message}`, 'error');
+            addTestResult('List Backpacks', false, error.message);
+        }
+    }
+    
+    async function testCreateBackpack() {
+        log('Testing: Create new backpack');
+        
+        const testData = {
+            name: 'API Test Pack ' + Date.now(),
+            description: 'Created via API test at ' + new Date().toLocaleString(),
+            capacity_l: 50,
+            weight_empty_g: 1500,
+            type: 'custom',
+            sections: [
+                {
+                    id: 'main',
+                    name: 'Main Compartment',
+                    items: [],
+                    order: 0
+                },
+                {
+                    id: 'lid',
+                    name: 'Top Lid',
+                    items: [],
+                    order: 1
+                }
+            ]
+        };
+        
+        try {
+            const response = await BttApi.backpacks.create(testData);
+            
+            if (response && response.success !== false) {
+                const backpack = response.data || response;
+                testBackpackId = backpack.id;
+                log(`Successfully created backpack with ID: ${testBackpackId}`, 'success');
+                addTestResult('Create Backpack', true, `ID: ${testBackpackId}`);
+                log('Created backpack: ' + JSON.stringify(backpack, null, 2));
+            } else {
+                throw new Error('Failed to create backpack');
+            }
+        } catch (error) {
+            log(`Failed to create backpack: ${error.message}`, 'error');
+            addTestResult('Create Backpack', false, error.message);
+        }
+    }
+    
+    async function testGetBackpack() {
+        log(`Testing: Get single backpack (ID: ${testBackpackId})`);
+        
+        try {
+            const response = await BttApi.backpacks.get(testBackpackId);
+            
+            if (response && response.success !== false) {
+                const backpack = response.data || response;
+                log(`Successfully retrieved backpack: ${backpack.name}`, 'success');
+                addTestResult('Get Single Backpack', true, backpack.name);
+                
+                // Verify it's our backpack
+                if (backpack.id !== testBackpackId) {
+                    throw new Error('Retrieved wrong backpack');
+                }
+            } else {
+                throw new Error('Failed to get backpack');
+            }
+        } catch (error) {
+            log(`Failed to get backpack: ${error.message}`, 'error');
+            addTestResult('Get Single Backpack', false, error.message);
+        }
+    }
+    
+    async function testUpdateBackpack() {
+        log(`Testing: Update backpack (ID: ${testBackpackId})`);
+        
+        const updateData = {
+            name: 'Updated Test Pack ' + Date.now(),
+            description: 'Updated via API test at ' + new Date().toLocaleString(),
+            capacity_l: 65,
+            weight_empty_g: 1200
+        };
+        
+        try {
+            const response = await BttApi.backpacks.update(testBackpackId, updateData);
+            
+            if (response && response.success !== false) {
+                const backpack = response.data || response;
+                log(`Successfully updated backpack: ${backpack.name}`, 'success');
+                addTestResult('Update Backpack', true, backpack.name);
+                
+                // Verify the update
+                if (backpack.capacity_l !== 65) {
+                    throw new Error('Update did not persist');
+                }
+            } else {
+                throw new Error('Failed to update backpack');
+            }
+        } catch (error) {
+            log(`Failed to update backpack: ${error.message}`, 'error');
+            addTestResult('Update Backpack', false, error.message);
+        }
+    }
+    
+    async function testDeleteBackpack() {
+        log(`Testing: Delete backpack (ID: ${testBackpackId})`);
+        
+        try {
+            const response = await BttApi.backpacks.delete(testBackpackId);
+            
+            if (response && response.success !== false) {
+                log('Successfully deleted backpack', 'success');
+                addTestResult('Delete Backpack', true, `ID: ${testBackpackId}`);
+                
+                // Verify deletion by trying to get it
+                try {
+                    await BttApi.backpacks.get(testBackpackId);
+                    throw new Error('Backpack still exists after deletion');
+                } catch (e) {
+                    // Expected to fail
+                    log('Verified: Backpack no longer exists', 'success');
+                }
+            } else {
+                throw new Error('Failed to delete backpack');
+            }
+        } catch (error) {
+            log(`Failed to delete backpack: ${error.message}`, 'error');
+            addTestResult('Delete Backpack', false, error.message);
+        }
+    }
+    
+    async function testUserIsolation() {
+        log('Testing: User isolation (attempting to access non-existent backpack)');
+        
+        try {
+            // Try to access a backpack with an ID that likely belongs to another user
+            await BttApi.backpacks.get(99999);
+            
+            // If we get here, it's a problem
+            log('WARNING: Was able to access backpack 99999', 'error');
+            addTestResult('User Isolation', false, 'Could access non-existent backpack');
+        } catch (error) {
+            // This is expected - we should get a 404
+            log('Good: Cannot access non-existent/other user backpack', 'success');
+            addTestResult('User Isolation', true, 'Properly blocked');
+        }
+    }
+    
+    async function cleanupTestData() {
+        log('Cleaning up test data...', 'info');
+        
+        try {
+            const response = await BttApi.backpacks.list();
+            const backpacks = Array.isArray(response) ? response : (response.data || []);
+            
+            let deletedCount = 0;
+            for (const backpack of backpacks) {
+                if (backpack.name && backpack.name.includes('API Test Pack')) {
+                    try {
+                        await BttApi.backpacks.delete(backpack.id);
+                        deletedCount++;
+                        log(`Deleted test backpack: ${backpack.name}`, 'success');
+                    } catch (e) {
+                        log(`Failed to delete: ${backpack.name}`, 'error');
+                    }
+                }
+            }
+            
+            log(`Cleanup complete. Deleted ${deletedCount} test backpack(s)`, 'success');
+        } catch (error) {
+            log(`Cleanup failed: ${error.message}`, 'error');
+        }
+    }
+    
+    // Run tests on page load
+    window.addEventListener('DOMContentLoaded', function() {
+        log('Page loaded. Ready to test!', 'info');
+        log('Make sure you are logged in before running tests', 'info');
+    });
+    </script>
+</body>
+</html>

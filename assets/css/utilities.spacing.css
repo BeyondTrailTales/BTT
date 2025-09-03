@@ -1,0 +1,495 @@
+/**
+ * BTT Global Spacing & Rhythm Utilities
+ * Consistent spacing, vertical rhythm, and layout utilities
+ */
+
+/* ============================================
+   Margin Utilities
+   ============================================ */
+
+/* All sides */
+.m-0 { margin: 0 !important; }
+.m-1 { margin: var(--space-1) !important; }
+.m-2 { margin: var(--space-2) !important; }
+.m-3 { margin: var(--space-3) !important; }
+.m-4 { margin: var(--space-4) !important; }
+.m-5 { margin: var(--space-5) !important; }
+.m-6 { margin: var(--space-6) !important; }
+.m-8 { margin: var(--space-8) !important; }
+.m-10 { margin: var(--space-10) !important; }
+.m-auto { margin: auto !important; }
+
+/* Top */
+.mt-0 { margin-top: 0 !important; }
+.mt-1 { margin-top: var(--space-1) !important; }
+.mt-2 { margin-top: var(--space-2) !important; }
+.mt-3 { margin-top: var(--space-3) !important; }
+.mt-4 { margin-top: var(--space-4) !important; }
+.mt-5 { margin-top: var(--space-5) !important; }
+.mt-6 { margin-top: var(--space-6) !important; }
+.mt-8 { margin-top: var(--space-8) !important; }
+.mt-10 { margin-top: var(--space-10) !important; }
+.mt-auto { margin-top: auto !important; }
+
+/* Right */
+.mr-0 { margin-right: 0 !important; }
+.mr-1 { margin-right: var(--space-1) !important; }
+.mr-2 { margin-right: var(--space-2) !important; }
+.mr-3 { margin-right: var(--space-3) !important; }
+.mr-4 { margin-right: var(--space-4) !important; }
+.mr-5 { margin-right: var(--space-5) !important; }
+.mr-6 { margin-right: var(--space-6) !important; }
+.mr-8 { margin-right: var(--space-8) !important; }
+.mr-10 { margin-right: var(--space-10) !important; }
+.mr-auto { margin-right: auto !important; }
+
+/* Bottom */
+.mb-0 { margin-bottom: 0 !important; }
+.mb-1 { margin-bottom: var(--space-1) !important; }
+.mb-2 { margin-bottom: var(--space-2) !important; }
+.mb-3 { margin-bottom: var(--space-3) !important; }
+.mb-4 { margin-bottom: var(--space-4) !important; }
+.mb-5 { margin-bottom: var(--space-5) !important; }
+.mb-6 { margin-bottom: var(--space-6) !important; }
+.mb-8 { margin-bottom: var(--space-8) !important; }
+.mb-10 { margin-bottom: var(--space-10) !important; }
+.mb-auto { margin-bottom: auto !important; }
+
+/* Left */
+.ml-0 { margin-left: 0 !important; }
+.ml-1 { margin-left: var(--space-1) !important; }
+.ml-2 { margin-left: var(--space-2) !important; }
+.ml-3 { margin-left: var(--space-3) !important; }
+.ml-4 { margin-left: var(--space-4) !important; }
+.ml-5 { margin-left: var(--space-5) !important; }
+.ml-6 { margin-left: var(--space-6) !important; }
+.ml-8 { margin-left: var(--space-8) !important; }
+.ml-10 { margin-left: var(--space-10) !important; }
+.ml-auto { margin-left: auto !important; }
+
+/* X-axis (horizontal) */
+.mx-0 { margin-left: 0 !important; margin-right: 0 !important; }
+.mx-1 { margin-left: var(--space-1) !important; margin-right: var(--space-1) !important; }
+.mx-2 { margin-left: var(--space-2) !important; margin-right: var(--space-2) !important; }
+.mx-3 { margin-left: var(--space-3) !important; margin-right: var(--space-3) !important; }
+.mx-4 { margin-left: var(--space-4) !important; margin-right: var(--space-4) !important; }
+.mx-5 { margin-left: var(--space-5) !important; margin-right: var(--space-5) !important; }
+.mx-6 { margin-left: var(--space-6) !important; margin-right: var(--space-6) !important; }
+.mx-8 { margin-left: var(--space-8) !important; margin-right: var(--space-8) !important; }
+.mx-10 { margin-left: var(--space-10) !important; margin-right: var(--space-10) !important; }
+.mx-auto { margin-left: auto !important; margin-right: auto !important; }
+
+/* Y-axis (vertical) */
+.my-0 { margin-top: 0 !important; margin-bottom: 0 !important; }
+.my-1 { margin-top: var(--space-1) !important; margin-bottom: var(--space-1) !important; }
+.my-2 { margin-top: var(--space-2) !important; margin-bottom: var(--space-2) !important; }
+.my-3 { margin-top: var(--space-3) !important; margin-bottom: var(--space-3) !important; }
+.my-4 { margin-top: var(--space-4) !important; margin-bottom: var(--space-4) !important; }
+.my-5 { margin-top: var(--space-5) !important; margin-bottom: var(--space-5) !important; }
+.my-6 { margin-top: var(--space-6) !important; margin-bottom: var(--space-6) !important; }
+.my-8 { margin-top: var(--space-8) !important; margin-bottom: var(--space-8) !important; }
+.my-10 { margin-top: var(--space-10) !important; margin-bottom: var(--space-10) !important; }
+
+/* ============================================
+   Padding Utilities
+   ============================================ */
+
+/* All sides */
+.p-0 { padding: 0 !important; }
+.p-1 { padding: var(--space-1) !important; }
+.p-2 { padding: var(--space-2) !important; }
+.p-3 { padding: var(--space-3) !important; }
+.p-4 { padding: var(--space-4) !important; }
+.p-5 { padding: var(--space-5) !important; }
+.p-6 { padding: var(--space-6) !important; }
+.p-8 { padding: var(--space-8) !important; }
+.p-10 { padding: var(--space-10) !important; }
+
+/* Top */
+.pt-0 { padding-top: 0 !important; }
+.pt-1 { padding-top: var(--space-1) !important; }
+.pt-2 { padding-top: var(--space-2) !important; }
+.pt-3 { padding-top: var(--space-3) !important; }
+.pt-4 { padding-top: var(--space-4) !important; }
+.pt-5 { padding-top: var(--space-5) !important; }
+.pt-6 { padding-top: var(--space-6) !important; }
+.pt-8 { padding-top: var(--space-8) !important; }
+.pt-10 { padding-top: var(--space-10) !important; }
+
+/* Right */
+.pr-0 { padding-right: 0 !important; }
+.pr-1 { padding-right: var(--space-1) !important; }
+.pr-2 { padding-right: var(--space-2) !important; }
+.pr-3 { padding-right: var(--space-3) !important; }
+.pr-4 { padding-right: var(--space-4) !important; }
+.pr-5 { padding-right: var(--space-5) !important; }
+.pr-6 { padding-right: var(--space-6) !important; }
+.pr-8 { padding-right: var(--space-8) !important; }
+.pr-10 { padding-right: var(--space-10) !important; }
+
+/* Bottom */
+.pb-0 { padding-bottom: 0 !important; }
+.pb-1 { padding-bottom: var(--space-1) !important; }
+.pb-2 { padding-bottom: var(--space-2) !important; }
+.pb-3 { padding-bottom: var(--space-3) !important; }
+.pb-4 { padding-bottom: var(--space-4) !important; }
+.pb-5 { padding-bottom: var(--space-5) !important; }
+.pb-6 { padding-bottom: var(--space-6) !important; }
+.pb-8 { padding-bottom: var(--space-8) !important; }
+.pb-10 { padding-bottom: var(--space-10) !important; }
+
+/* Left */
+.pl-0 { padding-left: 0 !important; }
+.pl-1 { padding-left: var(--space-1) !important; }
+.pl-2 { padding-left: var(--space-2) !important; }
+.pl-3 { padding-left: var(--space-3) !important; }
+.pl-4 { padding-left: var(--space-4) !important; }
+.pl-5 { padding-left: var(--space-5) !important; }
+.pl-6 { padding-left: var(--space-6) !important; }
+.pl-8 { padding-left: var(--space-8) !important; }
+.pl-10 { padding-left: var(--space-10) !important; }
+
+/* X-axis (horizontal) */
+.px-0 { padding-left: 0 !important; padding-right: 0 !important; }
+.px-1 { padding-left: var(--space-1) !important; padding-right: var(--space-1) !important; }
+.px-2 { padding-left: var(--space-2) !important; padding-right: var(--space-2) !important; }
+.px-3 { padding-left: var(--space-3) !important; padding-right: var(--space-3) !important; }
+.px-4 { padding-left: var(--space-4) !important; padding-right: var(--space-4) !important; }
+.px-5 { padding-left: var(--space-5) !important; padding-right: var(--space-5) !important; }
+.px-6 { padding-left: var(--space-6) !important; padding-right: var(--space-6) !important; }
+.px-8 { padding-left: var(--space-8) !important; padding-right: var(--space-8) !important; }
+.px-10 { padding-left: var(--space-10) !important; padding-right: var(--space-10) !important; }
+
+/* Y-axis (vertical) */
+.py-0 { padding-top: 0 !important; padding-bottom: 0 !important; }
+.py-1 { padding-top: var(--space-1) !important; padding-bottom: var(--space-1) !important; }
+.py-2 { padding-top: var(--space-2) !important; padding-bottom: var(--space-2) !important; }
+.py-3 { padding-top: var(--space-3) !important; padding-bottom: var(--space-3) !important; }
+.py-4 { padding-top: var(--space-4) !important; padding-bottom: var(--space-4) !important; }
+.py-5 { padding-top: var(--space-5) !important; padding-bottom: var(--space-5) !important; }
+.py-6 { padding-top: var(--space-6) !important; padding-bottom: var(--space-6) !important; }
+.py-8 { padding-top: var(--space-8) !important; padding-bottom: var(--space-8) !important; }
+.py-10 { padding-top: var(--space-10) !important; padding-bottom: var(--space-10) !important; }
+
+/* ============================================
+   Gap Utilities (for Flexbox & Grid)
+   ============================================ */
+
+.gap-0 { gap: 0 !important; }
+.gap-1 { gap: var(--space-1) !important; }
+.gap-2 { gap: var(--space-2) !important; }
+.gap-3 { gap: var(--space-3) !important; }
+.gap-4 { gap: var(--space-4) !important; }
+.gap-5 { gap: var(--space-5) !important; }
+.gap-6 { gap: var(--space-6) !important; }
+.gap-8 { gap: var(--space-8) !important; }
+.gap-10 { gap: var(--space-10) !important; }
+
+/* Row gap */
+.row-gap-0 { row-gap: 0 !important; }
+.row-gap-1 { row-gap: var(--space-1) !important; }
+.row-gap-2 { row-gap: var(--space-2) !important; }
+.row-gap-3 { row-gap: var(--space-3) !important; }
+.row-gap-4 { row-gap: var(--space-4) !important; }
+.row-gap-5 { row-gap: var(--space-5) !important; }
+.row-gap-6 { row-gap: var(--space-6) !important; }
+.row-gap-8 { row-gap: var(--space-8) !important; }
+
+/* Column gap */
+.col-gap-0 { column-gap: 0 !important; }
+.col-gap-1 { column-gap: var(--space-1) !important; }
+.col-gap-2 { column-gap: var(--space-2) !important; }
+.col-gap-3 { column-gap: var(--space-3) !important; }
+.col-gap-4 { column-gap: var(--space-4) !important; }
+.col-gap-5 { column-gap: var(--space-5) !important; }
+.col-gap-6 { column-gap: var(--space-6) !important; }
+.col-gap-8 { column-gap: var(--space-8) !important; }
+
+/* ============================================
+   Vertical Rhythm
+   ============================================ */
+
+/* Flow utility for consistent vertical spacing between elements */
+.flow > * + * {
+  margin-top: var(--flow-space, var(--space-4));
+}
+
+.flow--tight > * + * {
+  margin-top: var(--space-2);
+}
+
+.flow--normal > * + * {
+  margin-top: var(--space-4);
+}
+
+.flow--loose > * + * {
+  margin-top: var(--space-6);
+}
+
+.flow--extra-loose > * + * {
+  margin-top: var(--space-8);
+}
+
+/* ============================================
+   Typography Rhythm
+   ============================================ */
+
+/* Headings with proper rhythm */
+h1, .h1 {
+  margin-top: 0;
+  margin-bottom: var(--space-4);
+  line-height: var(--lh-tight);
+}
+
+h2, .h2 {
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-3);
+  line-height: var(--lh-tight);
+}
+
+h3, .h3 {
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-3);
+  line-height: var(--lh-tight);
+}
+
+h4, .h4,
+h5, .h5,
+h6, .h6 {
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-2);
+  line-height: var(--lh-normal);
+}
+
+/* First child heading should not have top margin */
+h1:first-child, h2:first-child, h3:first-child,
+h4:first-child, h5:first-child, h6:first-child {
+  margin-top: 0;
+}
+
+/* Paragraphs */
+p {
+  margin-top: 0;
+  margin-bottom: var(--space-4);
+  line-height: var(--lh-loose);
+}
+
+/* Lists */
+ul, ol {
+  margin-top: 0;
+  margin-bottom: var(--space-4);
+  padding-left: var(--space-6);
+  line-height: var(--lh-loose);
+}
+
+li {
+  margin-bottom: var(--space-2);
+}
+
+/* Nested lists */
+ul ul, ol ol, ul ol, ol ul {
+  margin-top: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+/* Description lists */
+dl {
+  margin-top: 0;
+  margin-bottom: var(--space-4);
+}
+
+dt {
+  font-weight: var(--font-semibold);
+  margin-bottom: var(--space-1);
+}
+
+dd {
+  margin-left: var(--space-5);
+  margin-bottom: var(--space-3);
+}
+
+/* Blockquotes */
+blockquote {
+  margin: var(--space-5) 0;
+  padding-left: var(--space-5);
+  border-left: 4px solid var(--btt-green-400);
+  font-style: italic;
+  line-height: var(--lh-loose);
+}
+
+/* Horizontal rules */
+hr {
+  margin: var(--space-8) 0;
+  border: none;
+  border-top: 1px solid var(--neutral-200);
+}
+
+/* ============================================
+   Text Utilities
+   ============================================ */
+
+/* Line height utilities */
+.lh-tight { line-height: var(--lh-tight) !important; }
+.lh-normal { line-height: var(--lh-normal) !important; }
+.lh-loose { line-height: var(--lh-loose) !important; }
+
+/* Max width for readable text */
+.text-measure {
+  max-width: 65ch;
+}
+
+.text-measure-narrow {
+  max-width: 45ch;
+}
+
+.text-measure-wide {
+  max-width: 80ch;
+}
+
+/* ============================================
+   Page Gutter & Safe Areas
+   ============================================ */
+
+/* Page wrapper with consistent gutters */
+.page-wrapper {
+  min-height: 100vh;
+  padding: var(--space-4);
+}
+
+/* Main content area */
+.main-content {
+  max-width: var(--max-width-content, 1280px);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+}
+
+/* Safe area for mobile (avoids notches and system UI) */
+.safe-area-inset {
+  padding-left: env(safe-area-inset-left, var(--space-4));
+  padding-right: env(safe-area-inset-right, var(--space-4));
+  padding-top: env(safe-area-inset-top, 0);
+  padding-bottom: env(safe-area-inset-bottom, var(--space-4));
+}
+
+/* ============================================
+   Mobile-Specific Spacing
+   ============================================ */
+
+@media (max-width: 640px) {
+  /* Reduce spacing on mobile to prevent cramping */
+  .page-wrapper {
+    padding: var(--space-3);
+  }
+  
+  .main-content {
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+  }
+  
+  /* Adjust heading margins for mobile */
+  h1, .h1 { 
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    margin-bottom: var(--space-3); 
+  }
+  
+  h2, .h2 { 
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    margin-top: var(--space-6); 
+  }
+  
+  h3, .h3 { 
+    font-size: clamp(1.25rem, 3.5vw, 1.5rem);
+    margin-top: var(--space-5); 
+  }
+  
+  /* Tighter flow on mobile */
+  .flow > * + * {
+    margin-top: var(--flow-space, var(--space-3));
+  }
+  
+  /* Reduce list indentation on mobile */
+  ul, ol {
+    padding-left: var(--space-4);
+  }
+  
+  /* Mobile-specific utilities */
+  .mobile\:p-3 { padding: var(--space-3) !important; }
+  .mobile\:px-3 { padding-left: var(--space-3) !important; padding-right: var(--space-3) !important; }
+  .mobile\:py-3 { padding-top: var(--space-3) !important; padding-bottom: var(--space-3) !important; }
+  .mobile\:m-0 { margin: 0 !important; }
+  .mobile\:mx-0 { margin-left: 0 !important; margin-right: 0 !important; }
+  .mobile\:gap-2 { gap: var(--space-2) !important; }
+  .mobile\:gap-3 { gap: var(--space-3) !important; }
+}
+
+/* ============================================
+   Tablet-Specific Spacing
+   ============================================ */
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .tablet\:p-4 { padding: var(--space-4) !important; }
+  .tablet\:px-4 { padding-left: var(--space-4) !important; padding-right: var(--space-4) !important; }
+  .tablet\:gap-4 { gap: var(--space-4) !important; }
+}
+
+/* ============================================
+   Desktop-Specific Spacing
+   ============================================ */
+
+@media (min-width: 1025px) {
+  .desktop\:p-5 { padding: var(--space-5) !important; }
+  .desktop\:px-6 { padding-left: var(--space-6) !important; padding-right: var(--space-6) !important; }
+  .desktop\:gap-5 { gap: var(--space-5) !important; }
+  .desktop\:gap-6 { gap: var(--space-6) !important; }
+}
+
+/* ============================================
+   Responsive Edge Collision Prevention
+   ============================================ */
+
+/* Prevent content from touching viewport edges */
+.edge-safe {
+  padding-left: max(var(--space-4), env(safe-area-inset-left));
+  padding-right: max(var(--space-4), env(safe-area-inset-right));
+}
+
+@media (max-width: 640px) {
+  .edge-safe {
+    padding-left: max(var(--space-3), env(safe-area-inset-left));
+    padding-right: max(var(--space-3), env(safe-area-inset-right));
+  }
+}
+
+/* ============================================
+   Utility: Remove Spacing
+   ============================================ */
+
+.no-margin { margin: 0 !important; }
+.no-padding { padding: 0 !important; }
+.no-gap { gap: 0 !important; }
+
+/* ============================================
+   Print Styles
+   ============================================ */
+
+@media print {
+  /* Reset spacing for print */
+  .page-wrapper,
+  .main-content {
+    padding: 0;
+    max-width: 100%;
+  }
+  
+  /* Adjust margins for print */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    margin-top: 1em;
+  }
+  
+  p, li {
+    orphans: 3;
+    widows: 3;
+  }
+}

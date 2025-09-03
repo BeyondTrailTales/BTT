@@ -13,7 +13,9 @@
             const url = `${window.BTT.apiUrl}?route=${route}${queryString ? '&' + queryString : ''}`;
             
             try {
-                const response = await fetch(url);
+                const response = await fetch(url, {
+                    credentials: 'include' // Changed from 'same-origin' to ensure cookies are sent
+                });
                 const data = await response.json();
                 
                 if (!response.ok || !data.success) {
@@ -50,7 +52,8 @@
             try {
                 const response = await fetch(url, {
                     method: 'POST',
-                    body: formData
+                    body: formData,
+                    credentials: 'include' // Changed to ensure cookies are sent
                 });
                 const data = await response.json();
                 
@@ -89,7 +92,8 @@
             try {
                 const response = await fetch(url, {
                     method: 'POST',
-                    body: formData
+                    body: formData,
+                    credentials: 'include' // Changed to ensure cookies are sent
                 });
                 const data = await response.json();
                 
@@ -115,7 +119,8 @@
             try {
                 const response = await fetch(url, {
                     method: 'POST',
-                    body: formData
+                    body: formData,
+                    credentials: 'include' // Changed to ensure cookies are sent
                 });
                 const data = await response.json();
                 

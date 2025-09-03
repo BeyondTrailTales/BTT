@@ -1,9 +1,16 @@
 <?php
 // Load bootstrap
-require_once dirname(__DIR__) . '/app/bootstrap.php';
+require_once __DIR__ . '/app/bootstrap.php';
 
-// Include card components
-require_once __DIR__ . '/includes/components/backpack-card.php';
+// Require authentication
+require_auth();
+
+// Include component files
+if (file_exists(__DIR__ . '/includes/components/pack-card.php')) {
+    require_once __DIR__ . '/includes/components/pack-card.php';
+} else if (file_exists(__DIR__ . '/public/includes/components/pack-card.php')) {
+    require_once __DIR__ . '/public/includes/components/pack-card.php';
+}
 
 // Set page metadata
 $pageId = 'backpacks-inline';
@@ -16,8 +23,23 @@ $pageStyles = [
     'css/pack-builder-enhanced.css',
     'css/pack-builder-dnd.css',  // Enhanced drag-and-drop styles
     'css/gear-library.css',  // Base gear library styles
-    'css/gear-library-enhanced.css'  // Enhanced gear library filters
+    'css/gear-library-enhanced.css',  // Enhanced gear library filters
+    'css/form-inputs.css',  // Form input styles
+    'css/gear-search.css'  // Gear search and filtering styles
 ];
+
+// Add page scripts - only load what we need, avoid conflicts
+$pageScripts = $pageScripts ?? [];
+$pageScripts[] = 'js/btt-utils.js';  // Utilities - must load first
+$pageScripts[] = 'js/api.js';  // API client
+$pageScripts[] = 'js/pack-builder-crud.js';  // CRUD operations
+$pageScripts[] = 'js/pack-builder.js';  // Main pack builder
+// Temporarily disable conflicting scripts until we fix them
+// $pageScripts[] = 'js/pack-builder-enhanced.js';  // Has conflicts
+// $pageScripts[] = 'js/pack-builder-gear.js';  // Has conflicts
+$pageScripts[] = 'js/gear-library.js';  // Re-enabled for Gear Library view
+$pageScripts[] = 'js/form-validation.js';  // Form validation
+$pageScripts[] = 'js/gear-search.js';  // Gear search
 
 // Include the unified template header
 require_once __DIR__ . '/includes/template-header.php';
@@ -101,6 +123,40 @@ require_once __DIR__ . '/includes/template-header.php';
                     <span id="save-status" style="color: #6b7280; font-size: 0.875rem; font-weight: 500;"></span>
                 </div>
                 <div style="display: flex; gap: 0.75rem; align-items: center;">
+                    <button class="btn btn-info" id="btn-test-add-item" style="padding: 0.625rem 1.25rem; font-weight: 500; border-radius: 0.625rem; background: rgba(59,130,246,0.8); border: 1px solid rgba(59,130,246,0.5); color: white; transition: all 0.2s ease;" onclick="
+                        if (window.PackBuilderCRUD) {
+                            // Add test item to first section
+                            const testItem = {
+                                id: 'test-' + Date.now(),
+                                name: 'Test Item',
+                                weight_g: 500,
+                                weight: 500,
+                                category: 'other',
+                                icon: '🎯'
+                            };
+                            
+                            const firstSection = $('.dropzone').first();
+                            if (firstSection.length) {
+                                firstSection.find('.dropzone-placeholder').remove();
+                                const itemHtml = $(`
+                                    <div class='pack-item' data-item-id='\${testItem.id}'>
+                                        <span class='item-handle'>≡</span>
+                                        <span class='item-icon'>\${testItem.icon}</span>
+                                        <span class='item-name'>\${testItem.name}</span>
+                                        <input type='number' class='item-qty' value='1' min='1' max='99'>
+                                        <span class='item-weight'>\${testItem.weight}g</span>
+                                        <button class='btn-remove-item' title='Remove'>×</button>
+                                    </div>
+                                `);
+                                itemHtml.data('item', testItem);
+                                firstSection.append(itemHtml);
+                                console.log('Test item added to pack');
+                                window.PackBuilderCRUD.state.isDirty = true;
+                            }
+                        }
+                    ">
+                        <span>🎯</span> Add Test Item
+                    </button>
                     <button class="btn btn-secondary" id="btn-cancel-edit" style="padding: 0.625rem 1.25rem; font-weight: 500; border-radius: 0.625rem; background: rgba(255,255,255,0.8); border: 1px solid rgba(209,213,219,0.5); color: #6b7280; transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
                         <span style="margin-right: 0.375rem;">❌</span> Cancel
                     </button>
@@ -374,6 +430,11 @@ require_once __DIR__ . '/includes/template-header.php';
                     </div>
                 </div>
                 
+                <!-- Category Quick Filters -->
+                <div id="category-quick-filters" class="category-quick-filters">
+                    <!-- Category pills will be added dynamically by JavaScript -->
+                </div>
+                
                 <!-- Gear Stats Bar -->
                 <div class="gear-stats-bar">
                     <div class="stat-item">
@@ -418,99 +479,186 @@ require_once __DIR__ . '/includes/template-header.php';
         <button class="btn-close-panel" id="close-custom-gear">×</button>
     </div>
     <div class="panel-body">
-        <div class="form-group">
-            <label>Item Name</label>
-            <input type="text" id="custom-name" class="form-control">
-        </div>
-        <div class="form-row">
+        <form id="custom-gear-form" data-validate>
             <div class="form-group">
-                <label>Weight (g)</label>
-                <input type="number" id="custom-weight" class="form-control">
+                <label class="form-label">
+                    Item Name <span class="required">*</span>
+                </label>
+                <input type="text" 
+                       id="custom-name" 
+                       name="custom-name" 
+                       class="form-control" 
+                       placeholder="e.g., Ultralight Tent"
+                       required 
+                       minlength="2" 
+                       maxlength="100">
+                <small class="form-text">Enter a descriptive name for the gear item</small>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">
+                        Weight (g) <span class="required">*</span>
+                    </label>
+                    <input type="number" 
+                           id="custom-weight" 
+                           name="custom-weight" 
+                           class="form-control" 
+                           placeholder="0"
+                           required 
+                           min="0" 
+                           max="50000" 
+                           step="1">
+                    <small class="form-text">Weight in grams</small>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">
+                        Category <span class="required">*</span>
+                    </label>
+                    <select id="custom-category" 
+                            name="custom-category" 
+                            class="form-control" 
+                            required>
+                        <option value="">Select category...</option>
+                        <option value="shelter">Shelter</option>
+                        <option value="sleep">Sleep</option>
+                        <option value="cooking">Cooking</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="navigation">Navigation</option>
+                        <option value="hygiene">Hygiene</option>
+                        <option value="first-aid">First Aid</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
             </div>
             <div class="form-group">
-                <label>Category</label>
-                <select id="custom-category" class="form-control">
-                    <option value="shelter">Shelter</option>
-                    <option value="sleep">Sleep</option>
-                    <option value="cooking">Cooking</option>
-                    <option value="clothing">Clothing</option>
-                    <option value="navigation">Navigation</option>
-                    <option value="hygiene">Hygiene</option>
-                    <option value="first-aid">First Aid</option>
-                    <option value="electronics">Electronics</option>
-                    <option value="other">Other</option>
-                </select>
+                <label class="form-label">Notes</label>
+                <textarea id="custom-notes" 
+                          name="custom-notes" 
+                          class="form-control" 
+                          rows="2" 
+                          placeholder="Brand, model, features, etc."
+                          maxlength="500"></textarea>
             </div>
-        </div>
-        <div class="form-group">
-            <label>Notes</label>
-            <textarea id="custom-notes" class="form-control" rows="2"></textarea>
-        </div>
-        <div class="panel-actions">
-            <button class="btn-secondary" id="cancel-custom">Cancel</button>
-            <button class="btn-primary" id="save-custom">Add to Library</button>
-        </div>
+            <div class="panel-actions">
+                <button type="button" class="btn-secondary" id="cancel-custom">Cancel</button>
+                <button type="submit" class="btn-primary" id="save-custom">Add to Library</button>
+            </div>
+        </form>
     </div>
 </div>
 
-<!-- jQuery (already included in template) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- jQuery UI for better drag and drop -->
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-<!-- Our Pack Builder JS -->
-<script src="<?php echo asset_url('js/pack-builder.js'); ?>"></script>
-<!-- Enhanced Pack Builder (delete + improved UI) -->
-<script src="<?php echo asset_url('js/pack-builder-enhanced.js'); ?>"></script>
-<!-- Pack Builder Gear Integration -->
-<script src="<?php echo asset_url('js/pack-builder-gear.js'); ?>"></script>
-<!-- Pack Builder CRUD Operations -->
-<script src="<?php echo asset_url('js/pack-builder-crud.js'); ?>"></script>
-<!-- Enhanced Gear Library -->
-<script src="<?php echo asset_url('js/gear-library.js'); ?>"></script>
+<!-- jQuery and Sortable.js are already included in template-footer.php -->
+<!-- Pack builder scripts are loaded via $pageScripts in the footer -->
 
 <!-- Initialize Pack Builder after all scripts are loaded -->
 <script>
-$(document).ready(function() {
+// Wait for window load event to ensure all scripts are loaded
+window.addEventListener('load', function() {
     console.log('🎒 Initializing Pack Builder UI...');
     
-    // Ensure PackBuilder is available
-    if (typeof window.PackBuilder !== 'undefined') {
-        console.log('✅ PackBuilder loaded');
-        
-        // Load initial packs
-        if (typeof window.PackBuilder.loadPacks === 'function') {
-            window.PackBuilder.loadPacks();
-            console.log('✅ Packs loaded');
-        }
-        
-        // Show the my-packs view by default
-        if (typeof window.PackBuilder.switchView === 'function') {
-            window.PackBuilder.switchView('my-packs');
-        }
-        
-        console.log('✅ Pack Builder UI Ready!');
-    } else {
-        console.error('❌ PackBuilder not loaded!');
+    // Ensure jQuery is loaded
+    if (typeof $ === 'undefined') {
+        console.error('❌ jQuery not loaded!');
+        return;
     }
     
-    // Add click handler for New Pack button if not already bound
-    $('#btn-new-pack').off('click').on('click', function() {
-        console.log('New Pack button clicked');
-        if (window.PackBuilder && window.PackBuilder.createNewPack) {
-            window.PackBuilder.createNewPack();
-        } else if (window.PackBuilderCRUD && window.PackBuilderCRUD.createNewPack) {
-            window.PackBuilderCRUD.createNewPack();
+    // Now we can safely use jQuery
+    $(document).ready(function() {
+        // Ensure PackBuilder is available
+        if (typeof window.PackBuilder !== 'undefined') {
+            console.log('✅ PackBuilder loaded');
+            
+            // Load initial packs
+            if (typeof window.PackBuilder.loadPacks === 'function') {
+                window.PackBuilder.loadPacks();
+                console.log('✅ Packs loaded');
+            }
+            
+            // Show the my-packs view by default
+            if (typeof window.PackBuilder.switchView === 'function') {
+                window.PackBuilder.switchView('my-packs');
+            }
+            
+            console.log('✅ Pack Builder UI Ready!');
+        } else {
+            console.error('❌ PackBuilder not loaded! Using fallback...');
+            
+            // Simple fallback to load backpacks
+            loadBackpacksFallback();
         }
+        
+        // Add click handler for New Pack button if not already bound
+        $('#btn-new-pack').off('click').on('click', function() {
+            console.log('New Pack button clicked');
+            if (window.PackBuilder && window.PackBuilder.createNewPack) {
+                window.PackBuilder.createNewPack();
+            } else if (window.PackBuilderCRUD && window.PackBuilderCRUD.createNewPack) {
+                window.PackBuilderCRUD.createNewPack();
+            }
+        });
     });
+    
+    // Fallback function to load backpacks without PackBuilder
+    window.loadBackpacksFallback = function() {
+        console.log('Loading backpacks with fallback...');
+        const $grid = $('#packs-grid');
+        
+        if ($grid.length === 0) {
+            console.error('Grid element not found');
+            return;
+        }
+        
+        // Show loading spinner
+        $grid.html('<div class="loading-spinner"><div class="spinner"></div><p>Loading backpacks...</p></div>');
+        
+        // Load backpacks using jQuery AJAX
+        $.ajax({
+            url: '/BTT/api/index.php',
+            method: 'GET',
+            data: { route: 'backpacks' },
+            dataType: 'json',
+            success: function(response) {
+                console.log('Backpacks loaded:', response);
+                
+                // The API now auto-unwraps, so response should be the array
+                const backpacks = Array.isArray(response) ? response : (response.data || []);
+                
+                if (backpacks.length === 0) {
+                    $grid.html('<div class="packs-empty-state"><div class="packs-empty-icon">🎒</div><div class="packs-empty-text">No backpacks yet</div><div class="packs-empty-subtext">Click the New Pack button to create your first backpack.</div></div>');
+                } else {
+                    let html = '';
+                    backpacks.forEach(function(pack) {
+                        const weight = pack.total_weight_g ? (pack.total_weight_g / 1000).toFixed(1) + 'kg' : '0kg';
+                        html += `
+                            <article class="pack-card" data-id="${pack.id}">
+                                <div class="pack-card-header">
+                                    <h3>${pack.name || 'Unnamed Pack'}</h3>
+                                </div>
+                                <div class="pack-card-stats">
+                                    <div class="pack-stat">
+                                        <span class="pack-stat-value">${pack.total_items || 0}</span>
+                                        <span class="pack-stat-label">Items</span>
+                                    </div>
+                                    <div class="pack-stat">
+                                        <span class="pack-stat-value">${weight}</span>
+                                        <span class="pack-stat-label">Weight</span>
+                                    </div>
+                                </div>
+                            </article>
+                        `;
+                    });
+                    $grid.html(html);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Failed to load backpacks:', error);
+                $grid.html('<div class="alert alert-error">Failed to load backpacks. Please refresh the page.</div>');
+            }
+        });
+    };
 });
 </script>
-<!-- Save Pack Enhancement -->
-<script src="<?php echo asset_url('js/gear-search-enhanced.js'); ?>"></script>
-<!-- Weight Calculator with Animated Counters -->
-<script src="<?php echo asset_url('js/weight-calculator.js'); ?>"></script>
-<!-- Save Pack Enhancement -->
-<script src="<?php echo asset_url('js/save-pack-enhancement.js'); ?>"></script>
-<!-- Backpacks Loading Enhancement with New Card System -->
-<script src="<?php echo asset_url('js/backpacks-loading.js'); ?>"></script>
+<!-- Additional scripts would go here if needed -->
 
 <?php require_once __DIR__ . '/includes/template-footer.php'; ?>

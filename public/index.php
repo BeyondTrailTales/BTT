@@ -12,52 +12,64 @@ require_once __DIR__ . '/includes/template-header.php';
 ?>
 
 <!-- Hero Section -->
-<div style="text-align: center; padding: 4rem 1rem; margin-bottom: 3rem; background: linear-gradient(135deg, rgba(10, 40, 24, 0.98) 0%, rgba(22, 78, 99, 0.95) 100%); border-radius: 1.5rem; backdrop-filter: blur(10px); border: 1px solid rgba(74, 222, 128, 0.2);">
-    <h1 style="font-size: clamp(2.5rem, 5vw, 4rem); color: var(--forest-mint); margin-bottom: 1rem; text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);">🌲 Welcome back, Adventurer! 🏔️</h1>
-    <p style="font-size: clamp(1.125rem, 2vw, 1.5rem); color: rgba(255, 255, 255, 0.9); margin-bottom: 2rem; max-width: 800px; margin-left: auto; margin-right: auto;">Ready for your next adventure?</p>
-    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-        <a href="<?php echo BTT_PUBLIC_URL; ?>/trips.php" class="btn btn-primary btn-lg">
+<div class="trip-card trip-card--featured text-center py-10 px-5 mb-8">
+    <h1 class="text-3xl mb-4">🌲 Welcome back, Adventurer! 🏔️</h1>
+    <p class="text-lg mb-6 text-measure mx-auto">Ready for your next adventure?</p>
+    <div class="d-flex gap-4 justify-center flex-wrap">
+        <a href="<?php echo BTT_PUBLIC_URL; ?>/trips.php" class="btn btn--primary btn--lg">
             <span>🗺️</span> Plan New Trip
         </a>
-        <a href="<?php echo BTT_PUBLIC_URL; ?>/backpacks.php" class="btn btn-secondary btn-lg">
+        <a href="<?php echo BTT_PUBLIC_URL; ?>/backpacks.php" class="btn btn--secondary btn--lg">
             <span>🎒</span> Create Backpack
         </a>
     </div>
 </div>
 
 <!-- Main Features Grid -->
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+<div class="trip-card-grid trip-card-grid--3 mb-8">
     <!-- Plan Trip Card -->
-    <div class="card card--interactive">
-        <div class="card__content" style="text-align: center; padding: 2rem;">
-            <div style="font-size: 4rem; margin-bottom: 1rem;">🗺️</div>
-            <h2 class="card__title">Plan New Trip</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Start planning your next adventure</p>
-            <a href="<?php echo BTT_PUBLIC_URL; ?>/trips.php" class="btn btn-primary" style="width: 100%;">
+    <div class="trip-card trip-card--clickable">
+        <div class="trip-card__header text-center">
+            <div class="text-3xl mb-3">🗺️</div>
+            <h2 class="trip-card__title">Plan New Trip</h2>
+        </div>
+        <div class="trip-card__body text-center">
+            <p class="mb-5">Start planning your next adventure</p>
+        </div>
+        <div class="trip-card__actions">
+            <a href="<?php echo BTT_PUBLIC_URL; ?>/trips.php" class="btn btn--primary btn--block">
                 Start Planning
             </a>
         </div>
     </div>
     
     <!-- Create Backpack Card -->
-    <div class="card card--interactive">
-        <div class="card__content" style="text-align: center; padding: 2rem;">
-            <div style="font-size: 4rem; margin-bottom: 1rem;">🎒</div>
-            <h2 class="card__title">Create Backpack</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Configure gear for your journey</p>
-            <a href="<?php echo BTT_PUBLIC_URL; ?>/backpacks.php" class="btn btn-primary" style="width: 100%;">
+    <div class="trip-card trip-card--clickable">
+        <div class="trip-card__header text-center">
+            <div class="text-3xl mb-3">🎒</div>
+            <h2 class="trip-card__title">Create Backpack</h2>
+        </div>
+        <div class="trip-card__body text-center">
+            <p class="mb-5">Configure gear for your journey</p>
+        </div>
+        <div class="trip-card__actions">
+            <a href="<?php echo BTT_PUBLIC_URL; ?>/backpacks.php" class="btn btn--primary btn--block">
                 Create Backpack
             </a>
         </div>
     </div>
     
     <!-- Test Features Card -->
-    <div class="card card--interactive">
-        <div class="card__content" style="text-align: center; padding: 2rem;">
-            <div style="font-size: 4rem; margin-bottom: 1rem;">🧪</div>
-            <h2 class="card__title">Test Features</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Try out gamification systems</p>
-            <a href="<?php echo BTT_PUBLIC_URL; ?>/test/" class="btn btn-secondary" style="width: 100%;">
+    <div class="trip-card trip-card--clickable">
+        <div class="trip-card__header text-center">
+            <div class="text-3xl mb-3">🧪</div>
+            <h2 class="trip-card__title">Test Features</h2>
+        </div>
+        <div class="trip-card__body text-center">
+            <p class="mb-5">Try out gamification systems</p>
+        </div>
+        <div class="trip-card__actions">
+            <a href="<?php echo BTT_PUBLIC_URL; ?>/test/" class="btn btn--secondary btn--block">
                 Explore Tests
             </a>
         </div>
@@ -65,66 +77,75 @@ require_once __DIR__ . '/includes/template-header.php';
 </div>
 
 <!-- Adventure Stats -->
-<div style="background: var(--surface-primary); border: 1px solid var(--glass-border); border-radius: 1rem; padding: 2rem; margin-bottom: 3rem; backdrop-filter: blur(10px);">
-    <h2 style="color: var(--forest-mint); margin-bottom: 2rem; text-align: center;">🏆 Your Adventure Stats</h2>
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem; text-align: center;">
-        <div>
-            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🗺️</div>
-            <div style="font-size: 2rem; color: var(--forest-mint); font-weight: bold;">2</div>
-            <div style="color: var(--text-secondary); text-transform: uppercase; font-size: 0.875rem;">TRIPS PLANNED</div>
+<div class="trip-card mb-8">
+    <h2 class="text-xl text-center mb-6">🏆 Your Adventure Stats</h2>
+    <div class="trip-card__stats">
+        <div class="trip-card__stat">
+            <div class="text-2xl mb-2">🗺️</div>
+            <div class="trip-card__stat-value">2</div>
+            <div class="trip-card__stat-label">Trips Planned</div>
         </div>
-        <div>
-            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🎒</div>
-            <div style="font-size: 2rem; color: var(--forest-mint); font-weight: bold;">4</div>
-            <div style="color: var(--text-secondary); text-transform: uppercase; font-size: 0.875rem;">BACKPACKS CREATED</div>
+        <div class="trip-card__stat">
+            <div class="text-2xl mb-2">🎒</div>
+            <div class="trip-card__stat-value">4</div>
+            <div class="trip-card__stat-label">Backpacks Created</div>
         </div>
-        <div>
-            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">⭐</div>
-            <div style="font-size: 2rem; color: var(--forest-mint); font-weight: bold;">3</div>
-            <div style="color: var(--text-secondary); text-transform: uppercase; font-size: 0.875rem;">CURRENT LEVEL</div>
+        <div class="trip-card__stat">
+            <div class="text-2xl mb-2">⭐</div>
+            <div class="trip-card__stat-value">3</div>
+            <div class="trip-card__stat-label">Current Level</div>
         </div>
-        <div>
-            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🔥</div>
-            <div style="font-size: 2rem; color: var(--forest-mint); font-weight: bold;">2</div>
-            <div style="color: var(--text-secondary); text-transform: uppercase; font-size: 0.875rem;">DAY STREAK</div>
+        <div class="trip-card__stat">
+            <div class="text-2xl mb-2">🔥</div>
+            <div class="trip-card__stat-value">2</div>
+            <div class="trip-card__stat-label">Day Streak</div>
         </div>
     </div>
 </div>
 
 <!-- Recent Activity -->
-<div style="background: var(--surface-primary); border: 1px solid var(--glass-border); border-radius: 1rem; padding: 2rem; margin-bottom: 3rem; backdrop-filter: blur(10px);">
-    <h2 style="color: var(--forest-mint); margin-bottom: 2rem;">📅 Recent Activity</h2>
-    <div style="display: grid; gap: 1rem;">
-        <div style="background: rgba(0, 0, 0, 0.2); padding: 1rem; border-radius: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-                <h3 style="color: var(--text-primary); margin: 0 0 0.25rem;">Jacks Trip</h3>
-                <span style="color: var(--text-secondary); font-size: 0.875rem;">🚫 Not set</span>
+<div class="panel panel--glass mb-8">
+    <div class="panel__header">
+        <h2 class="panel__title">📅 Recent Activity</h2>
+    </div>
+    <div class="panel__body">
+        <div class="stack stack--md">
+            <div class="trip-card trip-card--compact">
+                <div class="d-flex justify-between align-center">
+                    <div>
+                        <h3 class="mb-1">Jacks Trip</h3>
+                        <span class="text-sm">🚫 Not set</span>
+                    </div>
+                    <a href="<?php echo BTT_PUBLIC_URL; ?>/trips.php" class="btn btn--ghost btn--sm">View</a>
+                </div>
             </div>
-            <a href="<?php echo BTT_PUBLIC_URL; ?>/trips.php" class="btn btn-ghost btn-sm">View</a>
-        </div>
-        <div style="background: rgba(0, 0, 0, 0.2); padding: 1rem; border-radius: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-                <h3 style="color: var(--text-primary); margin: 0 0 0.25rem;">Emily Trip</h3>
-                <span style="color: var(--text-secondary); font-size: 0.875rem;">📅 10/14/2025</span>
+            <div class="trip-card trip-card--compact">
+                <div class="d-flex justify-between align-center">
+                    <div>
+                        <h3 class="mb-1">Emily Trip</h3>
+                        <span class="text-sm">📅 10/14/2025</span>
+                    </div>
+                    <a href="<?php echo BTT_PUBLIC_URL; ?>/trips.php" class="btn btn--ghost btn--sm">View</a>
+                </div>
             </div>
-            <a href="<?php echo BTT_PUBLIC_URL; ?>/trips.php" class="btn btn-ghost btn-sm">View</a>
         </div>
     </div>
 </div>
 
 <!-- Quick Links Footer -->
-<div style="text-align: center; padding: 2rem; margin-top: 4rem; border-top: 1px solid rgba(74, 222, 128, 0.2);">
-    <h3 style="color: var(--forest-mint); margin-bottom: 1.5rem;">Quick Links</h3>
-    <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
-        <a href="<?php echo BTT_PUBLIC_URL; ?>/dashboard.php" style="color: var(--text-secondary); text-decoration: none;">Dashboard</a>
-        <a href="<?php echo BTT_PUBLIC_URL; ?>/trips.php" style="color: var(--text-secondary); text-decoration: none;">My Trips</a>
-        <a href="<?php echo BTT_PUBLIC_URL; ?>/backpacks.php" style="color: var(--text-secondary); text-decoration: none;">My Backpacks</a>
-        <a href="<?php echo BTT_PUBLIC_URL; ?>/test/ui-demo.html" style="color: var(--text-secondary); text-decoration: none;">UI Demo</a>
+<div class="text-center py-8 mt-10" style="border-top: 1px solid var(--glass-border);">
+    <h3 class="mb-5">Quick Links</h3>
+    <div class="inline inline--lg justify-center">
+        <a href="<?php echo BTT_PUBLIC_URL; ?>/dashboard.php" class="text-secondary">Dashboard</a>
+        <a href="<?php echo BTT_PUBLIC_URL; ?>/trips.php" class="text-secondary">My Trips</a>
+        <a href="<?php echo BTT_PUBLIC_URL; ?>/backpacks.php" class="text-secondary">My Backpacks</a>
+        <a href="<?php echo BTT_PUBLIC_URL; ?>/test/ui-demo.html" class="text-secondary">UI Demo</a>
+        <a href="<?php echo BTT_PUBLIC_URL; ?>/test/demo-spacing.html?ui=v2" class="text-secondary">New Design System</a>
     </div>
 </div>
 
 <!-- Floating Action Button -->
-<button class="fab pulse" onclick="window.location.href='<?php echo BTT_PUBLIC_URL; ?>/trips.php'">
+<button class="btn--fab btn--primary btn--pulse" onclick="window.location.href='<?php echo BTT_PUBLIC_URL; ?>/trips.php'" aria-label="Create new trip">
     ➕
 </button>
 

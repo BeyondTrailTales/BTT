@@ -1,380 +1,40 @@
-<?php
-// Load bootstrap first
-require_once dirname(__DIR__) . '/app/bootstrap.php';
-
-// Include card components
-require_once __DIR__ . '/includes/components/trip-card.php';
-
-// Page metadata
-$pageId = 'trips';
-$pageTitle = 'Trips';
-$pageDescription = 'Plan, track, and remember your backpacking adventures';
-
-// Use trip-specific styles with pack-builder base for shared components
-$pageStyles = $pageStyles ?? [];
-$pageStyles[] = 'css/pack-builder.css';         // Base layout and components
-$pageStyles[] = 'css/pack-builder-enhanced.css'; // Enhanced pack styles
-$pageStyles[] = 'css/trip-builder.css';         // Trip-specific overrides
-$pageStyles[] = 'css/trip-builder-enhanced.css'; // Trip-specific enhancements
-$pageStyles[] = 'css/trip-builder-compat.css';  // Browser compatibility fixes
-
-// Add page-specific scripts
-$pageScripts = $pageScripts ?? [];
-$pageScripts[] = 'js/trips-loading.js';  // Loading states enhancement
-
-// Include the unified template header
-require_once __DIR__ . '/includes/template-header.php';
-?>
-
-<!-- Main Trips Builder Container (mirrors Pack Builder layout) -->
-<div class="pack-builder-container" id="main-content">
-  <!-- Action Bar with Tabs -->
-  <div class="pack-action-bar" role="navigation" aria-label="Trip views">
-    <div class="pack-tabs" role="tablist" aria-label="Trip views">
-      <button id="tab-my-trips" class="pack-tab active" role="tab" aria-selected="true" aria-controls="panel-my-trips">🗺️ My Trips</button>
-      <button id="tab-trip-editor" class="pack-tab" role="tab" aria-selected="false" aria-controls="panel-trip-editor">✍️ Trip Editor</button>
-    </div>
-
-    <div class="pack-actions">
-      <div class="search-bar" role="search">
-        <span class="search-icon" aria-hidden="true">🔍</span>
-        <input id="trip-search" type="search" placeholder="Search trips by name or location" aria-label="Search trips" />
-      </div>
-      <button id="btn-new-trip" class="btn-action" aria-label="Create a new trip">
-        <i class="icon">➕</i> New Trip
-      </button>
-    </div>
-  </div>
-
-  <!-- Content Views -->
-  <div class="pack-content">
-    <!-- My Trips View -->
-    <section id="panel-my-trips" class="pack-view active" role="tabpanel" aria-labelledby="tab-my-trips">
-      <div class="packs-header">
-        <h2 class="view-title">My Trips</h2>
-        <div class="view-controls">
-          <div class="sort-control">
-            <label for="sort-trips">Sort by:</label>
-            <select id="sort-trips">
-              <option value="recent">Recently Created</option>
-              <option value="name">Name</option>
-              <option value="date">Start Date</option>
-            </select>
-          </div>
-          <div class="view-mode-toggle" aria-hidden="true">
-            <button class="view-mode active" data-mode="grid" title="Grid View"><i>⊞</i></button>
-            <button class="view-mode" data-mode="list" title="List View"><i>☰</i></button>
-          </div>
-        </div>
-      </div>
-
-      <div id="trip-grid" class="packs-grid" aria-live="polite" aria-busy="false">
-        <div class="loading-spinner">
-          <div class="spinner"></div>
-          <p>Loading your trips...</p>
-        </div>
-      </div>
-
-      <div id="trips-empty" class="packs-empty-state" hidden>
-        <div class="packs-empty-icon">🏔️</div>
-        <div class="packs-empty-text">No trips yet</div>
-        <div class="packs-empty-subtext">Click the New Trip button to plan your first adventure.</div>
-        <button id="empty-create" class="btn-action"><i>➕</i> Create Trip</button>
-      </div>
-    </section>
-
-    <!-- Trip Editor View -->
-    <section id="panel-trip-editor" class="pack-view" role="tabpanel" aria-labelledby="tab-trip-editor" tabindex="-1">
-      <div class="builder-layout">
-        <!-- Left: Trip Form -->
-        <div class="builder-left">
-          <div class="pack-info-card">
-            <h3 id="trip-editor-title">Trip Editor</h3>
-
-            <!-- Inner form tabs -->
-            <div class="pack-tabs" role="tablist" aria-label="Trip form sections">
-              <button id="tab-btn-basics" class="pack-tab active" role="tab" aria-selected="true" aria-controls="tab-panel-basics">Basics</button>
-              <button id="tab-btn-trail" class="pack-tab" role="tab" aria-selected="false" aria-controls="tab-panel-trail">Trail Info</button>
-              <button id="tab-btn-logistics" class="pack-tab" role="tab" aria-selected="false" aria-controls="tab-panel-logistics">Logistics</button>
-              <button id="tab-btn-conditions" class="pack-tab" role="tab" aria-selected="false" aria-controls="tab-panel-conditions">Conditions</button>
-              <button id="tab-btn-notes" class="pack-tab" role="tab" aria-selected="false" aria-controls="tab-panel-notes">Notes</button>
-            </div>
-
-            <form id="trip-form" novalidate>
-              <input type="hidden" id="trip-id" name="id" />
-
-              <!-- Basics -->
-              <section id="tab-panel-basics" class="pack-section" role="tabpanel" aria-labelledby="tab-btn-basics">
-                <div class="section-header">
-                  <h4 class="section-title">Basics</h4>
-                </div>
-                <div class="section-items">
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label for="title">Trip Name *</label>
-                      <input id="title" name="title" class="form-control" type="text" required />
-                    </div>
-                    <div class="form-group">
-                      <label for="location">Location / Trailhead</label>
-                      <input id="location" name="location" class="form-control" type="text" />
-                    </div>
-                  </div>
-
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label for="start_date">Start Date</label>
-                      <input id="start_date" name="start_date" class="form-control" type="date" />
-                    </div>
-                    <div class="form-group">
-                      <label for="end_date">End Date</label>
-                      <input id="end_date" name="end_date" class="form-control" type="date" />
-                    </div>
-                  </div>
-
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label for="trip_type">Trip Type</label>
-                      <select id="trip_type" name="trip_type" class="form-control">
-                        <option value="">Select type...</option>
-                        <option value="day_hike">Day Hike</option>
-                        <option value="overnight">Overnight</option>
-                        <option value="weekend">Weekend</option>
-                        <option value="section_hike">Section Hike</option>
-                        <option value="thru_hike">Thru-Hike</option>
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <label for="backpack_id">Backpack</label>
-                      <select id="backpack_id" name="backpack_id" class="form-control">
-                        <option value="">No backpack selected</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label for="favorite">Favorite</label>
-                      <select id="favorite" name="favorite" class="form-control">
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <label for="completed">Completed</label>
-                      <select id="completed" name="completed" class="form-control">
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="description">Notes</label>
-                    <textarea id="description" name="description" class="form-control" rows="2" placeholder="Goals, highlights, gear notes..."></textarea>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="photo">Trip Photo</label>
-                    <input id="photo" name="photo" class="form-control" type="file" accept="image/jpeg,image/jpg,image/png" />
-                    <small class="form-text text-muted">Max 4MB. JPG, JPEG, or PNG.</small>
-                    <div id="photo-preview" style="margin-top: 10px; display: none;">
-                      <img id="preview-image" style="max-width: 100%; height: 200px; object-fit: cover; border-radius: 0.5rem;" alt="Preview" />
-                      <button type="button" id="remove-photo" class="btn-secondary" style="margin-top: 10px;">Remove Photo</button>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="photo_alt_text">Photo Description (Required for accessibility)</label>
-                    <input id="photo_alt_text" name="photo_alt_text" class="form-control" type="text" placeholder="Describe the photo for screen readers" maxlength="255" />
-                    <small class="form-text text-muted">Required when uploading a photo (ADA compliance)</small>
-                  </div>
-                </div>
-              </section>
-
-              <!-- Trail Info -->
-              <section id="tab-panel-trail" class="pack-section" role="tabpanel" aria-labelledby="tab-btn-trail" hidden>
-                <div class="section-header">
-                  <h4 class="section-title">Trail Info</h4>
-                </div>
-                <div class="section-items">
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label for="distance">Distance</label>
-                      <input id="distance" name="distance" class="form-control" type="number" step="0.1" min="0" placeholder="0.0" />
-                    </div>
-                    <div class="form-group">
-                      <label for="distance_unit">Unit</label>
-                      <select id="distance_unit" name="distance_unit" class="form-control">
-                        <option value="miles">miles</option>
-                        <option value="km">km</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label for="elevation_gain">Elevation Gain (ft)</label>
-                      <input id="elevation_gain" name="elevation_gain" class="form-control" type="number" step="100" min="0" />
-                    </div>
-                    <div class="form-group">
-                      <label for="difficulty">Difficulty</label>
-                      <select id="difficulty" name="difficulty" class="form-control">
-                        <option value="">Select...</option>
-                        <option value="easy">Easy</option>
-                        <option value="moderate">Moderate</option>
-                        <option value="hard">Hard</option>
-                        <option value="expert">Expert</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              <!-- Logistics -->
-              <section id="tab-panel-logistics" class="pack-section" role="tabpanel" aria-labelledby="tab-btn-logistics" hidden>
-                <div class="section-header">
-                  <h4 class="section-title">Logistics</h4>
-                </div>
-                <div class="section-items">
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label for="permit_required">Permit Required</label>
-                      <select id="permit_required" name="permit_required" class="form-control">
-                        <option value="0">No</option>
-                        <option value="1">Yes</option>
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <label for="permit_cost">Permit Cost ($)</label>
-                      <input id="permit_cost" name="permit_cost" class="form-control" type="number" step="0.01" min="0" />
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="permit_info">Permit/Reservation Info</label>
-                    <textarea id="permit_info" name="permit_info" class="form-control" rows="2" placeholder="How to obtain permits, lottery dates, etc."></textarea>
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label for="trailhead_parking">Parking Info</label>
-                      <input id="trailhead_parking" name="trailhead_parking" class="form-control" type="text" />
-                    </div>
-                    <div class="form-group">
-                      <label for="parking_cost">Parking Cost ($)</label>
-                      <input id="parking_cost" name="parking_cost" class="form-control" type="number" step="0.01" min="0" />
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              <!-- Conditions -->
-              <section id="tab-panel-conditions" class="pack-section" role="tabpanel" aria-labelledby="tab-btn-conditions" hidden>
-                <div class="section-header">
-                  <h4 class="section-title">Conditions</h4>
-                </div>
-                <div class="section-items">
-                  <div class="form-group">
-                    <label for="water_sources">Water Sources</label>
-                    <textarea id="water_sources" name="water_sources" class="form-control" rows="2"></textarea>
-                  </div>
-                  <div class="form-group">
-                    <label for="trail_conditions">Trail Conditions</label>
-                    <textarea id="trail_conditions" name="trail_conditions" class="form-control" rows="2"></textarea>
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group">
-                      <label for="cell_coverage">Cell Coverage</label>
-                      <select id="cell_coverage" name="cell_coverage" class="form-control">
-                        <option value="">Select...</option>
-                        <option value="none">None</option>
-                        <option value="poor">Poor</option>
-                        <option value="spotty">Spotty</option>
-                        <option value="good">Good</option>
-                        <option value="excellent">Excellent</option>
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <label for="crowd_level">Crowd Level</label>
-                      <select id="crowd_level" name="crowd_level" class="form-control">
-                        <option value="">Select...</option>
-                        <option value="empty">Empty</option>
-                        <option value="light">Light</option>
-                        <option value="moderate">Moderate</option>
-                        <option value="busy">Busy</option>
-                        <option value="packed">Packed</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              <!-- Notes -->
-              <section id="tab-panel-notes" class="pack-section" role="tabpanel" aria-labelledby="tab-btn-notes" hidden>
-                <div class="section-header">
-                  <h4 class="section-title">Notes</h4>
-                </div>
-                <div class="section-items">
-                  <div class="form-group">
-                    <label for="pre_trip_notes">Pre-Trip Notes</label>
-                    <textarea id="pre_trip_notes" name="pre_trip_notes" class="form-control" rows="3"></textarea>
-                  </div>
-                  <div class="form-group">
-                    <label for="post_trip_notes">Post-Trip Notes</label>
-                    <textarea id="post_trip_notes" name="post_trip_notes" class="form-control" rows="3"></textarea>
-                  </div>
-                  <div class="form-group">
-                    <label for="lessons_learned">Lessons Learned</label>
-                    <textarea id="lessons_learned" name="lessons_learned" class="form-control" rows="3"></textarea>
-                  </div>
-                </div>
-              </section>
-
-              <!-- Editor actions -->
-              <div class="builder-actions">
-                <button type="submit" id="btn-save-trip" class="btn-primary">💾 Save Trip</button>
-                <button type="button" id="btn-cancel-edit" class="btn-secondary">← Back to My Trips</button>
-                <button type="button" id="btn-delete-trip" class="btn-secondary" style="border-color: rgba(239,68,68,.4); color: #f87171;">🗑️ Delete</button>
-                <div id="form-errors" class="form-errors" role="alert" aria-live="assertive" hidden></div>
-                <span id="form-status" class="sr-only" role="status" aria-live="polite"></span>
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <!-- Right: Insights / Summary -->
-        <div class="builder-right">
-          <div class="weight-summary-card">
-            <h3>Trip Insights</h3>
-            <div id="insight-image" style="margin-bottom: .75rem;"></div>
-            <div class="weight-stats">
-              <div class="weight-stat">
-                <span class="stat-label">Duration</span>
-                <span class="stat-value" id="insight-duration">-</span>
-              </div>
-              <div class="weight-stat">
-                <span class="stat-label">Distance</span>
-                <span class="stat-value" id="insight-distance">-</span>
-              </div>
-              <div class="weight-stat">
-                <span class="stat-label">Elevation</span>
-                <span class="stat-value" id="insight-elevation">-</span>
-              </div>
-            </div>
-            <div id="insight-tags" style="margin-top:.5rem; color: rgba(255,255,255,.7);"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-</div>
-
-<script>
-// Wait for the global BTT and utilities to be available
 document.addEventListener('DOMContentLoaded', function() {
   'use strict';
   
-  // Check if required globals are available
-  if (typeof window.BTTApi === 'undefined' || typeof window.BTTUtils === 'undefined') {
-    console.error('BTT API utilities not loaded');
+  console.log('Trips.js: Starting initialization');
+  
+  // Wait for jQuery and then initialize
+  if (typeof $ === 'undefined') {
+    console.error('jQuery not loaded!');
     return;
   }
+  
+  // Use jQuery's ready to ensure everything is loaded
+  $(document).ready(function() {
+    console.log('Trips.js: jQuery ready, initializing...');
+    
+    // Set up API references
+    window.BTTApi = window.BTTApi || window.BttApi || window.API;
+    
+    // Create minimal BTTUtils if missing
+    if (typeof window.BTTUtils === 'undefined') {
+      window.BTTUtils = {
+        escapeHtml: function(str) {
+          if (!str) return '';
+          const div = document.createElement('div');
+          div.textContent = str;
+          return div.innerHTML;
+        },
+        showToast: function(message, type) {
+          console.log('Toast:', type, message);
+          // Create simple toast
+          const toast = $(`<div class="toast toast-${type}">${message}</div>`);
+          $('body').append(toast);
+          toast.fadeIn();
+          setTimeout(() => toast.fadeOut(() => toast.remove()), 3000);
+        }
+      };
+    }
 
   // State
   const state = {
@@ -907,31 +567,56 @@ document.addEventListener('DOMContentLoaded', function() {
     // Get form data as object for non-file fields
     const body = serializeForm();
     
+    // Remember current tab
+    const currentTab = state.formTab;
+    
     // Disable form during save
     setFormBusy(true);
     
     try {
+      let newTripId = null;
       if (id){
         await BTTApi.put('trips', id, body, files);
         announceStatus('Trip updated successfully');
-        BTTUtils.showToast('Trip updated successfully', 'success');
+        BTTUtils.showToast('✅ Trip saved successfully!', 'success');
+        // Update the current trip in state
+        const tripIndex = state.trips.findIndex(t => t.id === parseInt(id));
+        if (tripIndex !== -1) {
+          state.trips[tripIndex] = {...state.trips[tripIndex], ...body};
+        }
       } else {
-        await BTTApi.post('trips', body, files);
+        const result = await BTTApi.post('trips', body, files);
+        newTripId = result.id || result;
         announceStatus('Trip created successfully');
-        BTTUtils.showToast('Trip created successfully', 'success');
+        BTTUtils.showToast('✅ Trip created successfully!', 'success');
+        // Update the trip ID in the form so subsequent saves are updates
+        document.getElementById('trip-id').value = newTripId;
+        state.currentId = newTripId;
+        state.mode = 'edit';
+        els.editorTitle.textContent = 'Edit Trip';
       }
+      
+      // Reload trips in background to keep list updated
       await loadTrips();
       filterTrips();
-      switchTopView('my-trips');
       
-      // Focus on the saved card
+      // Stay on the current editor view and tab
+      // The form is already populated with the saved data
+      // Just update the insights panel
+      updateInsights();
+      
+      // Flash a visual indicator on the save button
+      els.btnSave.classList.add('btn-success');
+      els.btnSave.innerHTML = '✅ Saved!';
       setTimeout(() => {
-        const savedCard = document.querySelector(`.pack-card[data-id="${id || state.trips[0]?.id}"]`);
-        if (savedCard) savedCard.focus();
-      }, 100);
+        els.btnSave.classList.remove('btn-success');
+        els.btnSave.innerHTML = '💾 Save Trip';
+      }, 2000);
+      
     } catch(err){
       showFormErrors(['Failed to save trip. Please try again.']);
       announceStatus('Error saving trip');
+      BTTUtils.showToast('❌ Failed to save trip', 'error');
     } finally {
       setFormBusy(false);
     }
@@ -1223,13 +908,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
   
-  // Initialize the app
-  init();
+    // Initialize the app  
+    console.log('Trips.js: Initializing app now!');
+    init();
+  }); // End jQuery ready
 }); // End DOMContentLoaded
-</script>
-
-<?php 
-// Include the unified template footer
-require_once __DIR__ . '/includes/template-footer.php';
-?>
-

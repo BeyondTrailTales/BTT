@@ -1,0 +1,27 @@
+[2025-09-03 15:39:52] [INFO] [MIGRATION] Migration runner initialized
+[2025-09-03 15:39:52] [INFO] [MIGRATION] Schema migrations table ready
+[2025-09-03 15:40:01] [INFO] [MIGRATION] Migration runner initialized
+[2025-09-03 15:40:01] [INFO] [MIGRATION] Starting migration run
+[2025-09-03 15:40:01] [INFO] [MIGRATION] Schema migrations table ready
+[2025-09-03 15:40:01] [INFO] [MIGRATION] Running migration: 0001_auth_core.sql
+[2025-09-03 15:40:01] [INFO] [MIGRATION] Successfully applied migration: 0001_auth_core.sql
+[2025-09-03 15:40:01] [INFO] [MIGRATION] Running migration: 0002_trips_sharing.sql
+[2025-09-03 15:40:01] [INFO] [MIGRATION] Successfully applied migration: 0002_trips_sharing.sql
+[2025-09-03 15:40:01] [INFO] [MIGRATION] Running migration: 0003_attach_user_to_existing.sql
+[2025-09-03 15:40:01] [ERROR] [MIGRATION] Failed to apply migration 0003_attach_user_to_existing.sql: SQLSTATE[HY000]: General error: 1 error in view v_trips_with_backpacks: no such table: main.trips
+[2025-09-03 15:42:20] [INFO] [MIGRATION] Migration runner initialized
+[2025-09-03 15:42:20] [INFO] [MIGRATION] Starting migration run
+[2025-09-03 15:42:20] [INFO] [MIGRATION] Schema migrations table ready
+[2025-09-03 15:42:20] [INFO] [MIGRATION] Running migration: 0001_auth_core.sql
+[2025-09-03 15:42:20] [INFO] [MIGRATION] Successfully applied migration: 0001_auth_core.sql
+[2025-09-03 15:42:20] [INFO] [MIGRATION] Running migration: 0002_trips_sharing.sql
+[2025-09-03 15:42:20] [INFO] [MIGRATION] Successfully applied migration: 0002_trips_sharing.sql
+[2025-09-03 15:42:20] [INFO] [MIGRATION] Running migration: 0003_attach_user_to_existing.sql
+[2025-09-03 15:42:20] [INFO] [MIGRATION] Successfully applied migration: 0003_attach_user_to_existing.sql
+[2025-09-03 15:42:20] [INFO] [MIGRATION] Successfully ran 3 migration(s)
+[2025-09-03 16:42:38] [INFO] [MIGRATION] Migration runner initialized
+[2025-09-03 16:42:38] [INFO] [MIGRATION] Starting migration run
+[2025-09-03 16:42:38] [INFO] [MIGRATION] Schema migrations table ready
+[2025-09-03 16:42:38] [INFO] [MIGRATION] Running migration: 0004_add_missing_fields.sql
+[2025-09-03 16:42:38] [INFO] [MIGRATION] Successfully applied migration: 0004_add_missing_fields.sql
+[2025-09-03 16:42:38] [INFO] [MIGRATION] Successfully ran 1 migration(s)

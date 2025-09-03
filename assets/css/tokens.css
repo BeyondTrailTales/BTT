@@ -1,0 +1,227 @@
+/**
+ * BTT Design Tokens
+ * Forest theme with glassmorphism and motion
+ * ADA compliant with responsive and accessible design
+ */
+
+:root {
+  /* Spacing Scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* Colors - Forest Theme */
+  --btt-green-50: #ecfdf5;
+  --btt-green-100: #d1fae5;
+  --btt-green-200: #a7f3d0;
+  --btt-green-300: #6ee7b7;
+  --btt-green-400: #34d399;
+  --btt-green-500: #10b981;
+  --btt-green-600: #059669;
+  --btt-green-700: #047857;
+  --btt-green-800: #065f46;
+  --btt-green-900: #064e3b;
+
+  /* Forest Background */
+  --btt-forest-bg: #0f1f16;
+  --btt-forest-surface: #1a2e23;
+  
+  /* Neutral Colors */
+  --neutral-50: #fafafa;
+  --neutral-100: #f5f5f5;
+  --neutral-200: #e5e5e5;
+  --neutral-300: #d4d4d4;
+  --neutral-400: #a3a3a3;
+  --neutral-500: #737373;
+  --neutral-600: #525252;
+  --neutral-700: #404040;
+  --neutral-800: #262626;
+  --neutral-900: #171717;
+
+  /* Semantic Colors */
+  --color-primary: var(--btt-green-600);
+  --color-primary-hover: var(--btt-green-700);
+  --color-primary-active: var(--btt-green-800);
+  
+  --color-secondary: #22c55e;
+  --color-accent: #f59e0b;
+  
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-info: #3b82f6;
+
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-bg-heavy: rgba(255, 255, 255, 0.2);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-blur: 16px;
+  --glass-blur-heavy: 24px;
+
+  /* Dark Mode Glass */
+  --glass-bg-dark: rgba(18, 39, 28, 0.55);
+  --glass-border-dark: rgba(255, 255, 255, 0.08);
+
+  /* Elevation (Shadows) */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  
+  --elev-1: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --elev-2: 0 4px 16px rgba(0, 0, 0, 0.2);
+  --elev-3: 0 8px 24px rgba(0, 0, 0, 0.28);
+
+  /* Animation Durations */
+  --dur-instant: 0ms;
+  --dur-fast: 120ms;
+  --dur-medium: 220ms;
+  --dur-slow: 360ms;
+  --dur-slower: 500ms;
+  
+  /* Easing Functions */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1.4);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* Typography - Base */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
+  
+  /* Font Sizes - Fluid Scale */
+  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1.05rem + 0.375vw, 1.25rem);
+  --text-xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.35rem + 0.75vw, 1.875rem);
+  --text-3xl: clamp(1.875rem, 1.65rem + 1.125vw, 2.25rem);
+  --text-4xl: clamp(2.25rem, 1.95rem + 1.5vw, 3rem);
+  --text-5xl: clamp(3rem, 2.5rem + 2.5vw, 4rem);
+
+  /* Line Heights */
+  --lh-tight: 1.25;
+  --lh-snug: 1.375;
+  --lh-normal: 1.5;
+  --lh-relaxed: 1.625;
+  --lh-loose: 1.75;
+
+  /* Font Weights */
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  /* Letter Spacing */
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
+
+  /* Z-Index Scale */
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-popover: 500;
+  --z-tooltip: 600;
+  --z-toast: 700;
+  --z-max: 9999;
+
+  /* Breakpoints (for reference in JS) */
+  --bp-xs: 360px;
+  --bp-sm: 640px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+  --bp-2xl: 1536px;
+
+  /* Container Max Widths */
+  --container-xs: 100%;
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+  --container-2xl: 1536px;
+
+  /* Focus States */
+  --focus-ring-width: 3px;
+  --focus-ring-color: var(--btt-green-500);
+  --focus-ring-offset: 2px;
+
+  /* Interactive States */
+  --hover-opacity: 0.8;
+  --disabled-opacity: 0.5;
+  --active-scale: 0.95;
+}
+
+/* Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 1ms;
+    --dur-medium: 1ms;
+    --dur-slow: 1ms;
+    --dur-slower: 1ms;
+  }
+}
+
+/* Dark Mode Adjustments */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--btt-forest-bg);
+    --color-surface: var(--btt-forest-surface);
+    --color-text: var(--neutral-100);
+    --color-text-muted: var(--neutral-400);
+    
+    --glass-bg: var(--glass-bg-dark);
+    --glass-border: var(--glass-border-dark);
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  :root {
+    --glass-blur: 0px;
+    --glass-bg: rgba(255, 255, 255, 0.95);
+    --glass-border: rgba(0, 0, 0, 0.5);
+    
+    --shadow-sm: 0 0 0 1px currentColor;
+    --shadow-md: 0 0 0 2px currentColor;
+    --shadow-lg: 0 0 0 3px currentColor;
+  }
+}
+
+/* Print Styles */
+@media print {
+  :root {
+    --glass-blur: 0px;
+    --shadow-sm: none;
+    --shadow-md: none;
+    --shadow-lg: none;
+    --shadow-xl: none;
+    --shadow-2xl: none;
+  }
+}

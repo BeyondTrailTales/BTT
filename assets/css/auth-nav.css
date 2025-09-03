@@ -1,0 +1,201 @@
+/* Authentication Navigation Styles for BeyondTrailTales */
+
+/* Authentication Links in Navigation */
+.nav-auth-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+}
+
+.nav-link-primary {
+  background: var(--color-primary, #4caf50);
+  color: white !important;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.nav-link-primary:hover {
+  background: var(--color-primary-dark, #388e3c);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+/* User Menu Dropdown */
+.nav-user-menu {
+  position: relative;
+  margin-left: auto;
+}
+
+.nav-user-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  color: var(--text-primary, #e0e0e0);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.nav-user-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--color-primary, #4caf50);
+}
+
+.nav-user-button[aria-expanded="true"] {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--color-primary, #4caf50);
+}
+
+.nav-user-name {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.icon-chevron {
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.nav-user-button[aria-expanded="true"] .icon-chevron {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Menu */
+.nav-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  min-width: 200px;
+  background: var(--color-surface-raised, #1a1a1a);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  z-index: 1000;
+  animation: dropdownFadeIn 0.2s ease;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.nav-dropdown[hidden] {
+  display: none;
+}
+
+.dropdown-link {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: var(--text-primary, #e0e0e0);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: background 0.2s ease;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.dropdown-link:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-primary, #4caf50);
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0.5rem 0;
+}
+
+.logout-form {
+  margin: 0;
+}
+
+.logout-btn {
+  color: var(--color-error, #ef5350);
+}
+
+.logout-btn:hover {
+  background: rgba(239, 83, 80, 0.1);
+  color: var(--color-error, #ef5350);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .nav-main {
+    flex-wrap: wrap;
+  }
+  
+  .nav-auth-links,
+  .nav-user-menu {
+    width: 100%;
+    margin-top: 0.5rem;
+    justify-content: center;
+  }
+  
+  .nav-dropdown {
+    right: 50%;
+    transform: translateX(50%);
+  }
+}
+
+/* Accessibility improvements */
+.nav-user-button:focus,
+.dropdown-link:focus {
+  outline: 2px solid var(--color-primary, #4caf50);
+  outline-offset: 2px;
+}
+
+.nav-user-button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Loading state for logout */
+.logout-form.loading .logout-btn {
+  opacity: 0.6;
+  pointer-events: none;
+  position: relative;
+}
+
+.logout-form.loading .logout-btn::after {
+  content: '';
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}

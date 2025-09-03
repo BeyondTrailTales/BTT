@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session Debug Tool</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        button {
+            background: #4ade80;
+            border: none;
+            padding: 10px 20px;
+            color: #000;
+            cursor: pointer;
+            margin: 5px;
+            border-radius: 4px;
+        }
+        button:hover {
+            background: #22c55e;
+        }
+        .output {
+            background: #000;
+            border: 1px solid #333;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+        .success {
+            color: #4ade80;
+        }
+        .error {
+            color: #ef4444;
+        }
+        .warning {
+            color: #fbbf24;
+        }
+        .info {
+            color: #3b82f6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Session Debug Tool for BTT</h1>
+        
+        <div style="margin: 20px 0;">
+            <h2>Session Testing:</h2>
+            <button onclick="testSession('status')">Check Session Status</button>
+            <button onclick="testSession('set')">Set Test Data</button>
+            <button onclick="testSession('get')">Get Test Data</button>
+            <button onclick="testSession('clear')">Clear Session</button>
+        </div>
+        
+        <div style="margin: 20px 0;">
+            <h2>Authentication Testing:</h2>
+            <button onclick="testAuth()">Check Auth Status</button>
+            <button onclick="quickLogin()">Quick Login (admin)</button>
+            <button onclick="testDashboard()">Test Dashboard Access</button>
+            <button onclick="logout()">Logout</button>
+        </div>
+        
+        <div style="margin: 20px 0;">
+            <h2>Full Flow Test:</h2>
+            <button onclick="runFullTest()">Run Complete Test Sequence</button>
+        </div>
+        
+        <h2>Output:</h2>
+        <div id="output" class="output"></div>
+    </div>
+
+    <script>
+        const baseUrl = 'http://localhost/BTT';
+        
+        function log(message, type = 'info') {
+            const output = document.getElementById('output');
+            const timestamp = new Date().toLocaleTimeString();
+            const className = type;
+            output.innerHTML += `<span class="${className}">[${timestamp}] ${message}</span>\n`;
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        async function testSession(action) {
+            log(`Testing session: ${action}`, 'info');
+            try {
+                const response = await fetch(`${baseUrl}/test/session-test.php?action=${action}`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                log(JSON.stringify(data, null, 2), 'success');
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testAuth() {
+            log('Checking authentication status...', 'info');
+            try {
+                const response = await fetch(`${baseUrl}/test/check-auth.php`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                if (data.is_authenticated) {
+                    log('User is authenticated!', 'success');
+                    log(`User: ${JSON.stringify(data.current_user)}`, 'success');
+                } else {
+                    log('User is NOT authenticated', 'warning');
+                }
+                log(`Session ID: ${data.session_id}`, 'info');
+                log(`Session data: ${JSON.stringify(data.session_data, null, 2)}`, 'info');
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function quickLogin() {
+            log('Attempting quick login as admin...', 'info');
+            try {
+                // First get CSRF token
+                const authResponse = await fetch(`${baseUrl}/api/index.php?route=auth`, {
+                    credentials: 'include'
+                });
+                const authData = await authResponse.json();
+                const csrfToken = authData.data?.csrf_token || '';
+                
+                // Now login
+                const response = await fetch(`${baseUrl}/api/index.php?route=auth&id=login`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-Token': csrfToken
+                    },
+                    body: JSON.stringify({
+                        login: 'admin',
+                        password: 'Admin123!',
+                        remember: false,
+                        csrf_token: csrfToken
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    log('Login successful!', 'success');
+                    log(`User: ${JSON.stringify(data.data.user)}`, 'success');
+                    
+                    // Wait a moment then check auth status
+                    setTimeout(async () => {
+                        log('Verifying authentication after login...', 'info');
+                        await testAuth();
+                    }, 500);
+                } else {
+                    log('Login failed!', 'error');
+                    log(JSON.stringify(data, null, 2), 'error');
+                }
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testDashboard() {
+            log('Testing dashboard access...', 'info');
+            try {
+                const response = await fetch(`${baseUrl}/dashboard`, {
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    const text = await response.text();
+                    if (text.includes('Welcome back') || text.includes('Dashboard')) {
+                        log('Dashboard accessible - User is logged in!', 'success');
+                    } else if (text.includes('Login') || text.includes('Sign in')) {
+                        log('Redirected to login page - User is NOT logged in', 'error');
+                    } else {
+                        log('Unexpected dashboard content', 'warning');
+                    }
+                } else {
+                    log(`Dashboard returned status: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function logout() {
+            log('Logging out...', 'info');
+            try {
+                const response = await fetch(`${baseUrl}/api/index.php?route=auth&id=logout`, {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    log('Logout successful!', 'success');
+                } else {
+                    log('Logout failed!', 'error');
+                }
+            } catch (error) {
+                log(`Error: ${error.message}`, 'error');
+            }
+        }
+        
+        async function runFullTest() {
+            log('=== Starting Full Test Sequence ===', 'info');
+            
+            // 1. Check initial session
+            log('Step 1: Checking initial session...', 'info');
+            await testSession('status');
+            await new Promise(r => setTimeout(r, 1000));
+            
+            // 2. Set test data
+            log('Step 2: Setting test session data...', 'info');
+            await testSession('set');
+            await new Promise(r => setTimeout(r, 1000));
+            
+            // 3. Verify data persists
+            log('Step 3: Verifying session data persists...', 'info');
+            await testSession('get');
+            await new Promise(r => setTimeout(r, 1000));
+            
+            // 4. Check auth status (should be logged out)
+            log('Step 4: Checking initial auth status...', 'info');
+            await testAuth();
+            await new Promise(r => setTimeout(r, 1000));
+            
+            // 5. Login
+            log('Step 5: Attempting login...', 'info');
+            await quickLogin();
+            await new Promise(r => setTimeout(r, 2000));
+            
+            // 6. Test dashboard
+            log('Step 6: Testing dashboard access...', 'info');
+            await testDashboard();
+            await new Promise(r => setTimeout(r, 1000));
+            
+            // 7. Logout
+            log('Step 7: Logging out...', 'info');
+            await logout();
+            await new Promise(r => setTimeout(r, 1000));
+            
+            // 8. Final auth check
+            log('Step 8: Final auth check (should be logged out)...', 'info');
+            await testAuth();
+            
+            log('=== Test Sequence Complete ===', 'success');
+        }
+        
+        // Initial message
+        window.addEventListener('load', () => {
+            log('Session Debug Tool loaded. Click buttons to test session handling.', 'info');
+            log('Note: After fixing the session issue, authentication should persist across requests.', 'warning');
+        });
+    </script>
+</body>
+</html>

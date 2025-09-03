@@ -26,42 +26,107 @@
         init: function() {
             console.log('🎒 Pack Builder Initializing...');
             
-            this.loadData();
+            // Only initialize once
+            if (this.initialized) {
+                console.log('Pack Builder already initialized');
+                return;
+            }
+            
             this.bindEvents();
             this.initDragDrop();
             this.loadView('my-packs');
             
+        // Load data after a small delay to ensure API is ready
+            setTimeout(() => {
+                // Load gear library immediately
+                this.loadGearLibrary().then(() => {
+                    console.log('Gear library loaded:', this.state.gearLibrary.length, 'items');
+                    // If we're in builder view, render the gear
+                    if (this.state.currentView === 'builder') {
+                        this.renderGearLibrary();
+                    }
+                });
+            }, 100);
+            
+            this.initialized = true;
             console.log('✅ Pack Builder Ready!');
         },
 
         // ==================== Data Loading ====================
         loadData: function() {
-            // Load user's packs
-            this.loadPacks();
+            // Let PackBuilderCRUD handle packs loading
+            if (!window.PackBuilderCRUD || !window.PackBuilderCRUD.initialized) {
+                // Only load packs if PackBuilderCRUD isn't available
+                this.loadPacks();
+            }
             
             // Load gear library
             this.loadGearLibrary();
         },
 
         loadPacks: async function() {
+            // Delegate to PackBuilderCRUD if available
+            if (window.PackBuilderCRUD && typeof window.PackBuilderCRUD.loadExistingPacks === 'function') {
+                console.log('Using PackBuilderCRUD to load packs');
+                await window.PackBuilderCRUD.loadExistingPacks();
+                return;
+            }
+            
             try {
-                const response = await $.ajax({
-                    url: '/BTT/api/index.php?route=backpacks',
-                    method: 'GET'
-                });
+                // Check if API is available
+                if (typeof BttApi === 'undefined') {
+                    console.warn('BttApi not yet available, using empty state');
+                    this.state.packs = [];
+                    this.renderPacksGrid();
+                    return;
+                }
                 
-                this.state.packs = response.data || [];
+                // Use centralized API client
+                const response = await BttApi.backpacks.list();
+                
+                console.log('Backpacks API response:', response);
+                
+                // Handle different response formats
+                if (response && response.success && response.data) {
+                    this.state.packs = response.data;
+                } else if (Array.isArray(response)) {
+                    this.state.packs = response;
+                } else {
+                    this.state.packs = [];
+                }
+                
                 this.renderPacksGrid();
             } catch (error) {
                 console.error('Error loading packs:', error);
-                // Use sample data for now
-                this.state.packs = this.getSamplePacks();
+                // Show empty state instead of sample data
+                this.state.packs = [];
                 this.renderPacksGrid();
             }
         },
 
-        loadGearLibrary: function() {
-            // Comprehensive gear database
+        loadGearLibrary: async function() {
+            try {
+                // Load from API
+                const response = await $.ajax({
+                    url: '/BTT/ajax-handler.php?route=gear',
+                    method: 'GET',
+                    dataType: 'json'
+                });
+                
+                if (Array.isArray(response)) {
+                    this.state.gearLibrary = response;
+                    console.log('Loaded', response.length, 'gear items from database');
+                    // Render the gear library if we're in builder view
+                    if (this.state.currentView === 'builder') {
+                        this.renderGearLibrary();
+                    }
+                    return;
+                }
+            } catch (error) {
+                console.error('Failed to load gear from API, using defaults:', error);
+            }
+            
+            // Fallback to hardcoded gear database if API fails
             this.state.gearLibrary = [
                 // Shelter
                 { id: 'tent-1', name: 'Zpacks Duplex', weight: 538, category: 'shelter', icon: '⛺', brand: 'Zpacks', price: 699 },
@@ -184,10 +249,12 @@
                 self.createNewPack();
             });
 
-            // Pack card clicks
-            $(document).on('click', '.pack-card', function() {
-                const packId = $(this).data('pack-id');
-                self.editPack(packId);
+            // Prevent pack card clicks from triggering edit (we want explicit edit button clicks)
+            $(document).on('click', '.pack-card', function(e) {
+                // Only handle if not clicking on action buttons
+                if (!$(e.target).closest('.btn-icon').length) {
+                    e.stopPropagation();
+                }
             });
 
             // Category filters
@@ -307,13 +374,26 @@
         loadView: function(view) {
             switch(view) {
                 case 'my-packs':
-                    this.loadPacks();
+                    // Use PackBuilderCRUD if available
+                    if (window.PackBuilderCRUD && window.PackBuilderCRUD.loadExistingPacks) {
+                        window.PackBuilderCRUD.loadExistingPacks();
+                    } else {
+                        this.loadPacks();
+                    }
                     break;
                 case 'builder':
                     if (!this.state.currentPack) {
                         this.createNewPack();
                     }
                     this.renderBuilder();
+                    // Make sure gear is loaded before rendering
+                    if (this.state.gearLibrary.length === 0) {
+                        this.loadGearLibrary().then(() => {
+                            this.renderGearLibrary();
+                        });
+                    } else {
+                        this.renderGearLibrary();
+                    }
                     break;
                 case 'templates':
                     this.renderTemplates();
@@ -485,17 +565,34 @@
         initDragDrop: function() {
             const self = this;
             
-            // Make gear items draggable
+            // Make gear items from library draggable
             $(document).on('dragstart', '.gear-item', function(e) {
                 const gearId = $(this).data('gear-id');
                 const gear = self.state.gearLibrary.find(g => g.id === gearId);
                 e.originalEvent.dataTransfer.effectAllowed = 'copy';
                 e.originalEvent.dataTransfer.setData('gear', JSON.stringify(gear));
+                e.originalEvent.dataTransfer.setData('action', 'add');
                 $(this).addClass('dragging');
             });
             
             $(document).on('dragend', '.gear-item', function() {
                 $(this).removeClass('dragging');
+            });
+            
+            // Make pack items draggable between sections
+            $(document).on('dragstart', '.pack-item', function(e) {
+                const item = $(this).data('item');
+                e.originalEvent.dataTransfer.effectAllowed = 'move';
+                e.originalEvent.dataTransfer.setData('gear', JSON.stringify(item));
+                e.originalEvent.dataTransfer.setData('action', 'move');
+                e.originalEvent.dataTransfer.setData('sourceElement', $(this).attr('data-item-id'));
+                $(this).addClass('dragging');
+                $(this).css('opacity', '0.5');
+            });
+            
+            $(document).on('dragend', '.pack-item', function() {
+                $(this).removeClass('dragging');
+                $(this).css('opacity', '1');
             });
             
             // Make sections droppable
@@ -517,13 +614,48 @@
                 if (!gearData) return;
                 
                 const gear = JSON.parse(gearData);
+                const action = e.originalEvent.dataTransfer.getData('action');
                 const sectionId = $(this).data('section');
                 
-                self.addGearToSection(gear, sectionId);
+                if (action === 'move') {
+                    // Moving existing item between sections
+                    const sourceElementId = e.originalEvent.dataTransfer.getData('sourceElement');
+                    const $sourceElement = $(`.pack-item[data-item-id="${sourceElementId}"]`);
+                    
+                    if ($sourceElement.length) {
+                        // Get the source section
+                        const $sourceSection = $sourceElement.closest('.dropzone');
+                        
+                        // Remove from source section
+                        $sourceElement.detach();
+                        
+                        // Add placeholder to source section if now empty
+                        if ($sourceSection.find('.pack-item').length === 0) {
+                            $sourceSection.html('<div class="dropzone-placeholder">Drop gear here</div>');
+                        }
+                        
+                        // Add to target section
+                        const $targetSection = $(this);
+                        $targetSection.find('.dropzone-placeholder').remove();
+                        $targetSection.append($sourceElement);
+                        
+                        // Re-attach the item data
+                        $sourceElement.data('item', gear);
+                        
+                        self.updateWeights();
+                        self.state.isDirty = true;
+                        
+                        console.log(`Moved item "${gear.name}" to ${sectionId} section`);
+                    }
+                } else {
+                    // Adding new item from gear library
+                    self.addGearToSection(gear, sectionId);
+                }
             });
             
             // Initialize jQuery UI sortable for sections
             if ($.fn.sortable) {
+                // Make sections sortable (reorder sections)
                 $('#sections-list').sortable({
                     handle: '.section-handle',
                     axis: 'y',
@@ -531,6 +663,44 @@
                         self.state.isDirty = true;
                     }
                 });
+                
+                // Make items within sections sortable and draggable between sections
+                $('.dropzone').sortable({
+                    connectWith: '.dropzone',
+                    handle: '.item-handle, .pack-item',
+                    placeholder: 'sortable-placeholder',
+                    opacity: 0.6,
+                    cursor: 'move',
+                    tolerance: 'pointer',
+                    start: function(e, ui) {
+                        ui.placeholder.height(ui.item.height());
+                        ui.placeholder.css({
+                            'background': 'rgba(74, 222, 128, 0.1)',
+                            'border': '2px dashed rgba(74, 222, 128, 0.3)',
+                            'border-radius': '0.5rem',
+                            'margin-bottom': '0.5rem'
+                        });
+                    },
+                    update: function(e, ui) {
+                        // Remove placeholder if section has items
+                        $('.dropzone').each(function() {
+                            if ($(this).find('.pack-item').length > 0) {
+                                $(this).find('.dropzone-placeholder').remove();
+                            } else {
+                                if ($(this).find('.dropzone-placeholder').length === 0) {
+                                    $(this).html('<div class="dropzone-placeholder">Drop gear here</div>');
+                                }
+                            }
+                        });
+                        
+                        self.updateWeights();
+                        self.state.isDirty = true;
+                        
+                        const itemName = ui.item.find('.item-name').text();
+                        const targetSection = ui.item.closest('.pack-section').find('.section-name').val();
+                        console.log(`Item "${itemName}" moved to section "${targetSection}"`);
+                    }
+                }).disableSelection();
             }
         },
 
@@ -559,7 +729,9 @@
                     border-radius: 0.5rem;
                     margin-bottom: 0.5rem;
                     cursor: move;
-                ">
+                    transition: all 0.2s ease;
+                " title="Drag to move between sections">
+                    <span class="item-handle" style="cursor: move; color: #6b7280;">≡</span>
                     <span class="item-icon" style="font-size: 1.2rem;">${gear.icon || '📦'}</span>
                     <span class="item-name" style="flex: 1; color: #fff;">${gear.name}</span>
                     <input type="number" class="item-qty" value="1" min="1" style="
@@ -704,6 +876,12 @@
 
         // ==================== Rendering ====================
         renderPacksGrid: function() {
+            // Don't render if PackBuilderCRUD is handling it
+            if (window.PackBuilderCRUD && window.PackBuilderCRUD.initialized) {
+                console.log('PackBuilderCRUD is handling pack grid rendering');
+                return;
+            }
+            
             if (this.state.packs.length === 0) {
                 $('#packs-grid').html(`
                     <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
@@ -734,6 +912,13 @@
 
         renderBuilder: function() {
             const pack = this.state.currentPack;
+            
+            // If no current pack, create a new one
+            if (!pack) {
+                console.log('No current pack, creating new one');
+                this.createNewPack();
+                return;
+            }
             
             $('#pack-name').val(pack.name || '');
             $('#pack-description').val(pack.description || '');
@@ -964,7 +1149,10 @@
     // ==================== Initialize on DOM Ready ====================
     $(document).ready(function() {
         window.PackBuilder = PackBuilder;
-        PackBuilder.init();
+        // Delay initialization to let PackBuilderCRUD load first
+        setTimeout(function() {
+            PackBuilder.init();
+        }, 300);
     });
 
 })(jQuery);

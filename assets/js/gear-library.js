@@ -23,10 +23,10 @@
             loading: false
         },
 
-        // API endpoints
+        // API endpoints - use ajax-handler to avoid timeouts
         api: {
-            base: '/BTT/api/index.php?route=gear',
-            prefs: '/BTT/api/index.php?route=gear&id=prefs'
+            base: '/BTT/ajax-handler.php?route=gear',
+            prefs: '/BTT/ajax-handler.php?route=gear&id=prefs'
         },
 
         // Initialize
@@ -162,9 +162,19 @@
                     data: params
                 });
 
-                if (response.success) {
+                // Handle both response formats
+                if (Array.isArray(response)) {
+                    // Simple array response from ajax-handler
+                    this.state.gearItems = response;
+                    this.updateStats({total: response.length});
+                    this.renderItems();
+                } else if (response.success) {
+                    // Complex response format
                     this.state.gearItems = response.data.items || [];
                     this.updateStats(response.data.stats);
+                    this.renderItems();
+                } else {
+                    this.state.gearItems = [];
                     this.renderItems();
                 }
             } catch (error) {

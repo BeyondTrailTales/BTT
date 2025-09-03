@@ -19,6 +19,15 @@ if (!defined('BASE_PATH')) {
     require_once dirname(dirname(__DIR__)) . '/app/bootstrap.php';
 }
 
+// Load authentication service
+use App\Services\AuthService;
+
+// Get current user if logged in
+$currentUser = null;
+if (AuthService::isAuthenticated()) {
+    $currentUser = AuthService::getCurrentUser();
+}
+
 // Set defaults for page variables
 $pageTitle = $pageTitle ?? page_meta('title', BTT_APP_NAME);
 $pageDescription = $pageDescription ?? page_meta('description', BTT_APP_DESCRIPTION);
@@ -48,18 +57,19 @@ $isTestPage = is_test_page();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Forest Theme CSS - Load in correct order -->
+    <!-- Main CSS with all components - New Design System -->
+    <link rel="stylesheet" href="<?php echo asset_url('css/main.css'); ?>">
+    
+    <!-- Legacy Forest Theme CSS (will be phased out) -->
     <link rel="stylesheet" href="<?php echo asset_url('css/forest-tokens.css'); ?>">
     <link rel="stylesheet" href="<?php echo asset_url('css/forest-base.css'); ?>">
     <link rel="stylesheet" href="<?php echo asset_url('css/forest-components.css'); ?>">
     <link rel="stylesheet" href="<?php echo asset_url('css/forest-theme.css'); ?>">
     <link rel="stylesheet" href="<?php echo asset_url('css/forest-animations.css'); ?>">
-    <!-- Enhanced Forest CSS for Professional Polish -->
     <link rel="stylesheet" href="<?php echo asset_url('css/forest-enhanced.css'); ?>">
-    <!-- Premium Forest Tokens and Components -->
     <link rel="stylesheet" href="<?php echo asset_url('css/forest-premium.css'); ?>">
     <link rel="stylesheet" href="<?php echo asset_url('css/buttons-premium.css'); ?>">
-    <!-- Dropdown Arrow Fix - Must load after forest-enhanced.css -->
+    <link rel="stylesheet" href="<?php echo asset_url('css/auth-nav.css'); ?>">
     <link rel="stylesheet" href="<?php echo asset_url('css/dropdown-fix.css'); ?>">
     <!-- Loading Animations and Skeleton Screens -->
     <!-- <link rel="stylesheet" href="<?php echo asset_url('css/skeleton-loader.css'); ?>"> -->
@@ -353,7 +363,15 @@ $isTestPage = is_test_page();
         }
     </style>
 </head>
-<body data-page="<?php echo e($pageId); ?>" class="forest-theme">
+<?php
+// Check for UI v2 feature flag
+$useV2UI = isset($_GET['ui']) && $_GET['ui'] === 'v2';
+$bodyClasses = ['forest-theme'];
+if ($useV2UI) {
+    $bodyClasses[] = 'btt-ui-v2';
+}
+?>
+<body data-page="<?php echo e($pageId); ?>" class="<?php echo implode(' ', $bodyClasses); ?>">
     <!-- Skip to main content for accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
@@ -368,14 +386,6 @@ $isTestPage = is_test_page();
                 
                 <!-- Desktop Navigation -->
                 <ul class="nav-menu desktop-nav">
-                    <li class="nav-item">
-                        <a href="<?php echo route_url(); ?>" 
-                           class="nav-link <?php echo active_class('home'); ?>"
-                           aria-current="<?php echo aria_current('home'); ?>">
-                            <span class="nav-icon">🏠</span>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
                     <li class="nav-item">
                         <a href="<?php echo route_url('trips'); ?>" 
                            class="nav-link <?php echo active_class('trips'); ?>"
@@ -392,17 +402,35 @@ $isTestPage = is_test_page();
                             <span>Backpacks</span>
                         </a>
                     </li>
-                    <?php if (BTT_DEBUG): ?>
-                    <li class="nav-item">
-                        <a href="<?php echo route_url('test'); ?>" 
-                           class="nav-link <?php echo active_class('test'); ?>"
-                           aria-current="<?php echo aria_current('test'); ?>">
-                            <span class="nav-icon">🧪</span>
-                            <span>Tests</span>
-                        </a>
-                    </li>
-                    <?php endif; ?>
                 </ul>
+                
+                <!-- Authentication Navigation -->
+                <?php if ($currentUser): ?>
+                    <!-- User is logged in -->
+                    <div class="nav-user-menu">
+                        <button class="nav-user-button" aria-expanded="false" aria-controls="user-menu">
+                            <span class="nav-user-name"><?php echo htmlspecialchars($currentUser['username'] ?? $currentUser['email']); ?></span>
+                            <svg class="icon-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                        <div class="nav-dropdown" id="user-menu" hidden>
+                            <a href="<?php echo route_url('profile'); ?>" class="dropdown-link">Profile</a>
+                            <a href="<?php echo route_url('settings'); ?>" class="dropdown-link">Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <form method="post" action="<?php echo BTT_API_URL; ?>/?route=auth&id=logout" class="logout-form">
+                                <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
+                                <button type="submit" class="dropdown-link logout-btn">Logout</button>
+                            </form>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <!-- User is not logged in -->
+                    <div class="nav-auth-links">
+                        <a class="nav-link<?php echo active_class('login'); ?>" href="<?php echo route_url('public/auth/login.php'); ?>">Login</a>
+                        <a class="nav-link nav-link-primary<?php echo active_class('register'); ?>" href="<?php echo route_url('public/auth/register.php'); ?>">Sign Up</a>
+                    </div>
+                <?php endif; ?>
                 
                 <!-- Mobile Menu Toggle -->
                 <button class="mobile-menu-toggle" 
@@ -421,14 +449,6 @@ $isTestPage = is_test_page();
             <div id="mobile-nav-menu" class="mobile-menu" role="region" aria-hidden="true">
                 <ul class="nav-menu">
                     <li class="nav-item">
-                        <a href="<?php echo route_url(); ?>" 
-                           class="nav-link <?php echo active_class('home'); ?>"
-                           aria-current="<?php echo aria_current('home'); ?>">
-                            <span class="nav-icon">🏠</span>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a href="<?php echo route_url('trips'); ?>" 
                            class="nav-link <?php echo active_class('trips'); ?>"
                            aria-current="<?php echo aria_current('trips'); ?>">
@@ -444,16 +464,6 @@ $isTestPage = is_test_page();
                             <span>Backpacks</span>
                         </a>
                     </li>
-                    <?php if (BTT_DEBUG): ?>
-                    <li class="nav-item">
-                        <a href="<?php echo route_url('test'); ?>" 
-                           class="nav-link <?php echo active_class('test'); ?>"
-                           aria-current="<?php echo aria_current('test'); ?>">
-                            <span class="nav-icon">🧪</span>
-                            <span>Tests</span>
-                        </a>
-                    </li>
-                    <?php endif; ?>
                 </ul>
             </div>
         </nav>

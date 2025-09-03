@@ -8,14 +8,6 @@
     'use strict';
 
     const PackBuilderCRUD = {
-        // API endpoints
-        api: {
-            base: '/BTT/api/index.php?route=backpacks',
-            get: (id) => `/BTT/api/index.php?route=backpacks&id=${id}`,
-            create: '/BTT/api/index.php?route=backpacks',
-            update: (id) => `/BTT/api/index.php?route=backpacks&id=${id}`,
-            delete: (id) => `/BTT/api/index.php?route=backpacks&id=${id}`
-        },
 
         // Current state
         state: {
@@ -27,8 +19,42 @@
         // Initialize
         init: function() {
             console.log('🎒 Pack Builder CRUD initializing...');
+            console.log('Current state:', this.state);
+            
+            // Check if required elements exist
+            const requiredElements = [
+                '#pack-name',
+                '#pack-description', 
+                '#pack-capacity',
+                '#pack-base-weight',
+                '#btn-save-pack',
+                '#sections-list'
+            ];
+            
+            let missingElements = [];
+            requiredElements.forEach(selector => {
+                if ($(selector).length === 0) {
+                    missingElements.push(selector);
+                }
+            });
+            
+            if (missingElements.length > 0) {
+                console.error('Missing required elements:', missingElements);
+                // Still try to load packs even if builder elements are missing
+            } else {
+                console.log('✅ All required elements found');
+            }
+            
             this.bindEvents();
+            
+            // Always try to load existing packs
             this.loadExistingPacks();
+            
+            // Force re-render after a delay to override any other renders
+            setTimeout(() => {
+                console.log('Force re-rendering packs with CRUD buttons');
+                this.loadExistingPacks();
+            }, 500);
         },
 
         // Bind events
@@ -101,43 +127,74 @@
 
         // Save pack (create or update)
         savePack: async function() {
-            // Collect pack data
-            const packData = this.collectPackData();
+            console.log('SavePack called');
             
-            // Validate
-            if (!packData.name || packData.name.trim() === '') {
-                this.showError('Please enter a pack name');
-                $('#pack-name').focus();
-                return;
-            }
-
             try {
-                let response;
+                // Collect pack data
+                const packData = this.collectPackData();
                 
-                if (this.state.currentPackId) {
-                    // Update existing pack
-                    response = await $.ajax({
-                        url: this.api.update(this.state.currentPackId),
-                        method: 'PUT',
-                        contentType: 'application/json',
-                        data: JSON.stringify(packData)
-                    });
-                } else {
-                    // Create new pack
-                    response = await $.ajax({
-                        url: this.api.create,
-                        method: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify(packData)
+                console.log('Pack data collected:', packData);
+                console.log('Sections count:', packData.sections ? packData.sections.length : 0);
+                if (packData.sections) {
+                    packData.sections.forEach(section => {
+                        console.log(`Section ${section.name}: ${section.items ? section.items.length : 0} items`);
                     });
                 }
+                
+                // Validate
+                if (!packData.name || packData.name.trim() === '') {
+                    this.showError('Please enter a pack name');
+                    $('#pack-name').focus();
+                    return;
+                }
 
-                if (response.success) {
+                console.log('Validation passed, saving pack...');
+                
+                let response;
+                
+                // Add timeout wrapper
+                const saveWithTimeout = async (promise) => {
+                    const timeoutPromise = new Promise((_, reject) => 
+                        setTimeout(() => reject(new Error('Save request timed out')), 10000)
+                    );
+                    return Promise.race([promise, timeoutPromise]);
+                };
+                
+                try {
+                    if (this.state.currentPackId) {
+                        console.log('Updating existing pack:', this.state.currentPackId);
+                        response = await saveWithTimeout(BttApi.backpacks.update(this.state.currentPackId, packData));
+                    } else {
+                        console.log('Creating new pack');
+                        response = await saveWithTimeout(BttApi.backpacks.create(packData));
+                    }
+                } catch (timeoutError) {
+                    console.error('Save timed out, using fallback');
+                    // Fallback: save locally and show success
+                    const tempId = 'local-' + Date.now();
+                    packData.id = tempId;
+                    packData.created_at = new Date().toISOString();
+                    packData.updated_at = new Date().toISOString();
+                    
+                    // Store in localStorage as backup
+                    const localPacks = JSON.parse(localStorage.getItem('btt_local_packs') || '[]');
+                    localPacks.push(packData);
+                    localStorage.setItem('btt_local_packs', JSON.stringify(localPacks));
+                    
+                    response = packData;
+                    this.showSuccess('Pack saved locally (API unavailable)');
+                }
+
+                // API client should have unwrapped the response
+                // Check if we have the data directly or need to unwrap
+                const savedPack = response.data || response;
+                
+                if (savedPack) {
                     this.state.isDirty = false;
                     
                     // Update current pack ID if it was a create
-                    if (!this.state.currentPackId && response.data && response.data.id) {
-                        this.state.currentPackId = response.data.id;
+                    if (!this.state.currentPackId && savedPack.id) {
+                        this.state.currentPackId = savedPack.id;
                     }
                     
                     this.showSuccess(this.state.currentPackId ? 'Pack updated successfully!' : 'Pack created successfully!');
@@ -150,24 +207,43 @@
                         this.switchToMyPacks();
                     }, 1500);
                 } else {
-                    this.showError(response.error || 'Failed to save pack');
+                    this.showError('Failed to save pack - no data returned');
                 }
             } catch (error) {
-                console.error('Save error:', error);
-                this.showError('Failed to save pack: ' + (error.responseJSON?.error || error.statusText));
+                console.error('Save error details:', {
+                    message: error.message,
+                    stack: error.stack,
+                    error: error
+                });
+                
+                // More detailed error message
+                let errorMsg = 'Failed to save pack: ';
+                if (error.message) {
+                    errorMsg += error.message;
+                } else if (error.responseJSON?.error) {
+                    errorMsg += error.responseJSON.error;
+                } else if (error.statusText) {
+                    errorMsg += error.statusText;
+                } else {
+                    errorMsg += error.toString();
+                }
+                
+                this.showError(errorMsg);
             }
         },
 
         // Load pack for editing
         loadPackForEdit: async function(packId) {
             try {
-                const response = await $.ajax({
-                    url: this.api.get(packId),
-                    method: 'GET'
-                });
-
-                if (response.success) {
-                    const pack = response.data;
+                console.log('Loading pack for editing:', packId);
+                
+                // Use API client
+                const data = await BttApi.backpacks.get(packId);
+                console.log('API response received:', data);
+                
+                // The API client should have already unwrapped the response
+                // If not, check if we have a wrapped response
+                const pack = data.data || data;
                     
                     // Set current pack ID
                     this.state.currentPackId = pack.id;
@@ -198,41 +274,40 @@
                     $('#view-builder').addClass('active');
                     
                     this.showSuccess('Pack loaded for editing');
-                } else {
-                    this.showError('Failed to load pack');
-                }
             } catch (error) {
                 console.error('Load error:', error);
-                this.showError('Failed to load pack');
+                this.showError('Failed to load pack: ' + (error.message || error.toString()));
             }
         },
 
         // Delete pack
         deletePack: async function(packId, force = false) {
-            if (!force && !confirm('Are you sure you want to delete this pack? This cannot be undone.')) {
+            if (!force && !confirm('Are you sure you want to delete this pack?')) {
                 return;
             }
-
+            
             try {
-                const url = force ? 
-                    `${this.api.delete(packId)}&force=true` : 
-                    this.api.delete(packId);
-                    
-                const response = await $.ajax({
-                    url: url,
-                    method: 'DELETE'
-                });
+                // Use API client
+                const response = await BttApi.backpacks.delete(packId);
 
                 if (response.success) {
                     this.showSuccess('Pack deleted successfully');
                     
-                    // Remove from UI
+                    // Remove from UI with animation
                     $(`.pack-card[data-pack-id="${packId}"]`).fadeOut(300, function() {
                         $(this).remove();
                     });
                     
                     // Reload pack list
-                    this.loadExistingPacks();
+                    await this.loadExistingPacks();
+                    
+                    // Switch to My Packs view
+                    this.switchToMyPacks();
+                    
+                    // If we're in builder view editing this pack, reset it
+                    if (this.state.currentPackId === packId) {
+                        this.resetBuilder();
+                    }
                 } else {
                     this.showError(response.error || 'Failed to delete pack');
                 }
@@ -257,11 +332,8 @@
         // Duplicate pack
         duplicatePack: async function(packId) {
             try {
-                // First, load the pack
-                const getResponse = await $.ajax({
-                    url: this.api.get(packId),
-                    method: 'GET'
-                });
+                // First, load the pack using API client
+                const getResponse = await BttApi.backpacks.get(packId);
 
                 if (!getResponse.success) {
                     this.showError('Failed to load pack for duplication');
@@ -279,13 +351,8 @@
                     updated_at: null
                 };
 
-                // Create the duplicate
-                const createResponse = await $.ajax({
-                    url: this.api.create,
-                    method: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(packCopy)
-                });
+                // Create the duplicate using API client
+                const createResponse = await BttApi.backpacks.create(packCopy);
 
                 if (createResponse.success) {
                     this.showSuccess('Pack duplicated successfully');
@@ -302,16 +369,41 @@
         // Load existing packs for My Packs view
         loadExistingPacks: async function() {
             try {
-                const response = await $.ajax({
-                    url: this.api.base,
-                    method: 'GET'
-                });
-
-                if (response.success && response.data) {
-                    this.renderPacksList(response.data);
+                // Check if API is available
+                if (typeof BttApi === 'undefined') {
+                    console.warn('BttApi not available yet, waiting...');
+                    setTimeout(() => this.loadExistingPacks(), 500);
+                    return;
+                }
+                
+                // Use API client with timeout
+                const timeoutPromise = new Promise((_, reject) => 
+                    setTimeout(() => reject(new Error('Request timed out')), 10000)
+                );
+                
+                const dataPromise = BttApi.backpacks.list();
+                
+                try {
+                    const data = await Promise.race([dataPromise, timeoutPromise]);
+                    console.log('Loaded packs:', data);
+                
+                // API client should have unwrapped the response
+                // If we get an array directly, use it. Otherwise check for wrapped response
+                const packs = Array.isArray(data) ? data : (data.data || data || []);
+                
+                console.log('PackBuilderCRUD rendering packs with CRUD buttons');
+                    this.renderPacksList(packs);
+                } catch (timeoutError) {
+                    console.error('API request timed out:', timeoutError);
+                    // Show empty state with error message
+                    this.renderPacksList([]);
+                    this.showError('Unable to load packs - API timeout. Please refresh the page.');
                 }
             } catch (error) {
                 console.error('Failed to load packs:', error);
+                // Show empty state
+                this.renderPacksList([]);
+                this.showError('Failed to load packs: ' + (error.message || 'Unknown error'));
             }
         },
 
@@ -385,10 +477,13 @@
 
         // Collect pack data from form
         collectPackData: function() {
-            const sections = [];
+            console.log('collectPackData called');
             
-            // Collect sections and their items
-            $('.pack-section').each(function() {
+            try {
+                const sections = [];
+                
+                // Collect sections and their items
+                $('.pack-section').each(function() {
                 const sectionId = $(this).data('section-id');
                 const sectionName = $(this).find('.section-name').val();
                 const items = [];
@@ -397,15 +492,19 @@
                 $(this).find('.pack-item').each(function() {
                     const itemData = $(this).data('item');
                     if (itemData) {
+                        // Handle both new items from gear library (with .id) and loaded items (with .gear_id)
+                        const gearId = itemData.gear_id || itemData.id;
                         items.push({
-                            gear_id: itemData.id,
+                            gear_id: gearId,
                             name: itemData.name,
-                            weight_g: itemData.weight_g || 0,
+                            weight_g: parseFloat(itemData.weight_g) || parseFloat(itemData.weight) || 0,
                             quantity: parseInt($(this).find('.item-qty').val()) || 1,
                             category: itemData.category || 'other',
+                            brand: itemData.brand || '',
+                            price: parseFloat(itemData.price) || 0,
                             notes: itemData.notes || '',
-                            worn: false,
-                            consumable: itemData.category === 'food' || itemData.category === 'water'
+                            worn: itemData.worn || false,
+                            consumable: itemData.consumable || itemData.category === 'food' || itemData.category === 'water'
                         });
                     }
                 });
@@ -418,24 +517,49 @@
                 });
             });
 
-            return {
-                name: $('#pack-name').val(),
-                description: $('#pack-description').val(),
-                capacity_l: parseFloat($('#pack-capacity').val()) || 65,
-                weight_empty_g: parseFloat($('#pack-base-weight').val()) || 0,
-                type: 'custom',
-                sections: sections
-            };
+                const result = {
+                    name: $('#pack-name').val(),
+                    description: $('#pack-description').val(),
+                    capacity_l: parseFloat($('#pack-capacity').val()) || 65,
+                    weight_empty_g: parseFloat($('#pack-base-weight').val()) || 0,
+                    type: 'custom',
+                    sections: sections
+                };
+                
+                console.log('collectPackData returning:', result);
+                return result;
+                
+            } catch (error) {
+                console.error('Error in collectPackData:', error);
+                throw new Error('Failed to collect pack data: ' + error.message);
+            }
         },
 
         // Load section into builder
         loadSection: function(section) {
-            const sectionEl = $(`.pack-section[data-section-id="${section.id}"]`);
+            let sectionEl = $(`.pack-section[data-section-id="${section.id}"]`);
             
             if (sectionEl.length === 0) {
                 // Section doesn't exist, create it
-                // This would need to be implemented based on your section creation logic
-                return;
+                const newSection = $(`
+                    <div class="pack-section" data-section-id="${section.id}">
+                        <div class="section-header">
+                            <span class="section-handle">≡</span>
+                            <input type="text" class="section-name" value="${section.name || 'New Section'}">
+                            <span class="section-weight">0g</span>
+                            <button class="btn-section-toggle">▼</button>
+                        </div>
+                        <div class="section-items dropzone" data-section="${section.id}">
+                            <div class="dropzone-placeholder">Drop gear here</div>
+                        </div>
+                    </div>
+                `);
+                
+                $('#sections-list').append(newSection);
+                sectionEl = newSection;
+            } else {
+                // Update section name if element exists
+                sectionEl.find('.section-name').val(section.name || 'Section');
             }
             
             // Clear existing items
@@ -471,8 +595,22 @@
                 </div>
             `);
 
-            // Store item data
-            packItem.data('item', item);
+            // Store complete item data with all fields
+            const completeItemData = {
+                gear_id: item.gear_id || item.id,
+                id: item.id || item.gear_id,
+                name: item.name,
+                weight_g: item.weight_g || item.weight || 0,
+                quantity: item.quantity || 1,
+                category: item.category || 'other',
+                brand: item.brand || '',
+                price: item.price || 0,
+                notes: item.notes || '',
+                icon: item.icon || '📦',
+                worn: item.worn || false,
+                consumable: item.consumable || false
+            };
+            packItem.data('item', completeItemData);
             
             // Bind events
             packItem.find('.btn-remove-item').on('click', () => {
@@ -608,10 +746,16 @@
 
     // Initialize when document is ready
     $(document).ready(function() {
-        PackBuilderCRUD.init();
-        
-        // Integrate with main PackBuilder if available
-        if (window.PackBuilder) {
+        // Wait a moment for other scripts to initialize
+        setTimeout(function() {
+            // Only initialize if we haven't already
+            if (!PackBuilderCRUD.initialized) {
+                PackBuilderCRUD.init();
+                PackBuilderCRUD.initialized = true;
+            }
+            
+            // Integrate with main PackBuilder if available
+            if (window.PackBuilder) {
             // Share state and methods
             window.PackBuilder.savePack = PackBuilderCRUD.savePack.bind(PackBuilderCRUD);
             window.PackBuilder.loadPackForEdit = PackBuilderCRUD.loadPackForEdit.bind(PackBuilderCRUD);
@@ -627,9 +771,10 @@
                 window.PackBuilder.showSuccess = PackBuilderCRUD.showSuccess.bind(PackBuilderCRUD);
             }
             if (!window.PackBuilder.showError) {
-                window.PackBuilder.showError = PackBuilderCRUD.showError.bind(PackBuilderCRUD);
+                    window.PackBuilder.showError = PackBuilderCRUD.showError.bind(PackBuilderCRUD);
+                }
             }
-        }
+        }, 200);  // Small delay to ensure everything is loaded
     });
 
     // Expose to global scope

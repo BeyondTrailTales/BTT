@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Backpack Save with Items</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+        .section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 4px; }
+        button { background: #10b981; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; margin: 5px; }
+        button:hover { background: #059669; }
+        .result { margin: 20px 0; padding: 15px; background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 4px; white-space: pre-wrap; font-family: monospace; font-size: 12px; }
+        .success { background: #d4edda; border-color: #c3e6cb; color: #155724; }
+        .error { background: #f8d7da; border-color: #f5c6cb; color: #721c24; }
+        input, textarea { width: 100%; padding: 8px; margin: 5px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        h1 { color: #333; }
+        h2 { color: #10b981; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎒 Test Backpack Save with Items</h1>
+        
+        <div class="section">
+            <h2>1. Login</h2>
+            <input type="email" id="email" placeholder="Email" value="test@example.com">
+            <input type="password" id="password" placeholder="Password" value="Test123!">
+            <button onclick="login()">Login</button>
+            <div id="login-result" class="result"></div>
+        </div>
+        
+        <div class="section">
+            <h2>2. Create/Update Backpack with Items</h2>
+            <input type="text" id="pack-name" placeholder="Pack Name" value="Test Pack with Items">
+            <textarea id="pack-desc" placeholder="Description" rows="2">Testing save with items</textarea>
+            <br><br>
+            <button onclick="createPackWithItems()">Create New Pack with Items</button>
+            <button onclick="updateExistingPack()">Update Existing Pack with Items</button>
+            <div id="save-result" class="result"></div>
+        </div>
+        
+        <div class="section">
+            <h2>3. Verify Saved Pack</h2>
+            <input type="text" id="pack-id" placeholder="Pack ID">
+            <button onclick="loadPack()">Load Pack</button>
+            <div id="load-result" class="result"></div>
+        </div>
+        
+        <div class="section">
+            <h2>4. List All Packs</h2>
+            <button onclick="listPacks()">List Packs</button>
+            <div id="list-result" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        const apiBase = '/BTT/api/index.php';
+        let authToken = null;
+        
+        async function apiRequest(route, method = 'GET', data = null, id = null) {
+            let url = `${apiBase}?route=${route}`;
+            if (id) url += `&id=${id}`;
+            
+            const options = {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include'
+            };
+            
+            if (data) {
+                options.body = JSON.stringify(data);
+            }
+            
+            if (authToken) {
+                options.headers['Authorization'] = `Bearer ${authToken}`;
+            }
+            
+            try {
+                const response = await fetch(url, options);
+                const result = await response.json();
+                return result;
+            } catch (error) {
+                console.error('API Error:', error);
+                throw error;
+            }
+        }
+        
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                const result = await apiRequest('auth', 'POST', {
+                    login: email,
+                    password: password
+                }, 'login');
+                
+                if (result.success) {
+                    authToken = result.data.token || null;
+                    document.getElementById('login-result').className = 'result success';
+                    document.getElementById('login-result').textContent = '✅ Login successful!\n' + 
+                        'User ID: ' + result.data.user.id + '\n' +
+                        'Username: ' + result.data.user.username;
+                } else {
+                    throw new Error(result.message || 'Login failed');
+                }
+            } catch (error) {
+                document.getElementById('login-result').className = 'result error';
+                document.getElementById('login-result').textContent = '❌ Login failed: ' + error.message;
+            }
+        }
+        
+        async function createPackWithItems() {
+            const packData = {
+                name: document.getElementById('pack-name').value,
+                description: document.getElementById('pack-desc').value,
+                capacity_l: 65,
+                weight_empty_g: 1500,
+                type: 'custom',
+                sections: [
+                    {
+                        id: 'main',
+                        name: 'Main Compartment',
+                        order: 0,
+                        items: [
+                            {
+                                name: 'Test Sleeping Bag',
+                                weight_g: 900,
+                                quantity: 1,
+                                category: 'sleep',
+                                brand: 'Test Brand',
+                                price: 200,
+                                notes: 'Custom sleeping bag'
+                            },
+                            {
+                                name: 'Test Tent',
+                                weight_g: 1200,
+                                quantity: 1,
+                                category: 'shelter',
+                                brand: 'Test Brand',
+                                notes: 'Custom tent'
+                            }
+                        ]
+                    },
+                    {
+                        id: 'lid',
+                        name: 'Top Lid',
+                        order: 1,
+                        items: [
+                            {
+                                gear_id: 1,  // Reference to system item
+                                quantity: 1
+                            },
+                            {
+                                name: 'Custom Headlamp',
+                                weight_g: 85,
+                                quantity: 1,
+                                category: 'navigation'
+                            }
+                        ]
+                    },
+                    {
+                        id: 'pockets',
+                        name: 'Side Pockets',
+                        order: 2,
+                        items: [
+                            {
+                                name: 'Water Bottles',
+                                weight_g: 35,
+                                quantity: 2,
+                                category: 'water'
+                            }
+                        ]
+                    }
+                ]
+            };
+            
+            console.log('Sending pack data:', packData);
+            
+            try {
+                const result = await apiRequest('backpacks', 'POST', packData);
+                
+                if (result.success) {
+                    const pack = result.data;
+                    document.getElementById('save-result').className = 'result success';
+                    document.getElementById('save-result').textContent = 
+                        `✅ Pack created successfully!\n\n` +
+                        `Pack ID: ${pack.id}\n` +
+                        `Name: ${pack.name}\n` +
+                        `Total Items: ${pack.total_items || 0}\n` +
+                        `Total Weight: ${pack.total_weight_g || 0}g\n\n` +
+                        `Sections:\n` +
+                        (pack.sections ? pack.sections.map(s => 
+                            `  - ${s.name}: ${s.items ? s.items.length : 0} items`
+                        ).join('\n') : '  No sections returned');
+                    
+                    // Set pack ID for loading
+                    document.getElementById('pack-id').value = pack.id;
+                } else {
+                    throw new Error(result.message || 'Create failed');
+                }
+            } catch (error) {
+                document.getElementById('save-result').className = 'result error';
+                document.getElementById('save-result').textContent = '❌ Create failed: ' + error.message;
+            }
+        }
+        
+        async function updateExistingPack() {
+            const packId = document.getElementById('pack-id').value;
+            if (!packId) {
+                alert('Please enter a pack ID or create a pack first');
+                return;
+            }
+            
+            const packData = {
+                name: document.getElementById('pack-name').value + ' (Updated)',
+                sections: [
+                    {
+                        id: 'main',
+                        name: 'Main Compartment',
+                        order: 0,
+                        items: [
+                            {
+                                name: 'Updated Item 1',
+                                weight_g: 500,
+                                quantity: 1,
+                                category: 'other'
+                            },
+                            {
+                                name: 'Updated Item 2',
+                                weight_g: 300,
+                                quantity: 2,
+                                category: 'other'
+                            }
+                        ]
+                    }
+                ]
+            };
+            
+            try {
+                const result = await apiRequest('backpacks', 'PUT', packData, packId);
+                
+                if (result.success) {
+                    const pack = result.data;
+                    document.getElementById('save-result').className = 'result success';
+                    document.getElementById('save-result').textContent = 
+                        `✅ Pack updated successfully!\n\n` +
+                        JSON.stringify(pack, null, 2);
+                } else {
+                    throw new Error(result.message || 'Update failed');
+                }
+            } catch (error) {
+                document.getElementById('save-result').className = 'result error';
+                document.getElementById('save-result').textContent = '❌ Update failed: ' + error.message;
+            }
+        }
+        
+        async function loadPack() {
+            const packId = document.getElementById('pack-id').value;
+            if (!packId) {
+                alert('Please enter a pack ID');
+                return;
+            }
+            
+            try {
+                const result = await apiRequest('backpacks', 'GET', null, packId);
+                
+                if (result.success) {
+                    const pack = result.data;
+                    let output = `✅ Pack loaded successfully!\n\n`;
+                    output += `ID: ${pack.id}\n`;
+                    output += `Name: ${pack.name}\n`;
+                    output += `Description: ${pack.description || 'None'}\n`;
+                    output += `Total Items: ${pack.total_items || 0}\n`;
+                    output += `Total Weight: ${pack.total_weight_g || 0}g\n\n`;
+                    
+                    if (pack.sections && pack.sections.length > 0) {
+                        output += `Sections (${pack.sections.length}):\n`;
+                        pack.sections.forEach(section => {
+                            output += `\n  ${section.name}:\n`;
+                            if (section.items && section.items.length > 0) {
+                                section.items.forEach(item => {
+                                    output += `    - ${item.name} (${item.weight_g}g x ${item.quantity})\n`;
+                                });
+                            } else {
+                                output += `    (no items)\n`;
+                            }
+                        });
+                    } else {
+                        output += `No sections found\n`;
+                    }
+                    
+                    document.getElementById('load-result').className = 'result success';
+                    document.getElementById('load-result').textContent = output;
+                } else {
+                    throw new Error(result.message || 'Load failed');
+                }
+            } catch (error) {
+                document.getElementById('load-result').className = 'result error';
+                document.getElementById('load-result').textContent = '❌ Load failed: ' + error.message;
+            }
+        }
+        
+        async function listPacks() {
+            try {
+                const result = await apiRequest('backpacks');
+                
+                if (result.success) {
+                    const packs = result.data;
+                    let output = `✅ Found ${packs.length} pack(s):\n\n`;
+                    
+                    packs.forEach(pack => {
+                        output += `ID: ${pack.id} - ${pack.name}\n`;
+                        output += `  Items: ${pack.total_items || 0}, Weight: ${pack.total_weight_g || 0}g\n`;
+                        output += `  Created: ${pack.created_at}\n\n`;
+                    });
+                    
+                    document.getElementById('list-result').className = 'result success';
+                    document.getElementById('list-result').textContent = output;
+                } else {
+                    throw new Error(result.message || 'List failed');
+                }
+            } catch (error) {
+                document.getElementById('list-result').className = 'result error';
+                document.getElementById('list-result').textContent = '❌ List failed: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

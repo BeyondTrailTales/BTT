@@ -1,0 +1,376 @@
+/**
+ * BTT Button Components
+ * Duolingo-inspired button animations with ADA compliance
+ */
+
+/* Base Button Styles */
+.btn {
+  /* Layout */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  
+  /* Sizing */
+  padding: var(--space-3) var(--space-5);
+  min-height: 44px; /* WCAG touch target */
+  min-width: 44px;
+  
+  /* Typography */
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  line-height: var(--lh-tight);
+  text-decoration: none;
+  white-space: nowrap;
+  
+  /* Appearance */
+  border: 2px solid transparent;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  user-select: none;
+  
+  /* Animation */
+  transition: all var(--dur-fast) var(--ease-standard);
+  transform-origin: center;
+  will-change: transform, box-shadow;
+  
+  /* Focus */
+  position: relative;
+  outline: none;
+}
+
+/* Focus Ring - Visible for Keyboard Navigation */
+.btn:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* Duolingo-style Hover Animation */
+.btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Active State - Spring Animation */
+.btn:active:not(:disabled) {
+  transform: scale(var(--active-scale)) translateY(0);
+  transition-duration: var(--dur-instant);
+}
+
+/* Disabled State */
+.btn:disabled {
+  opacity: var(--disabled-opacity);
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Primary Button */
+.btn--primary {
+  background: linear-gradient(135deg, var(--btt-green-500) 0%, var(--btt-green-600) 100%);
+  color: white;
+  border-color: var(--btt-green-600);
+  box-shadow: 0 4px 0 var(--btt-green-700), var(--shadow-md);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--btt-green-400) 0%, var(--btt-green-500) 100%);
+  box-shadow: 0 6px 0 var(--btt-green-700), var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.btn--primary:active:not(:disabled) {
+  box-shadow: 0 2px 0 var(--btt-green-700), var(--shadow-sm);
+  transform: translateY(2px);
+}
+
+/* Secondary Button */
+.btn--secondary {
+  background: linear-gradient(135deg, var(--neutral-100) 0%, white 100%);
+  color: var(--btt-green-700);
+  border-color: var(--btt-green-200);
+  box-shadow: 0 3px 0 var(--neutral-300), var(--shadow-sm);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  background: linear-gradient(135deg, white 0%, var(--btt-green-50) 100%);
+  border-color: var(--btt-green-300);
+  box-shadow: 0 5px 0 var(--neutral-300), var(--shadow-md);
+}
+
+.btn--secondary:active:not(:disabled) {
+  box-shadow: 0 1px 0 var(--neutral-300), var(--shadow-sm);
+  transform: translateY(2px);
+}
+
+/* Ghost Button */
+.btn--ghost {
+  background: transparent;
+  color: var(--btt-green-600);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.btn--ghost:hover:not(:disabled) {
+  background: var(--btt-green-50);
+  color: var(--btt-green-700);
+  transform: none;
+  box-shadow: none;
+}
+
+.btn--ghost:active:not(:disabled) {
+  background: var(--btt-green-100);
+}
+
+/* Outline Button */
+.btn--outline {
+  background: transparent;
+  color: var(--btt-green-600);
+  border-color: var(--btt-green-600);
+  box-shadow: none;
+}
+
+.btn--outline:hover:not(:disabled) {
+  background: var(--btt-green-50);
+  color: var(--btt-green-700);
+  border-color: var(--btt-green-700);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn--outline:active:not(:disabled) {
+  background: var(--btt-green-100);
+  transform: translateY(0);
+}
+
+/* Danger Button */
+.btn--danger {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border-color: #dc2626;
+  box-shadow: 0 4px 0 #991b1b, var(--shadow-md);
+}
+
+.btn--danger:hover:not(:disabled) {
+  background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+  box-shadow: 0 6px 0 #991b1b, var(--shadow-lg);
+}
+
+.btn--danger:active:not(:disabled) {
+  box-shadow: 0 2px 0 #991b1b, var(--shadow-sm);
+  transform: translateY(2px);
+}
+
+/* Success Button */
+.btn--success {
+  background: linear-gradient(135deg, var(--color-success) 0%, #059669 100%);
+  color: white;
+  border-color: #059669;
+  box-shadow: 0 4px 0 #047857, var(--shadow-md);
+}
+
+.btn--success:hover:not(:disabled) {
+  background: linear-gradient(135deg, #34d399 0%, var(--color-success) 100%);
+  box-shadow: 0 6px 0 #047857, var(--shadow-lg);
+}
+
+.btn--success:active:not(:disabled) {
+  box-shadow: 0 2px 0 #047857, var(--shadow-sm);
+  transform: translateY(2px);
+}
+
+/* Button Sizes */
+.btn--sm {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  min-height: 36px;
+}
+
+.btn--lg {
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--text-lg);
+  min-height: 52px;
+}
+
+.btn--xl {
+  padding: var(--space-5) var(--space-8);
+  font-size: var(--text-xl);
+  min-height: 60px;
+}
+
+/* Full Width Button */
+.btn--block {
+  width: 100%;
+}
+
+/* Icon Button */
+.btn--icon {
+  padding: var(--space-3);
+  min-width: 44px;
+  aspect-ratio: 1;
+}
+
+.btn--icon.btn--sm {
+  padding: var(--space-2);
+  min-width: 36px;
+}
+
+.btn--icon.btn--lg {
+  padding: var(--space-4);
+  min-width: 52px;
+}
+
+/* Loading State */
+.btn--loading {
+  color: transparent !important;
+  pointer-events: none;
+  position: relative;
+}
+
+.btn--loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 50%;
+  left: 50%;
+  margin-left: -8px;
+  margin-top: -8px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  animation: btn-spin 0.6s linear infinite;
+}
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Button with Progress Dots */
+.btn--progress {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn--progress::after {
+  content: '...';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--btt-green-400) 50%, 
+    transparent 100%);
+  animation: btn-progress 1.5s ease-in-out infinite;
+}
+
+@keyframes btn-progress {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Pulse Animation for Attention */
+.btn--pulse {
+  animation: btn-pulse 2s infinite;
+}
+
+@keyframes btn-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(5, 150, 105, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(5, 150, 105, 0);
+  }
+}
+
+/* Button Group */
+.btn-group {
+  display: inline-flex;
+  gap: var(--space-1);
+}
+
+.btn-group .btn:not(:first-child) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.btn-group .btn:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* Floating Action Button (FAB) */
+.btn--fab {
+  position: fixed;
+  bottom: var(--space-6);
+  right: var(--space-6);
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border-radius: var(--radius-full);
+  box-shadow: var(--elev-3);
+  z-index: var(--z-sticky);
+}
+
+.btn--fab:hover:not(:disabled) {
+  transform: scale(1.1);
+  box-shadow: var(--elev-3);
+}
+
+.btn--fab:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
+  
+  .btn:hover:not(:disabled) {
+    transform: none;
+  }
+  
+  .btn:active:not(:disabled) {
+    transform: none;
+  }
+  
+  .btn--loading::after {
+    animation: none;
+  }
+  
+  .btn--progress::after {
+    animation: none;
+  }
+  
+  .btn--pulse {
+    animation: none;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .btn {
+    border-width: 3px;
+    font-weight: var(--font-bold);
+  }
+  
+  .btn:focus-visible {
+    outline-width: 4px;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .btn {
+    box-shadow: none !important;
+    transform: none !important;
+  }
+}

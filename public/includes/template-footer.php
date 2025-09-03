@@ -112,15 +112,34 @@
                 }
             }
         });
+        
+        // User dropdown and logout handlers are now in navigation.js
     </script>
+    
+    <!-- Load jQuery first (required by many components) -->
+    <script src="<?php echo BTT_VENDOR_URL; ?>/jquery-3.7.1.min.js"></script>
+    
+    <!-- Load Sortable.js for drag-and-drop functionality -->
+    <script src="<?php echo BTT_VENDOR_URL; ?>/sortable.min.js"></script>
     
     <!-- Load utilities and app scripts -->
     <script src="<?php echo asset_url('js/app.js'); ?>"></script>
+    <!-- Navigation handlers (dropdowns, logout, etc.) -->
+    <script src="<?php echo asset_url('js/navigation.js'); ?>"></script>
     <script src="<?php echo asset_url('js/gamification.js'); ?>"></script>
     <!-- Loading Animations and Transitions -->
     <script src="<?php echo asset_url('js/loading-transitions.js'); ?>"></script>
     <!-- Toast Notifications System -->
     <script src="<?php echo asset_url('js/toast-notifications.js'); ?>"></script>
+    
+    <!-- Keyboard Shortcuts System -->
+    <script src="<?php echo asset_url('js/keyboard-shortcuts.js'); ?>" defer></script>
+    
+    <!-- Performance Optimizer -->
+    <script src="<?php echo asset_url('js/performance-optimizer.js'); ?>" defer></script>
+    
+    <!-- Accessibility Enhancements -->
+    <script src="<?php echo asset_url('js/accessibility-enhancements.js'); ?>" defer></script>
     
     <!-- Page-specific scripts -->
     <?php if (isset($pageScripts)): ?>

@@ -1,0 +1,8 @@
+Email Verification for testuser (testuser@example.com):
+Verification URL: http://localhost/BTT/public/auth/verify-email.php?token=c83c36900e36beb83dfccd0a015be87cf98151f2544e3ce4587703e5982cf1f5
+Token expires in 24 hours
+--------------------------------------------------
+Email Verification for demo (demo@example.com):
+Verification URL: http://localhost/BTT/public/auth/verify-email.php?token=60778f86fadc020741f0b46846c5b2e742a654d16ff7831772b2e9fee2b34941
+Token expires in 24 hours
+--------------------------------------------------

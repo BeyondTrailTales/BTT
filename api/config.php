@@ -5,8 +5,9 @@
  * API-specific configuration for REST endpoints
  */
 
-// Include main app config
+// Include main app config and bootstrap for services
 require_once dirname(__DIR__) . '/app/config.php';
+require_once dirname(__DIR__) . '/app/bootstrap.php';
 
 // API Settings
 define('API_VERSION', 'v1');
@@ -32,8 +33,9 @@ $allowed_origins = [
 if (in_array($origin, $allowed_origins)) {
     header("Access-Control-Allow-Origin: $origin");
     header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-    header("Access-Control-Allow-Headers: Content-Type, Accept");
+    header("Access-Control-Allow-Headers: Content-Type, Accept, X-Requested-With");
     header("Access-Control-Allow-Credentials: true");
+    header("Vary: Origin");
 }
 
 // Handle preflight requests
@@ -42,18 +44,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-// API Rate Limiting (simple implementation)
-session_start();
-$rate_limit_key = 'api_requests_' . date('YmdH');
-$_SESSION[$rate_limit_key] = ($_SESSION[$rate_limit_key] ?? 0) + 1;
+// Session is already initialized in app/bootstrap.php which we included above.
+// The bootstrap file handles session configuration and starts the session.
 
-if ($_SESSION[$rate_limit_key] > 1000) { // 1000 requests per hour
-    http_response_code(429);
-    echo json_encode([
-        'success' => false,
-        'error' => 'Rate limit exceeded. Please try again later.'
-    ]);
-    exit();
+// API Rate Limiting (simple implementation)
+if (isset($_SESSION)) {
+    $rate_limit_key = 'api_requests_' . date('YmdH');
+    $_SESSION[$rate_limit_key] = ($_SESSION[$rate_limit_key] ?? 0) + 1;
+
+    if ($_SESSION[$rate_limit_key] > 1000) { // 1000 requests per hour
+        http_response_code(429);
+        echo json_encode([
+            'success' => false,
+            'error' => 'Rate limit exceeded. Please try again later.'
+        ]);
+        exit();
+    }
 }
 
 // Helper function to get request data

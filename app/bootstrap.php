@@ -3,7 +3,10 @@
  * BeyondTrailTales - Centralized Bootstrap
  * 
  * This file handles application initialization:
- * - Session management
+ * - Custom session handler
+ * - Authentication services
+ * - CSRF protection
+ * - Security headers
  * - Path definitions
  * - Configuration loading
  * - Helper functions
@@ -11,12 +14,7 @@
  * All public pages should include this file first
  */
 
-// Start session if not already started
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Define base paths if not already defined
+// Define base paths first
 if (!defined('BASE_PATH')) {
     define('BASE_PATH', dirname(__DIR__));
 }
@@ -28,13 +26,86 @@ if (!defined('BASE_URL')) {
 // Load main configuration
 require_once BASE_PATH . '/app/config.php';
 
-// Initialize user session if needed
-if (!isset($_SESSION['user_id'])) {
-    $_SESSION['user_id'] = 'guest_' . substr(md5(session_id()), 0, 8);
+// Only configure session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    // Configure secure session settings BEFORE starting
+    ini_set('session.use_strict_mode', 1);
+    ini_set('session.use_only_cookies', 1);
+    ini_set('session.cookie_httponly', 1);
+    ini_set('session.cookie_samesite', 'Lax');
+    ini_set('session.name', 'BTTSESSID');
+    
+    // Set session cookie parameters
+    $cookieParams = [
+        'lifetime' => 0, // Session cookie
+        'path' => '/BTT/', // Use BTT path for proper cookie scope
+        'domain' => '', // Empty for default domain
+        'secure' => isset($_SERVER['HTTPS']), // True if HTTPS
+        'httponly' => true,
+        'samesite' => 'Lax' // Lax is sufficient for same-site XHR
+    ];
+    session_set_cookie_params($cookieParams);
+    
+    // Initialize database connection for session handler
+    $dbPath = BASE_PATH . '/storage/sqlite/btt.db';
+    $db = null;
+    
+    try {
+        $db = new PDO('sqlite:' . $dbPath);
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $db->exec('PRAGMA foreign_keys = ON');
+    } catch (PDOException $e) {
+        error_log("Failed to connect to database for sessions: " . $e->getMessage());
+    }
+    
+    // Set up custom session handler
+    require_once BASE_PATH . '/app/Services/DbSessionHandler.php';
+    $sessionHandler = new App\Services\DbSessionHandler($db);
+    session_set_save_handler($sessionHandler, true);
+    
+    // Start the session
+    session_start();
+} else {
+    // Session already active - just load the handler class
+    require_once BASE_PATH . '/app/Services/DbSessionHandler.php';
+    error_log('Warning: Session already active before bootstrap.php configuration');
 }
 
-if (!isset($_SESSION['user_name'])) {
-    $_SESSION['user_name'] = 'Adventurer';
+// Set security headers
+if (!headers_sent()) {
+    // Prevent clickjacking
+    header('X-Frame-Options: SAMEORIGIN');
+    
+    // Prevent MIME type sniffing
+    header('X-Content-Type-Options: nosniff');
+    
+    // Enable XSS protection
+    header('X-XSS-Protection: 1; mode=block');
+    
+    // Referrer policy
+    header('Referrer-Policy: strict-origin-when-cross-origin');
+    
+    // Content Security Policy (updated to use local resources)
+    $csp = "default-src 'self'; ";
+    $csp .= "script-src 'self' 'unsafe-inline' 'unsafe-eval'; ";  // Only allow local scripts
+    $csp .= "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; ";
+    $csp .= "font-src 'self' https://fonts.gstatic.com data:; ";
+    $csp .= "img-src 'self' data: https:; ";
+    $csp .= "connect-src 'self'";
+    header('Content-Security-Policy: ' . $csp);
+}
+
+// Load authentication service
+require_once BASE_PATH . '/app/Services/AuthService.php';
+require_once BASE_PATH . '/app/Services/Csrf.php';
+
+use App\Services\AuthService;
+use App\Services\Csrf;
+
+// Check for remember me cookie on first visit
+if (!isset($_SESSION['user_id']) && !AuthService::isAuthenticated()) {
+    // AuthService will check remember cookie and restore session if valid
+    AuthService::isAuthenticated();
 }
 
 /**
@@ -120,10 +191,7 @@ function aria_current($route) {
  * @return string The CSRF token
  */
 function csrf_token() {
-    if (!isset($_SESSION['csrf_token'])) {
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-    }
-    return $_SESSION['csrf_token'];
+    return Csrf::getToken();
 }
 
 /**
@@ -132,8 +200,64 @@ function csrf_token() {
  * @return bool True if valid
  */
 function verify_csrf($token) {
-    return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
+    return Csrf::validateToken($token);
 }
+
+/**
+ * Get CSRF hidden field
+ * @return string HTML hidden input
+ */
+function csrf_field() {
+    return Csrf::getHiddenField();
+}
+
+/**
+ * Get CSRF meta tag
+ * @return string HTML meta tag
+ */
+function csrf_meta() {
+    return Csrf::getMetaTag();
+}
+
+/**
+ * Check if user is authenticated
+ * @return bool
+ */
+function is_authenticated() {
+    return AuthService::isAuthenticated();
+}
+
+/**
+ * Get current authenticated user
+ * @return array|null
+ */
+function current_user() {
+    return AuthService::getCurrentUser();
+}
+
+/**
+ * Get current user ID
+ * @return int|null
+ */
+function user_id() {
+    return AuthService::getUserId();
+}
+
+/**
+ * Require authentication or redirect to login
+ * @param string $redirectTo URL to redirect after login
+ */
+function require_auth($redirectTo = null) {
+    if (!AuthService::isAuthenticated()) {
+        $loginUrl = BTT_PUBLIC_URL . '/auth/login.php';
+        if ($redirectTo) {
+            $loginUrl .= '?redirect=' . urlencode($redirectTo);
+        }
+        header('Location: ' . $loginUrl);
+        exit;
+    }
+}
+
 
 /**
  * Escape HTML for output

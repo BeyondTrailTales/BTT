@@ -3,9 +3,17 @@
  * Trips API Routes
  * 
  * Handles all trip-related API endpoints
+ * Now with user scoping - users only see/manage their own trips
  */
 
+// AuthService is already loaded via bootstrap in api/config.php
+use App\Services\AuthService;
+
 function handleTripsRoute($method, $id) {
+    // Check authentication for all routes
+    if (!AuthService::isAuthenticated()) {
+        Response::unauthorized('Authentication required');
+    }
     switch ($method) {
         case 'GET':
             if ($id) {
@@ -39,11 +47,17 @@ function handleTripsRoute($method, $id) {
 }
 
 /**
- * Get all trips with optional backpack filter
+ * Get all trips for the current user with optional backpack filter
  */
 function getAllTrips() {
     try {
         require_once dirname(__DIR__) . '/../app/classes/Validator.php';
+        
+        // Get current user
+        $user = AuthService::getCurrentUser();
+        if (!$user) {
+            Response::unauthorized('User not found');
+        }
         
         $db = Database::getInstance();
         $backpack_id = isset($_GET['backpack_id']) ? Validator::sanitizeInt($_GET['backpack_id'], 1) : null;
@@ -53,11 +67,13 @@ function getAllTrips() {
                 SELECT t.*, b.name as backpack_name, b.base_weight 
                 FROM trips t
                 LEFT JOIN backpacks b ON t.backpack_id = b.id
+                WHERE t.user_id = :user_id
             ";
             
-            $params = [];
+            $params = ['user_id' => $user['id']];
+            
             if ($backpack_id) {
-                $sql .= " WHERE t.backpack_id = :backpack_id";
+                $sql .= " AND t.backpack_id = :backpack_id";
                 $params['backpack_id'] = $backpack_id;
             }
             
@@ -99,10 +115,16 @@ function getAllTrips() {
 }
 
 /**
- * Get single trip by ID
+ * Get single trip by ID (only if owned by current user)
  */
 function getTripById($id) {
     try {
+        // Get current user
+        $user = AuthService::getCurrentUser();
+        if (!$user) {
+            Response::unauthorized('User not found');
+        }
+        
         $db = Database::getInstance();
         
         if ($db->isSQLite()) {
@@ -110,10 +132,10 @@ function getTripById($id) {
                 SELECT t.*, b.name as backpack_name, b.base_weight 
                 FROM trips t
                 LEFT JOIN backpacks b ON t.backpack_id = b.id
-                WHERE t.id = :id
+                WHERE t.id = :id AND t.user_id = :user_id
             ";
             
-            $trip = $db->fetchOne($sql, ['id' => $id]);
+            $trip = $db->fetchOne($sql, ['id' => $id, 'user_id' => $user['id']]);
         } else {
             // JSON fallback
             $trips = json_decode(file_get_contents(BTT_JSON_PATH . '/trips.json'), true) ?? [];
@@ -157,6 +179,12 @@ function createTrip() {
     try {
         require_once dirname(__DIR__) . '/../app/classes/Validator.php';
         
+        // Get current user
+        $user = AuthService::getCurrentUser();
+        if (!$user) {
+            Response::unauthorized('User not found');
+        }
+        
         $data = get_request_data();
         
         // Validate required fields
@@ -186,6 +214,7 @@ function createTrip() {
         
         // Prepare trip data with backpacker fields - with proper validation
         $trip_data = [
+            'user_id' => $user['id'],  // Set the user_id for the new trip
             'title' => Validator::sanitizeString($data['title'], 255),
             'location' => Validator::sanitizeString($data['location'] ?? null, 255),
             'start_date' => Validator::validateDate($data['start_date'] ?? null),
@@ -212,6 +241,19 @@ function createTrip() {
             'emergency_contact' => isset($data['emergency_contact']) ? trim($data['emergency_contact']) : null,
             'trailhead_parking' => isset($data['trailhead_parking']) ? trim($data['trailhead_parking']) : null,
             
+            // Note fields
+            'pre_trip_notes' => isset($data['pre_trip_notes']) ? trim($data['pre_trip_notes']) : null,
+            'post_trip_notes' => isset($data['post_trip_notes']) ? trim($data['post_trip_notes']) : null,
+            'lessons_learned' => isset($data['lessons_learned']) ? trim($data['lessons_learned']) : null,
+            
+            // Additional fields
+            'favorite' => isset($data['favorite']) ? (int)$data['favorite'] : 0,
+            'completed' => isset($data['completed']) ? (int)$data['completed'] : 0,
+            'permit_cost' => isset($data['permit_cost']) ? floatval($data['permit_cost']) : null,
+            'parking_cost' => isset($data['parking_cost']) ? floatval($data['parking_cost']) : null,
+            'cell_coverage' => isset($data['cell_coverage']) ? trim($data['cell_coverage']) : null,
+            'crowd_level' => isset($data['crowd_level']) ? trim($data['crowd_level']) : null,
+            
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ];
@@ -236,15 +278,24 @@ function createTrip() {
 }
 
 /**
- * Update existing trip
+ * Update existing trip (only if owned by current user)
  */
 function updateTrip($id) {
     try {
+        // Get current user
+        $user = AuthService::getCurrentUser();
+        if (!$user) {
+            Response::unauthorized('User not found');
+        }
+        
         $db = Database::getInstance();
         
-        // Check if trip exists
+        // Check if trip exists and is owned by current user
         if ($db->isSQLite()) {
-            $existing = $db->fetchOne("SELECT * FROM trips WHERE id = :id", ['id' => $id]);
+            $existing = $db->fetchOne(
+                "SELECT * FROM trips WHERE id = :id AND user_id = :user_id", 
+                ['id' => $id, 'user_id' => $user['id']]
+            );
         } else {
             $trips = json_decode(file_get_contents(BTT_JSON_PATH . '/trips.json'), true) ?? [];
             $existing = null;
@@ -268,7 +319,9 @@ function updateTrip($id) {
             'title', 'location', 'start_date', 'end_date', 'description', 'backpack_id',
             'distance', 'distance_unit', 'elevation_gain', 'difficulty', 'trip_type',
             'permit_required', 'permit_info', 'water_sources', 'camping_type',
-            'expected_weather', 'trail_conditions', 'emergency_contact', 'trailhead_parking'
+            'expected_weather', 'trail_conditions', 'emergency_contact', 'trailhead_parking',
+            'pre_trip_notes', 'post_trip_notes', 'lessons_learned',  // Note fields
+            'favorite', 'completed', 'permit_cost', 'parking_cost', 'cell_coverage', 'crowd_level'  // Additional fields
         ];
         foreach ($allowed_fields as $field) {
             if (isset($data[$field])) {
@@ -276,9 +329,9 @@ function updateTrip($id) {
                     // Handle backpack_id specially to avoid FK constraint issues
                     $value = $data[$field];
                     $update_data[$field] = ($value !== '' && $value != 0) ? intval($value) : null;
-                } elseif ($field === 'permit_required') {
+                } elseif ($field === 'permit_required' || $field === 'favorite' || $field === 'completed') {
                     $update_data[$field] = intval($data[$field]);
-                } elseif ($field === 'distance' || $field === 'elevation_gain') {
+                } elseif ($field === 'distance' || $field === 'elevation_gain' || $field === 'permit_cost' || $field === 'parking_cost') {
                     $update_data[$field] = floatval($data[$field]);
                 } else {
                     $update_data[$field] = trim($data[$field]);
@@ -335,15 +388,24 @@ function updateTrip($id) {
 }
 
 /**
- * Delete trip and associated photo
+ * Delete trip and associated photo (only if owned by current user)
  */
 function deleteTrip($id) {
     try {
+        // Get current user
+        $user = AuthService::getCurrentUser();
+        if (!$user) {
+            Response::unauthorized('User not found');
+        }
+        
         $db = Database::getInstance();
         
-        // Get trip to check for photo
+        // Get trip to check for photo and ownership
         if ($db->isSQLite()) {
-            $trip = $db->fetchOne("SELECT photo_path FROM trips WHERE id = :id", ['id' => $id]);
+            $trip = $db->fetchOne(
+                "SELECT photo_path FROM trips WHERE id = :id AND user_id = :user_id", 
+                ['id' => $id, 'user_id' => $user['id']]
+            );
         } else {
             $trips = json_decode(file_get_contents(BTT_JSON_PATH . '/trips.json'), true) ?? [];
             $trip = null;
@@ -427,14 +489,23 @@ function deletePhotoFile($path) {
 }
 
 /**
- * Check if backpack exists
+ * Check if backpack exists and belongs to current user
  */
 function backpackExists($id) {
     try {
+        // Get current user
+        $user = AuthService::getCurrentUser();
+        if (!$user) {
+            return false;
+        }
+        
         $db = Database::getInstance();
         
         if ($db->isSQLite()) {
-            $result = $db->fetchOne("SELECT id FROM backpacks WHERE id = :id", ['id' => $id]);
+            $result = $db->fetchOne(
+                "SELECT id FROM backpacks WHERE id = :id AND user_id = :user_id", 
+                ['id' => $id, 'user_id' => $user['id']]
+            );
             return $result !== false;
         } else {
             $backpacks = json_decode(file_get_contents(BTT_JSON_PATH . '/backpacks.json'), true) ?? [];

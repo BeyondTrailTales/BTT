@@ -1,7 +1,22 @@
 /**
  * BeyondTrailTales Main Stylesheet
  * Mobile-first responsive design with ADA compliance
+ * Enhanced with comprehensive component library
  */
+
+/* Import Design Tokens */
+@import url('tokens.css');
+
+/* Import Global Spacing & Rhythm Utilities */
+@import url('utilities.spacing.css');
+
+/* Import Component Library */
+@import url('components.buttons.css');
+@import url('components.forms.css');
+@import url('components.tabs.css');
+@import url('components.trip-card.css');
+@import url('components.layout.css');
+@import url('components.skeleton.css');
 
 :root {
     /* Color Tokens - High Contrast */
@@ -73,6 +88,41 @@ body {
     color: var(--color-text);
     background-color: var(--color-bg);
     min-height: 100vh;
+}
+
+/* Feature Flag: BTT UI v2 - New Design System */
+body.btt-ui-v2 {
+    /* Apply new forest theme with glassmorphism */
+    background: linear-gradient(135deg, 
+        var(--btt-forest-bg) 0%, 
+        rgba(15, 31, 22, 0.95) 100%);
+    color: var(--neutral-100);
+}
+
+/* Forest background pattern for v2 UI */
+body.btt-ui-v2::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 20% 80%, rgba(36, 150, 83, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 60%, rgba(5, 150, 105, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Apply new spacing system when v2 is active */
+body.btt-ui-v2 .container {
+    max-width: 1280px;
+    padding: 0 var(--space-4);
+}
+
+body.btt-ui-v2 .main-content {
+    padding: var(--space-6) 0;
 }
 
 /* Skip Link */

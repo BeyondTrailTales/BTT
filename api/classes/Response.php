@@ -30,20 +30,20 @@ class Response {
     /**
      * Send error response
      */
-    public static function error($message = 'An error occurred', $code = 400, $details = null) {
+    public static function error($message = 'An error occurred', $code = 400, $errors = null) {
         http_response_code($code);
         
         $response = [
             'success' => false,
-            'error' => $message
+            'message' => $message
         ];
         
-        if ($details !== null) {
-            $response['details'] = $details;
+        if ($errors !== null) {
+            $response['errors'] = $errors;
         }
         
         // Log errors
-        btt_log("API Error: $message" . ($details ? " - " . json_encode($details) : ""), 'ERROR');
+        btt_log("API Error: $message" . ($errors ? " - " . json_encode($errors) : ""), 'ERROR');
         
         echo json_encode($response, JSON_PRETTY_PRINT);
         exit();

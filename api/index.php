@@ -70,6 +70,12 @@ try {
             handleGearRoute($method, $path, $db);
             break;
             
+        case 'auth':
+            // Authentication endpoints
+            require_once __DIR__ . '/routes/auth.php';
+            handleAuthRoute($method, $id, $action);
+            break;
+            
         default:
             Response::notFound("Route '$route' not found");
     }
