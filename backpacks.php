@@ -60,9 +60,9 @@ require_once __DIR__ . '/includes/template-header.php';
             <button class="pack-tab" data-view="templates">
                 <i class="icon">📋</i> Quick Packs
             </button>
-            <button class="pack-tab" data-view="gear-library">
+            <a href="gear.php" class="pack-tab">
                 <i class="icon">📦</i> My Gear
-            </button>
+            </a>
         </div>
         
         <div class="pack-actions">

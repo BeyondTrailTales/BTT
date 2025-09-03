@@ -419,7 +419,7 @@ if ($uxRefreshEnabled) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="<?php echo route_url('backpacks'); ?>?view=gear-library" 
+                        <a href="<?php echo route_url('gear'); ?>" 
                            class="nav-link <?php echo active_class('gear'); ?>"
                            aria-current="<?php echo aria_current('gear'); ?>">
                             <span class="nav-icon">📦</span>
@@ -497,7 +497,7 @@ if ($uxRefreshEnabled) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="<?php echo route_url('backpacks'); ?>?view=gear-library" 
+                        <a href="<?php echo route_url('gear'); ?>" 
                            class="nav-link <?php echo active_class('gear'); ?>"
                            aria-current="<?php echo aria_current('gear'); ?>">
                             <span class="nav-icon">📦</span>

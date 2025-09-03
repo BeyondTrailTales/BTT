@@ -56,205 +56,176 @@ require_once __DIR__ . '/public/includes/template-header.php';
         </div>
     </section>
 
-    <!-- Main Dashboard Grid - Horizontal Layout -->
-    <div class="dashboard-main-grid">
+    <!-- Main Dashboard Grid - Truly Horizontal Layout -->
+    <div class="dashboard-horizontal-grid">
         
-        <!-- Primary Overview Row -->
-        <div class="overview-row">
+        <!-- Top Row: Trips, Backpacks, and Gear in one line -->
+        <div class="primary-row">
             
-            <!-- Trips Overview Card -->
-            <div class="card trips-overview-card">
-                <div class="card-header">
-                    <h2 class="card-title">🏔️ Trips</h2>
-                    <a href="<?php echo route_url('trips'); ?>" class="card-link">View All →</a>
+            <!-- Trips Compact Card -->
+            <div class="compact-card trips-card">
+                <div class="compact-header">
+                    <span class="card-icon">🏔️</span>
+                    <h3>Trips</h3>
+                    <a href="<?php echo route_url('trips'); ?>" class="link-arrow">→</a>
                 </div>
-                <div class="card-body" id="trips-overview-content">
-                    <div class="overview-stats">
-                        <div class="stat-item">
-                            <span class="stat-value" id="upcoming-trips">0</span>
-                            <span class="stat-label">Upcoming</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value" id="completed-trips">0</span>
-                            <span class="stat-label">Completed</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value" id="total-miles">0</span>
-                            <span class="stat-label">Miles</span>
-                        </div>
+                <div class="compact-stats">
+                    <div class="stat">
+                        <span class="stat-num" id="upcoming-trips">0</span>
+                        <span class="stat-lbl">Upcoming</span>
                     </div>
-                    <div id="next-trip-preview" class="next-trip-preview">
-                        <!-- Dynamic content -->
+                    <div class="stat">
+                        <span class="stat-num" id="completed-trips">0</span>
+                        <span class="stat-lbl">Done</span>
                     </div>
+                    <div class="stat">
+                        <span class="stat-num" id="total-miles">0</span>
+                        <span class="stat-lbl">Miles</span>
+                    </div>
+                </div>
+                <div id="next-trip-mini" class="mini-preview">
+                    <!-- Dynamic content -->
                 </div>
             </div>
             
-            <!-- Backpacks Overview Card -->
-            <div class="card packs-overview-card">
-                <div class="card-header">
-                    <h2 class="card-title">🎒 Backpacks</h2>
-                    <a href="<?php echo route_url('backpacks'); ?>" class="card-link">View All →</a>
+            <!-- Backpacks Compact Card -->
+            <div class="compact-card packs-card">
+                <div class="compact-header">
+                    <span class="card-icon">🎒</span>
+                    <h3>Backpacks</h3>
+                    <a href="<?php echo route_url('backpacks'); ?>" class="link-arrow">→</a>
                 </div>
-                <div class="card-body" id="packs-overview-content">
-                    <div class="overview-stats">
-                        <div class="stat-item">
-                            <span class="stat-value" id="total-packs">0</span>
-                            <span class="stat-label">Packs</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value" id="gear-items">0</span>
-                            <span class="stat-label">Gear Items</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-value" id="avg-weight">0</span>
-                            <span class="stat-label">Avg Weight</span>
-                        </div>
+                <div class="compact-stats">
+                    <div class="stat">
+                        <span class="stat-num" id="total-packs">0</span>
+                        <span class="stat-lbl">Packs</span>
                     </div>
-                    <div class="pack-actions">
-                        <button class="btn btn-sm btn-secondary" onclick="window.location.href='<?php echo route_url('backpacks'); ?>?action=check'">Check Pack</button>
-                        <button class="btn btn-sm btn-primary" onclick="window.location.href='<?php echo route_url('backpacks'); ?>?action=new'">New Pack</button>
+                    <div class="stat">
+                        <span class="stat-num" id="gear-items">0</span>
+                        <span class="stat-lbl">Gear</span>
                     </div>
+                    <div class="stat">
+                        <span class="stat-num" id="avg-weight">0</span>
+                        <span class="stat-lbl">Avg kg</span>
+                    </div>
+                </div>
+                <div class="mini-actions">
+                    <button class="mini-btn" onclick="window.location.href='<?php echo route_url('backpacks'); ?>?action=check'">Check</button>
+                    <button class="mini-btn primary" onclick="window.location.href='<?php echo route_url('backpacks'); ?>?action=new'">New</button>
                 </div>
             </div>
             
-            <!-- My Gear Shortcuts -->
-            <div class="card gear-shortcuts-card">
-                <div class="card-header">
-                    <h2 class="card-title">My Gear</h2>
-                    <a href="<?php echo route_url('backpacks'); ?>?view=gear-library" class="card-link">Manage</a>
+            <!-- My Gear Compact Card -->
+            <div class="compact-card gear-card">
+                <div class="compact-header">
+                    <span class="card-icon">⛺</span>
+                    <h3>My Gear</h3>
+                    <a href="<?php echo route_url('backpacks'); ?>?view=gear-library" class="link-arrow">→</a>
                 </div>
-                <div class="card-body">
-                    <div class="gear-quick-stats">
-                        <div class="gear-stat">
-                            <span class="gear-icon">📦</span>
-                            <span class="gear-count" id="gear-total">--</span>
-                            <span class="gear-label">Total Items</span>
-                        </div>
-                        <div class="gear-stat">
-                            <span class="gear-icon">⭐</span>
-                            <span class="gear-count" id="gear-favorites">--</span>
-                            <span class="gear-label">Favorites</span>
-                        </div>
-                        <div class="gear-stat">
-                            <span class="gear-icon">🆕</span>
-                            <span class="gear-count" id="gear-recent">--</span>
-                            <span class="gear-label">New This Month</span>
-                        </div>
+                <div class="compact-stats">
+                    <div class="stat">
+                        <span class="stat-num" id="gear-total">42</span>
+                        <span class="stat-lbl">Items</span>
                     </div>
-                    <button class="btn btn-secondary btn-sm w-full" onclick="window.location.href='<?php echo route_url('backpacks'); ?>?view=gear-library&action=add'">Add New Gear</button>
+                    <div class="stat">
+                        <span class="stat-num" id="gear-favorites">8</span>
+                        <span class="stat-lbl">Favs</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-num" id="gear-recent">3</span>
+                        <span class="stat-lbl">New</span>
+                    </div>
                 </div>
+                <button class="mini-btn w-full" onclick="window.location.href='<?php echo route_url('backpacks'); ?>?view=gear-library&action=add'">Add Gear</button>
             </div>
             
+            <!-- Trail Stats Compact -->
+            <div class="compact-card stats-card">
+                <div class="compact-header">
+                    <span class="card-icon">📊</span>
+                    <h3>Trail Stats</h3>
+                </div>
+                <div class="stats-horizontal">
+                    <div class="stat-h">
+                        <span class="h-icon">🏕️</span>
+                        <span class="h-num" id="trips-total">0</span>
+                        <span class="h-lbl">Trips</span>
+                    </div>
+                    <div class="stat-h">
+                        <span class="h-icon">📏</span>
+                        <span class="h-num" id="miles-total">0</span>
+                        <span class="h-lbl">Miles</span>
+                    </div>
+                    <div class="stat-h">
+                        <span class="h-icon">⛰️</span>
+                        <span class="h-num" id="elevation-total">0</span>
+                        <span class="h-lbl">Ft</span>
+                    </div>
+                    <div class="stat-h">
+                        <span class="h-icon">🎒</span>
+                        <span class="h-num" id="packs-total">0</span>
+                        <span class="h-lbl">Packs</span>
+                    </div>
+                </div>
+            </div>
         </div>
         
-        <!-- Right Column -->
-        <div class="trailhead-right">
+        <!-- Second Row: Achievements and Activity Side by Side -->
+        <div class="secondary-row">
             
-            <!-- Achievements Card -->
-            <div class="card achievements-card">
-                <div class="card-header">
-                    <h2 class="card-title">Trail Achievements</h2>
-                    <div class="xp-display">
-                        <span class="xp-icon">✨</span>
-                        <span class="xp-value" id="total-xp">0</span> XP
+            <!-- Achievements Horizontal -->
+            <div class="achievements-horizontal">
+                <div class="ach-header">
+                    <h3>🏆 Achievements</h3>
+                    <div class="xp-badge">
+                        <span id="total-xp">0</span> XP
                     </div>
                 </div>
-                <div class="card-body">
-                    <div class="level-progress">
-                        <div class="level-info">
-                            <span class="level-label">Level</span>
-                            <span class="level-value" id="user-level">1</span>
-                        </div>
-                        <div class="progress-bar">
+                <div class="ach-content">
+                    <div class="level-bar">
+                        <span class="lvl">Lvl <span id="user-level">1</span></span>
+                        <div class="progress-inline">
                             <div class="progress-fill" id="level-progress" style="width: 0%"></div>
                         </div>
-                        <div class="xp-needed">
-                            <span id="xp-current">0</span> / <span id="xp-next">100</span> XP
-                        </div>
+                        <span class="xp-text"><span id="xp-current">0</span>/<span id="xp-next">100</span></span>
                     </div>
-                    
-                    <div class="achievement-badges">
-                        <div class="badge-item earned">
-                            <span class="badge-icon">🥾</span>
-                            <span class="badge-name">First Steps</span>
-                        </div>
-                        <div class="badge-item">
-                            <span class="badge-icon">🏔️</span>
-                            <span class="badge-name">Summit Seeker</span>
-                        </div>
-                        <div class="badge-item">
-                            <span class="badge-icon">🌟</span>
-                            <span class="badge-name">Trail Master</span>
-                        </div>
-                    </div>
-                    
-                    <div class="streak-display">
-                        <span class="streak-icon">🔥</span>
-                        <span class="streak-value" id="streak-days">0</span>
-                        <span class="streak-label">Day Streak</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Trail Stats -->
-            <div class="card trail-stats-card">
-                <h2 class="card-title">Trail Stats</h2>
-                <div class="card-body">
-                    <div class="stats-grid compact">
-                        <div class="stat-item">
-                            <span class="stat-icon">🏕️</span>
-                            <span class="stat-value" id="trips-total">0</span>
-                            <span class="stat-label">Trips</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-icon">📏</span>
-                            <span class="stat-value" id="miles-total">0</span>
-                            <span class="stat-label">Miles</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-icon">⛰️</span>
-                            <span class="stat-value" id="elevation-total">0</span>
-                            <span class="stat-label">Ft Climbed</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-icon">🎒</span>
-                            <span class="stat-value" id="packs-total">0</span>
-                            <span class="stat-label">Packs</span>
+                    <div class="badges-row">
+                        <div class="badge-mini earned" title="First Steps">🥾</div>
+                        <div class="badge-mini" title="Summit Seeker">🏔️</div>
+                        <div class="badge-mini" title="Trail Master">🌟</div>
+                        <div class="streak-mini">
+                            🔥 <span id="streak-days">0</span>
                         </div>
                     </div>
                 </div>
             </div>
-            
-        </div>
     </div>
 
-    <!-- Recent Activity -->
-    <section class="recent-activity">
-        <h2 class="section-title">Recent Activity</h2>
-        
-        <div class="activity-grid">
-            <!-- Recent Trips -->
-            <div class="activity-section">
-                <h3 class="activity-title">Your Adventures</h3>
-                <div id="recent-trips" class="activity-list">
-                    <div class="loading-state">Loading adventures...</div>
+            <!-- Recent Activity Horizontal -->
+            <div class="activity-horizontal">
+                <div class="activity-header">
+                    <h3>Recent Activity</h3>
                 </div>
-            </div>
-            
-            <!-- Recent Backpacks -->
-            <div class="activity-section">
-                <h3 class="activity-title">Your Packs</h3>
-                <div id="recent-backpacks" class="activity-list">
-                    <div class="loading-state">Loading packs...</div>
+                <div class="activity-tabs">
+                    <div class="tab-section">
+                        <h4>Your Adventures</h4>
+                        <div id="recent-trips" class="activity-compact">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                    <div class="tab-section">
+                        <h4>Your Packs</h4>
+                        <div id="recent-backpacks" class="activity-compact">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
 </div>
 
 <!-- Include Dashboard styles -->
-<link rel="stylesheet" href="/BTT/assets/css/dashboard-horizontal.css">
-<link rel="stylesheet" href="/BTT/assets/css/trailhead.css">
+<link rel="stylesheet" href="/BTT/assets/css/dashboard-compact.css">
 
 <script>
 // Load dashboard data
@@ -305,28 +276,18 @@ async function loadTripsOverview() {
             document.getElementById('completed-trips').textContent = completedTrips.length;
             document.getElementById('total-miles').textContent = Math.round(totalMiles);
             
-            // Show next trip preview
-            const previewContainer = document.getElementById('next-trip-preview');
+            // Show next trip mini preview
+            const previewContainer = document.getElementById('next-trip-mini');
             if (upcomingTrips.length > 0) {
                 const nextTrip = upcomingTrips.sort((a, b) => new Date(a.start_date) - new Date(b.start_date))[0];
-                const startDate = new Date(nextTrip.start_date).toLocaleDateString();
                 const daysUntil = Math.ceil((new Date(nextTrip.start_date) - now) / (1000 * 60 * 60 * 24));
                 
                 previewContainer.innerHTML = `
-                    <div class="trip-preview-title">${escapeHtml(nextTrip.title)}</div>
-                    <div class="trip-preview-meta">
-                        <span>📅 ${startDate}</span>
-                        <span>⏳ ${daysUntil} days</span>
-                        ${nextTrip.location ? `<span>📍 ${escapeHtml(nextTrip.location)}</span>` : ''}
-                    </div>
+                    <strong>${escapeHtml(nextTrip.title)}</strong><br>
+                    <span style="opacity: 0.7">📅 ${daysUntil} days away</span>
                 `;
             } else {
-                previewContainer.innerHTML = `
-                    <div class="empty-message">
-                        <span class="empty-icon">🏔️</span>
-                        <p>No upcoming trips</p>
-                    </div>
-                `;
+                previewContainer.innerHTML = `<span style="opacity: 0.6">No upcoming trips</span>`;
             }
         }
     } catch (error) {

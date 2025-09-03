@@ -24,6 +24,28 @@ $method = $_SERVER['REQUEST_METHOD'];
 $route = $_GET['route'] ?? '';
 $id = $_GET['id'] ?? null;
 
+// Helper function to get icon for category
+function getIcon($category) {
+    $icons = [
+        'shelter' => '⛺',
+        'sleep' => '🛌',
+        'cooking' => '🔥',
+        'water' => '💧',
+        'clothing' => '👕',
+        'navigation' => '🗺️',
+        'hygiene' => '🧼',
+        'first-aid' => '🏥',
+        'electronics' => '📱',
+        'food' => '🍔',
+        'footwear' => '👟',
+        'repair' => '🔧',
+        'other' => '📦',
+        'tools' => '🔧',
+        'pack' => '🎒'
+    ];
+    return $icons[$category] ?? '📦';
+}
+
 try {
     // Handle gear library
     if ($route === 'gear') {
@@ -33,53 +55,65 @@ try {
             $stmt->execute([$user_id]);
             $userGear = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
-            // Also load global gear items
+            // Load default gear from gear-default.json file
+            $gearJsonFile = __DIR__ . '/assets/data/gear-default.json';
+            $defaultGear = [];
+            
+            if (file_exists($gearJsonFile)) {
+                $jsonContent = file_get_contents($gearJsonFile);
+                $gearData = json_decode($jsonContent, true);
+                
+                if (isset($gearData['items']) && is_array($gearData['items'])) {
+                    $defaultGear = $gearData['items'];
+                }
+            }
+            
+            // Also try to load global gear items from database
             $stmt = $db->query("SELECT * FROM gear_items WHERE user_id IS NULL OR user_id = 0 ORDER BY category, name");
             $globalGear = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
-            // Combine user gear and global gear
+            // Combine all gear sources
             $gear = array_merge($userGear, $globalGear);
             
-            // If no gear exists, create default items for this user
-            if (empty($gear)) {
-                // Insert default gear items for user
-                $defaultGear = [
+            // Add default gear from JSON if we don't have much in the database
+            if (count($gear) < 50 && !empty($defaultGear)) {
+                // Add default gear from JSON file
+                foreach ($defaultGear as $item) {
+                    $gear[] = [
+                        'id' => $item['id'] ?? 'def-' . uniqid(),
+                        'name' => $item['name'],
+                        'category' => $item['category'],
+                        'weight' => $item['weight_g'] ?? 0,
+                        'weight_g' => $item['weight_g'] ?? 0,
+                        'brand' => '',
+                        'icon' => $item['icon'] ?? '',
+                        'notes' => $item['notes'] ?? '',
+                        'tags' => $item['tags'] ?? [],
+                        'is_default' => true
+                    ];
+                }
+            } elseif (empty($gear) && empty($defaultGear)) {
+                // Fallback to minimal default items if JSON file not found
+                $minimalDefaults = [
+                    ['name' => 'Tent', 'category' => 'shelter', 'weight' => 1200],
                     ['name' => 'Sleeping Bag', 'category' => 'sleep', 'weight' => 900],
                     ['name' => 'Sleeping Pad', 'category' => 'sleep', 'weight' => 450],
-                    ['name' => 'Pillow', 'category' => 'sleep', 'weight' => 100],
-                    ['name' => 'Tent', 'category' => 'shelter', 'weight' => 1200],
-                    ['name' => 'Tarp', 'category' => 'shelter', 'weight' => 300],
-                    ['name' => 'Backpack', 'category' => 'pack', 'weight' => 1500],
-                    ['name' => 'Rain Cover', 'category' => 'pack', 'weight' => 100],
-                    ['name' => 'Water Bottle', 'category' => 'water', 'weight' => 150],
-                    ['name' => 'Water Filter', 'category' => 'water', 'weight' => 80],
                     ['name' => 'Stove', 'category' => 'cooking', 'weight' => 100],
-                    ['name' => 'Pot', 'category' => 'cooking', 'weight' => 150],
-                    ['name' => 'Spork', 'category' => 'cooking', 'weight' => 20],
-                    ['name' => 'First Aid Kit', 'category' => 'first-aid', 'weight' => 200],
-                    ['name' => 'Headlamp', 'category' => 'navigation', 'weight' => 80],
-                    ['name' => 'Rain Jacket', 'category' => 'clothing', 'weight' => 300],
-                    ['name' => 'Down Jacket', 'category' => 'clothing', 'weight' => 400],
-                    ['name' => 'Base Layer Top', 'category' => 'clothing', 'weight' => 150],
-                    ['name' => 'Hiking Pants', 'category' => 'clothing', 'weight' => 350],
-                    ['name' => 'Trekking Poles', 'category' => 'navigation', 'weight' => 450],
-                    ['name' => 'Map', 'category' => 'navigation', 'weight' => 50],
-                    ['name' => 'Compass', 'category' => 'navigation', 'weight' => 30],
-                    ['name' => 'Knife', 'category' => 'tools', 'weight' => 80],
-                    ['name' => 'Rope', 'category' => 'tools', 'weight' => 200],
-                    ['name' => 'Duct Tape', 'category' => 'tools', 'weight' => 50]
+                    ['name' => 'Water Filter', 'category' => 'water', 'weight' => 80]
                 ];
                 
-                // Insert into user_gear table
-                $insertStmt = $db->prepare("INSERT INTO user_gear (user_id, name, category, weight_g, created_at, updated_at) VALUES (?, ?, ?, ?, datetime('now'), datetime('now'))");
-                foreach ($defaultGear as $item) {
-                    $insertStmt->execute([$user_id, $item['name'], $item['category'], $item['weight']]);
+                foreach ($minimalDefaults as $item) {
+                    $gear[] = [
+                        'id' => 'min-' . uniqid(),
+                        'name' => $item['name'],
+                        'category' => $item['category'],
+                        'weight' => $item['weight'],
+                        'weight_g' => $item['weight'],
+                        'brand' => '',
+                        'icon' => getIcon($item['category']),
+                        'is_default' => true
+                    ];
                 }
-                
-                // Fetch again
-                $stmt = $db->prepare("SELECT * FROM user_gear WHERE user_id = ? ORDER BY category, name");
-                $stmt->execute([$user_id]);
-                $gear = $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
             
             // Format for frontend (handle both table formats)
@@ -313,24 +347,4 @@ try {
         'success' => false,
         'message' => 'Database error: ' . $e->getMessage()
     ]);
-}
-
-// Helper function for category icons
-function getIcon($category) {
-    $icons = [
-        'shelter' => '⛺',
-        'sleep' => '🛌',
-        'cooking' => '🔥',
-        'water' => '💧',
-        'hydration' => '💧',
-        'navigation' => '🧭',
-        'clothing' => '👕',
-        'hygiene' => '🧼',
-        'first-aid' => '🏥',
-        'electronics' => '📱',
-        'tools' => '🔧',
-        'pack' => '🎒',
-        'other' => '📦'
-    ];
-    return $icons[$category] ?? '📦';
 }
