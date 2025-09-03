@@ -1,0 +1,190 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://beyondtrailtales.com/schemas/trip.json",
+  "title": "Trip",
+  "description": "A hiking or backpacking trip",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "Unique identifier for the trip",
+      "minimum": 1
+    },
+    "title": {
+      "type": "string",
+      "description": "Title of the trip",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[^\\s].*[^\\s]$"
+    },
+    "start_date": {
+      "type": ["string", "null"],
+      "description": "Start date of the trip in ISO 8601 format",
+      "format": "date"
+    },
+    "end_date": {
+      "type": ["string", "null"],
+      "description": "End date of the trip in ISO 8601 format",
+      "format": "date"
+    },
+    "distance_km": {
+      "type": ["number", "null"],
+      "description": "Total distance of the trip in kilometers",
+      "minimum": 0,
+      "maximum": 5000
+    },
+    "elevation_gain_m": {
+      "type": ["number", "null"],
+      "description": "Total elevation gain in meters",
+      "minimum": 0,
+      "maximum": 10000
+    },
+    "difficulty": {
+      "type": ["string", "null"],
+      "description": "Difficulty level of the trip",
+      "enum": ["easy", "moderate", "hard", "strenuous", null]
+    },
+    "permits": {
+      "type": ["boolean", "null"],
+      "description": "Whether permits are required for this trip",
+      "default": false
+    },
+    "water_sources": {
+      "type": ["array", "null"],
+      "description": "Available water sources along the route",
+      "items": {
+        "type": "string",
+        "maxLength": 200
+      },
+      "maxItems": 20
+    },
+    "trailhead": {
+      "type": ["string", "null"],
+      "description": "Trailhead location and parking information",
+      "maxLength": 500
+    },
+    "route_type": {
+      "type": ["string", "null"],
+      "description": "Type of hiking route",
+      "enum": ["loop", "out-and-back", "point-to-point", null]
+    },
+    "description": {
+      "type": ["string", "null"],
+      "description": "Detailed description of the trip",
+      "maxLength": 5000
+    },
+    "hazards": {
+      "type": ["array", "null"],
+      "description": "Potential hazards on the trail",
+      "items": {
+        "type": "string",
+        "maxLength": 200
+      },
+      "maxItems": 10
+    },
+    "backpack_id": {
+      "type": ["integer", "null"],
+      "description": "ID of the associated backpack",
+      "minimum": 1
+    },
+    "photos": {
+      "type": "array",
+      "description": "Photos from the trip with ADA-compliant alt text",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier for the photo",
+            "minimum": 1
+          },
+          "url": {
+            "type": "string",
+            "description": "URL path to the photo",
+            "format": "uri-reference"
+          },
+          "filename": {
+            "type": "string",
+            "description": "Original filename of the photo"
+          },
+          "mime": {
+            "type": "string",
+            "description": "MIME type of the photo",
+            "enum": ["image/jpeg", "image/png"]
+          },
+          "size_bytes": {
+            "type": "integer",
+            "description": "File size in bytes",
+            "minimum": 1,
+            "maximum": 4194304
+          },
+          "alt": {
+            "type": "string",
+            "description": "Alternative text for accessibility (ADA required)",
+            "minLength": 1,
+            "maxLength": 160,
+            "pattern": "^[^\\s].*[^\\s]$"
+          },
+          "uploaded_at": {
+            "type": "string",
+            "description": "ISO 8601 datetime when the photo was uploaded",
+            "format": "date-time"
+          }
+        },
+        "required": ["url", "filename", "mime", "size_bytes", "alt"],
+        "additionalProperties": false
+      },
+      "maxItems": 20
+    },
+    "created_at": {
+      "type": "string",
+      "description": "ISO 8601 datetime when the trip was created",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "description": "ISO 8601 datetime when the trip was last updated",
+      "format": "date-time"
+    }
+  },
+  "required": ["title"],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "id": 1,
+      "title": "Pacific Crest Trail Section J",
+      "start_date": "2025-07-15",
+      "end_date": "2025-07-22",
+      "distance_km": 120.5,
+      "elevation_gain_m": 3500,
+      "difficulty": "strenuous",
+      "permits": true,
+      "water_sources": [
+        "Bear Creek at mile 5",
+        "Eagle Lake at mile 22",
+        "Spring at mile 45"
+      ],
+      "trailhead": "Stevens Pass, WA - Large parking lot, fills early on weekends",
+      "route_type": "point-to-point",
+      "description": "Beautiful section through the North Cascades...",
+      "hazards": [
+        "Stream crossings can be dangerous in early season",
+        "Bear activity reported near Eagle Lake"
+      ],
+      "backpack_id": 1,
+      "photos": [
+        {
+          "id": 1,
+          "url": "/assets/img/trips/1/photo_001.jpg",
+          "filename": "sunrise_at_eagle_lake.jpg",
+          "mime": "image/jpeg",
+          "size_bytes": 2456789,
+          "alt": "Sunrise reflecting on Eagle Lake with mountain peaks in background",
+          "uploaded_at": "2025-07-23T10:30:00Z"
+        }
+      ],
+      "created_at": "2025-07-10T09:00:00Z",
+      "updated_at": "2025-07-23T10:30:00Z"
+    }
+  ]
+}

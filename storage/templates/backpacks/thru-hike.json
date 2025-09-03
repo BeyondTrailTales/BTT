@@ -1,0 +1,282 @@
+{
+  "id": "template-thru-hike",
+  "name": "Thru-Hiker's Setup",
+  "description": "Ultralight setup for long-distance trails like the PCT or AT",
+  "type": "thru-hike",
+  "capacity_l": 55,
+  "weight_empty_g": 650,
+  "tags": ["template", "ultralight", "thru-hike", "long-distance"],
+  "version": "1.0.0",
+  "sections": [
+    {
+      "id": "main",
+      "name": "Main Compartment",
+      "order": 0,
+      "capacity_percentage": 50,
+      "color": "#10b981",
+      "items": [
+        {
+          "id": "item-1",
+          "name": "Quilt/Sleeping Bag",
+          "category": "sleep_system",
+          "quantity": 1,
+          "weight_g": 550,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "20°F down quilt",
+          "order": 0
+        },
+        {
+          "id": "item-2",
+          "name": "Sleeping Pad",
+          "category": "sleep_system",
+          "quantity": 1,
+          "weight_g": 350,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Torso length ultralight",
+          "order": 1
+        },
+        {
+          "id": "item-3",
+          "name": "Shelter",
+          "category": "shelter",
+          "quantity": 1,
+          "weight_g": 450,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Tarp tent or single-wall UL tent",
+          "order": 2
+        },
+        {
+          "id": "item-4",
+          "name": "Food Bag",
+          "category": "food",
+          "quantity": 1,
+          "weight_g": 3000,
+          "consumable": true,
+          "worn": false,
+          "packed": false,
+          "notes": "5-7 days of food",
+          "order": 3
+        },
+        {
+          "id": "item-5",
+          "name": "Clothing - Spare Set",
+          "category": "clothing",
+          "quantity": 1,
+          "weight_g": 400,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Minimal spare clothes",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "id": "top",
+      "name": "Top Lid",
+      "order": 1,
+      "capacity_percentage": 15,
+      "color": "#3b82f6",
+      "items": [
+        {
+          "id": "item-6",
+          "name": "Cook Kit",
+          "category": "cooking",
+          "quantity": 1,
+          "weight_g": 150,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "UL stove, Ti pot, spork",
+          "order": 0
+        },
+        {
+          "id": "item-7",
+          "name": "Fuel",
+          "category": "cooking",
+          "quantity": 1,
+          "weight_g": 220,
+          "consumable": true,
+          "worn": false,
+          "packed": false,
+          "notes": "Canister or alcohol",
+          "order": 1
+        },
+        {
+          "id": "item-8",
+          "name": "First Aid & Repair",
+          "category": "first_aid",
+          "quantity": 1,
+          "weight_g": 120,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Minimal kit with duct tape",
+          "order": 2
+        },
+        {
+          "id": "item-9",
+          "name": "Headlamp",
+          "category": "safety",
+          "quantity": 1,
+          "weight_g": 50,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Ultralight with USB charging",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "side",
+      "name": "Side Pockets",
+      "order": 2,
+      "capacity_percentage": 15,
+      "color": "#8b5cf6",
+      "items": [
+        {
+          "id": "item-10",
+          "name": "Smart Water Bottles",
+          "category": "water",
+          "quantity": 2,
+          "weight_g": 35,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "1L smart water bottles",
+          "order": 0
+        },
+        {
+          "id": "item-11",
+          "name": "Water Filter",
+          "category": "water",
+          "quantity": 1,
+          "weight_g": 60,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Sawyer Mini or BeFree",
+          "order": 1
+        },
+        {
+          "id": "item-12",
+          "name": "Trekking Poles",
+          "category": "tools",
+          "quantity": 2,
+          "weight_g": 210,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Carbon fiber UL poles",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "front",
+      "name": "Front Mesh",
+      "order": 3,
+      "capacity_percentage": 10,
+      "color": "#f59e0b",
+      "items": [
+        {
+          "id": "item-13",
+          "name": "Rain Jacket",
+          "category": "clothing",
+          "quantity": 1,
+          "weight_g": 180,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "UL rain shell",
+          "order": 0
+        },
+        {
+          "id": "item-14",
+          "name": "Puffy Jacket",
+          "category": "clothing",
+          "quantity": 1,
+          "weight_g": 200,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Down insulation",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "id": "hip",
+      "name": "Hip Belt",
+      "order": 4,
+      "capacity_percentage": 8,
+      "color": "#ef4444",
+      "items": [
+        {
+          "id": "item-15",
+          "name": "Phone",
+          "category": "electronics",
+          "quantity": 1,
+          "weight_g": 180,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "With offline maps",
+          "order": 0
+        },
+        {
+          "id": "item-16",
+          "name": "Snacks",
+          "category": "food",
+          "quantity": 5,
+          "weight_g": 50,
+          "consumable": true,
+          "worn": false,
+          "packed": false,
+          "notes": "Quick access energy",
+          "order": 1
+        },
+        {
+          "id": "item-17",
+          "name": "Knife",
+          "category": "tools",
+          "quantity": 1,
+          "weight_g": 20,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Micro knife",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "external",
+      "name": "External Attachments",
+      "order": 5,
+      "capacity_percentage": 2,
+      "color": "#14b8a6",
+      "items": [
+        {
+          "id": "item-18",
+          "name": "Bear Canister",
+          "category": "safety",
+          "quantity": 1,
+          "weight_g": 450,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "When required",
+          "order": 0
+        }
+      ]
+    }
+  ]
+}

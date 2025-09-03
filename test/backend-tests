@@ -1,0 +1,115 @@
+<?php
+/**
+ * Test API Connection and Login
+ */
+
+// Test 1: Check if API is accessible
+echo "Testing API Connection...\n";
+echo "=======================\n\n";
+
+$baseUrl = 'http://localhost/beyondtrailtales/backend/api';
+
+// Test health endpoint
+$healthUrl = $baseUrl . '/health';
+echo "Testing health endpoint: $healthUrl\n";
+$response = @file_get_contents($healthUrl);
+if ($response === false) {
+    echo "❌ Failed to connect to API\n";
+    $error = error_get_last();
+    echo "Error: " . $error['message'] . "\n";
+} else {
+    echo "✅ API is accessible\n";
+    $data = json_decode($response, true);
+    echo "Response: " . json_encode($data, JSON_PRETTY_PRINT) . "\n";
+}
+
+echo "\n\nTesting Login Endpoint...\n";
+echo "========================\n\n";
+
+// Test login with demo credentials
+$loginUrl = $baseUrl . '/v1/auth/login';
+echo "Login URL: $loginUrl\n";
+
+$loginData = [
+    'email' => 'demo@beyondtrailtales.com',
+    'password' => 'demo123'
+];
+
+$options = [
+    'http' => [
+        'method' => 'POST',
+        'header' => [
+            'Content-Type: application/json',
+            'Accept: application/json'
+        ],
+        'content' => json_encode($loginData)
+    ]
+];
+
+$context = stream_context_create($options);
+$response = @file_get_contents($loginUrl, false, $context);
+
+if ($response === false) {
+    echo "❌ Login request failed\n";
+    
+    // Get HTTP response headers
+    if (isset($http_response_header)) {
+        echo "\nHTTP Response Headers:\n";
+        foreach ($http_response_header as $header) {
+            echo "  $header\n";
+        }
+    }
+    
+    // Try to get error details
+    $error = error_get_last();
+    if ($error) {
+        echo "\nError: " . $error['message'] . "\n";
+    }
+} else {
+    echo "✅ Login request successful\n";
+    $data = json_decode($response, true);
+    echo "Response: " . json_encode($data, JSON_PRETTY_PRINT) . "\n";
+}
+
+// Test database connection directly
+echo "\n\nTesting Database Connection...\n";
+echo "=============================\n\n";
+
+define('API_ACCESS', true);
+require_once __DIR__ . '/config/database.php';
+
+$dbTest = testDatabaseConnection();
+if ($dbTest['success']) {
+    echo "✅ " . $dbTest['message'] . "\n";
+    echo "MySQL Version: " . $dbTest['version'] . "\n";
+} else {
+    echo "❌ " . $dbTest['message'] . "\n";
+    echo "Error: " . $dbTest['error'] . "\n";
+}
+
+// Check if demo user exists
+try {
+    $pdo = new PDO(getDatabaseDSN(), DB_USER, DB_PASS, PDO_OPTIONS);
+    
+    echo "\n\nChecking Demo User...\n";
+    echo "====================\n\n";
+    
+    $stmt = $pdo->prepare("SELECT id, email, name, is_active, email_verified FROM users WHERE email = ?");
+    $stmt->execute(['demo@beyondtrailtales.com']);
+    $user = $stmt->fetch();
+    
+    if ($user) {
+        echo "✅ Demo user exists:\n";
+        echo "  ID: " . $user['id'] . "\n";
+        echo "  Email: " . $user['email'] . "\n";
+        echo "  Name: " . $user['name'] . "\n";
+        echo "  Active: " . ($user['is_active'] ? 'Yes' : 'No') . "\n";
+        echo "  Verified: " . ($user['email_verified'] ? 'Yes' : 'No') . "\n";
+    } else {
+        echo "❌ Demo user not found in database\n";
+        echo "Run setup_demo.bat to create the demo user\n";
+    }
+    
+} catch (Exception $e) {
+    echo "Database error: " . $e->getMessage() . "\n";
+}

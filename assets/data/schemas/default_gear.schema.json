@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BTT Default Gear",
+  "type": "object",
+  "required": ["version", "items"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version of the gear dataset"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this dataset was generated"
+    },
+    "items": {
+      "type": "array",
+      "description": "Array of gear items",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "category"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9\\-]+$",
+            "description": "Unique identifier using lowercase letters, numbers, and hyphens"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 100,
+            "description": "Human-readable name without brand references"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "shelter",
+              "sleep_system", 
+              "backpack",
+              "kitchen",
+              "water",
+              "clothing",
+              "electronics",
+              "first_aid",
+              "hygiene",
+              "repair_tools",
+              "navigation",
+              "misc"
+            ],
+            "description": "Primary category for the gear item"
+          },
+          "type": {
+            "type": "string",
+            "description": "Specific type within category (e.g., 'tent', 'tarp', 'bivy' for shelter)"
+          },
+          "style": {
+            "type": "string",
+            "description": "Style or design type (e.g., 'freestanding', 'trekking-pole', 'canister')"
+          },
+          "capacity": {
+            "type": "string",
+            "description": "Capacity specification (e.g., '1P', '2P', '40L', '750ml')"
+          },
+          "season_rating": {
+            "type": "string",
+            "enum": ["2-season", "3-season", "4-season", "all-season"],
+            "description": "Seasonal rating for shelter and clothing items"
+          },
+          "temp_rating_f": {
+            "type": "number",
+            "description": "Temperature rating in Fahrenheit (for sleep systems)"
+          },
+          "r_value": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 10,
+            "description": "R-value insulation rating (for sleeping pads)"
+          },
+          "volume_l": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Volume in liters (for backpacks and containers)"
+          },
+          "weight_g": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Weight in grams"
+          },
+          "price_tier": {
+            "type": "string",
+            "enum": ["budget", "standard", "premium", "DIY"],
+            "description": "Price category for the item"
+          },
+          "weight_class": {
+            "type": "string",
+            "enum": ["ultralight", "lightweight", "midweight", "heavy-duty"],
+            "description": "Weight classification"
+          },
+          "material": {
+            "type": "string",
+            "description": "Primary material (e.g., 'silnylon', 'dyneema', 'aluminum', 'titanium')"
+          },
+          "consumable": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether the item is consumable (food, fuel, etc.)"
+          },
+          "worn": {
+            "type": "boolean",
+            "default": false,
+            "description": "Whether the item is typically worn (doesn't count toward base weight)"
+          },
+          "default_quantity": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1,
+            "description": "Default quantity when adding to pack"
+          },
+          "icon": {
+            "type": "string",
+            "description": "Emoji or icon representation"
+          },
+          "notes": {
+            "type": "string",
+            "description": "Additional notes or tips about the item"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Searchable tags for the item"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}

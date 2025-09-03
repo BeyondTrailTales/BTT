@@ -1,0 +1,122 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://beyondtrailtales.com/schemas/error.json",
+  "title": "Error Response",
+  "description": "Standardized error response envelope for API errors",
+  "type": "object",
+  "properties": {
+    "error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "description": "Machine-readable error code",
+          "examples": [
+            "VALIDATION_ERROR",
+            "NOT_FOUND",
+            "CONFLICT",
+            "UNAUTHORIZED",
+            "FORBIDDEN",
+            "RATE_LIMITED",
+            "SERVER_ERROR"
+          ]
+        },
+        "httpStatus": {
+          "type": "integer",
+          "description": "HTTP status code",
+          "minimum": 400,
+          "maximum": 599
+        },
+        "message": {
+          "type": "string",
+          "description": "Human-readable error message",
+          "maxLength": 500
+        },
+        "details": {
+          "type": ["object", "array", "null"],
+          "description": "Additional error details or validation errors",
+          "examples": [
+            {
+              "field": "name",
+              "issue": "Name is required"
+            },
+            {
+              "field": "photo_alt_text",
+              "issue": "Alternative text is required for all photos (ADA compliance)"
+            },
+            {
+              "trip_ids": [1, 2, 3],
+              "message": "Cannot delete backpack. It is used by 3 trips."
+            }
+          ]
+        },
+        "correlationId": {
+          "type": "string",
+          "description": "Unique identifier for request tracing",
+          "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "ISO 8601 datetime when the error occurred",
+          "format": "date-time"
+        }
+      },
+      "required": ["code", "httpStatus", "message", "correlationId"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["error"],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "error": {
+        "code": "VALIDATION_ERROR",
+        "httpStatus": 400,
+        "message": "Validation failed for one or more fields",
+        "details": {
+          "name": "Name is required",
+          "base_weight_kg": "Base weight cannot be negative"
+        },
+        "correlationId": "550e8400-e29b-41d4-a716-446655440000",
+        "timestamp": "2025-09-01T12:00:00Z"
+      }
+    },
+    {
+      "error": {
+        "code": "NOT_FOUND",
+        "httpStatus": 404,
+        "message": "Trip not found",
+        "correlationId": "550e8400-e29b-41d4-a716-446655440001",
+        "timestamp": "2025-09-01T12:01:00Z"
+      }
+    },
+    {
+      "error": {
+        "code": "CONFLICT",
+        "httpStatus": 409,
+        "message": "Cannot delete backpack",
+        "details": {
+          "trip_ids": [1, 2, 3],
+          "trip_count": 3,
+          "remediation": "Use ?force=true to delete anyway (trips will be unlinked)"
+        },
+        "correlationId": "550e8400-e29b-41d4-a716-446655440002",
+        "timestamp": "2025-09-01T12:02:00Z"
+      }
+    },
+    {
+      "error": {
+        "code": "UNPROCESSABLE_ENTITY",
+        "httpStatus": 422,
+        "message": "Photo requires alternative text for accessibility",
+        "details": {
+          "field": "photo_alt_text",
+          "requirements": "Alt text must be 1-160 characters and describe the image content",
+          "guidance": "Describe what's shown in the image, not 'image of' or 'photo of'"
+        },
+        "correlationId": "550e8400-e29b-41d4-a716-446655440003",
+        "timestamp": "2025-09-01T12:03:00Z"
+      }
+    }
+  ]
+}

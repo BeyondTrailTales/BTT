@@ -1,0 +1,605 @@
+/**
+ * Forest Enhanced CSS
+ * Professional improvements for form controls, z-index management, and mobile responsiveness
+ * Part of BeyondTrailTales Forest Design System
+ */
+
+/* ========================================
+   ENHANCED FORM CONTROLS WITH HIGH CONTRAST
+   ======================================== */
+
+/* Base form control styling with improved readability */
+.form-control,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+textarea,
+select {
+    /* Enhanced text color for better readability */
+    color: var(--form-text, #E9F1EC) !important;
+    background-color: var(--bg-elevated-contrast, rgba(16, 20, 18, 0.95)) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: var(--radius-md, 0.375rem);
+    padding: 0.875rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    font-family: var(--font-sans);
+    transition: all 0.2s ease;
+    width: 100%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Enhanced placeholder styling */
+.form-control::placeholder,
+input::placeholder,
+textarea::placeholder {
+    color: var(--form-placeholder, #9FB2A6) !important;
+    opacity: 1 !important;
+    font-size: 0.95rem;
+}
+
+/* Enhanced focus state with clear visibility */
+.form-control:focus,
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none !important;
+    border-color: var(--forest-mint, #4ade80) !important;
+    background-color: rgba(20, 24, 22, 0.98) !important;
+    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.25) !important;
+    color: var(--form-text, #E9F1EC) !important;
+}
+
+/* Hover state for better interactivity */
+.form-control:hover:not(:focus):not(:disabled),
+input:hover:not(:focus):not(:disabled),
+textarea:hover:not(:focus):not(:disabled),
+select:hover:not(:focus):not(:disabled) {
+    border-color: rgba(74, 222, 128, 0.3);
+    background-color: rgba(18, 22, 20, 0.97);
+}
+
+/* Disabled state */
+.form-control:disabled,
+.form-control[disabled],
+input:disabled,
+input[disabled],
+textarea:disabled,
+textarea[disabled],
+select:disabled,
+select[disabled] {
+    color: var(--form-disabled, #6C7C72) !important;
+    background-color: rgba(16, 20, 18, 0.6) !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+    cursor: not-allowed !important;
+    opacity: 0.7;
+}
+
+/* Enhanced select dropdown with custom arrow */
+select.form-control,
+select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23E9F1EC' d='M6 9L1 4h10z'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 12px;
+    padding-right: 2.5rem !important;
+    cursor: pointer;
+}
+
+/* Select option styling for better readability */
+select option {
+    color: var(--text-primary, #e2f5e9) !important;
+    background-color: var(--forest-deep, #0a2818) !important;
+    padding: 0.5rem;
+}
+
+select optgroup {
+    color: var(--forest-mint, #4ade80) !important;
+    font-weight: 600;
+    background-color: var(--forest-shadow, #051a0f) !important;
+}
+
+/* Textarea specific enhancements */
+textarea.form-control,
+textarea {
+    resize: vertical;
+    min-height: 120px;
+    max-height: 400px;
+}
+
+/* Form validation states */
+.form-control.is-valid,
+input.is-valid,
+textarea.is-valid,
+select.is-valid {
+    border-color: var(--form-success, #3DDC97) !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%233DDC97'%3E%3Cpath fill-rule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' clip-rule='evenodd'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    padding-right: calc(1.5em + 0.75rem) !important;
+}
+
+.form-control.is-invalid,
+input.is-invalid,
+textarea.is-invalid,
+select.is-invalid {
+    border-color: var(--form-error, #FF6B6B) !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23FF6B6B'%3E%3Cpath fill-rule='evenodd' d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z' clip-rule='evenodd'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right calc(0.375em + 0.1875rem) center;
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    padding-right: calc(1.5em + 0.75rem) !important;
+}
+
+/* Enhanced form labels */
+.form-label,
+label {
+    color: var(--forest-leaf, #86efac);
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* Form help text */
+.form-text,
+.form-help,
+.form-hint {
+    color: var(--text-secondary, #a7c7b3);
+    font-size: 0.875rem;
+    margin-top: 0.375rem;
+    line-height: 1.4;
+}
+
+/* Form error messages */
+.form-error,
+.invalid-feedback {
+    color: var(--form-error, #FF6B6B);
+    font-size: 0.875rem;
+    margin-top: 0.375rem;
+    font-weight: 500;
+}
+
+/* Checkbox and Radio enhancements */
+input[type="checkbox"],
+input[type="radio"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+    cursor: pointer;
+    accent-color: var(--forest-mint, #4ade80);
+}
+
+input[type="checkbox"]:focus,
+input[type="radio"]:focus {
+    outline: 2px solid var(--forest-mint, #4ade80);
+    outline-offset: 2px;
+}
+
+/* Custom checkbox styling */
+.form-check {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    min-height: 1.5rem;
+    padding-left: 0;
+}
+
+.form-check-input {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.75rem;
+    background-color: var(--bg-elevated-contrast);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.25rem;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.form-check-input[type="radio"] {
+    border-radius: 50%;
+}
+
+.form-check-input:checked {
+    background-color: var(--forest-mint);
+    border-color: var(--forest-mint);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%230a2818'%3E%3Cpath fill-rule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' clip-rule='evenodd'/%3E%3C/svg%3E");
+    background-size: 1rem;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.form-check-input[type="radio"]:checked {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%230a2818'%3E%3Ccircle cx='10' cy='10' r='4'/%3E%3C/svg%3E");
+}
+
+.form-check-label {
+    color: var(--text-primary);
+    cursor: pointer;
+    user-select: none;
+}
+
+/* ========================================
+   Z-INDEX UTILITIES
+   ======================================== */
+
+.z-0 { z-index: var(--z-base, 0) !important; }
+.z-10 { z-index: 10 !important; }
+.z-20 { z-index: 20 !important; }
+.z-30 { z-index: 30 !important; }
+.z-40 { z-index: 40 !important; }
+.z-50 { z-index: 50 !important; }
+.z-dropdown { z-index: var(--z-dropdown, 1000) !important; }
+.z-sticky { z-index: var(--z-sticky, 1020) !important; }
+.z-fixed { z-index: var(--z-fixed, 1030) !important; }
+.z-overlay { z-index: var(--z-overlay, 1040) !important; }
+.z-modal { z-index: var(--z-modal, 1050) !important; }
+.z-popover { z-index: var(--z-popover, 1060) !important; }
+.z-tooltip { z-index: var(--z-tooltip, 1070) !important; }
+.z-notification { z-index: var(--z-notification, 1080) !important; }
+
+/* ========================================
+   SPACING UTILITIES
+   ======================================== */
+
+/* Section spacing */
+.section { padding: 2rem 0; }
+.section-tight { padding: 1.5rem 0; }
+.section-loose { padding: 3rem 0; }
+
+/* Card padding utilities */
+.card-padding { padding: 1.5rem; }
+.card-padding-sm { padding: 1rem; }
+.card-padding-lg { padding: 2rem; }
+
+/* Stack utilities for vertical spacing */
+.stack > * + * { margin-top: 1rem; }
+.stack-sm > * + * { margin-top: 0.5rem; }
+.stack-md > * + * { margin-top: 1rem; }
+.stack-lg > * + * { margin-top: 1.5rem; }
+.stack-xl > * + * { margin-top: 2rem; }
+
+/* Gap utilities */
+.gap-1 { gap: 0.25rem !important; }
+.gap-2 { gap: 0.5rem !important; }
+.gap-3 { gap: 0.75rem !important; }
+.gap-4 { gap: 1rem !important; }
+.gap-5 { gap: 1.25rem !important; }
+.gap-6 { gap: 1.5rem !important; }
+.gap-8 { gap: 2rem !important; }
+
+/* ========================================
+   ENHANCED DROPDOWN STYLES
+   ======================================== */
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    min-width: 12rem;
+    max-width: 20rem;
+    background: var(--bg-elevated-contrast, rgba(16, 20, 18, 0.98));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg, 0.5rem);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    z-index: var(--z-dropdown, 1000);
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease;
+}
+
+.dropdown-menu.show,
+.dropdown.open .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    color: var(--text-primary, #e2f5e9);
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background: rgba(74, 222, 128, 0.1);
+    color: var(--forest-mint, #4ade80);
+    padding-left: 1.25rem;
+}
+
+.dropdown-item.active,
+.dropdown-item[aria-selected="true"] {
+    background: rgba(74, 222, 128, 0.15);
+    color: var(--forest-mint, #4ade80);
+    font-weight: 600;
+}
+
+.dropdown-item:disabled,
+.dropdown-item.disabled {
+    color: var(--text-muted, #6b8f7a);
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.dropdown-divider {
+    height: 0;
+    margin: 0.5rem 0;
+    overflow: hidden;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ========================================
+   RESPONSIVE IMPROVEMENTS
+   ======================================== */
+
+/* Mobile-first responsive containers */
+.container-responsive {
+    width: 100%;
+    max-width: 100%;
+    padding: 0 1rem;
+    margin: 0 auto;
+}
+
+@media (min-width: 480px) {
+    .container-responsive {
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    .container-responsive {
+        max-width: 768px;
+        padding: 0 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container-responsive {
+        max-width: 1024px;
+    }
+}
+
+@media (min-width: 1280px) {
+    .container-responsive {
+        max-width: 1280px;
+    }
+}
+
+/* Responsive grid improvements */
+.grid-responsive {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 480px) {
+    .grid-responsive.sm\:cols-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 768px) {
+    .grid-responsive.md\:cols-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .grid-responsive.md\:cols-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .grid-responsive.md\:cols-4 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .grid-responsive.lg\:cols-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .grid-responsive.lg\:cols-4 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    .grid-responsive.lg\:cols-5 {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}
+
+/* Mobile touch target improvements */
+@media (max-width: 768px) {
+    /* Ensure all interactive elements meet 44px minimum touch target */
+    button,
+    .btn,
+    a.btn,
+    input[type="submit"],
+    input[type="button"],
+    input[type="reset"] {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Increase form control height on mobile */
+    .form-control,
+    input,
+    select,
+    textarea {
+        min-height: 48px;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    /* Improve dropdown item touch targets */
+    .dropdown-item {
+        padding: 1rem 1.25rem;
+        min-height: 48px;
+    }
+    
+    /* Adjust spacing for mobile */
+    .section {
+        padding: 1.5rem 0;
+    }
+    
+    .card-padding {
+        padding: 1rem;
+    }
+    
+    /* Reduce heavy effects on mobile for performance */
+    .glass,
+    .glass-panel {
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+    }
+}
+
+/* Small mobile adjustments */
+@media (max-width: 480px) {
+    /* Further reduce padding on very small screens */
+    .container-responsive {
+        padding: 0 0.75rem;
+    }
+    
+    /* Stack buttons on small screens */
+    .btn-group {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .btn-group .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* Reduce text sizes slightly */
+    .hero-title {
+        font-size: 1.75rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITY ENHANCEMENTS
+   ======================================== */
+
+/* Focus visible for keyboard navigation */
+:focus-visible {
+    outline: 2px solid var(--forest-mint, #4ade80) !important;
+    outline-offset: 2px !important;
+}
+
+/* Skip link improvements */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--forest-mint, #4ade80);
+    color: var(--forest-deep, #0a2818);
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    border-radius: 0 0 0.5rem 0.5rem;
+    font-weight: 600;
+    z-index: 10000;
+    transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+    top: 0;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .form-control,
+    input,
+    textarea,
+    select {
+        border-width: 2px;
+    }
+    
+    .btn {
+        border: 2px solid currentColor;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Selection styles for better visibility */
+::selection {
+    background: rgba(74, 222, 128, 0.3);
+    color: #ffffff;
+}
+
+::-moz-selection {
+    background: rgba(74, 222, 128, 0.3);
+    color: #ffffff;
+}
+
+/* ========================================
+   PERFORMANCE OPTIMIZATIONS
+   ======================================== */
+
+/* Use GPU acceleration for smooth animations */
+.gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+/* Content visibility for long lists */
+.content-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px;
+}
+
+/* Reduce paint areas */
+.contain-paint {
+    contain: paint;
+}
+
+.contain-layout {
+    contain: layout;
+}
+
+.contain-all {
+    contain: layout style paint;
+}

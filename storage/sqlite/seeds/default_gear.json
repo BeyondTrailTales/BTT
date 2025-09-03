@@ -1,0 +1,452 @@
+[
+    {
+        "name": "Zpacks Duplex",
+        "category": "shelter",
+        "weight_g": 538,
+        "unit": "g",
+        "icon": "⛺",
+        "description": "Ultralight two-person tent with trekking pole setup",
+        "brand": "Zpacks",
+        "price": 699
+    },
+    {
+        "name": "Big Agnes Copper Spur HV UL2",
+        "category": "shelter",
+        "weight_g": 1190,
+        "unit": "g",
+        "icon": "⛺",
+        "description": "Freestanding ultralight 2-person tent",
+        "brand": "Big Agnes",
+        "price": 450
+    },
+    {
+        "name": "Hyperlite DCF Tarp",
+        "category": "shelter",
+        "weight_g": 240,
+        "unit": "g",
+        "icon": "🏕️",
+        "description": "Dyneema composite fabric flat tarp",
+        "brand": "HMG",
+        "price": 335
+    },
+    {
+        "name": "EE Revelation 20°F",
+        "category": "sleep",
+        "weight_g": 570,
+        "unit": "g",
+        "icon": "🛌",
+        "description": "Down quilt rated to 20°F",
+        "brand": "Enlightened Equipment",
+        "price": 340
+    },
+    {
+        "name": "Western Mountaineering Alpinlite",
+        "category": "sleep",
+        "weight_g": 840,
+        "unit": "g",
+        "icon": "🛌",
+        "description": "Premium down sleeping bag",
+        "brand": "Western Mountaineering",
+        "price": 550
+    },
+    {
+        "name": "Therm-a-Rest NeoAir XLite",
+        "category": "sleep",
+        "weight_g": 340,
+        "unit": "g",
+        "icon": "🟦",
+        "description": "Ultralight inflatable sleeping pad",
+        "brand": "Thermarest",
+        "price": 210
+    },
+    {
+        "name": "Therm-a-Rest Z Lite Sol",
+        "category": "sleep",
+        "weight_g": 410,
+        "unit": "g",
+        "icon": "🟦",
+        "description": "Closed-cell foam sleeping pad",
+        "brand": "Thermarest",
+        "price": 55
+    },
+    {
+        "name": "Sea to Summit Aeros Pillow",
+        "category": "sleep",
+        "weight_g": 60,
+        "unit": "g",
+        "icon": "🛌",
+        "description": "Ultralight inflatable pillow",
+        "brand": "Sea to Summit",
+        "price": 39
+    },
+    {
+        "name": "MSR PocketRocket 2",
+        "category": "cooking",
+        "weight_g": 73,
+        "unit": "g",
+        "icon": "🔥",
+        "description": "Ultralight canister stove",
+        "brand": "MSR",
+        "price": 48
+    },
+    {
+        "name": "BRS-3000T",
+        "category": "cooking",
+        "weight_g": 25,
+        "unit": "g",
+        "icon": "🔥",
+        "description": "Titanium ultralight stove",
+        "brand": "BRS",
+        "price": 17
+    },
+    {
+        "name": "Jetboil MiniMo",
+        "category": "cooking",
+        "weight_g": 415,
+        "unit": "g",
+        "icon": "🔥",
+        "description": "Integrated cooking system",
+        "brand": "Jetboil",
+        "price": 150
+    },
+    {
+        "name": "TOAKS Titanium 550ml Pot",
+        "category": "cooking",
+        "weight_g": 65,
+        "unit": "g",
+        "icon": "🍲",
+        "description": "Titanium pot with lid",
+        "brand": "TOAKS",
+        "price": 34
+    },
+    {
+        "name": "GSI Minimalist",
+        "category": "cooking",
+        "weight_g": 176,
+        "unit": "g",
+        "icon": "🍲",
+        "description": "Lightweight cookset with mug",
+        "brand": "GSI",
+        "price": 35
+    },
+    {
+        "name": "Titanium Spork",
+        "category": "cooking",
+        "weight_g": 17,
+        "unit": "g",
+        "icon": "🍴",
+        "description": "Lightweight titanium utensil",
+        "brand": "TOAKS",
+        "price": 12
+    },
+    {
+        "name": "Sawyer Squeeze",
+        "category": "water",
+        "weight_g": 85,
+        "unit": "g",
+        "icon": "💧",
+        "description": "Water filter system",
+        "brand": "Sawyer",
+        "price": 37
+    },
+    {
+        "name": "Sawyer Mini",
+        "category": "water",
+        "weight_g": 57,
+        "unit": "g",
+        "icon": "💧",
+        "description": "Compact water filter",
+        "brand": "Sawyer",
+        "price": 24
+    },
+    {
+        "name": "Katadyn BeFree",
+        "category": "water",
+        "weight_g": 59,
+        "unit": "g",
+        "icon": "💧",
+        "description": "Fast-flow water filter",
+        "brand": "Katadyn",
+        "price": 40
+    },
+    {
+        "name": "Smart Water 1L Bottle",
+        "category": "water",
+        "weight_g": 35,
+        "unit": "g",
+        "icon": "🍼",
+        "description": "Lightweight water bottle",
+        "brand": "Smart Water",
+        "price": 2
+    },
+    {
+        "name": "Hydrapak 2L Reservoir",
+        "category": "water",
+        "weight_g": 109,
+        "unit": "g",
+        "icon": "💧",
+        "description": "Hydration bladder",
+        "brand": "Hydrapak",
+        "price": 35
+    },
+    {
+        "name": "Frogg Toggs UL Rain Jacket",
+        "category": "clothing",
+        "weight_g": 155,
+        "unit": "g",
+        "icon": "🧥",
+        "description": "Budget ultralight rain jacket",
+        "brand": "Frogg Toggs",
+        "price": 25
+    },
+    {
+        "name": "Arc'teryx Zeta SL",
+        "category": "clothing",
+        "weight_g": 310,
+        "unit": "g",
+        "icon": "🧥",
+        "description": "Premium waterproof jacket",
+        "brand": "Arc'teryx",
+        "price": 350
+    },
+    {
+        "name": "Mountain Hardwear Ghost Whisperer",
+        "category": "clothing",
+        "weight_g": 230,
+        "unit": "g",
+        "icon": "🧥",
+        "description": "Ultralight down jacket",
+        "brand": "Mountain Hardwear",
+        "price": 325
+    },
+    {
+        "name": "Patagonia R1 Daily",
+        "category": "clothing",
+        "weight_g": 315,
+        "unit": "g",
+        "icon": "👕",
+        "description": "Technical fleece layer",
+        "brand": "Patagonia",
+        "price": 79
+    },
+    {
+        "name": "Merino Wool Base Layer Top",
+        "category": "clothing",
+        "weight_g": 140,
+        "unit": "g",
+        "icon": "👕",
+        "description": "Moisture-wicking base layer",
+        "brand": "Smartwool",
+        "price": 85
+    },
+    {
+        "name": "Prana Stretch Zion Pants",
+        "category": "clothing",
+        "weight_g": 340,
+        "unit": "g",
+        "icon": "👖",
+        "description": "Durable hiking pants",
+        "brand": "Prana",
+        "price": 89
+    },
+    {
+        "name": "Patagonia Baggies Shorts",
+        "category": "clothing",
+        "weight_g": 110,
+        "unit": "g",
+        "icon": "🩳",
+        "description": "Quick-dry hiking shorts",
+        "brand": "Patagonia",
+        "price": 55
+    },
+    {
+        "name": "Nitecore NU25",
+        "category": "navigation",
+        "weight_g": 57,
+        "unit": "g",
+        "icon": "🔦",
+        "description": "Rechargeable headlamp",
+        "brand": "Nitecore",
+        "price": 39
+    },
+    {
+        "name": "Petzl Bindi",
+        "category": "navigation",
+        "weight_g": 35,
+        "unit": "g",
+        "icon": "🔦",
+        "description": "Ultralight rechargeable headlamp",
+        "brand": "Petzl",
+        "price": 60
+    },
+    {
+        "name": "Carbon Trekking Poles",
+        "category": "navigation",
+        "weight_g": 355,
+        "unit": "g",
+        "icon": "🥾",
+        "description": "Lightweight carbon fiber poles",
+        "brand": "Black Diamond",
+        "price": 180
+    },
+    {
+        "name": "Silva Compass",
+        "category": "navigation",
+        "weight_g": 28,
+        "unit": "g",
+        "icon": "🧭",
+        "description": "Basic orienteering compass",
+        "brand": "Silva",
+        "price": 25
+    },
+    {
+        "name": "Garmin inReach Mini",
+        "category": "navigation",
+        "weight_g": 100,
+        "unit": "g",
+        "icon": "📱",
+        "description": "Satellite communicator",
+        "brand": "Garmin",
+        "price": 350
+    },
+    {
+        "name": "First Aid Kit",
+        "category": "first_aid",
+        "weight_g": 120,
+        "unit": "g",
+        "icon": "🏥",
+        "description": "Basic hiking first aid kit",
+        "brand": "Adventure Medical",
+        "price": 25
+    },
+    {
+        "name": "Leukotape",
+        "category": "first_aid",
+        "weight_g": 20,
+        "unit": "g",
+        "icon": "🩹",
+        "description": "Athletic tape for blisters",
+        "brand": "BSN",
+        "price": 8
+    },
+    {
+        "name": "Ibuprofen",
+        "category": "first_aid",
+        "weight_g": 10,
+        "unit": "g",
+        "icon": "💊",
+        "description": "Pain relief medication",
+        "brand": "Generic",
+        "price": 5
+    },
+    {
+        "name": "Band-Aids",
+        "category": "first_aid",
+        "weight_g": 15,
+        "unit": "g",
+        "icon": "🩹",
+        "description": "Assorted adhesive bandages",
+        "brand": "Band-Aid",
+        "price": 5
+    },
+    {
+        "name": "Deuce Trowel",
+        "category": "hygiene",
+        "weight_g": 17,
+        "unit": "g",
+        "icon": "🔨",
+        "description": "Ultralight backcountry trowel",
+        "brand": "TheTentLab",
+        "price": 20
+    },
+    {
+        "name": "Dr. Bronners Soap 2oz",
+        "category": "hygiene",
+        "weight_g": 60,
+        "unit": "g",
+        "icon": "🧼",
+        "description": "Biodegradable camp soap",
+        "brand": "Dr. Bronners",
+        "price": 4
+    },
+    {
+        "name": "Toothbrush",
+        "category": "hygiene",
+        "weight_g": 10,
+        "unit": "g",
+        "icon": "🧪",
+        "description": "Travel toothbrush",
+        "brand": "Generic",
+        "price": 3
+    },
+    {
+        "name": "Sunscreen SPF 50",
+        "category": "hygiene",
+        "weight_g": 85,
+        "unit": "g",
+        "icon": "☀️",
+        "description": "Sun protection",
+        "brand": "Generic",
+        "price": 10
+    },
+    {
+        "name": "Anker PowerCore 10000",
+        "category": "electronics",
+        "weight_g": 180,
+        "unit": "g",
+        "icon": "🔋",
+        "description": "Portable battery bank",
+        "brand": "Anker",
+        "price": 25
+    },
+    {
+        "name": "USB-C Charging Cable",
+        "category": "electronics",
+        "weight_g": 20,
+        "unit": "g",
+        "icon": "🔌",
+        "description": "Phone charging cable",
+        "brand": "Generic",
+        "price": 10
+    },
+    {
+        "name": "Swiss Army Knife",
+        "category": "tools",
+        "weight_g": 58,
+        "unit": "g",
+        "icon": "🔪",
+        "description": "Multi-tool knife",
+        "brand": "Victorinox",
+        "price": 35
+    },
+    {
+        "name": "Duct Tape",
+        "category": "tools",
+        "weight_g": 30,
+        "unit": "g",
+        "icon": "🔧",
+        "description": "Repair tape (wrapped on trekking pole)",
+        "brand": "Gorilla",
+        "price": 5
+    },
+    {
+        "name": "Guy Lines",
+        "category": "tools",
+        "weight_g": 30,
+        "unit": "g",
+        "icon": "🪀",
+        "description": "Extra tent guy lines",
+        "brand": "Generic",
+        "price": 8
+    },
+    {
+        "name": "Emergency Whistle",
+        "category": "tools",
+        "weight_g": 10,
+        "unit": "g",
+        "icon": "📢",
+        "description": "Safety whistle",
+        "brand": "Generic",
+        "price": 5
+    }
+]

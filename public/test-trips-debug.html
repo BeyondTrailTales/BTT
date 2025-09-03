@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trip Debug Test</title>
+</head>
+<body>
+    <h1>Testing Trips Page</h1>
+    <div id="result"></div>
+    
+    <script>
+        // Check if BTT global is available
+        console.log('Checking window.BTT:', window.BTT);
+        
+        // Check URL construction
+        if (window.BTT) {
+            console.log('API URL would be:', window.BTT.apiUrl + '?route=trips');
+        }
+        
+        // Try to fetch trips
+        async function testFetch() {
+            try {
+                const response = await fetch('http://localhost/BTT/api/?route=trips');
+                const data = await response.json();
+                console.log('API Response:', data);
+                document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                console.error('Fetch error:', error);
+                document.getElementById('result').innerHTML = 'Error: ' + error.message;
+            }
+        }
+        
+        // Test after page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM loaded, testing fetch...');
+            testFetch();
+        });
+    </script>
+</body>
+</html>

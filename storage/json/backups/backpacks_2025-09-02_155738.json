@@ -1,0 +1,66 @@
+[
+    {
+        "name": "Day Hike Pack",
+        "description": "Light pack for day trips",
+        "base_weight": 2.5,
+        "created_at": "2025-09-01 19:04:06",
+        "updated_at": "2025-09-01 19:04:06",
+        "id": 5
+    },
+    {
+        "name": "Weekend Adventure",
+        "description": "Perfect for 2-3 day trips",
+        "base_weight": 5.8,
+        "created_at": "2025-09-01 19:04:06",
+        "updated_at": "2025-09-01 19:04:06",
+        "id": 6
+    },
+    {
+        "name": "Day Hike Pack",
+        "description": "Light pack for day trips",
+        "base_weight": 2.5,
+        "created_at": "2025-09-01 22:28:48",
+        "updated_at": "2025-09-01 22:28:48",
+        "id": 7
+    },
+    {
+        "name": "Weekend Adventure",
+        "description": "Perfect for 2-3 day trips",
+        "base_weight": 5.8,
+        "created_at": "2025-09-01 22:28:48",
+        "updated_at": "2025-09-01 22:28:48",
+        "id": 8
+    },
+    {
+        "name": "Day Hike Pack",
+        "description": "Light pack for day trips",
+        "base_weight": 2.5,
+        "created_at": "2025-09-01 22:28:56",
+        "updated_at": "2025-09-01 22:28:56",
+        "id": 9
+    },
+    {
+        "name": "Weekend Adventure",
+        "description": "Perfect for 2-3 day trips",
+        "base_weight": 5.8,
+        "created_at": "2025-09-01 22:28:56",
+        "updated_at": "2025-09-01 22:28:56",
+        "id": 10
+    },
+    {
+        "name": "Day Hike Pack",
+        "description": "Light pack for day trips",
+        "base_weight": 2.5,
+        "created_at": "2025-09-02 13:56:03",
+        "updated_at": "2025-09-02 13:56:03",
+        "id": 11
+    },
+    {
+        "name": "Weekend Adventure",
+        "description": "Perfect for 2-3 day trips",
+        "base_weight": 5.8,
+        "created_at": "2025-09-02 13:56:03",
+        "updated_at": "2025-09-02 13:56:03",
+        "id": 12
+    }
+]

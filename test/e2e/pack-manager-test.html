@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="forest-dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pack Manager Pro Test</title>
+    
+    <!-- Forest Theme CSS -->
+    <link rel="stylesheet" href="/BTT/assets/css/forest-tokens.css">
+    <link rel="stylesheet" href="/BTT/assets/css/forest-base.css">
+    <link rel="stylesheet" href="/BTT/assets/css/forest-components.css">
+    
+    <!-- Pack Manager CSS -->
+    <link rel="stylesheet" href="/BTT/assets/css/pack-manager-fast.css">
+    
+    <style>
+        body {
+            padding: 20px;
+            background: var(--gradient-forest);
+        }
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            color: var(--forest-mint);
+            margin-bottom: 30px;
+        }
+        .test-button {
+            padding: 15px 30px;
+            background: var(--forest-mint);
+            color: var(--forest-deep);
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .test-button:hover {
+            background: var(--forest-leaf);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Pack Manager Pro Test Page</h1>
+        <p style="color: #fff; margin-bottom: 30px;">Click the button below to test the Pack Manager Pro</p>
+        
+        <button class="test-button" onclick="testPackManager()">
+            🎒 Open Pack Manager Pro
+        </button>
+        
+        <button class="test-button" onclick="checkStatus()">
+            🔍 Check Status
+        </button>
+        
+        <div id="status" style="margin-top: 30px; color: #fff;"></div>
+    </div>
+
+    <!-- Modal Container for Pack Manager -->
+    <div class="modal-ultimate hidden" id="pack-builder-modal" role="dialog" aria-modal="true">
+        <div class="modal-overlay" onclick="PackManagerPro.closeBuilder()"></div>
+        <div class="modal-container-xl">
+            <div class="modal-header-ultimate">
+                <div class="modal-title-group">
+                    <h2 class="modal-title-ultimate">Pack Builder Pro</h2>
+                    <span class="modal-subtitle">Professional Backpacking System</span>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-icon-close" onclick="PackManagerPro.closeBuilder()">×</button>
+                </div>
+            </div>
+            
+            <div class="builder-progress-bar">
+                <div class="progress-step active" data-step="1">
+                    <span class="step-number">1</span>
+                    <span class="step-label">Details</span>
+                </div>
+                <div class="progress-step" data-step="2">
+                    <span class="step-number">2</span>
+                    <span class="step-label">Gear</span>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <span class="step-number">3</span>
+                    <span class="step-label">Review</span>
+                </div>
+            </div>
+            
+            <div class="builder-layout" id="builder-layout">
+                <!-- Content will be loaded here -->
+            </div>
+            
+            <div class="builder-footer">
+                <div class="footer-left">
+                    <span style="color: #fff;">Total Weight: </span>
+                    <span id="builder-total-weight" style="color: var(--forest-mint);">0g</span>
+                </div>
+                <div class="footer-right">
+                    <button class="btn-secondary" onclick="PackManagerPro.previousStep()" id="btn-prev">Previous</button>
+                    <button class="btn-primary" onclick="PackManagerPro.nextStep()" id="btn-next">Next</button>
+                    <button class="btn-success hidden" onclick="PackManagerPro.savePack()" id="btn-save">Save Pack</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Load Pack Manager Pro -->
+    <script src="/BTT/assets/js/pack-manager-pro.js"></script>
+    
+    <script>
+        function testPackManager() {
+            console.log('Testing Pack Manager Pro...');
+            
+            if (typeof PackManagerPro !== 'undefined') {
+                console.log('PackManagerPro found!');
+                PackManagerPro.openBuilder();
+                document.getElementById('status').innerHTML = '<p style="color: #4ade80;">✅ Pack Manager Pro opened successfully!</p>';
+            } else {
+                console.error('PackManagerPro not found!');
+                document.getElementById('status').innerHTML = '<p style="color: #ff0000;">❌ Pack Manager Pro not loaded!</p>';
+            }
+        }
+        
+        function checkStatus() {
+            const status = document.getElementById('status');
+            let html = '<h3>Status Check:</h3>';
+            
+            if (typeof PackManagerPro !== 'undefined') {
+                html += '<p style="color: #4ade80;">✅ PackManagerPro is loaded</p>';
+                html += '<p>Available methods:</p><ul style="text-align: left; max-width: 500px; margin: 0 auto;">';
+                for (let key in PackManagerPro) {
+                    if (typeof PackManagerPro[key] === 'function') {
+                        html += `<li>${key}()</li>`;
+                    }
+                }
+                html += '</ul>';
+            } else {
+                html += '<p style="color: #ff0000;">❌ PackManagerPro is NOT loaded</p>';
+            }
+            
+            status.innerHTML = html;
+        }
+        
+        // Auto-check on load
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                console.log('Checking PackManagerPro status...');
+                if (typeof PackManagerPro !== 'undefined') {
+                    console.log('PackManagerPro is available!', PackManagerPro);
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

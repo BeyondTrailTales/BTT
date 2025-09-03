@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeyondTrailTales - Development Options</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .option {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
+        }
+        .option h2 {
+            margin-top: 0;
+            color: #4CAF50;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .button:hover {
+            background: #45a049;
+        }
+        .command {
+            background: #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 3px;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BeyondTrailTales - Development Options</h1>
+        
+        <div class="option">
+            <h2>Option 1: Production Build (Via XAMPP) ✅</h2>
+            <p>View the compiled production version served through XAMPP Apache server.</p>
+            <p><strong>Build Status:</strong> <span style="color: green;">✓ Built Successfully!</span></p>
+            
+            <div style="background: #e8f5e9; padding: 15px; border-radius: 5px; margin: 15px 0;">
+                <strong>⚠️ IMPORTANT: Use the PHP Router URL!</strong><br>
+                <p style="margin: 10px 0;">Since mod_rewrite is not enabled, you must use:</p>
+                <a href="beyondtrailtales-app/dist/index.php" class="button" style="background: #2e7d32;">
+                    Open App (PHP Router)
+                </a>
+            </div>
+            
+            <details style="margin-top: 15px;">
+                <summary style="cursor: pointer; color: #666;">Other access methods (may not work)</summary>
+                <div style="margin-top: 10px; padding-left: 20px;">
+                    <a href="beyondtrailtales-app/dist/index.html" class="button" style="background: #666; font-size: 14px;">
+                        Direct HTML (limited routing)
+                    </a>
+                    <a href="beyondtrailtales-app/dist/" class="button" style="background: #666; font-size: 14px;">
+                        Directory Index (requires mod_rewrite)
+                    </a>
+                </div>
+            </details>
+            
+            <p><strong>To rebuild after changes:</strong></p>
+            <div class="command">
+                cd beyondtrailtales-app<br>
+                build-for-xampp.bat
+            </div>
+        </div>
+
+        <div class="option">
+            <h2>Option 2: Development Server (Recommended)</h2>
+            <p>Use Vite's development server with hot module replacement for the best development experience.</p>
+            <div class="command">
+                cd beyondtrailtales-app<br>
+                npm run dev
+            </div>
+            <p><strong>Then access:</strong></p>
+            <a href="http://localhost:5173" class="button" target="_blank">Open Dev Server</a>
+            <p><em>Features: Hot reload, instant updates, better error messages</em></p>
+        </div>
+
+        <div class="option">
+            <h2>Option 3: Hybrid Setup</h2>
+            <p>Run both XAMPP for backend/PHP and Vite for frontend development.</p>
+            <ol>
+                <li>Keep XAMPP running for any PHP/MySQL backend services</li>
+                <li>Run Vite dev server for React frontend</li>
+                <li>Configure API proxy in Vite to point to XAMPP</li>
+            </ol>
+        </div>
+
+        <div class="warning">
+            <strong>Current Setup:</strong> You're viewing this through XAMPP. React apps require a build step to convert JSX/TypeScript to regular JavaScript that browsers can understand.
+        </div>
+
+        <h2>Quick Commands</h2>
+        <div class="command">
+            # Install dependencies (first time only)<br>
+            cd beyondtrailtales-app && npm install<br><br>
+            
+            # Development server<br>
+            npm run dev<br><br>
+            
+            # Build for production<br>
+            npm run build<br><br>
+            
+            # Preview production build<br>
+            npm run preview
+        </div>
+    </div>
+</body>
+</html>

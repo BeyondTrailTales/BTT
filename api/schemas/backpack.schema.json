@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://beyondtrailtales.com/schemas/backpack.json",
+  "title": "Backpack",
+  "description": "A backpack used for hiking and outdoor adventures",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "Unique identifier for the backpack",
+      "minimum": 1
+    },
+    "name": {
+      "type": "string",
+      "description": "Name of the backpack",
+      "minLength": 1,
+      "maxLength": 120,
+      "pattern": "^[^\\s].*[^\\s]$"
+    },
+    "capacity_liters": {
+      "type": ["number", "null"],
+      "description": "Capacity of the backpack in liters",
+      "minimum": 0,
+      "maximum": 150
+    },
+    "base_weight_kg": {
+      "type": ["number", "null"],
+      "description": "Base weight of the backpack in kilograms",
+      "minimum": 0,
+      "maximum": 50
+    },
+    "notes": {
+      "type": ["string", "null"],
+      "description": "Additional notes about the backpack",
+      "maxLength": 2000
+    },
+    "created_at": {
+      "type": "string",
+      "description": "ISO 8601 datetime when the backpack was created",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "description": "ISO 8601 datetime when the backpack was last updated",
+      "format": "date-time"
+    },
+    "trip_count": {
+      "type": "integer",
+      "description": "Number of trips associated with this backpack (computed field)",
+      "minimum": 0,
+      "readOnly": true
+    }
+  },
+  "required": ["name"],
+  "additionalProperties": false,
+  "examples": [
+    {
+      "id": 1,
+      "name": "Osprey Atmos AG 65",
+      "capacity_liters": 65,
+      "base_weight_kg": 2.13,
+      "notes": "Great ventilation system, perfect for multi-day trips",
+      "created_at": "2025-09-01T12:00:00Z",
+      "updated_at": "2025-09-01T12:00:00Z",
+      "trip_count": 5
+    },
+    {
+      "id": 2,
+      "name": "REI Flash 22",
+      "capacity_liters": 22,
+      "base_weight_kg": 0.42,
+      "notes": "Lightweight daypack for short hikes",
+      "created_at": "2025-09-01T13:00:00Z",
+      "updated_at": "2025-09-01T13:00:00Z",
+      "trip_count": 12
+    }
+  ]
+}

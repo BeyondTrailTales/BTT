@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "C:\\xampp2\\htdocs\\BTT\\logs\\.d8843827264ceadd309b53a9e18027acc82202c4-audit.json",
+    "files": [
+        {
+            "date": 1756836221641,
+            "name": "C:\\xampp2\\htdocs\\BTT\\logs\\mcp-puppeteer-2025-09-02.log",
+            "hash": "b42b250cf067da5c8a9cb68bf5e19eaa82168b497929ae6cb3c23be1e89532b4"
+        }
+    ],
+    "hashType": "sha256"
+}

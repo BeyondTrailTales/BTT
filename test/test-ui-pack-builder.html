@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pack Builder UI Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f4f4f4;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .pending { background: #fff3cd; color: #856404; }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover { background: #0056b3; }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Pack Builder UI Test Suite</h1>
+    
+    <div class="test-section">
+        <h2>Test Controls</h2>
+        <button onclick="runAllTests()">Run All Tests</button>
+        <button onclick="clearResults()">Clear Results</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test Results</h2>
+        <div id="test-results"></div>
+    </div>
+    
+    <script>
+    const API_BASE = '/BTT/api/index.php?route=backpacks';
+    const results = [];
+    
+    function log(message, type = 'pending') {
+        const html = `<div class="test-result ${type}">${message}</div>`;
+        $('#test-results').append(html);
+    }
+    
+    function clearResults() {
+        $('#test-results').empty();
+        results.length = 0;
+    }
+    
+    async function testCreatePack() {
+        log('Testing: Create Pack via UI simulation...');
+        
+        const testPack = {
+            name: 'UI Test Pack ' + new Date().toISOString(),
+            description: 'Created from UI test',
+            capacity_l: 45,
+            weight_empty_g: 1000,
+            type: 'custom',
+            sections: []
+        };
+        
+        try {
+            const response = await $.ajax({
+                url: API_BASE,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(testPack)
+            });
+            
+            if (response.success && response.data.id) {
+                log('✅ Pack created successfully (ID: ' + response.data.id + ')', 'success');
+                return response.data.id;
+            } else {
+                log('❌ Pack creation failed', 'error');
+                return null;
+            }
+        } catch (error) {
+            log('❌ API error: ' + error.responseText, 'error');
+            return null;
+        }
+    }
+    
+    async function testListPacks() {
+        log('Testing: List all packs...');
+        
+        try {
+            const response = await $.ajax({
+                url: API_BASE,
+                method: 'GET'
+            });
+            
+            if (response.success) {
+                const count = response.data.length;
+                log('✅ Retrieved ' + count + ' packs', 'success');
+                
+                // Show first 3 pack names
+                response.data.slice(0, 3).forEach(pack => {
+                    log('  - ' + pack.name + ' (ID: ' + pack.id + ')', 'pending');
+                });
+                
+                return true;
+            } else {
+                log('❌ Failed to retrieve packs', 'error');
+                return false;
+            }
+        } catch (error) {
+            log('❌ API error: ' + error.responseText, 'error');
+            return false;
+        }
+    }
+    
+    async function testUpdatePack(packId) {
+        if (!packId) {
+            log('⚠️ Skipping update test - no pack ID', 'pending');
+            return false;
+        }
+        
+        log('Testing: Update pack ' + packId + '...');
+        
+        const updateData = {
+            name: 'Updated UI Test Pack',
+            description: 'This pack was updated via UI test',
+            capacity_l: 50
+        };
+        
+        try {
+            const response = await $.ajax({
+                url: API_BASE + '&id=' + packId,
+                method: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(updateData)
+            });
+            
+            if (response.success) {
+                log('✅ Pack updated successfully', 'success');
+                return true;
+            } else {
+                log('❌ Pack update failed', 'error');
+                return false;
+            }
+        } catch (error) {
+            log('❌ API error: ' + error.responseText, 'error');
+            return false;
+        }
+    }
+    
+    async function testDeletePack(packId) {
+        if (!packId) {
+            log('⚠️ Skipping delete test - no pack ID', 'pending');
+            return false;
+        }
+        
+        log('Testing: Delete pack ' + packId + '...');
+        
+        try {
+            const response = await $.ajax({
+                url: API_BASE + '&id=' + packId,
+                method: 'DELETE'
+            });
+            
+            if (response.success) {
+                log('✅ Pack deleted successfully', 'success');
+                return true;
+            } else {
+                log('❌ Pack deletion failed', 'error');
+                return false;
+            }
+        } catch (error) {
+            log('❌ API error: ' + error.responseText, 'error');
+            return false;
+        }
+    }
+    
+    async function testGearLibrary() {
+        log('Testing: Load gear library...');
+        
+        try {
+            const response = await $.ajax({
+                url: '/BTT/api/index.php?route=gear',
+                method: 'GET'
+            });
+            
+            if (response.success) {
+                const count = response.data.items ? response.data.items.length : 0;
+                log('✅ Gear library loaded (' + count + ' items)', 'success');
+                return true;
+            } else {
+                log('❌ Failed to load gear library', 'error');
+                return false;
+            }
+        } catch (error) {
+            log('❌ Gear API error: ' + error.responseText, 'error');
+            return false;
+        }
+    }
+    
+    async function runAllTests() {
+        clearResults();
+        log('Starting Pack Builder UI Tests...', 'pending');
+        
+        // Test 1: List existing packs
+        await testListPacks();
+        
+        // Test 2: Create a new pack
+        const packId = await testCreatePack();
+        
+        // Test 3: Update the pack
+        if (packId) {
+            await testUpdatePack(packId);
+        }
+        
+        // Test 4: Load gear library
+        await testGearLibrary();
+        
+        // Test 5: Delete the test pack
+        if (packId) {
+            await testDeletePack(packId);
+        }
+        
+        // Summary
+        log('', 'pending');
+        log('=== Test Suite Complete ===', 'pending');
+        
+        // Open actual pack builder page
+        log('', 'pending');
+        log('Opening Pack Builder page...', 'pending');
+        setTimeout(() => {
+            window.open('/BTT/public/backpacks.php', '_blank');
+        }, 2000);
+    }
+    
+    // Auto-run tests on load
+    $(document).ready(function() {
+        // runAllTests();
+    });
+    </script>
+</body>
+</html>

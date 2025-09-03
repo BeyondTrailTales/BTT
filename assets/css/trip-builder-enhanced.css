@@ -1,0 +1,399 @@
+/**
+ * Trip Builder Enhanced CSS
+ * Additional styles for advanced trip features
+ * Complements trip-builder.css with enhanced visual effects and polish
+ */
+
+/* ==================== Theme Variables Override ==================== */
+:root {
+    /* Trip-specific color palette */
+    --trip-planning: #fbbf24;
+    --trip-completed: #4ade80;
+    --trip-favorite: #facc15;
+    --trip-difficulty-easy: #86efac;
+    --trip-difficulty-moderate: #fbbf24;
+    --trip-difficulty-hard: #fb7185;
+    --trip-difficulty-expert: #f87171;
+    
+    /* Trip card shadows */
+    --trip-shadow-sm: 0 1px 3px rgba(74, 222, 128, 0.1);
+    --trip-shadow-md: 0 4px 12px rgba(74, 222, 128, 0.15);
+    --trip-shadow-lg: 0 8px 24px rgba(74, 222, 128, 0.2);
+    --trip-shadow-xl: 0 12px 36px rgba(74, 222, 128, 0.25);
+}
+
+/* ==================== Enhanced Trip Cards ==================== */
+.trip-card {
+    position: relative;
+    overflow: visible;
+}
+
+.trip-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(74, 222, 128, 0.05) 0%,
+        rgba(74, 222, 128, 0) 50%,
+        rgba(139, 195, 74, 0.03) 100%);
+    border-radius: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.trip-card-clickable:hover::before {
+    opacity: 1;
+}
+
+/* Animated gradient border on hover */
+.trip-card-clickable::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg,
+        var(--forest-mint),
+        var(--forest-leaf),
+        var(--forest-mint),
+        var(--forest-sage));
+    background-size: 300% 300%;
+    border-radius: 1rem;
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease;
+    animation: gradient-shift 3s ease infinite;
+}
+
+.trip-card-clickable:hover::after {
+    opacity: 0.3;
+}
+
+@keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Image hover effects */
+.trip-card-image {
+    position: relative;
+    overflow: hidden;
+}
+
+.trip-card-image img {
+    transition: transform 0.5s ease, filter 0.3s ease;
+}
+
+.trip-card-clickable:hover .trip-card-image img {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+/* Enhanced badges with animation */
+.trip-type-badge,
+.trip-difficulty-badge,
+.trip-status-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.trip-type-badge::before,
+.trip-difficulty-badge::before,
+.trip-status-item::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.2), 
+        transparent);
+    transform: translateY(-50%);
+    transition: left 0.5s ease;
+}
+
+.trip-card:hover .trip-type-badge::before,
+.trip-card:hover .trip-difficulty-badge::before,
+.trip-card:hover .trip-status-item::before {
+    left: 100%;
+}
+
+/* ==================== Form Enhancements ==================== */
+.form-control {
+    position: relative;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.1);
+}
+
+/* Floating labels effect */
+.form-group {
+    position: relative;
+}
+
+.form-group label {
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label,
+.form-group select:focus + label,
+.form-group textarea:focus + label {
+    transform: translateY(-1.5rem) scale(0.85);
+    color: var(--forest-mint);
+}
+
+/* Custom select styling */
+select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234ade80' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    padding-right: 2.5rem;
+}
+
+/* ==================== Loading States ==================== */
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+}
+
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 3px solid rgba(74, 222, 128, 0.2);
+    border-top-color: var(--forest-mint);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Skeleton loading for cards */
+.trip-card-skeleton {
+    background: var(--glass-bg);
+    border: 1px solid rgba(74, 222, 128, 0.1);
+    border-radius: 1rem;
+    padding: 1rem;
+    animation: skeleton-pulse 1.5s ease infinite;
+}
+
+@keyframes skeleton-pulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+.skeleton-line {
+    height: 12px;
+    background: linear-gradient(90deg,
+        rgba(74, 222, 128, 0.1) 0%,
+        rgba(74, 222, 128, 0.2) 50%,
+        rgba(74, 222, 128, 0.1) 100%);
+    background-size: 200% 100%;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    animation: skeleton-wave 1.5s ease infinite;
+}
+
+@keyframes skeleton-wave {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* ==================== Empty States ==================== */
+.packs-empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.packs-empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: float 3s ease infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.packs-empty-text {
+    font-size: 1.5rem;
+    color: var(--forest-mint);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.packs-empty-subtext {
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 2rem;
+}
+
+/* ==================== Button Enhancements ==================== */
+.btn-primary,
+.btn-secondary,
+.btn-action {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.btn-primary::before,
+.btn-secondary::before,
+.btn-action::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.5s ease, height 0.5s ease;
+}
+
+.btn-primary:active::before,
+.btn-secondary:active::before,
+.btn-action:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* Success state button */
+.btn-success {
+    background: var(--forest-mint);
+    color: var(--forest-deep);
+    animation: success-pulse 0.5s ease;
+}
+
+@keyframes success-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* ==================== Toast Notifications ==================== */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.toast {
+    background: var(--glass-bg);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    border-radius: 0.5rem;
+    padding: 1rem 1.5rem;
+    min-width: 250px;
+    animation: slideInRight 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.toast.success {
+    border-color: var(--forest-mint);
+    background: rgba(74, 222, 128, 0.1);
+}
+
+.toast.error {
+    border-color: #f87171;
+    background: rgba(248, 113, 113, 0.1);
+}
+
+/* ==================== Insights Panel ==================== */
+.weight-summary-card {
+    position: sticky;
+    top: 80px;
+    transition: all 0.3s ease;
+}
+
+.weight-summary-card h3 {
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.weight-summary-card h3::before {
+    content: '📊';
+    position: absolute;
+    left: 0;
+    animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+/* ==================== Dark Mode Enhancements ==================== */
+@media (prefers-color-scheme: dark) {
+    .trip-card {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .trip-card-clickable:hover {
+        box-shadow: var(--trip-shadow-lg), 0 0 20px rgba(74, 222, 128, 0.1);
+    }
+}
+
+/* ==================== Performance Optimizations ==================== */
+.trip-card,
+.trip-card img,
+.btn-action,
+.form-control {
+    will-change: transform;
+}
+
+/* Disable animations for performance on low-end devices */
+@media (max-width: 768px) and (hover: none) {
+    .trip-card::before,
+    .trip-card::after,
+    .trip-type-badge::before,
+    .trip-difficulty-badge::before,
+    .trip-status-item::before {
+        display: none;
+    }
+    
+    .trip-card-image img {
+        transform: none !important;
+    }
+}

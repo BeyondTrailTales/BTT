@@ -1,0 +1,16 @@
+/**
+ * Backpacks Page Styles
+ * 
+ * This file is intentionally minimal as the backpacks page styles
+ * are already provided by:
+ * - pack-builder.css (main pack builder styles)
+ * - pack-builder-enhanced.css (enhanced UI components)
+ * - pack-builder-dnd.css (drag and drop styles)
+ * - gear-library.css (gear library styles)
+ * - gear-library-enhanced.css (enhanced gear library filters)
+ * 
+ * This file exists to prevent 404 errors and can be used for any
+ * additional page-specific styles if needed in the future.
+ */
+
+/* Any additional backpacks page specific styles can be added here */

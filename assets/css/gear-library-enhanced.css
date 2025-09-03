@@ -1,0 +1,328 @@
+/**
+ * Gear Library Enhanced Styles
+ * Improved filter controls and view mode selection
+ * BeyondTrailTales Design System v2.0
+ */
+
+/* ==================== View Mode Controls ==================== */
+.view-mode-controls {
+    display: inline-flex;
+    gap: 0;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.25rem;
+    border-radius: var(--radius-lg, 0.75rem);
+    border: 1px solid rgba(74, 222, 128, 0.2);
+}
+
+.radio-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0.625rem 1rem;
+    cursor: pointer;
+    transition: all var(--duration-standard, 250ms) var(--ease-standard);
+    border-radius: var(--radius-md, 0.5rem);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+    user-select: none;
+}
+
+.radio-group:hover {
+    background: rgba(74, 222, 128, 0.1);
+    color: var(--forest-mint, #4ade80);
+}
+
+.radio-group input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.radio-group input[type="radio"]:checked + span {
+    color: var(--forest-mint, #4ade80);
+    font-weight: 600;
+}
+
+.radio-group input[type="radio"]:checked + span {
+    position: relative;
+}
+
+.radio-group input[type="radio"]:checked + span::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--forest-mint, #4ade80);
+    border-radius: 3px;
+}
+
+.radio-group input[type="radio"]:focus-visible + span {
+    outline: 2px solid var(--forest-mint, #4ade80);
+    outline-offset: 2px;
+    border-radius: var(--radius-md, 0.5rem);
+}
+
+/* Tooltip on hover */
+.radio-group[title] {
+    position: relative;
+}
+
+.radio-group[title]:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.5rem 0.75rem;
+    background: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    border-radius: 0.375rem;
+    margin-bottom: 0.5rem;
+    pointer-events: none;
+    opacity: 0;
+    animation: tooltip-fade-in 0.3s forwards;
+    z-index: 1000;
+}
+
+@keyframes tooltip-fade-in {
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(-4px);
+    }
+}
+
+/* ==================== Gear Controls Bar ==================== */
+.gear-controls-bar {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: var(--radius-lg, 0.75rem);
+    margin: 1rem 0;
+}
+
+.gear-search-box {
+    flex: 1;
+    min-width: 250px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(74, 222, 128, 0.2);
+    border-radius: var(--radius-full, 9999px);
+    padding: 0.625rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.gear-search-box:focus-within {
+    border-color: var(--forest-mint, #4ade80);
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 20px rgba(74, 222, 128, 0.2);
+}
+
+.gear-search-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    width: 100%;
+    font-size: 0.95rem;
+}
+
+.gear-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* ==================== Gear Filters ==================== */
+.gear-filters {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.gear-filter-select {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(74, 222, 128, 0.2);
+    color: rgba(255, 255, 255, 0.9);
+    padding: 0.625rem 1rem;
+    padding-right: 2.5rem;
+    border-radius: var(--radius-md, 0.5rem);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234ade80' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem;
+}
+
+.gear-filter-select:hover {
+    background-color: rgba(74, 222, 128, 0.05);
+    border-color: rgba(74, 222, 128, 0.3);
+}
+
+.gear-filter-select:focus {
+    outline: 2px solid var(--forest-mint, #4ade80);
+    outline-offset: 2px;
+    border-color: var(--forest-mint, #4ade80);
+}
+
+/* ==================== Gear Actions ==================== */
+.gear-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-left: auto;
+}
+
+/* ==================== Gear Stats Bar ==================== */
+.gear-stats-bar {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: rgba(10, 40, 24, 0.6);
+    border: 1px solid rgba(74, 222, 128, 0.15);
+    border-radius: var(--radius-md, 0.5rem);
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stat-label {
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+}
+
+.stat-value {
+    color: var(--forest-mint, #4ade80);
+    font-weight: 600;
+}
+
+#gear-view-indicator {
+    padding: 0.25rem 0.75rem;
+    background: rgba(74, 222, 128, 0.1);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    border-radius: var(--radius-full, 9999px);
+    font-size: 0.85rem;
+}
+
+/* Toggle View Button */
+.btn-link {
+    background: transparent;
+    border: none;
+    color: var(--forest-mint, #4ade80);
+    cursor: pointer;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-md, 0.5rem);
+    transition: all 0.2s ease;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.btn-link:hover {
+    background: rgba(74, 222, 128, 0.1);
+    transform: translateY(-1px);
+}
+
+/* ==================== Responsive Design ==================== */
+@media (max-width: 768px) {
+    .view-mode-controls {
+        flex-wrap: wrap;
+        width: 100%;
+    }
+    
+    .radio-group {
+        flex: 1;
+        min-width: calc(50% - 0.25rem);
+        justify-content: center;
+        padding: 0.5rem;
+        font-size: 0.85rem;
+    }
+    
+    .gear-controls-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .gear-search-box {
+        width: 100%;
+    }
+    
+    .gear-filters {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+    
+    .gear-filter-select {
+        flex: 1;
+        min-width: calc(50% - 0.375rem);
+    }
+    
+    .gear-actions {
+        width: 100%;
+        margin-left: 0;
+    }
+    
+    .gear-actions button {
+        flex: 1;
+    }
+    
+    .gear-stats-bar {
+        flex-wrap: wrap;
+        gap: 1rem;
+        font-size: 0.85rem;
+    }
+    
+    .stat-item {
+        flex: 1;
+        min-width: calc(50% - 0.5rem);
+    }
+}
+
+/* ==================== Animation Enhancements ==================== */
+@media (prefers-reduced-motion: no-preference) {
+    .radio-group {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .radio-group:active {
+        transform: scale(0.98);
+    }
+    
+    .gear-filter-select {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+}
+
+/* Dark mode enhancements */
+@media (prefers-color-scheme: dark) {
+    .view-mode-controls {
+        background: rgba(0, 0, 0, 0.5);
+    }
+    
+    .gear-controls-bar {
+        background: rgba(0, 0, 0, 0.3);
+    }
+    
+    .gear-search-box {
+        background: rgba(0, 0, 0, 0.4);
+    }
+    
+    .gear-filter-select {
+        background: rgba(0, 0, 0, 0.4);
+    }
+}

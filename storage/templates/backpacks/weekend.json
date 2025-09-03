@@ -1,0 +1,282 @@
+{
+  "id": "template-weekend",
+  "name": "Weekend Adventure Pack",
+  "description": "2-3 day trips with camping gear and cooking essentials",
+  "type": "weekend",
+  "capacity_l": 50,
+  "weight_empty_g": 1500,
+  "tags": ["template", "camping", "weekend"],
+  "version": "1.0.0",
+  "sections": [
+    {
+      "id": "main",
+      "name": "Main Compartment",
+      "order": 0,
+      "capacity_percentage": 45,
+      "color": "#10b981",
+      "items": [
+        {
+          "id": "item-1",
+          "name": "Sleeping Bag",
+          "category": "sleep_system",
+          "quantity": 1,
+          "weight_g": 900,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "20°F rated down bag",
+          "order": 0
+        },
+        {
+          "id": "item-2",
+          "name": "Sleeping Pad",
+          "category": "sleep_system",
+          "quantity": 1,
+          "weight_g": 450,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Inflatable pad with R-value 3+",
+          "order": 1
+        },
+        {
+          "id": "item-3",
+          "name": "Tent",
+          "category": "shelter",
+          "quantity": 1,
+          "weight_g": 1800,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "2-person backpacking tent",
+          "order": 2
+        },
+        {
+          "id": "item-4",
+          "name": "Clothing - Extra Set",
+          "category": "clothing",
+          "quantity": 1,
+          "weight_g": 600,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Base layer, socks, underwear",
+          "order": 3
+        },
+        {
+          "id": "item-5",
+          "name": "Rain Gear",
+          "category": "clothing",
+          "quantity": 1,
+          "weight_g": 450,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Jacket and pants",
+          "order": 4
+        }
+      ]
+    },
+    {
+      "id": "top",
+      "name": "Top Lid",
+      "order": 1,
+      "capacity_percentage": 15,
+      "color": "#3b82f6",
+      "items": [
+        {
+          "id": "item-6",
+          "name": "Cook System",
+          "category": "cooking",
+          "quantity": 1,
+          "weight_g": 250,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Stove, pot, spork",
+          "order": 0
+        },
+        {
+          "id": "item-7",
+          "name": "Fuel Canister",
+          "category": "cooking",
+          "quantity": 1,
+          "weight_g": 230,
+          "consumable": true,
+          "worn": false,
+          "packed": false,
+          "notes": "Small canister",
+          "order": 1
+        },
+        {
+          "id": "item-8",
+          "name": "First Aid Kit",
+          "category": "first_aid",
+          "quantity": 1,
+          "weight_g": 200,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Comprehensive kit",
+          "order": 2
+        },
+        {
+          "id": "item-9",
+          "name": "Headlamp",
+          "category": "safety",
+          "quantity": 1,
+          "weight_g": 85,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "With extra batteries",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "side",
+      "name": "Side Pockets",
+      "order": 2,
+      "capacity_percentage": 15,
+      "color": "#8b5cf6",
+      "items": [
+        {
+          "id": "item-10",
+          "name": "Water Bottles",
+          "category": "water",
+          "quantity": 2,
+          "weight_g": 150,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "1L each",
+          "order": 0
+        },
+        {
+          "id": "item-11",
+          "name": "Water Filter",
+          "category": "water",
+          "quantity": 1,
+          "weight_g": 85,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Sawyer Squeeze or similar",
+          "order": 1
+        },
+        {
+          "id": "item-12",
+          "name": "Trekking Poles",
+          "category": "tools",
+          "quantity": 2,
+          "weight_g": 250,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Collapsible",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "front",
+      "name": "Front Mesh",
+      "order": 3,
+      "capacity_percentage": 10,
+      "color": "#f59e0b",
+      "items": [
+        {
+          "id": "item-13",
+          "name": "Map & Compass",
+          "category": "navigation",
+          "quantity": 1,
+          "weight_g": 100,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Waterproof case",
+          "order": 0
+        },
+        {
+          "id": "item-14",
+          "name": "Toiletries",
+          "category": "hygiene",
+          "quantity": 1,
+          "weight_g": 150,
+          "consumable": true,
+          "worn": false,
+          "packed": false,
+          "notes": "Toothbrush, TP, trowel",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "id": "hip",
+      "name": "Hip Belt",
+      "order": 4,
+      "capacity_percentage": 10,
+      "color": "#ef4444",
+      "items": [
+        {
+          "id": "item-15",
+          "name": "Phone & Charger",
+          "category": "electronics",
+          "quantity": 1,
+          "weight_g": 280,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "With power bank",
+          "order": 0
+        },
+        {
+          "id": "item-16",
+          "name": "Snacks - Day 1",
+          "category": "food",
+          "quantity": 4,
+          "weight_g": 100,
+          "consumable": true,
+          "worn": false,
+          "packed": false,
+          "notes": "Trail mix, bars",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "id": "external",
+      "name": "External Attachments",
+      "order": 5,
+      "capacity_percentage": 5,
+      "color": "#14b8a6",
+      "items": [
+        {
+          "id": "item-17",
+          "name": "Bear Rope",
+          "category": "safety",
+          "quantity": 1,
+          "weight_g": 100,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "50ft paracord",
+          "order": 0
+        },
+        {
+          "id": "item-18",
+          "name": "Camp Shoes",
+          "category": "footwear",
+          "quantity": 1,
+          "weight_g": 200,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Lightweight sandals",
+          "order": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+[2025-09-03 14:02:22] [INFO] Starting Gear Library Migration...
+[2025-09-03 14:02:22] [INFO] Connected to database successfully
+[2025-09-03 14:02:22] [INFO] Created user_gear_items table
+[2025-09-03 14:02:22] [INFO] Created user_gear_prefs table
+[2025-09-03 14:02:22] [INFO] Created performance indices
+[2025-09-03 14:02:22] [INFO] Users table not found, skipping backfill
+[2025-09-03 14:02:22] [INFO] Migration completed successfully!

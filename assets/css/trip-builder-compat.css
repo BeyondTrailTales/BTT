@@ -1,0 +1,282 @@
+/**
+ * Trip Builder Compatibility CSS
+ * Browser-specific fixes and normalizations
+ * Ensures consistent rendering across Chrome, Firefox, Safari, Edge
+ */
+
+/* ==================== Box Model Normalization ==================== */
+.trip-card *,
+.trip-card *::before,
+.trip-card *::after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/* ==================== Flexbox Fixes ==================== */
+/* Fix for IE11 and older Safari */
+.trip-stat {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+/* Safari flex gap fallback */
+@supports not (gap: 0.5rem) {
+    .trip-stat > * + * {
+        margin-left: 0.5rem;
+    }
+    
+    .trip-card-stats {
+        margin: -0.25rem;
+    }
+    
+    .trip-card-stats > * {
+        margin: 0.25rem;
+    }
+}
+
+/* ==================== Grid Layout Fixes ==================== */
+/* IE11 Grid fallback */
+@supports not (display: grid) {
+    .trip-card-stats {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    }
+    
+    .trip-stat {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1 1 33.333%;
+        -moz-box-flex: 1;
+        -ms-flex: 1 1 33.333%;
+        flex: 1 1 33.333%;
+    }
+}
+
+/* Firefox grid alignment fix */
+@-moz-document url-prefix() {
+    .trip-card-stats {
+        align-items: stretch;
+    }
+}
+
+/* ==================== Text Rendering ==================== */
+.trip-card {
+    /* Improve text rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Fix for blurry text in Chrome on Windows */
+.trip-stat-label,
+.trip-stat-value {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+/* ==================== Image Rendering ==================== */
+.trip-card-image img {
+    /* Crisp images in all browsers */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    
+    /* Prevent image dragging */
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    
+    /* Remove default border in IE */
+    border: 0;
+}
+
+/* ==================== Safari-specific Fixes ==================== */
+/* Fix Safari button appearance */
+.trip-card-actions button {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+/* Safari overflow fix */
+.trip-card {
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+}
+
+/* Safari flexbox bug workaround */
+.trip-stat-content {
+    -webkit-flex-shrink: 1;
+    flex-shrink: 1;
+    -webkit-flex-basis: auto;
+    flex-basis: auto;
+}
+
+/* ==================== Firefox-specific Fixes ==================== */
+/* Firefox button padding fix */
+@-moz-document url-prefix() {
+    .trip-card-actions button {
+        padding: 0.3rem;
+    }
+    
+    /* Firefox focus outline */
+    .trip-card-clickable:focus {
+        outline-offset: 3px;
+    }
+}
+
+/* ==================== Edge/IE Fixes ==================== */
+/* Edge text truncation */
+@supports (-ms-ime-align: auto) {
+    .trip-stat-value {
+        word-wrap: break-word;
+    }
+}
+
+/* IE11 specific fixes */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    /* IE11 flexbox fixes */
+    .trip-stat {
+        display: -ms-flexbox;
+        -ms-flex-align: center;
+        -ms-flex-pack: start;
+    }
+    
+    .trip-stat-content {
+        -ms-flex: 1 1 auto;
+        max-width: 100%;
+    }
+    
+    /* IE11 grid fallback */
+    .trip-card-stats {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+    
+    .trip-stat {
+        display: table-cell;
+        vertical-align: middle;
+    }
+}
+
+/* ==================== Chrome-specific Fixes ==================== */
+/* Chrome autofill styling */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+    -webkit-text-fill-color: inherit;
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ==================== Mobile Browser Fixes ==================== */
+/* iOS Safari tap highlight */
+.trip-card-clickable {
+    -webkit-tap-highlight-color: rgba(74, 222, 128, 0.1);
+}
+
+/* Prevent zoom on input focus in iOS */
+@media screen and (max-width: 768px) {
+    input[type="text"],
+    input[type="url"],
+    input[type="search"],
+    input[type="date"],
+    input[type="number"],
+    select,
+    textarea {
+        font-size: 16px !important;
+    }
+}
+
+/* Android browser fixes */
+.trip-card {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+/* ==================== Scrollbar Styling ==================== */
+/* Webkit browsers scrollbar */
+.packs-grid::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.packs-grid::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+.packs-grid::-webkit-scrollbar-thumb {
+    background: rgba(74, 222, 128, 0.3);
+    border-radius: 4px;
+}
+
+.packs-grid::-webkit-scrollbar-thumb:hover {
+    background: rgba(74, 222, 128, 0.5);
+}
+
+/* Firefox scrollbar */
+.packs-grid {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(74, 222, 128, 0.3) rgba(0, 0, 0, 0.1);
+}
+
+/* ==================== Print Compatibility ==================== */
+@media print {
+    .trip-card {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        color-adjust: exact;
+    }
+}
+
+/* ==================== Accessibility Compatibility ==================== */
+/* Ensure focus styles work in all browsers */
+.trip-card-clickable:focus-visible {
+    outline: 2px solid var(--forest-mint, #4ade80) !important;
+    outline-offset: 2px !important;
+}
+
+/* Fallback for browsers without :focus-visible */
+.trip-card-clickable:focus {
+    outline: 2px solid var(--forest-mint, #4ade80);
+    outline-offset: 2px;
+}
+
+@supports selector(:focus-visible) {
+    .trip-card-clickable:focus:not(:focus-visible) {
+        outline: none;
+    }
+}
+
+/* ==================== Performance Optimizations ==================== */
+/* Hardware acceleration for animations */
+.trip-card-clickable {
+    will-change: transform, box-shadow;
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+/* Reduce paint areas */
+.trip-stat-icon,
+.trip-stat-value,
+.trip-stat-label {
+    will-change: auto;
+    contain: layout style;
+}

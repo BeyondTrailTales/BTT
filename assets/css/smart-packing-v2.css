@@ -1,0 +1,857 @@
+/**
+ * Smart Packing Assistant V2 Styles
+ * Forest Design System Implementation
+ * WCAG 2.1 AA Compliant
+ * 
+ * @version 2.0.0
+ * @since 2025-01
+ */
+
+/* ========================================
+   Design Tokens & CSS Variables
+   ======================================== */
+
+:root {
+    /* Forest Color Palette */
+    --forest-pine: #0f766e;
+    --forest-moss: #059669;
+    --forest-fern: #10b981;
+    --forest-canopy: #065f46;
+    --forest-shadow: #022c22;
+    --forest-light: #ecfdf5;
+    --forest-ground: #f0fdf4;
+    
+    /* Sky Colors */
+    --sky-dawn: #dbeafe;
+    --sky-day: #3b82f6;
+    --sky-dusk: #1e40af;
+    --sky-night: #1e3a8a;
+    
+    /* Berry Colors */
+    --berry-ripe: #ef4444;
+    --berry-fresh: #f87171;
+    --berry-light: #fecaca;
+    
+    /* Earth Colors */
+    --earth-soil: #92400e;
+    --earth-sand: #fbbf24;
+    --earth-rock: #6b7280;
+    
+    /* Semantic Colors */
+    --color-success: var(--forest-fern);
+    --color-warning: var(--earth-sand);
+    --color-error: var(--berry-ripe);
+    --color-info: var(--sky-day);
+    
+    /* Spacing Scale */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-8: 3rem;
+    --space-10: 4rem;
+    
+    /* Typography */
+    --font-primary: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'Space Grotesk', 'SF Mono', monospace;
+    
+    /* Font Sizes (Mobile First) */
+    --text-xs: clamp(0.75rem, 2vw, 0.875rem);
+    --text-sm: clamp(0.875rem, 2.5vw, 1rem);
+    --text-base: clamp(1rem, 3vw, 1.125rem);
+    --text-lg: clamp(1.125rem, 3.5vw, 1.25rem);
+    --text-xl: clamp(1.25rem, 4vw, 1.5rem);
+    --text-2xl: clamp(1.5rem, 5vw, 2rem);
+    
+    /* Shadows */
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+    --shadow-xl: 0 16px 32px rgba(0, 0, 0, 0.25);
+    
+    /* Border Radius */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --radius-full: 9999px;
+    
+    /* Transitions */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Z-Index Scale */
+    --z-base: 0;
+    --z-dropdown: 10;
+    --z-sticky: 20;
+    --z-modal: 30;
+    --z-popover: 40;
+    --z-tooltip: 50;
+}
+
+/* Dark Theme Overrides */
+[data-theme="forest-dark"] {
+    --forest-ground: #064e3b;
+    --forest-light: #022c22;
+    --forest-shadow: #000;
+    --text-primary: #f0fdf4;
+    --text-secondary: #86efac;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    :root {
+        --forest-pine: #064e3b;
+        --sky-day: #1e40af;
+        --berry-ripe: #991b1b;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --transition-fast: 0ms;
+        --transition-base: 0ms;
+        --transition-slow: 0ms;
+    }
+    
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ========================================
+   Base Component Styles
+   ======================================== */
+
+.smart-packing-v2 {
+    font-family: var(--font-primary);
+    color: var(--text-primary, #1f2937);
+    line-height: 1.6;
+    font-size: var(--text-base);
+}
+
+/* Skip Links for Accessibility */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--forest-pine);
+    color: white;
+    padding: var(--space-2) var(--space-4);
+    text-decoration: none;
+    z-index: var(--z-tooltip);
+    border-radius: var(--radius-md);
+}
+
+.skip-link:focus {
+    top: var(--space-2);
+}
+
+/* ========================================
+   Container & Layout
+   ======================================== */
+
+.sp-container {
+    container-type: inline-size;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: var(--space-4);
+}
+
+/* Mobile-First Grid Layout */
+.sp-layout {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: 1fr;
+}
+
+/* Tablet: 768px+ */
+@container (min-width: 768px) {
+    .sp-layout {
+        grid-template-columns: 1fr 380px;
+    }
+}
+
+/* Desktop: 1024px+ */
+@container (min-width: 1024px) {
+    .sp-layout {
+        grid-template-columns: 1fr 400px 320px;
+    }
+}
+
+/* ========================================
+   Cards & Panels
+   ======================================== */
+
+.sp-card {
+    background: var(--forest-ground);
+    border: 1px solid var(--forest-light);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-base);
+}
+
+.sp-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.sp-card--interactive {
+    cursor: pointer;
+}
+
+.sp-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-3);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--forest-light);
+}
+
+.sp-card__title {
+    font-size: var(--text-lg);
+    font-weight: 700;
+    color: var(--forest-canopy);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.sp-card__icon {
+    font-size: 1.5em;
+    line-height: 1;
+}
+
+/* ========================================
+   Efficiency Score Component
+   ======================================== */
+
+.sp-score {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    background: linear-gradient(135deg, var(--forest-light) 0%, var(--sky-dawn) 100%);
+    border-radius: var(--radius-lg);
+}
+
+.sp-score__circle {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+}
+
+.sp-score__ring {
+    fill: none;
+    stroke-width: 8;
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: center;
+    transition: stroke-dashoffset var(--transition-slow);
+}
+
+.sp-score__ring--bg {
+    stroke: var(--forest-light);
+}
+
+.sp-score__ring--fill {
+    stroke: var(--forest-fern);
+    stroke-dasharray: 339.292;
+    stroke-dashoffset: calc(339.292 * (1 - var(--score-percent, 0)));
+}
+
+.sp-score__value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.sp-score__number {
+    font-size: var(--text-2xl);
+    font-weight: 800;
+    color: var(--forest-canopy);
+}
+
+.sp-score__grade {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--forest-pine);
+}
+
+/* Score Colors by Grade */
+.sp-score--A .sp-score__ring--fill { stroke: var(--forest-fern); }
+.sp-score--B .sp-score__ring--fill { stroke: var(--sky-day); }
+.sp-score--C .sp-score__ring--fill { stroke: var(--earth-sand); }
+.sp-score--D .sp-score__ring--fill { stroke: var(--berry-fresh); }
+.sp-score--F .sp-score__ring--fill { stroke: var(--berry-ripe); }
+
+/* ========================================
+   Weight Distribution Visualization
+   ======================================== */
+
+.sp-backpack {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: var(--space-4);
+}
+
+.sp-backpack__visual {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: linear-gradient(180deg, 
+        var(--sky-dawn) 0%, 
+        var(--forest-light) 100%);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+}
+
+.sp-backpack__section {
+    position: absolute;
+    background: var(--section-color);
+    border: 2px solid var(--forest-ground);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-2);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    min-height: 44px; /* WCAG Touch Target */
+    min-width: 44px;
+}
+
+.sp-backpack__section:hover,
+.sp-backpack__section:focus {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-lg);
+    z-index: var(--z-dropdown);
+    outline: 3px solid var(--sky-day);
+    outline-offset: 2px;
+}
+
+/* Section Positions */
+.sp-backpack__section--lid {
+    top: 5%;
+    left: 25%;
+    right: 25%;
+    height: 15%;
+    --section-color: var(--sky-day);
+}
+
+.sp-backpack__section--main {
+    top: 25%;
+    left: 15%;
+    right: 15%;
+    height: 35%;
+    --section-color: var(--forest-fern);
+}
+
+.sp-backpack__section--front {
+    top: 65%;
+    left: 25%;
+    right: 25%;
+    height: 15%;
+    --section-color: var(--earth-sand);
+}
+
+.sp-backpack__section--side-left {
+    top: 35%;
+    left: 5%;
+    width: 10%;
+    height: 25%;
+    --section-color: var(--berry-fresh);
+}
+
+.sp-backpack__section--side-right {
+    top: 35%;
+    right: 5%;
+    width: 10%;
+    height: 25%;
+    --section-color: var(--berry-fresh);
+}
+
+.sp-backpack__section--bottom {
+    bottom: 5%;
+    left: 20%;
+    right: 20%;
+    height: 10%;
+    --section-color: var(--earth-rock);
+}
+
+/* ========================================
+   Packing List Items
+   ======================================== */
+
+.sp-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background: white;
+    border: 1px solid var(--forest-light);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+    min-height: 44px; /* Touch target */
+}
+
+.sp-item:hover {
+    background: var(--forest-ground);
+    transform: translateX(4px);
+}
+
+.sp-item--packed {
+    opacity: 0.7;
+    background: var(--forest-light);
+}
+
+.sp-item__checkbox {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.sp-item__info {
+    flex: 1;
+    min-width: 0; /* Prevent text overflow */
+}
+
+.sp-item__name {
+    font-weight: 600;
+    color: var(--forest-canopy);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sp-item__meta {
+    display: flex;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--earth-rock);
+}
+
+.sp-item__category {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 2px var(--space-2);
+    background: var(--category-bg, var(--forest-light));
+    color: var(--category-color, var(--forest-pine));
+    border-radius: var(--radius-full);
+    font-size: var(--text-xs);
+}
+
+/* Category Colors */
+.sp-item__category--shelter { --category-bg: var(--forest-light); --category-color: var(--forest-pine); }
+.sp-item__category--clothing { --category-bg: var(--sky-dawn); --category-color: var(--sky-dusk); }
+.sp-item__category--food { --category-bg: var(--berry-light); --category-color: var(--berry-ripe); }
+.sp-item__category--water { --category-bg: var(--sky-dawn); --category-color: var(--sky-day); }
+.sp-item__category--navigation { --category-bg: var(--earth-sand); --category-color: var(--earth-soil); }
+
+/* ========================================
+   Suggestions & Alerts
+   ======================================== */
+
+.sp-suggestion {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background: linear-gradient(135deg, white 0%, var(--forest-ground) 100%);
+    border: 1px solid var(--forest-light);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+}
+
+.sp-suggestion:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.sp-suggestion__icon {
+    font-size: 1.5em;
+    color: var(--forest-pine);
+}
+
+.sp-suggestion__content {
+    flex: 1;
+}
+
+.sp-suggestion__title {
+    font-weight: 600;
+    color: var(--forest-canopy);
+}
+
+.sp-suggestion__reason {
+    font-size: var(--text-sm);
+    color: var(--earth-rock);
+}
+
+.sp-suggestion__actions {
+    display: flex;
+    gap: var(--space-2);
+}
+
+/* ========================================
+   Buttons & Interactive Elements
+   ======================================== */
+
+.sp-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    border: 2px solid transparent;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    min-height: 44px;
+    min-width: 44px;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Button Variants */
+.sp-btn--primary {
+    background: var(--forest-pine);
+    color: white;
+    border-color: var(--forest-pine);
+}
+
+.sp-btn--primary:hover,
+.sp-btn--primary:focus {
+    background: var(--forest-canopy);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.sp-btn--secondary {
+    background: white;
+    color: var(--forest-pine);
+    border-color: var(--forest-light);
+}
+
+.sp-btn--secondary:hover,
+.sp-btn--secondary:focus {
+    background: var(--forest-ground);
+    border-color: var(--forest-pine);
+}
+
+.sp-btn--success {
+    background: var(--forest-fern);
+    color: white;
+}
+
+.sp-btn--danger {
+    background: var(--berry-ripe);
+    color: white;
+}
+
+/* Button Sizes */
+.sp-btn--sm {
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--text-xs);
+    min-height: 32px;
+}
+
+.sp-btn--lg {
+    padding: var(--space-3) var(--space-5);
+    font-size: var(--text-lg);
+}
+
+/* Icon Buttons */
+.sp-btn--icon-only {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+}
+
+/* Ripple Effect */
+.sp-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.sp-btn:active::after {
+    width: 300px;
+    height: 300px;
+}
+
+/* ========================================
+   Forms & Inputs
+   ======================================== */
+
+.sp-form-group {
+    margin-bottom: var(--space-4);
+}
+
+.sp-label {
+    display: block;
+    margin-bottom: var(--space-2);
+    font-weight: 600;
+    color: var(--forest-canopy);
+    font-size: var(--text-sm);
+}
+
+.sp-input,
+.sp-select,
+.sp-textarea {
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    background: white;
+    border: 2px solid var(--forest-light);
+    border-radius: var(--radius-md);
+    font-size: var(--text-base);
+    font-family: inherit;
+    transition: all var(--transition-fast);
+    min-height: 44px;
+}
+
+.sp-input:focus,
+.sp-select:focus,
+.sp-textarea:focus {
+    outline: none;
+    border-color: var(--forest-pine);
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);
+}
+
+.sp-input::placeholder {
+    color: var(--earth-rock);
+}
+
+/* ========================================
+   Progress Indicators
+   ======================================== */
+
+.sp-progress {
+    width: 100%;
+    height: 8px;
+    background: var(--forest-light);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.sp-progress__bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--forest-pine) 0%, var(--forest-fern) 100%);
+    border-radius: var(--radius-full);
+    transition: width var(--transition-slow);
+}
+
+/* ========================================
+   Loading States
+   ======================================== */
+
+.sp-skeleton {
+    background: linear-gradient(90deg, 
+        var(--forest-light) 25%, 
+        var(--forest-ground) 50%, 
+        var(--forest-light) 75%);
+    background-size: 200% 100%;
+    animation: sp-skeleton-loading 1.5s infinite;
+    border-radius: var(--radius-md);
+}
+
+@keyframes sp-skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ========================================
+   Animations & Micro-interactions
+   ======================================== */
+
+@keyframes sp-fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes sp-slide-up {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+@keyframes sp-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes sp-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+.sp-animate-in {
+    animation: sp-fade-in var(--transition-base) forwards;
+}
+
+.sp-animate-pulse {
+    animation: sp-pulse 2s infinite;
+}
+
+.sp-animate-shake {
+    animation: sp-shake 0.5s;
+}
+
+/* ========================================
+   Accessibility Features
+   ======================================== */
+
+/* Focus Indicators */
+*:focus-visible {
+    outline: 3px solid var(--sky-day);
+    outline-offset: 2px;
+}
+
+/* Screen Reader Only */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    .sp-card {
+        border-width: 2px;
+    }
+    
+    .sp-btn {
+        border-width: 3px;
+    }
+}
+
+/* ========================================
+   Gamification Elements
+   ======================================== */
+
+.sp-xp-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-2);
+    background: linear-gradient(135deg, var(--earth-sand) 0%, var(--berry-fresh) 100%);
+    color: white;
+    border-radius: var(--radius-full);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    animation: sp-pulse 2s infinite;
+}
+
+.sp-achievement {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background: linear-gradient(135deg, var(--forest-ground) 0%, var(--sky-dawn) 100%);
+    border: 2px solid var(--earth-sand);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    animation: sp-fade-in var(--transition-slow);
+}
+
+.sp-achievement__icon {
+    font-size: 2em;
+}
+
+.sp-achievement__content {
+    flex: 1;
+}
+
+.sp-achievement__title {
+    font-weight: 700;
+    color: var(--forest-canopy);
+}
+
+.sp-achievement__description {
+    font-size: var(--text-sm);
+    color: var(--earth-rock);
+}
+
+/* ========================================
+   Mobile-Specific Styles
+   ======================================== */
+
+@media (max-width: 767px) {
+    .sp-container {
+        padding: var(--space-2);
+    }
+    
+    /* Bottom Sheet for Mobile */
+    .sp-assistant {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: white;
+        border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+        box-shadow: var(--shadow-xl);
+        transform: translateY(calc(100% - 80px));
+        transition: transform var(--transition-base);
+        z-index: var(--z-modal);
+    }
+    
+    .sp-assistant--expanded {
+        transform: translateY(0);
+    }
+    
+    .sp-assistant__handle {
+        width: 40px;
+        height: 4px;
+        background: var(--earth-rock);
+        border-radius: var(--radius-full);
+        margin: var(--space-2) auto;
+    }
+}
+
+/* ========================================
+   Print Styles
+   ======================================== */
+
+@media print {
+    .sp-assistant,
+    .sp-btn,
+    .sp-suggestion__actions {
+        display: none !important;
+    }
+    
+    .sp-item {
+        page-break-inside: avoid;
+    }
+}

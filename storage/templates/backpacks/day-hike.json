@@ -1,0 +1,180 @@
+{
+  "id": "template-day-hike",
+  "name": "Day Hike Essentials",
+  "description": "Perfect for single day adventures on well-marked trails",
+  "type": "day-hike",
+  "capacity_l": 25,
+  "weight_empty_g": 800,
+  "tags": ["template", "beginner-friendly", "day-hike"],
+  "version": "1.0.0",
+  "sections": [
+    {
+      "id": "main",
+      "name": "Main Compartment",
+      "order": 0,
+      "capacity_percentage": 50,
+      "color": "#10b981",
+      "items": [
+        {
+          "id": "item-1",
+          "name": "Rain Jacket",
+          "category": "clothing",
+          "quantity": 1,
+          "weight_g": 280,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Lightweight waterproof layer",
+          "order": 0
+        },
+        {
+          "id": "item-2",
+          "name": "Insulation Layer",
+          "category": "clothing",
+          "quantity": 1,
+          "weight_g": 340,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Fleece or puffy jacket",
+          "order": 1
+        },
+        {
+          "id": "item-3",
+          "name": "First Aid Kit",
+          "category": "first_aid",
+          "quantity": 1,
+          "weight_g": 150,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Basic first aid supplies",
+          "order": 2
+        },
+        {
+          "id": "item-4",
+          "name": "Lunch",
+          "category": "food",
+          "quantity": 1,
+          "weight_g": 400,
+          "consumable": true,
+          "worn": false,
+          "packed": false,
+          "notes": "Sandwich, fruit, etc.",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "id": "top",
+      "name": "Top Lid",
+      "order": 1,
+      "capacity_percentage": 20,
+      "color": "#3b82f6",
+      "items": [
+        {
+          "id": "item-5",
+          "name": "Trail Map",
+          "category": "navigation",
+          "quantity": 1,
+          "weight_g": 50,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Waterproof map case recommended",
+          "order": 0
+        },
+        {
+          "id": "item-6",
+          "name": "Sunscreen",
+          "category": "hygiene",
+          "quantity": 1,
+          "weight_g": 90,
+          "consumable": true,
+          "worn": false,
+          "packed": false,
+          "notes": "SPF 30+",
+          "order": 1
+        },
+        {
+          "id": "item-7",
+          "name": "Headlamp",
+          "category": "safety",
+          "quantity": 1,
+          "weight_g": 85,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Emergency lighting",
+          "order": 2
+        }
+      ]
+    },
+    {
+      "id": "side",
+      "name": "Side Pockets",
+      "order": 2,
+      "capacity_percentage": 20,
+      "color": "#8b5cf6",
+      "items": [
+        {
+          "id": "item-8",
+          "name": "Water Bottle",
+          "category": "water",
+          "quantity": 2,
+          "weight_g": 150,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "1L bottles",
+          "order": 0
+        },
+        {
+          "id": "item-9",
+          "name": "Trail Snacks",
+          "category": "food",
+          "quantity": 3,
+          "weight_g": 100,
+          "consumable": true,
+          "worn": false,
+          "packed": false,
+          "notes": "Energy bars, trail mix",
+          "order": 1
+        }
+      ]
+    },
+    {
+      "id": "hip",
+      "name": "Hip Belt",
+      "order": 3,
+      "capacity_percentage": 10,
+      "color": "#ef4444",
+      "items": [
+        {
+          "id": "item-10",
+          "name": "Phone",
+          "category": "electronics",
+          "quantity": 1,
+          "weight_g": 180,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "In waterproof case",
+          "order": 0
+        },
+        {
+          "id": "item-11",
+          "name": "Knife",
+          "category": "tools",
+          "quantity": 1,
+          "weight_g": 50,
+          "consumable": false,
+          "worn": false,
+          "packed": false,
+          "notes": "Pocket knife or multitool",
+          "order": 1
+        }
+      ]
+    }
+  ]
+}

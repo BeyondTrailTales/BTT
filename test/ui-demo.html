@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="forest-dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeyondTrailTales - Enhanced UI Demo</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../assets/css/forest-theme.css">
+    <link rel="stylesheet" href="../assets/css/forest-enhanced.css">
+    <link rel="stylesheet" href="../assets/css/forest-premium.css">
+    <link rel="stylesheet" href="../assets/css/buttons-premium.css">
+    <link rel="stylesheet" href="../assets/css/pack-builder-enhanced.css">
+    <link rel="stylesheet" href="../assets/css/trips-enhanced.css">
+    
+    <style>
+        body {
+            background: var(--forest-deep);
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(76, 175, 80, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(139, 195, 74, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(46, 125, 50, 0.08) 0%, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+            font-family: var(--font-sans);
+        }
+
+        .demo-section {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+        }
+
+        .demo-title {
+            font-size: var(--text-3xl);
+            color: var(--forest-mint);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .demo-subtitle {
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: var(--text-lg);
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .button-demo {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .demo-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--forest-mint), transparent);
+            margin: 4rem 0;
+        }
+
+        /* Enhanced demo card */
+        .demo-card {
+            background: var(--surface-primary);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Feature showcase */
+        .feature-box {
+            background: rgba(74, 222, 128, 0.05);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            border-radius: var(--radius-lg);
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .feature-box h3 {
+            color: var(--forest-mint);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Improved search bar styling */
+        .search-demo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(74, 222, 128, 0.2);
+            border-radius: var(--radius-full);
+            padding: 0.875rem 1.25rem;
+            margin: 2rem auto;
+            max-width: 500px;
+            transition: all 0.3s ease;
+        }
+
+        .search-demo:focus-within {
+            border-color: var(--forest-mint);
+            background: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
+        }
+
+        .search-demo input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-primary);
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .search-demo input::placeholder {
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip Link -->
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <main id="main">
+        <div class="demo-section">
+            <h1 class="demo-title">🌲 BeyondTrailTales Enhanced UI</h1>
+            <p class="demo-subtitle">Premium Forest Theme with Glassmorphism & Duolingo-Inspired Interactions</p>
+        </div>
+
+        <!-- Button Showcase -->
+        <div class="demo-section">
+            <h2 class="demo-title">Enhanced Buttons</h2>
+            <div class="button-demo">
+                <button class="btn btn-primary">
+                    <span>🎯</span> Primary Action
+                </button>
+                <button class="btn btn-secondary">
+                    Secondary
+                </button>
+                <button class="btn btn-success">
+                    <span>✓</span> Success
+                </button>
+                <button class="btn btn-danger">
+                    <span>⚠️</span> Danger
+                </button>
+                <button class="btn btn-warning">
+                    Warning
+                </button>
+                <button class="btn btn-ghost">
+                    Ghost Button
+                </button>
+            </div>
+            
+            <div class="button-demo">
+                <button class="btn btn-primary btn-sm">Small</button>
+                <button class="btn btn-primary">Default</button>
+                <button class="btn btn-primary btn-lg">Large</button>
+                <button class="btn btn-primary btn-xl">Extra Large</button>
+            </div>
+            
+            <div class="button-demo">
+                <button class="btn btn-primary is-loading">Loading...</button>
+                <button class="btn btn-secondary" disabled>Disabled</button>
+                <button class="btn btn-icon btn-primary">🏕️</button>
+            </div>
+        </div>
+
+        <div class="demo-divider"></div>
+
+        <!-- Card Showcase -->
+        <div class="demo-section">
+            <h2 class="demo-title">Premium Card Components</h2>
+            
+            <div class="demo-grid">
+                <!-- Enhanced Pack Card -->
+                <div class="pack-card">
+                    <div class="pack-card-header">
+                        <h3>Weekend Warrior</h3>
+                        <div class="pack-card-actions">
+                            <button class="btn-edit-pack">✏️</button>
+                            <button class="btn-duplicate-pack">📋</button>
+                            <button class="btn-delete-pack">🗑️</button>
+                        </div>
+                    </div>
+                    <p class="pack-card-description">Perfect 2-3 day backpacking setup for moderate trails</p>
+                    <div class="pack-card-stats">
+                        <div class="pack-stat">
+                            <span class="pack-stat-value">0g</span>
+                            <span class="pack-stat-label">TOTAL</span>
+                        </div>
+                        <div class="pack-stat">
+                            <span class="pack-stat-value">0</span>
+                            <span class="pack-stat-label">ITEMS</span>
+                        </div>
+                        <div class="pack-stat">
+                            <span class="pack-stat-value">65L</span>
+                            <span class="pack-stat-label">CAPACITY</span>
+                        </div>
+                    </div>
+                    <div class="pack-card-footer">
+                        <span class="pack-last-modified">Updated today</span>
+                    </div>
+                </div>
+
+                <!-- Premium Interactive Card -->
+                <div class="card card--interactive">
+                    <div class="card__image">
+                        <div style="height: 200px; background: linear-gradient(135deg, var(--forest-moss), var(--forest-canopy));">
+                            <div style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 3rem;">
+                                🏔️
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card__content">
+                        <h3 class="card__title">Yosemite Adventure</h3>
+                        <div class="card__meta">
+                            <div class="card__meta-item">
+                                📍 California
+                            </div>
+                            <div class="card__meta-item">
+                                📅 Oct 14 - Oct 17
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card__actions">
+                        <button class="card__action">View</button>
+                        <button class="card__action">Edit</button>
+                    </div>
+                </div>
+
+                <!-- Loading Skeleton Card -->
+                <div class="skeleton-card">
+                    <div class="skeleton skeleton-text" style="height: 200px; margin: 0;"></div>
+                    <div style="padding: 1rem;">
+                        <div class="skeleton skeleton-text" style="width: 60%;"></div>
+                        <div class="skeleton skeleton-text" style="width: 80%;"></div>
+                        <div class="skeleton skeleton-text" style="width: 40%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-divider"></div>
+
+        <!-- Search & Filter Demo -->
+        <div class="demo-section">
+            <h2 class="demo-title">Enhanced Search & Filters</h2>
+            
+            <div class="search-demo">
+                <span style="font-size: 1.2rem;">🔍</span>
+                <input type="search" placeholder="Search trips by name or location...">
+            </div>
+
+            <div class="button-demo">
+                <button class="btn btn-ghost btn-sm">🏕️ Camping</button>
+                <button class="btn btn-ghost btn-sm">🥾 Hiking</button>
+                <button class="btn btn-ghost btn-sm">🎒 Backpacking</button>
+                <button class="btn btn-ghost btn-sm">🏔️ Mountaineering</button>
+            </div>
+        </div>
+
+        <div class="demo-divider"></div>
+
+        <!-- Badge Demo -->
+        <div class="demo-section">
+            <h2 class="demo-title">Badge System</h2>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <span class="badge">Default</span>
+                <span class="badge badge--success">Success</span>
+                <span class="badge badge--warning">Warning</span>
+                <span class="badge badge--danger">Danger</span>
+                <span class="badge badge--info">Info</span>
+            </div>
+        </div>
+
+        <div class="demo-divider"></div>
+
+        <!-- Features -->
+        <div class="demo-section">
+            <h2 class="demo-title">Key Enhancements</h2>
+            <div class="demo-grid">
+                <div class="feature-box">
+                    <h3>🎨 Premium Glassmorphism</h3>
+                    <p>Beautiful frosted glass effects with backdrop filters and subtle gradients</p>
+                </div>
+                <div class="feature-box">
+                    <h3>🎮 Duolingo-Inspired Buttons</h3>
+                    <p>Spring animations, haptic feedback, and depth with 3D shadows</p>
+                </div>
+                <div class="feature-box">
+                    <h3>♿ WCAG AA Compliant</h3>
+                    <p>Full keyboard navigation, screen reader support, and proper contrast ratios</p>
+                </div>
+                <div class="feature-box">
+                    <h3>📱 Touch-First Design</h3>
+                    <p>44px minimum touch targets, responsive sizing, and mobile-optimized interactions</p>
+                </div>
+                <div class="feature-box">
+                    <h3>⚡ Performance Optimized</h3>
+                    <p>Hardware acceleration, will-change hints, and reduced motion support</p>
+                </div>
+                <div class="feature-box">
+                    <h3>🌈 Smooth Animations</h3>
+                    <p>Carefully tuned easing curves and duration for natural, delightful motion</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <button class="fab pulse">
+            ➕
+        </button>
+    </main>
+
+    <script>
+        // Add ripple effect to buttons
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                this.style.setProperty('--ripple-x', `${x}px`);
+                this.style.setProperty('--ripple-y', `${y}px`);
+                
+                this.classList.add('btn-ripple');
+                setTimeout(() => {
+                    this.classList.remove('btn-ripple');
+                }, 600);
+            });
+        });
+
+        // Demo loading state
+        document.querySelector('.btn.is-loading').addEventListener('click', function(e) {
+            e.preventDefault();
+        });
+
+        // FAB demo
+        document.querySelector('.fab').addEventListener('click', function() {
+            alert('✨ Floating Action Button clicked! This would create a new trip or backpack.');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,451 @@
+<?php
+/**
+ * Trips API Routes
+ * 
+ * Handles all trip-related API endpoints
+ */
+
+function handleTripsRoute($method, $id) {
+    switch ($method) {
+        case 'GET':
+            if ($id) {
+                getTripById($id);
+            } else {
+                getAllTrips();
+            }
+            break;
+            
+        case 'POST':
+            createTrip();
+            break;
+            
+        case 'PUT':
+            if (!$id) {
+                Response::error('Trip ID is required for update', 400);
+            }
+            updateTrip($id);
+            break;
+            
+        case 'DELETE':
+            if (!$id) {
+                Response::error('Trip ID is required for delete', 400);
+            }
+            deleteTrip($id);
+            break;
+            
+        default:
+            Response::methodNotAllowed();
+    }
+}
+
+/**
+ * Get all trips with optional backpack filter
+ */
+function getAllTrips() {
+    try {
+        require_once dirname(__DIR__) . '/../app/classes/Validator.php';
+        
+        $db = Database::getInstance();
+        $backpack_id = isset($_GET['backpack_id']) ? Validator::sanitizeInt($_GET['backpack_id'], 1) : null;
+        
+        if ($db->isSQLite()) {
+            $sql = "
+                SELECT t.*, b.name as backpack_name, b.base_weight 
+                FROM trips t
+                LEFT JOIN backpacks b ON t.backpack_id = b.id
+            ";
+            
+            $params = [];
+            if ($backpack_id) {
+                $sql .= " WHERE t.backpack_id = :backpack_id";
+                $params['backpack_id'] = $backpack_id;
+            }
+            
+            $sql .= " ORDER BY t.created_at DESC";
+            
+            $trips = $db->fetchAll($sql, $params);
+        } else {
+            // JSON fallback
+            $trips = json_decode(file_get_contents(BTT_JSON_PATH . '/trips.json'), true) ?? [];
+            $backpacks = json_decode(file_get_contents(BTT_JSON_PATH . '/backpacks.json'), true) ?? [];
+            
+            // Add backpack data
+            foreach ($trips as &$trip) {
+                if (isset($trip['backpack_id'])) {
+                    foreach ($backpacks as $backpack) {
+                        if ($backpack['id'] == $trip['backpack_id']) {
+                            $trip['backpack_name'] = $backpack['name'];
+                            $trip['base_weight'] = $backpack['base_weight'];
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            // Filter by backpack if requested
+            if ($backpack_id) {
+                $trips = array_filter($trips, function($trip) use ($backpack_id) {
+                    return isset($trip['backpack_id']) && $trip['backpack_id'] == $backpack_id;
+                });
+                $trips = array_values($trips);
+            }
+        }
+        
+        Response::success($trips);
+        
+    } catch (Exception $e) {
+        Response::serverError('Failed to fetch trips: ' . $e->getMessage());
+    }
+}
+
+/**
+ * Get single trip by ID
+ */
+function getTripById($id) {
+    try {
+        $db = Database::getInstance();
+        
+        if ($db->isSQLite()) {
+            $sql = "
+                SELECT t.*, b.name as backpack_name, b.base_weight 
+                FROM trips t
+                LEFT JOIN backpacks b ON t.backpack_id = b.id
+                WHERE t.id = :id
+            ";
+            
+            $trip = $db->fetchOne($sql, ['id' => $id]);
+        } else {
+            // JSON fallback
+            $trips = json_decode(file_get_contents(BTT_JSON_PATH . '/trips.json'), true) ?? [];
+            $trip = null;
+            
+            foreach ($trips as $t) {
+                if ($t['id'] == $id) {
+                    $trip = $t;
+                    
+                    // Add backpack data
+                    if (isset($trip['backpack_id'])) {
+                        $backpacks = json_decode(file_get_contents(BTT_JSON_PATH . '/backpacks.json'), true) ?? [];
+                        foreach ($backpacks as $backpack) {
+                            if ($backpack['id'] == $trip['backpack_id']) {
+                                $trip['backpack_name'] = $backpack['name'];
+                                $trip['base_weight'] = $backpack['base_weight'];
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        
+        if (!$trip) {
+            Response::notFound('Trip not found');
+        }
+        
+        Response::success($trip);
+        
+    } catch (Exception $e) {
+        Response::serverError('Failed to fetch trip: ' . $e->getMessage());
+    }
+}
+
+/**
+ * Create new trip with optional photo upload
+ */
+function createTrip() {
+    try {
+        require_once dirname(__DIR__) . '/../app/classes/Validator.php';
+        
+        $data = get_request_data();
+        
+        // Validate required fields
+        $errors = Validator::validateRequired($data, ['title']);
+        if (!empty($errors)) {
+            Response::validationError($errors);
+        }
+        
+        // Handle photo upload
+        $photo_path = null;
+        $photo_alt_text = null;
+        
+        if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+            // Validate alt text is provided with photo
+            if (empty($data['photo_alt_text'])) {
+                Response::validationError(['photo_alt_text' => 'Alt text is required when uploading a photo (ADA compliance)']);
+            }
+            
+            $upload_result = handlePhotoUpload($_FILES['photo']);
+            if ($upload_result['success']) {
+                $photo_path = $upload_result['path'];
+                $photo_alt_text = trim($data['photo_alt_text']);
+            } else {
+                Response::validationError(['photo' => $upload_result['error']]);
+            }
+        }
+        
+        // Prepare trip data with backpacker fields - with proper validation
+        $trip_data = [
+            'title' => Validator::sanitizeString($data['title'], 255),
+            'location' => Validator::sanitizeString($data['location'] ?? null, 255),
+            'start_date' => Validator::validateDate($data['start_date'] ?? null),
+            'end_date' => Validator::validateDate($data['end_date'] ?? null),
+            'description' => Validator::sanitizeString($data['description'] ?? null, 5000),
+            'photo_path' => $photo_path,
+            'photo_alt_text' => Validator::sanitizeString($photo_alt_text, 500),
+            'backpack_id' => Validator::sanitizeInt($data['backpack_id'] ?? null, 1),
+            
+            // Note: default_image fields are deprecated, using photo upload instead
+            
+            // Backpacker specific fields
+            'distance' => isset($data['distance']) ? floatval($data['distance']) : 0,
+            'distance_unit' => isset($data['distance_unit']) ? $data['distance_unit'] : 'miles',
+            'elevation_gain' => isset($data['elevation_gain']) ? floatval($data['elevation_gain']) : 0,
+            'difficulty' => isset($data['difficulty']) ? $data['difficulty'] : null,
+            'trip_type' => isset($data['trip_type']) ? $data['trip_type'] : null,
+            'permit_required' => isset($data['permit_required']) ? (int)$data['permit_required'] : 0,
+            'permit_info' => isset($data['permit_info']) ? trim($data['permit_info']) : null,
+            'water_sources' => isset($data['water_sources']) ? trim($data['water_sources']) : null,
+            'camping_type' => isset($data['camping_type']) ? $data['camping_type'] : null,
+            'expected_weather' => isset($data['expected_weather']) ? trim($data['expected_weather']) : null,
+            'trail_conditions' => isset($data['trail_conditions']) ? trim($data['trail_conditions']) : null,
+            'emergency_contact' => isset($data['emergency_contact']) ? trim($data['emergency_contact']) : null,
+            'trailhead_parking' => isset($data['trailhead_parking']) ? trim($data['trailhead_parking']) : null,
+            
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
+        
+        // Validate backpack exists if provided
+        if ($trip_data['backpack_id']) {
+            if (!backpackExists($trip_data['backpack_id'])) {
+                Response::validationError(['backpack_id' => 'Invalid backpack ID']);
+            }
+        }
+        
+        // Insert trip
+        $db = Database::getInstance();
+        $trip_id = $db->insert('trips', $trip_data);
+        
+        // Fetch created trip
+        getTripById($trip_id);
+        
+    } catch (Exception $e) {
+        Response::serverError('Failed to create trip: ' . $e->getMessage());
+    }
+}
+
+/**
+ * Update existing trip
+ */
+function updateTrip($id) {
+    try {
+        $db = Database::getInstance();
+        
+        // Check if trip exists
+        if ($db->isSQLite()) {
+            $existing = $db->fetchOne("SELECT * FROM trips WHERE id = :id", ['id' => $id]);
+        } else {
+            $trips = json_decode(file_get_contents(BTT_JSON_PATH . '/trips.json'), true) ?? [];
+            $existing = null;
+            foreach ($trips as $trip) {
+                if ($trip['id'] == $id) {
+                    $existing = $trip;
+                    break;
+                }
+            }
+        }
+        
+        if (!$existing) {
+            Response::notFound('Trip not found');
+        }
+        
+        $data = get_request_data();
+        $update_data = [];
+        
+        // Update only provided fields (including backpacker fields)
+        $allowed_fields = [
+            'title', 'location', 'start_date', 'end_date', 'description', 'backpack_id',
+            'distance', 'distance_unit', 'elevation_gain', 'difficulty', 'trip_type',
+            'permit_required', 'permit_info', 'water_sources', 'camping_type',
+            'expected_weather', 'trail_conditions', 'emergency_contact', 'trailhead_parking'
+        ];
+        foreach ($allowed_fields as $field) {
+            if (isset($data[$field])) {
+                if ($field === 'backpack_id') {
+                    // Handle backpack_id specially to avoid FK constraint issues
+                    $value = $data[$field];
+                    $update_data[$field] = ($value !== '' && $value != 0) ? intval($value) : null;
+                } elseif ($field === 'permit_required') {
+                    $update_data[$field] = intval($data[$field]);
+                } elseif ($field === 'distance' || $field === 'elevation_gain') {
+                    $update_data[$field] = floatval($data[$field]);
+                } else {
+                    $update_data[$field] = trim($data[$field]);
+                }
+            }
+        }
+        
+        // Handle photo upload/update
+        if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+            // Validate alt text is provided with photo
+            if (empty($data['photo_alt_text'])) {
+                Response::validationError(['photo_alt_text' => 'Alt text is required when uploading a photo (ADA compliance)']);
+            }
+            
+            $upload_result = handlePhotoUpload($_FILES['photo']);
+            if ($upload_result['success']) {
+                // Delete old photo if exists
+                if ($existing['photo_path']) {
+                    deletePhotoFile($existing['photo_path']);
+                }
+                
+                $update_data['photo_path'] = $upload_result['path'];
+                $update_data['photo_alt_text'] = trim($data['photo_alt_text']);
+            } else {
+                Response::validationError(['photo' => $upload_result['error']]);
+            }
+        } elseif (isset($data['photo_alt_text']) && $existing['photo_path']) {
+            // Update alt text only
+            $update_data['photo_alt_text'] = trim($data['photo_alt_text']);
+        }
+        
+        // Validate backpack exists if provided
+        if (isset($update_data['backpack_id']) && $update_data['backpack_id']) {
+            if (!backpackExists($update_data['backpack_id'])) {
+                Response::validationError(['backpack_id' => 'Invalid backpack ID']);
+            }
+        }
+        
+        if (empty($update_data)) {
+            Response::error('No fields to update', 400);
+        }
+        
+        $update_data['updated_at'] = date('Y-m-d H:i:s');
+        
+        // Update trip
+        $db->update('trips', $update_data, 'id = :id', ['id' => $id]);
+        
+        // Return updated trip
+        getTripById($id);
+        
+    } catch (Exception $e) {
+        Response::serverError('Failed to update trip: ' . $e->getMessage());
+    }
+}
+
+/**
+ * Delete trip and associated photo
+ */
+function deleteTrip($id) {
+    try {
+        $db = Database::getInstance();
+        
+        // Get trip to check for photo
+        if ($db->isSQLite()) {
+            $trip = $db->fetchOne("SELECT photo_path FROM trips WHERE id = :id", ['id' => $id]);
+        } else {
+            $trips = json_decode(file_get_contents(BTT_JSON_PATH . '/trips.json'), true) ?? [];
+            $trip = null;
+            foreach ($trips as $t) {
+                if ($t['id'] == $id) {
+                    $trip = $t;
+                    break;
+                }
+            }
+        }
+        
+        if (!$trip) {
+            Response::notFound('Trip not found');
+        }
+        
+        // Delete photo file if exists
+        if ($trip['photo_path']) {
+            deletePhotoFile($trip['photo_path']);
+        }
+        
+        // Delete trip from database
+        $db->delete('trips', 'id = :id', ['id' => $id]);
+        
+        Response::success(null, 'Trip deleted successfully');
+        
+    } catch (Exception $e) {
+        Response::serverError('Failed to delete trip: ' . $e->getMessage());
+    }
+}
+
+/**
+ * Handle photo upload
+ */
+function handlePhotoUpload($file) {
+    // Check file size (4MB max)
+    if ($file['size'] > BTT_UPLOAD_MAX_SIZE) {
+        return ['success' => false, 'error' => 'File size exceeds 4MB limit'];
+    }
+    
+    // Check file type
+    $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    if (!in_array($extension, BTT_UPLOAD_ALLOWED_TYPES)) {
+        return ['success' => false, 'error' => 'Only JPG, JPEG, and PNG files are allowed'];
+    }
+    
+    // Verify MIME type
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mime_type = finfo_file($finfo, $file['tmp_name']);
+    finfo_close($finfo);
+    
+    if (!in_array($mime_type, BTT_UPLOAD_ALLOWED_MIMES)) {
+        return ['success' => false, 'error' => 'Invalid file type'];
+    }
+    
+    // Generate unique filename
+    $filename = date('Ymd_His') . '_' . uniqid() . '.' . $extension;
+    $upload_path = BTT_UPLOAD_PATH . '/' . $filename;
+    
+    // Move uploaded file
+    if (move_uploaded_file($file['tmp_name'], $upload_path)) {
+        // Return relative path for storage
+        return [
+            'success' => true,
+            'path' => 'assets/img/trips/' . $filename
+        ];
+    } else {
+        return ['success' => false, 'error' => 'Failed to upload file'];
+    }
+}
+
+/**
+ * Delete photo file
+ */
+function deletePhotoFile($path) {
+    if ($path && strpos($path, 'assets/img/trips/') === 0) {
+        $full_path = BTT_ROOT . '/' . $path;
+        if (file_exists($full_path)) {
+            @unlink($full_path);
+        }
+    }
+}
+
+/**
+ * Check if backpack exists
+ */
+function backpackExists($id) {
+    try {
+        $db = Database::getInstance();
+        
+        if ($db->isSQLite()) {
+            $result = $db->fetchOne("SELECT id FROM backpacks WHERE id = :id", ['id' => $id]);
+            return $result !== false;
+        } else {
+            $backpacks = json_decode(file_get_contents(BTT_JSON_PATH . '/backpacks.json'), true) ?? [];
+            foreach ($backpacks as $backpack) {
+                if ($backpack['id'] == $id) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    } catch (Exception $e) {
+        return false;
+    }
+}

@@ -1,0 +1,239 @@
+{
+  "version": "1.0.0",
+  "schemas": {
+    "backpack": {
+      "type": "object",
+      "required": ["id", "name", "created_at", "updated_at", "version"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Unique identifier for the backpack"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the backpack configuration"
+        },
+        "description": {
+          "type": "string",
+          "description": "Optional description of the backpack"
+        },
+        "capacity_l": {
+          "type": "number",
+          "description": "Backpack capacity in liters",
+          "minimum": 0,
+          "default": 65
+        },
+        "weight_empty_g": {
+          "type": "number",
+          "description": "Empty backpack weight in grams",
+          "minimum": 0,
+          "default": 0
+        },
+        "base_weight": {
+          "type": "number",
+          "description": "Legacy field for backward compatibility (in kg)",
+          "deprecated": true
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Tags for categorization",
+          "default": []
+        },
+        "type": {
+          "type": "string",
+          "enum": ["day-hike", "weekend", "multi-day", "thru-hike", "ultralight", "winter", "custom"],
+          "default": "custom"
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "$ref": "#/schemas/section"
+          },
+          "description": "Backpack sections/compartments",
+          "default": []
+        },
+        "linked_trip_id": {
+          "type": ["integer", "null"],
+          "description": "ID of linked trip if applicable"
+        },
+        "template_id": {
+          "type": ["string", "null"],
+          "description": "ID of template this was created from"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "version": {
+          "type": "string",
+          "description": "Schema version",
+          "default": "1.0.0"
+        }
+      }
+    },
+    "section": {
+      "type": "object",
+      "required": ["id", "name", "order"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the section"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the section"
+        },
+        "order": {
+          "type": "integer",
+          "description": "Display order",
+          "minimum": 0
+        },
+        "capacity_percentage": {
+          "type": "number",
+          "description": "Percentage of total capacity",
+          "minimum": 0,
+          "maximum": 100,
+          "default": 20
+        },
+        "color": {
+          "type": "string",
+          "description": "Color code for visualization",
+          "default": "#10b981"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/schemas/item"
+          },
+          "default": []
+        }
+      }
+    },
+    "item": {
+      "type": "object",
+      "required": ["id", "name", "weight_g"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the item"
+        },
+        "gear_id": {
+          "type": ["integer", "null"],
+          "description": "Reference to gear inventory item"
+        },
+        "name": {
+          "type": "string",
+          "description": "Item name"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["shelter", "sleep_system", "cooking", "clothing", "footwear", "navigation", "safety", "hygiene", "electronics", "food", "water", "first_aid", "tools", "other"],
+          "default": "other"
+        },
+        "quantity": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 1
+        },
+        "weight_g": {
+          "type": "number",
+          "description": "Weight per unit in grams",
+          "minimum": 0
+        },
+        "consumable": {
+          "type": "boolean",
+          "description": "Is this a consumable item?",
+          "default": false
+        },
+        "worn": {
+          "type": "boolean",
+          "description": "Is this worn (not in pack)?",
+          "default": false
+        },
+        "packed": {
+          "type": "boolean",
+          "description": "Is this packed?",
+          "default": false
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional notes"
+        },
+        "order": {
+          "type": "integer",
+          "description": "Display order within section",
+          "minimum": 0
+        },
+        "last_packed": {
+          "type": ["string", "null"],
+          "format": "date-time",
+          "description": "Timestamp of last pack state change"
+        }
+      }
+    },
+    "gear": {
+      "type": "object",
+      "required": ["id", "name", "weight_g"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Unique identifier for gear item"
+        },
+        "name": {
+          "type": "string",
+          "description": "Gear item name"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["shelter", "sleep_system", "cooking", "clothing", "footwear", "navigation", "safety", "hygiene", "electronics", "food", "water", "first_aid", "tools", "other"],
+          "default": "other"
+        },
+        "weight_g": {
+          "type": "number",
+          "description": "Weight in grams",
+          "minimum": 0
+        },
+        "brand": {
+          "type": "string",
+          "description": "Brand/manufacturer"
+        },
+        "model": {
+          "type": "string",
+          "description": "Model name/number"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional notes"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "quantity_owned": {
+          "type": "integer",
+          "description": "How many of this item owned",
+          "minimum": 1,
+          "default": 1
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

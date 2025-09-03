@@ -1,0 +1,374 @@
+/**
+ * Forest Design Tokens
+ * Core design tokens for the BeyondTrailTales forest theme
+ * Inspired by Duolingo's playful design language
+ */
+
+:root {
+  /* =========================
+     FOREST COLOR PALETTE
+     ========================= */
+  
+  /* Core Forest Colors */
+  --forest-deep: #0a2818;        /* Deep forest green - primary dark */
+  --forest-shadow: #061510;      /* Darkest shadow */
+  --forest-moss: #2d5a3d;        /* Moss green - mid tone */
+  --forest-fern: #5cb85c;        /* Fern green - primary action */
+  --forest-leaf: #8bc34a;        /* Fresh leaf - success */
+  --forest-mint: #a8e6cf;        /* Mint - light accent */
+  
+  /* Earth Tones */
+  --forest-bark: #3e2723;        /* Tree bark brown */
+  --forest-soil: #2c1810;        /* Rich soil - dark brown */
+  --forest-wood: #6d4c41;        /* Wood brown - mid tone */
+  --forest-sand: #c8b88b;        /* Sandy path - light brown */
+  
+  /* Sky & Water */
+  --forest-sky: #87ceeb;         /* Clear sky blue */
+  --forest-lake: #4a90e2;        /* Lake blue - info */
+  --forest-mist: #b0c4de;        /* Morning mist - light blue */
+  
+  /* Accent Colors */
+  --forest-berry: #e74c3c;       /* Wild berry red - danger */
+  --forest-honey: #ffc107;       /* Golden honey - warning/accent */
+  --forest-mushroom: #ff6b6b;    /* Mushroom red - alert */
+  --forest-flower: #e91e63;      /* Wildflower pink */
+  
+  /* Neutrals */
+  --forest-fog: #f8f9fa;         /* Morning fog - lightest */
+  --forest-cloud: #e9ecef;       /* Cloud white */
+  --forest-stone: #6c757d;       /* Stone gray */
+  --forest-rock: #495057;        /* Dark rock */
+  
+  /* =========================
+     SEMANTIC COLORS
+     ========================= */
+  
+  --color-primary: var(--forest-fern);
+  --color-primary-dark: var(--forest-moss);
+  --color-primary-light: var(--forest-mint);
+  
+  --color-secondary: var(--forest-bark);
+  --color-secondary-dark: var(--forest-soil);
+  --color-secondary-light: var(--forest-wood);
+  
+  --color-accent: var(--forest-honey);
+  --color-accent-dark: #f39c12;
+  --color-accent-light: #ffd54f;
+  
+  --color-success: var(--forest-leaf);
+  --color-info: var(--forest-lake);
+  --color-warning: var(--forest-honey);
+  --color-danger: var(--forest-berry);
+  
+  /* Text Colors */
+  --text-primary: var(--forest-fog);
+  --text-secondary: var(--forest-cloud);
+  --text-muted: var(--forest-stone);
+  --text-inverse: var(--forest-deep);
+  
+  /* Background Colors */
+  --bg-primary: var(--forest-deep);
+  --bg-secondary: var(--forest-shadow);
+  --bg-surface: rgba(10, 40, 24, 0.95);
+  --bg-overlay: rgba(6, 21, 16, 0.85);
+  
+  /* =========================
+     TYPOGRAPHY SCALE
+     ========================= */
+  
+  /* Font Families */
+  --font-primary: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Space Grotesk', 'Nunito', sans-serif;
+  --font-mono: 'Fira Code', 'Courier New', monospace;
+  
+  /* Fluid Type Scale */
+  --text-xs: clamp(0.75rem, 1.5vw + 0.5rem, 0.875rem);
+  --text-sm: clamp(0.875rem, 2vw + 0.5rem, 1rem);
+  --text-base: clamp(1rem, 2.5vw + 0.5rem, 1.125rem);
+  --text-lg: clamp(1.125rem, 3vw + 0.5rem, 1.25rem);
+  --text-xl: clamp(1.25rem, 3.5vw + 0.5rem, 1.5rem);
+  --text-2xl: clamp(1.5rem, 4vw + 0.75rem, 2rem);
+  --text-3xl: clamp(2rem, 5vw + 1rem, 3rem);
+  --text-4xl: clamp(2.5rem, 6vw + 1rem, 4rem);
+  --text-5xl: clamp(3rem, 7vw + 1rem, 5rem);
+  
+  /* Font Weights */
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+  
+  /* Line Heights */
+  --leading-none: 1;
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
+  
+  /* Letter Spacing */
+  --tracking-tighter: -0.05em;
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
+  
+  /* =========================
+     SPACING SCALE (4pt)
+     ========================= */
+  
+  --space-0: 0;
+  --space-px: 1px;
+  --space-0\.5: 0.125rem;   /* 2px */
+  --space-1: 0.25rem;       /* 4px */
+  --space-1\.5: 0.375rem;   /* 6px */
+  --space-2: 0.5rem;        /* 8px */
+  --space-2\.5: 0.625rem;   /* 10px */
+  --space-3: 0.75rem;       /* 12px */
+  --space-3\.5: 0.875rem;   /* 14px */
+  --space-4: 1rem;          /* 16px */
+  --space-5: 1.25rem;       /* 20px */
+  --space-6: 1.5rem;        /* 24px */
+  --space-7: 1.75rem;       /* 28px */
+  --space-8: 2rem;          /* 32px */
+  --space-9: 2.25rem;       /* 36px */
+  --space-10: 2.5rem;       /* 40px */
+  --space-11: 2.75rem;      /* 44px */
+  --space-12: 3rem;         /* 48px */
+  --space-14: 3.5rem;       /* 56px */
+  --space-16: 4rem;         /* 64px */
+  --space-20: 5rem;         /* 80px */
+  --space-24: 6rem;         /* 96px */
+  --space-28: 7rem;         /* 112px */
+  --space-32: 8rem;         /* 128px */
+  
+  /* =========================
+     COMPONENT SPACING ALIASES
+     ========================= */
+  
+  /* Button spacing */
+  --space-button-x: var(--space-4);
+  --space-button-y: var(--space-3);
+  --space-button-gap: var(--space-2);
+  
+  /* Card spacing */
+  --space-card-inset: var(--space-4);
+  --space-card-stack: var(--space-3);
+  
+  /* Form spacing */
+  --space-form-row: var(--space-3);
+  --space-input-x: var(--space-4);
+  --space-input-y: var(--space-3);
+  
+  /* Modal spacing */
+  --space-modal-inset: var(--space-4);
+  --space-modal-stack: var(--space-3);
+  
+  /* Panel spacing */
+  --space-panel-inset: var(--space-4);
+  --space-panel-stack: var(--space-3);
+  
+  /* Icon sizes */
+  --icon-size-sm: 1rem;
+  --icon-size-md: 1.25rem;
+  --icon-size-lg: 1.5rem;
+  
+  /* =========================
+     BORDER RADIUS
+     =========================*/
+  
+  --radius-none: 0;
+  --radius-xs: 0.125rem;    /* 2px */
+  --radius-sm: 0.25rem;     /* 4px */
+  --radius-md: 0.375rem;    /* 6px */
+  --radius-lg: 0.5rem;      /* 8px */
+  --radius-xl: 0.75rem;     /* 12px */
+  --radius-2xl: 1rem;       /* 16px */
+  --radius-3xl: 1.5rem;     /* 24px */
+  --radius-full: 9999px;
+  
+  /* Component-specific radii */
+  --radius-button: var(--radius-lg);
+  --radius-card: var(--radius-xl);
+  --radius-modal: var(--radius-2xl);
+  --radius-badge: var(--radius-full);
+  
+  /* =========================
+     ELEVATION & SHADOWS
+     ========================= */
+  
+  --shadow-xs: 0 1px 2px 0 rgba(10, 40, 24, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(10, 40, 24, 0.1), 0 1px 2px 0 rgba(10, 40, 24, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(10, 40, 24, 0.1), 0 2px 4px -1px rgba(10, 40, 24, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(10, 40, 24, 0.1), 0 4px 6px -2px rgba(10, 40, 24, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(10, 40, 24, 0.1), 0 10px 10px -5px rgba(10, 40, 24, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(10, 40, 24, 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgba(10, 40, 24, 0.06);
+  
+  /* Glassmorphism shadows */
+  --shadow-glass: 0 8px 32px 0 rgba(10, 40, 24, 0.37);
+  --shadow-glow-sm: 0 0 10px rgba(92, 184, 92, 0.3);
+  --shadow-glow-md: 0 0 20px rgba(92, 184, 92, 0.4);
+  --shadow-glow-lg: 0 0 40px rgba(92, 184, 92, 0.5);
+  
+  /* =========================
+     ANIMATION & MOTION
+     ========================= */
+  
+  /* Durations */
+  --duration-instant: 50ms;
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --duration-slower: 700ms;
+  --duration-slowest: 1000ms;
+  
+  /* Easings */
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.85);
+  
+  /* Transitions */
+  --transition-all: all var(--duration-normal) var(--ease-in-out);
+  --transition-fast: all var(--duration-fast) var(--ease-in-out);
+  --transition-slow: all var(--duration-slow) var(--ease-in-out);
+  --transition-transform: transform var(--duration-normal) var(--ease-out);
+  --transition-opacity: opacity var(--duration-normal) var(--ease-in-out);
+  --transition-colors: color var(--duration-fast) var(--ease-in-out), 
+                       background-color var(--duration-fast) var(--ease-in-out),
+                       border-color var(--duration-fast) var(--ease-in-out);
+  
+  /* =========================
+     LAYOUT
+     ========================= */
+  
+  /* Container widths */
+  --container-xs: 20rem;     /* 320px */
+  --container-sm: 24rem;     /* 384px */
+  --container-md: 28rem;     /* 448px */
+  --container-lg: 32rem;     /* 512px */
+  --container-xl: 36rem;     /* 576px */
+  --container-2xl: 42rem;    /* 672px */
+  --container-3xl: 48rem;    /* 768px */
+  --container-4xl: 56rem;    /* 896px */
+  --container-5xl: 64rem;    /* 1024px */
+  --container-6xl: 72rem;    /* 1152px */
+  --container-7xl: 80rem;    /* 1280px */
+  --container-full: 100%;
+  
+  /* Breakpoints */
+  --screen-xs: 475px;
+  --screen-sm: 640px;
+  --screen-md: 768px;
+  --screen-lg: 1024px;
+  --screen-xl: 1280px;
+  --screen-2xl: 1536px;
+  
+  /* Z-index scale */
+  --z-0: 0;
+  --z-10: 10;
+  --z-20: 20;
+  --z-30: 30;
+  --z-40: 40;
+  --z-50: 50;
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  --z-notification: 1080;
+  
+  /* =========================
+     GLASSMORPHISM
+     ========================= */
+  
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-bg-hover: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border-hover: rgba(255, 255, 255, 0.2);
+  --glass-blur: blur(10px);
+  --glass-blur-heavy: blur(20px);
+  
+  /* =========================
+     SPECIAL EFFECTS
+     ========================= */
+  
+  /* Gradients */
+  --gradient-forest: linear-gradient(135deg, var(--forest-deep) 0%, var(--forest-moss) 100%);
+  --gradient-sky: linear-gradient(180deg, var(--forest-sky) 0%, var(--forest-mist) 100%);
+  --gradient-earth: linear-gradient(135deg, var(--forest-soil) 0%, var(--forest-bark) 100%);
+  --gradient-success: linear-gradient(135deg, var(--forest-fern) 0%, var(--forest-leaf) 100%);
+  --gradient-danger: linear-gradient(135deg, var(--forest-berry) 0%, var(--forest-mushroom) 100%);
+  --gradient-glow: radial-gradient(circle, rgba(92, 184, 92, 0.2) 0%, transparent 70%);
+  
+  /* Filters */
+  --filter-blur: blur(4px);
+  --filter-brightness: brightness(1.1);
+  --filter-saturate: saturate(1.2);
+}
+
+/* =========================
+   DARK THEME OVERRIDES
+   ========================= */
+
+[data-theme="forest-dark"] {
+  color-scheme: dark;
+  
+  --text-primary: var(--forest-fog);
+  --text-secondary: var(--forest-cloud);
+  --bg-primary: var(--forest-deep);
+  --bg-secondary: var(--forest-shadow);
+  --bg-surface: rgba(10, 40, 24, 0.95);
+}
+
+/* =========================
+   LIGHT THEME OVERRIDES
+   ========================= */
+
+[data-theme="forest-light"] {
+  color-scheme: light;
+  
+  --text-primary: var(--forest-deep);
+  --text-secondary: var(--forest-moss);
+  --text-muted: var(--forest-stone);
+  --text-inverse: var(--forest-fog);
+  
+  --bg-primary: var(--forest-fog);
+  --bg-secondary: var(--forest-cloud);
+  --bg-surface: rgba(248, 249, 250, 0.95);
+  --bg-overlay: rgba(255, 255, 255, 0.85);
+  
+  --glass-bg: rgba(10, 40, 24, 0.05);
+  --glass-bg-hover: rgba(10, 40, 24, 0.08);
+  --glass-border: rgba(10, 40, 24, 0.1);
+  --glass-border-hover: rgba(10, 40, 24, 0.2);
+}
+
+/* =========================
+   REDUCED MOTION
+   ========================= */
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-instant: 0ms;
+    --duration-fast: 0ms;
+    --duration-normal: 0ms;
+    --duration-slow: 0ms;
+    --duration-slower: 0ms;
+    --duration-slowest: 0ms;
+  }
+}
+
+.reduce-motion * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}

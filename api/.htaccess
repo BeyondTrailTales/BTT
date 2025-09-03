@@ -1,0 +1,34 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /BTT/api/
+    
+    # Handle the health check
+    RewriteRule ^health/?$ index.php?route=health [QSA,L]
+    
+    # Handle routes with ID (e.g., /backpacks/123)
+    RewriteRule ^(backpacks|trips|gear)/([0-9]+)/?$ index.php?route=$1&id=$2 [QSA,L]
+    
+    # Handle routes with sub-resources (e.g., /backpacks/123/sections)
+    RewriteRule ^(backpacks|trips|gear)/([0-9]+)/([a-z]+)/?$ index.php?route=$1&id=$2&action=$3 [QSA,L]
+    
+    # Handle routes with sub-resources and sub-ID (e.g., /backpacks/123/sections/456)
+    RewriteRule ^(backpacks|trips|gear)/([0-9]+)/([a-z]+)/([0-9]+)/?$ index.php?route=$1&id=$2&action=$3&sub_id=$4 [QSA,L]
+    
+    # Handle base routes (e.g., /backpacks)
+    RewriteRule ^(backpacks|trips|gear)/?$ index.php?route=$1 [QSA,L]
+    
+    # Handle special routes (templates, import, export)
+    RewriteRule ^backpacks/(templates|import|export)/?$ index.php?route=backpacks&id=$1 [QSA,L]
+    
+    # Handle everything else
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php?route=$1 [QSA,L]
+</IfModule>
+
+# Ensure JSON responses
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header set Access-Control-Allow-Headers "Content-Type, Authorization"
+</IfModule>
