@@ -152,11 +152,11 @@ $uxRefreshEnabled = $_SESSION['ux_refresh'] ?? $_COOKIE['ux_refresh'] ?? true;
     <script src="<?php echo BTT_VENDOR_URL; ?>/sortable.min.js"></script>
     
     <!-- Load BTT utilities and API client before everything else -->
-    <script src="<?php echo asset_url('js/btt-utils.js'); ?>"></script>
-    <script src="<?php echo asset_url('js/api.js'); ?>"></script>
+    <script src="<?php echo asset_url('js/btt-utils.js'); ?>?v=<?php echo time(); ?>"></script>
+    <script src="<?php echo asset_url('js/api.js'); ?>?v=<?php echo time(); ?>"></script>
     
     <!-- Load utilities and app scripts -->
-    <script src="<?php echo asset_url('js/app.js'); ?>"></script>
+    <script src="<?php echo asset_url('js/app.js'); ?>?v=<?php echo time(); ?>"></script>
     <!-- UX Refresh UI Utilities (toasts, accordions, steppers) -->
     <?php if ($uxRefreshEnabled): ?>
     <script src="<?php echo asset_url('js/ux-ui.js'); ?>"></script>
@@ -178,10 +178,10 @@ $uxRefreshEnabled = $_SESSION['ux_refresh'] ?? $_COOKIE['ux_refresh'] ?? true;
     <!-- Accessibility Enhancements -->
     <script src="<?php echo asset_url('js/accessibility-enhancements.js'); ?>" defer></script>
     
-    <!-- Page-specific scripts -->
+    <!-- Page-specific scripts with aggressive cache busting -->
     <?php if (isset($pageScripts)): ?>
         <?php foreach ($pageScripts as $script): ?>
-        <script src="<?php echo asset_url($script); ?>"></script>
+        <script src="<?php echo asset_url($script); ?>?v=<?php echo time(); ?>&bust=<?php echo md5(time() . $script); ?>"></script>
         <?php endforeach; ?>
     <?php endif; ?>
     

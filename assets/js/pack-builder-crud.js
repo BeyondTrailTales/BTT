@@ -1,7 +1,7 @@
 /**
  * Pack Builder CRUD Operations
  * Handles saving, loading, updating, and deleting backpacks
- * @version 2.0.0
+ * @version 2.1.0 - FIXED TIMEOUTS WITH DIRECT FETCH
  */
 
 (function($) {
@@ -161,12 +161,41 @@
                 };
                 
                 try {
+                    // Try direct fetch first
+                    console.log('PackBuilderCRUD: Attempting direct save...');
+                    let url, method;
+                    
                     if (this.state.currentPackId) {
                         console.log('Updating existing pack:', this.state.currentPackId);
-                        response = await saveWithTimeout(BttApi.backpacks.update(this.state.currentPackId, packData));
+                        url = `/BTT/ajax-handler.php?route=backpacks&id=${this.state.currentPackId}`;
+                        method = 'PUT';
                     } else {
                         console.log('Creating new pack');
-                        response = await saveWithTimeout(BttApi.backpacks.create(packData));
+                        url = '/BTT/ajax-handler.php?route=backpacks';
+                        method = 'POST';
+                    }
+                    
+                    const directResponse = await fetch(url, {
+                        method: method,
+                        credentials: 'same-origin',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        body: JSON.stringify(packData)
+                    });
+                    
+                    if (directResponse.ok) {
+                        response = await directResponse.json();
+                        console.log('PackBuilderCRUD: Direct save successful:', response);
+                    } else {
+                        console.error('PackBuilderCRUD: Direct save failed, trying BttApi...');
+                        // Fall back to BttApi
+                        if (this.state.currentPackId) {
+                            response = await saveWithTimeout(BttApi.backpacks.update(this.state.currentPackId, packData));
+                        } else {
+                            response = await saveWithTimeout(BttApi.backpacks.create(packData));
+                        }
                     }
                 } catch (timeoutError) {
                     console.error('Save timed out, using fallback');
@@ -376,28 +405,72 @@
                     return;
                 }
                 
-                // Use API client with timeout
+                console.log('PackBuilderCRUD: Starting loadExistingPacks...');
+                
+                // Test direct fetch first
+                try {
+                    console.log('PackBuilderCRUD: Testing direct fetch...');
+                    const directResponse = await fetch('/BTT/ajax-handler.php?route=backpacks', {
+                        method: 'GET',
+                        credentials: 'same-origin',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+                    
+                    console.log('PackBuilderCRUD: NEW VERSION - Direct fetch response status:', directResponse.status);
+                    
+                    if (directResponse.ok) {
+                        const responseText = await directResponse.text();
+                        console.log('PackBuilderCRUD: NEW VERSION - Raw response:', responseText);
+                        
+                        let directData;
+                        try {
+                            directData = JSON.parse(responseText);
+                            console.log('PackBuilderCRUD: NEW VERSION - Parsed JSON data:', directData);
+                        } catch (parseError) {
+                            console.error('PackBuilderCRUD: NEW VERSION - JSON parse error:', parseError);
+                            console.error('PackBuilderCRUD: NEW VERSION - Response text:', responseText.substring(0, 1000));
+                            throw parseError;
+                        }
+                        
+                        // Use the direct data if successful
+                        const packs = Array.isArray(directData) ? directData : (directData.data || directData || []);
+                        console.log('PackBuilderCRUD: NEW VERSION rendering packs with CRUD buttons:', packs.length, 'packs');
+                        this.renderPacksList(packs);
+                        return;
+                    } else {
+                        console.error('PackBuilderCRUD: NEW VERSION - Direct fetch failed with status:', directResponse.status);
+                        const errorText = await directResponse.text();
+                        console.error('PackBuilderCRUD: NEW VERSION - Error response:', errorText);
+                    }
+                } catch (directError) {
+                    console.error('PackBuilderCRUD: Direct fetch error:', directError);
+                }
+                
+                // Fall back to BttApi with longer timeout
+                console.log('PackBuilderCRUD: Falling back to BttApi...');
                 const timeoutPromise = new Promise((_, reject) => 
-                    setTimeout(() => reject(new Error('Request timed out')), 10000)
+                    setTimeout(() => reject(new Error('Request timed out after 30 seconds')), 30000)
                 );
                 
                 const dataPromise = BttApi.backpacks.list();
                 
                 try {
                     const data = await Promise.race([dataPromise, timeoutPromise]);
-                    console.log('Loaded packs:', data);
+                    console.log('PackBuilderCRUD: BttApi response:', data);
                 
-                // API client should have unwrapped the response
-                // If we get an array directly, use it. Otherwise check for wrapped response
-                const packs = Array.isArray(data) ? data : (data.data || data || []);
-                
-                console.log('PackBuilderCRUD rendering packs with CRUD buttons');
+                    // API client should have unwrapped the response
+                    // If we get an array directly, use it. Otherwise check for wrapped response
+                    const packs = Array.isArray(data) ? data : (data.data || data || []);
+                    
+                    console.log('PackBuilderCRUD rendering packs with CRUD buttons');
                     this.renderPacksList(packs);
                 } catch (timeoutError) {
                     console.error('API request timed out:', timeoutError);
                     // Show empty state with error message
                     this.renderPacksList([]);
-                    this.showError('Unable to load packs - API timeout. Please refresh the page.');
+                    this.showError('Unable to load packs - API timeout. Please check your connection or try refreshing.');
                 }
             } catch (error) {
                 console.error('Failed to load packs:', error);
