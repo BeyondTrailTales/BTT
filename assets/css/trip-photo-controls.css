@@ -1,0 +1,63 @@
+/**
+ * Trip Photo Controls Styling
+ * Remove photo button and related controls
+ */
+
+.adventure-image-container {
+    position: relative;
+}
+
+.btn-remove-photo {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255, 75, 75, 0.9);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    font-size: 1.2rem;
+}
+
+.btn-remove-photo:hover {
+    background: rgba(255, 0, 0, 0.95);
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-remove-photo.hidden {
+    display: none;
+}
+
+/* Adjust upload overlay to not overlap with remove button */
+.upload-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 5;
+}
+
+.adventure-image-container:hover .upload-overlay:not(.hidden) {
+    opacity: 1;
+}
+
+/* Hidden field for tracking photo removal */
+input[name="remove_photo"] {
+    display: none;
+}

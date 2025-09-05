@@ -1,0 +1,464 @@
+/**
+ * Gear Category Colors & Forest Theme
+ * Consistent color coding for gear categories with Duolingo forest aesthetic
+ * @version 1.0.0
+ */
+
+/* ==================== Category Color System ==================== */
+:root {
+    /* Category Colors - Nature-inspired palette */
+    --cat-shelter: #10b981;      /* Emerald green - tents, tarps */
+    --cat-sleep: #8b5cf6;        /* Purple - sleeping bags, pads */
+    --cat-cooking: #f59e0b;      /* Amber - stoves, cookware */
+    --cat-clothing: #3b82f6;     /* Blue - jackets, pants */
+    --cat-navigation: #ef4444;   /* Red - compass, maps, GPS */
+    --cat-hygiene: #ec4899;      /* Pink - toiletries */
+    --cat-firstaid: #dc2626;     /* Dark red - medical supplies */
+    --cat-electronics: #6366f1;  /* Indigo - batteries, chargers */
+    --cat-water: #06b6d4;        /* Cyan - bottles, filters */
+    --cat-foodstorage: #a78bfa;  /* Light purple - containers */
+    --cat-repair: #78716c;       /* Stone - tools, duct tape */
+    --cat-other: #6b7280;        /* Gray - miscellaneous */
+    
+    /* Forest Theme Colors */
+    --forest-primary: #58cc02;   /* Duolingo green */
+    --forest-secondary: #89e219;
+    --forest-dark: #0f3823;
+    --forest-shadow: rgba(0, 20, 0, 0.3);
+    --forest-glow: rgba(88, 204, 2, 0.2);
+}
+
+/* ==================== Category Badge Styles ==================== */
+.gear-category-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Individual Category Styles with Icons */
+.cat-badge-shelter {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.1));
+    border: 1.5px solid var(--cat-shelter);
+    color: var(--cat-shelter);
+}
+.cat-badge-shelter::before { content: "⛺"; margin-right: 0.25rem; }
+
+.cat-badge-sleep {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(139, 92, 246, 0.1));
+    border: 1.5px solid var(--cat-sleep);
+    color: var(--cat-sleep);
+}
+.cat-badge-sleep::before { content: "😴"; margin-right: 0.25rem; }
+
+.cat-badge-cooking {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.1));
+    border: 1.5px solid var(--cat-cooking);
+    color: var(--cat-cooking);
+}
+.cat-badge-cooking::before { content: "🔥"; margin-right: 0.25rem; }
+
+.cat-badge-clothing {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1));
+    border: 1.5px solid var(--cat-clothing);
+    color: var(--cat-clothing);
+}
+.cat-badge-clothing::before { content: "👕"; margin-right: 0.25rem; }
+
+.cat-badge-navigation {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1));
+    border: 1.5px solid var(--cat-navigation);
+    color: var(--cat-navigation);
+}
+.cat-badge-navigation::before { content: "🧭"; margin-right: 0.25rem; }
+
+.cat-badge-hygiene {
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.2), rgba(236, 72, 153, 0.1));
+    border: 1.5px solid var(--cat-hygiene);
+    color: var(--cat-hygiene);
+}
+.cat-badge-hygiene::before { content: "🧼"; margin-right: 0.25rem; }
+
+.cat-badge-first-aid {
+    background: linear-gradient(135deg, rgba(220, 38, 38, 0.2), rgba(220, 38, 38, 0.1));
+    border: 1.5px solid var(--cat-firstaid);
+    color: var(--cat-firstaid);
+}
+.cat-badge-first-aid::before { content: "🏥"; margin-right: 0.25rem; }
+
+.cat-badge-electronics {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(99, 102, 241, 0.1));
+    border: 1.5px solid var(--cat-electronics);
+    color: var(--cat-electronics);
+}
+.cat-badge-electronics::before { content: "🔋"; margin-right: 0.25rem; }
+
+.cat-badge-water {
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(6, 182, 212, 0.1));
+    border: 1.5px solid var(--cat-water);
+    color: var(--cat-water);
+}
+.cat-badge-water::before { content: "💧"; margin-right: 0.25rem; }
+
+.cat-badge-food-storage {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.2), rgba(167, 139, 250, 0.1));
+    border: 1.5px solid var(--cat-foodstorage);
+    color: var(--cat-foodstorage);
+}
+.cat-badge-food-storage::before { content: "🥫"; margin-right: 0.25rem; }
+
+.cat-badge-repair {
+    background: linear-gradient(135deg, rgba(120, 113, 108, 0.2), rgba(120, 113, 108, 0.1));
+    border: 1.5px solid var(--cat-repair);
+    color: var(--cat-repair);
+}
+.cat-badge-repair::before { content: "🔧"; margin-right: 0.25rem; }
+
+.cat-badge-other {
+    background: linear-gradient(135deg, rgba(107, 114, 128, 0.2), rgba(107, 114, 128, 0.1));
+    border: 1.5px solid var(--cat-other);
+    color: var(--cat-other);
+}
+.cat-badge-other::before { content: "📦"; margin-right: 0.25rem; }
+
+/* Badge hover effects */
+.gear-category-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* ==================== Forest Theme Elements ==================== */
+
+/* Forest background pattern */
+.forest-pattern {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.03;
+    background-image: 
+        url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 10 L30 40 L70 40 Z' fill='%2358cc02' opacity='0.3'/%3E%3Cpath d='M50 20 L35 45 L65 45 Z' fill='%2389e219' opacity='0.2'/%3E%3Cpath d='M20 60 L10 80 L30 80 Z' fill='%2358cc02' opacity='0.2'/%3E%3Cpath d='M80 55 L70 75 L90 75 Z' fill='%2389e219' opacity='0.25'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+}
+
+/* Animated forest leaves */
+@keyframes float-leaf {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-10px) rotate(5deg); }
+    50% { transform: translateY(-5px) rotate(-5deg); }
+    75% { transform: translateY(-15px) rotate(3deg); }
+}
+
+.forest-leaf {
+    position: absolute;
+    font-size: 1.5rem;
+    opacity: 0.1;
+    animation: float-leaf 8s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.forest-leaf:nth-child(odd) {
+    animation-delay: 2s;
+    animation-duration: 10s;
+}
+
+.forest-leaf:nth-child(even) {
+    animation-delay: 5s;
+    animation-duration: 12s;
+}
+
+/* ==================== Gear Page Forest Enhancements ==================== */
+
+/* Forest-themed gear page header */
+.gear-page .gear-header-section {
+    background: 
+        linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.08) 100%),
+        radial-gradient(circle at 20% 80%, rgba(88, 204, 2, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(137, 226, 25, 0.1) 0%, transparent 50%);
+    border: 2px solid rgba(88, 204, 2, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.gear-page .gear-header-section::before {
+    content: "🌲";
+    position: absolute;
+    left: 2rem;
+    bottom: 1rem;
+    font-size: 3rem;
+    opacity: 0.1;
+    transform: rotate(-10deg);
+}
+
+.gear-page .gear-header-section::after {
+    content: "🍃";
+    position: absolute;
+    right: 2rem;
+    top: 1rem;
+    font-size: 2rem;
+    opacity: 0.15;
+    animation: float-leaf 6s ease-in-out infinite;
+}
+
+/* Enhanced gear cards with category colors */
+.gear-card {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.gear-card.cat-shelter { border-left: 4px solid var(--cat-shelter); }
+.gear-card.cat-sleep { border-left: 4px solid var(--cat-sleep); }
+.gear-card.cat-cooking { border-left: 4px solid var(--cat-cooking); }
+.gear-card.cat-clothing { border-left: 4px solid var(--cat-clothing); }
+.gear-card.cat-navigation { border-left: 4px solid var(--cat-navigation); }
+.gear-card.cat-hygiene { border-left: 4px solid var(--cat-hygiene); }
+.gear-card.cat-first-aid { border-left: 4px solid var(--cat-firstaid); }
+.gear-card.cat-electronics { border-left: 4px solid var(--cat-electronics); }
+.gear-card.cat-water { border-left: 4px solid var(--cat-water); }
+.gear-card.cat-food-storage { border-left: 4px solid var(--cat-foodstorage); }
+.gear-card.cat-repair { border-left: 4px solid var(--cat-repair); }
+.gear-card.cat-other { border-left: 4px solid var(--cat-other); }
+
+/* Category-specific glow on hover */
+.gear-card.cat-shelter:hover { box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3); }
+.gear-card.cat-sleep:hover { box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3); }
+.gear-card.cat-cooking:hover { box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3); }
+.gear-card.cat-clothing:hover { box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3); }
+.gear-card.cat-navigation:hover { box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3); }
+.gear-card.cat-hygiene:hover { box-shadow: 0 8px 24px rgba(236, 72, 153, 0.3); }
+.gear-card.cat-first-aid:hover { box-shadow: 0 8px 24px rgba(220, 38, 38, 0.3); }
+.gear-card.cat-electronics:hover { box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3); }
+.gear-card.cat-water:hover { box-shadow: 0 8px 24px rgba(6, 182, 212, 0.3); }
+.gear-card.cat-food-storage:hover { box-shadow: 0 8px 24px rgba(167, 139, 250, 0.3); }
+.gear-card.cat-repair:hover { box-shadow: 0 8px 24px rgba(120, 113, 108, 0.3); }
+.gear-card.cat-other:hover { box-shadow: 0 8px 24px rgba(107, 114, 128, 0.3); }
+
+/* ==================== Backpack Page Gear Items ==================== */
+
+/* Gear items in backpack page with category colors */
+.gear-item {
+    position: relative;
+    padding-left: 1rem;
+}
+
+.gear-item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    border-radius: 0 2px 2px 0;
+}
+
+/* Category bars for available gear list */
+.gear-item[data-category="shelter"]::before { background: var(--cat-shelter); }
+.gear-item[data-category="sleep"]::before { background: var(--cat-sleep); }
+.gear-item[data-category="cooking"]::before { background: var(--cat-cooking); }
+.gear-item[data-category="clothing"]::before { background: var(--cat-clothing); }
+.gear-item[data-category="navigation"]::before { background: var(--cat-navigation); }
+.gear-item[data-category="hygiene"]::before { background: var(--cat-hygiene); }
+.gear-item[data-category="first-aid"]::before { background: var(--cat-firstaid); }
+.gear-item[data-category="electronics"]::before { background: var(--cat-electronics); }
+.gear-item[data-category="water"]::before { background: var(--cat-water); }
+.gear-item[data-category="food-storage"]::before { background: var(--cat-foodstorage); }
+.gear-item[data-category="repair"]::before { background: var(--cat-repair); }
+.gear-item[data-category="other"]::before { background: var(--cat-other); }
+
+/* Category bars for items inside pack sections */
+.pack-item {
+    position: relative;
+    padding-left: 0.75rem;
+}
+
+.pack-item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    bottom: 0.25rem;
+    width: 4px;
+    border-radius: 2px;
+}
+
+.pack-item[data-category="shelter"]::before { background: var(--cat-shelter); }
+.pack-item[data-category="sleep"]::before { background: var(--cat-sleep); }
+.pack-item[data-category="cooking"]::before { background: var(--cat-cooking); }
+.pack-item[data-category="clothing"]::before { background: var(--cat-clothing); }
+.pack-item[data-category="navigation"]::before { background: var(--cat-navigation); }
+.pack-item[data-category="hygiene"]::before { background: var(--cat-hygiene); }
+.pack-item[data-category="first-aid"]::before { background: var(--cat-firstaid); }
+.pack-item[data-category="electronics"]::before { background: var(--cat-electronics); }
+.pack-item[data-category="water"]::before { background: var(--cat-water); }
+.pack-item[data-category="food-storage"]::before { background: var(--cat-foodstorage); }
+.pack-item[data-category="repair"]::before { background: var(--cat-repair); }
+.pack-item[data-category="other"]::before { background: var(--cat-other); }
+
+/* Category filter pills with colors */
+.cat-tab[data-category="shelter"] { 
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid var(--cat-shelter);
+    color: var(--cat-shelter);
+}
+.cat-tab[data-category="sleep"] { 
+    background: rgba(139, 92, 246, 0.1);
+    border: 1px solid var(--cat-sleep);
+    color: var(--cat-sleep);
+}
+.cat-tab[data-category="cooking"] { 
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid var(--cat-cooking);
+    color: var(--cat-cooking);
+}
+.cat-tab[data-category="clothing"] { 
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid var(--cat-clothing);
+    color: var(--cat-clothing);
+}
+.cat-tab[data-category="navigation"] { 
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--cat-navigation);
+    color: var(--cat-navigation);
+}
+.cat-tab[data-category="hygiene"] { 
+    background: rgba(236, 72, 153, 0.1);
+    border: 1px solid var(--cat-hygiene);
+    color: var(--cat-hygiene);
+}
+.cat-tab[data-category="first-aid"] { 
+    background: rgba(220, 38, 38, 0.1);
+    border: 1px solid var(--cat-firstaid);
+    color: var(--cat-firstaid);
+}
+.cat-tab[data-category="electronics"] { 
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid var(--cat-electronics);
+    color: var(--cat-electronics);
+}
+.cat-tab[data-category="water"] { 
+    background: rgba(6, 182, 212, 0.1);
+    border: 1px solid var(--cat-water);
+    color: var(--cat-water);
+}
+.cat-tab[data-category="food-storage"] { 
+    background: rgba(167, 139, 250, 0.1);
+    border: 1px solid var(--cat-foodstorage);
+    color: var(--cat-foodstorage);
+}
+.cat-tab[data-category="repair"] { 
+    background: rgba(120, 113, 108, 0.1);
+    border: 1px solid var(--cat-repair);
+    color: var(--cat-repair);
+}
+.cat-tab[data-category="other"] { 
+    background: rgba(107, 114, 128, 0.1);
+    border: 1px solid var(--cat-other);
+    color: var(--cat-other);
+}
+
+.cat-tab.active {
+    transform: scale(1.05);
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* ==================== Forest Theme UI Components ==================== */
+
+/* Forest-themed buttons */
+.btn-forest {
+    background: linear-gradient(135deg, #58cc02, #89e219);
+    border: none;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(88, 204, 2, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-forest::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.5s, height 0.5s;
+}
+
+.btn-forest:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-forest:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(88, 204, 2, 0.4);
+}
+
+/* Progress bars with forest gradient */
+.progress-forest {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 999px;
+    height: 12px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-forest-bar {
+    background: linear-gradient(90deg, #58cc02, #89e219, #58cc02);
+    background-size: 200% 100%;
+    height: 100%;
+    border-radius: 999px;
+    animation: shimmer 2s linear infinite;
+    box-shadow: 0 0 10px rgba(88, 204, 2, 0.5);
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* Forest notification badges */
+.badge-forest {
+    background: linear-gradient(135deg, #58cc02, #89e219);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(88, 204, 2, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Achievement stars effect */
+.achievement-star {
+    display: inline-block;
+    color: #fbbf24;
+    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.5));
+    animation: pulse-star 2s ease-in-out infinite;
+}
+
+@keyframes pulse-star {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}

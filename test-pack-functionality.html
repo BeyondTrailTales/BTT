@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pack Builder Functionality Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #1a1f2e;
+            color: #e8f5e9;
+        }
+        
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: #2a3f2e;
+            border-radius: 8px;
+        }
+        
+        h2 {
+            color: #58cc02;
+            margin-bottom: 15px;
+        }
+        
+        .test-item {
+            padding: 10px;
+            margin: 10px 0;
+            background: rgba(88, 204, 2, 0.1);
+            border-left: 4px solid #58cc02;
+            border-radius: 4px;
+        }
+        
+        .pass {
+            color: #58cc02;
+            font-weight: bold;
+        }
+        
+        .fail {
+            color: #ff4444;
+            font-weight: bold;
+        }
+        
+        .test-button {
+            padding: 10px 20px;
+            background: #58cc02;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        .test-button:hover {
+            background: #46a000;
+        }
+        
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: 2px solid #58cc02;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pack Builder Functionality Test Suite</h1>
+    
+    <div class="test-section">
+        <h2>Feature Checklist</h2>
+        
+        <div class="test-item">
+            <strong>1. Gear Library Display</strong>
+            <ul>
+                <li>✅ Compact single-line view</li>
+                <li>✅ Duolingo forest theme colors</li>
+                <li>✅ Visible text (name, weight, category)</li>
+                <li>✅ Quick add buttons</li>
+            </ul>
+        </div>
+        
+        <div class="test-item">
+            <strong>2. Drag & Drop Functionality</strong>
+            <ul>
+                <li>🔄 Drag gear items from library to pack sections</li>
+                <li>🔄 Reorder items within sections</li>
+                <li>🔄 Move items between sections</li>
+                <li>🔄 Visual feedback during drag</li>
+                <li>🔄 Drop position indicators</li>
+            </ul>
+        </div>
+        
+        <div class="test-item">
+            <strong>3. Section Management</strong>
+            <ul>
+                <li>🔄 Expand/collapse sections with arrow buttons</li>
+                <li>🔄 Section weight calculations</li>
+                <li>🔄 Add new sections</li>
+                <li>🔄 Remove sections</li>
+            </ul>
+        </div>
+        
+        <div class="test-item">
+            <strong>4. Database Persistence</strong>
+            <ul>
+                <li>✅ Save pack with gear items</li>
+                <li>✅ User isolation (each user sees only their packs)</li>
+                <li>✅ Load and edit existing packs</li>
+                <li>✅ Delete packs</li>
+                <li>✅ Duplicate packs</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Manual Test Steps</h2>
+        
+        <button class="test-button" onclick="window.open('/BTT/backpacks.php', '_blank')">
+            Open Pack Builder
+        </button>
+        
+        <ol>
+            <li><strong>Test Drag & Drop:</strong>
+                <ul>
+                    <li>Drag a gear item from the library to a pack section</li>
+                    <li>Verify the item appears with correct data</li>
+                    <li>Try dragging items between sections</li>
+                </ul>
+            </li>
+            
+            <li><strong>Test Section Toggle:</strong>
+                <ul>
+                    <li>Click the arrow button (▼/▶) on a section header</li>
+                    <li>Verify the section expands/collapses</li>
+                    <li>Test clicking on the section header itself</li>
+                </ul>
+            </li>
+            
+            <li><strong>Test Quick Add:</strong>
+                <ul>
+                    <li>Click the + button on a gear item</li>
+                    <li>Verify item is added to the pack</li>
+                    <li>Check that quantity can be changed</li>
+                </ul>
+            </li>
+            
+            <li><strong>Test Saving:</strong>
+                <ul>
+                    <li>Create a new pack or edit existing</li>
+                    <li>Add several items via drag & drop</li>
+                    <li>Click "Save Pack"</li>
+                    <li>Navigate away and come back</li>
+                    <li>Load the pack and verify items are preserved</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+    
+    <div class="test-section">
+        <h2>Live Preview</h2>
+        <iframe src="/BTT/backpacks.php" id="pack-builder-frame"></iframe>
+    </div>
+    
+    <script>
+        // Check if features are working
+        function checkFeatures() {
+            const frame = document.getElementById('pack-builder-frame');
+            frame.onload = function() {
+                const frameDoc = frame.contentDocument || frame.contentWindow.document;
+                
+                // Check for required elements
+                const checks = [
+                    { selector: '.gear-list-item', name: 'Gear items' },
+                    { selector: '.btn-section-toggle', name: 'Section toggle buttons' },
+                    { selector: '.dropzone, .section-items', name: 'Drop zones' },
+                    { selector: '#btn-save-pack', name: 'Save button' }
+                ];
+                
+                checks.forEach(check => {
+                    const elements = frameDoc.querySelectorAll(check.selector);
+                    console.log(`${check.name}: ${elements.length > 0 ? 'FOUND' : 'NOT FOUND'}`);
+                });
+            };
+        }
+        
+        // Run check after page loads
+        window.addEventListener('load', checkFeatures);
+    </script>
+</body>
+</html>

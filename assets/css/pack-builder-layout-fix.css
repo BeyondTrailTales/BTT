@@ -1,0 +1,542 @@
+/* Duolingo Forest Pack Builder - 2 Column Layout */
+
+/* Main container - EXACTLY 2 columns */
+.pack-builder-container {
+    display: flex;
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+    min-height: calc(100vh - 140px);
+    background: transparent;
+}
+
+/* Column 1: Gear Library (Left) - Forest Theme */
+.gear-library-panel {
+    flex: 0 0 380px;
+    background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+    border-radius: 16px;
+    padding: 0;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.gear-library-panel .card {
+    background: transparent;
+    border: none;
+    height: 100%;
+    box-shadow: none;
+}
+
+.gear-library-panel .card-header {
+    background: rgba(6, 95, 70, 0.9);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    color: white;
+}
+
+.gear-library-panel .card-title {
+    color: white;
+    font-weight: 700;
+    margin: 0;
+}
+
+.gear-library-panel .card-body {
+    background: rgba(6, 95, 70, 0.7);
+    padding: 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.gear-items-container {
+    flex: 1;
+    overflow-y: auto;
+    max-height: 60vh;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Column 2: Pack Builder (Right) - Forest Theme */
+.pack-builder-panel {
+    flex: 1;
+    background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+    border-radius: 16px;
+    padding: 0;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.pack-builder-panel .card {
+    background: transparent;
+    border: none;
+    height: 100%;
+    box-shadow: none;
+}
+
+.pack-builder-panel .card-header {
+    background: rgba(6, 95, 70, 0.9);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pack-builder-panel .card-title {
+    color: white;
+    font-weight: 700;
+    margin: 0;
+}
+
+.pack-builder-panel .card-body {
+    background: rgba(6, 95, 70, 0.7);
+    padding: 1.5rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 180px);
+}
+
+/* Pack sections - Forest Theme */
+.pack-sections-container {
+    margin-top: 1.5rem;
+}
+
+.pack-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Individual pack section - NO WHITE */
+.pack-section {
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.section-header {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    padding: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.section-content {
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* Drag zones - NO WHITE, Forest Theme */
+.gear-drop-zone {
+    min-height: 100px;
+    border: 2px dashed rgba(16, 185, 129, 0.5);
+    border-radius: 12px;
+    background: rgba(16, 185, 129, 0.05);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.gear-drop-zone:hover {
+    background: rgba(16, 185, 129, 0.08);
+    border-color: rgba(16, 185, 129, 0.7);
+}
+
+.gear-drop-zone.drag-active {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.12);
+    box-shadow: 0 4px 20px rgba(16, 185, 129, 0.2);
+}
+
+.gear-drop-zone.drag-over {
+    border-color: #059669;
+    background: rgba(16, 185, 129, 0.15);
+    transform: scale(1.01);
+    box-shadow: 0 6px 25px rgba(16, 185, 129, 0.3);
+}
+
+.drop-hint {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+    padding: 1.5rem 1rem;
+    border-radius: 8px;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+/* Pack items - NO WHITE, Forest Theme */
+.pack-item {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    border-radius: 10px;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.2s ease;
+    cursor: move;
+    backdrop-filter: blur(10px);
+}
+
+.pack-item:hover {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.2);
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+    transform: translateY(-1px);
+}
+
+.pack-item.dragging {
+    opacity: 0.7;
+    transform: rotate(2deg) scale(0.98);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+}
+
+.pack-item-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+}
+
+.pack-item-icon {
+    font-size: 1.25rem;
+}
+
+.pack-item-details {
+    flex: 1;
+}
+
+.pack-item-name {
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 0.25rem;
+}
+
+.pack-item-meta {
+    display: flex;
+    gap: 0.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.875rem;
+}
+
+.pack-item-actions {
+    display: flex;
+    gap: 0.25rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.pack-item:hover .pack-item-actions {
+    opacity: 1;
+}
+
+.pack-item-actions button {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    border-radius: 6px;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pack-item-actions button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Gear library items - NO WHITE, Forest Theme */
+.gear-item {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    cursor: grab;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+}
+
+.gear-item:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+
+.gear-item.dragging {
+    opacity: 0.7;
+    transform: rotate(-2deg) scale(0.95);
+    cursor: grabbing;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.gear-item-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.gear-item-icon {
+    font-size: 1.25rem;
+}
+
+.gear-item-details {
+    flex: 1;
+}
+
+.gear-item-name {
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 0.25rem;
+}
+
+.gear-item-weight {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.875rem;
+}
+
+/* Weight summary */
+.weight-summary {
+    margin-top: 2rem;
+    border: 1px solid #d1fae5;
+    border-radius: 12px;
+}
+
+.weight-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.weight-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+}
+
+.weight-stat.weight-total {
+    grid-column: 1 / -1;
+    border-top: 1px solid #e5e7eb;
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    font-weight: 700;
+    color: #064e3b;
+}
+
+/* Form elements */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #374151;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.875rem;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+/* Pack actions */
+.pack-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* Section controls */
+.section-header-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.section-header-controls h4 {
+    color: #064e3b;
+    font-weight: 700;
+}
+
+/* Form elements - Forest Theme */
+.pack-details-form {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 0.875rem;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #10b981;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+
+/* Buttons - Forest Theme */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: 1px solid #10b981;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .pack-builder-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .gear-library-panel {
+        flex: 0 0 auto;
+        max-height: 400px;
+    }
+    
+    .pack-builder-panel {
+        flex: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .pack-builder-container {
+        padding: 0.5rem;
+    }
+    
+    .form-row {
+        flex-direction: column;
+    }
+    
+    .pack-builder-panel .card-header,
+    .gear-library-panel .card-header {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+    
+    .gear-items-container {
+        max-height: 300px;
+    }
+    
+    .pack-builder-panel .card-body {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .pack-builder-container {
+        padding: 0.25rem;
+    }
+    
+    .section-header {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .pack-item,
+    .gear-item {
+        padding: 0.5rem;
+    }
+}

@@ -15,12 +15,23 @@
             this.initMobileMenu();
         },
 
-        // Initialize user dropdown menu
+        // Initialize user dropdown menu with modern compatibility
         initUserDropdown: function() {
-            const userButton = document.querySelector('.nav-user-button');
-            const userMenu = document.getElementById('user-menu');
+            // Support both legacy and modern selectors
+            const userButton = document.querySelector('.dropdown-trigger') || 
+                              document.querySelector('.modern-dropdown-trigger') ||
+                              document.querySelector('[data-dropdown="trigger"]');
+            const userMenu = document.querySelector('.dropdown-menu') || 
+                            document.querySelector('.modern-dropdown-menu') ||
+                            document.querySelector('[data-dropdown="menu"]');
             
             if (!userButton || !userMenu) return;
+            
+            // Apply modern classes for enhanced styling
+            if (window.BTTCompat) {
+                window.BTTCompat.applyModernClasses(userButton, 'dropdown-trigger');
+                window.BTTCompat.applyModernClasses(userMenu, 'dropdown-menu');
+            }
             
             // Toggle dropdown on button click
             userButton.addEventListener('click', (e) => {
@@ -45,17 +56,30 @@
             });
         },
 
-        // Toggle dropdown state
+        // Toggle dropdown state with modern animations
         toggleDropdown: function(button, menu) {
             const isExpanded = button.getAttribute('aria-expanded') === 'true';
             button.setAttribute('aria-expanded', !isExpanded);
             menu.hidden = isExpanded;
             
-            // Add/remove active class for styling
+            // Modern dropdown classes with fallbacks
             if (!isExpanded) {
-                menu.classList.add('active');
+                menu.classList.add('active', 'modern-dropdown-active', 'dropdown-show');
+                menu.style.display = 'block';
+                
+                // Modern animation timing
+                requestAnimationFrame(() => {
+                    menu.classList.add('dropdown-visible');
+                });
             } else {
-                menu.classList.remove('active');
+                menu.classList.remove('active', 'modern-dropdown-active', 'dropdown-show', 'dropdown-visible');
+                menu.classList.add('dropdown-hide');
+                
+                // Clean up after animation
+                setTimeout(() => {
+                    menu.style.display = 'none';
+                    menu.classList.remove('dropdown-hide');
+                }, 200);
             }
         },
 
@@ -189,14 +213,22 @@
 
     // Initialize when DOM is ready
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => BTTNav.init());
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.BTTNav && typeof window.BTTNav.init === 'function') {
+                window.BTTNav.init();
+            }
+        });
     } else {
-        BTTNav.init();
+        if (window.BTTNav && typeof window.BTTNav.init === 'function') {
+            window.BTTNav.init();
+        }
     }
 
     // Re-initialize if content is dynamically loaded
     document.addEventListener('navigation:reinit', () => {
-        BTTNav.init();
+        if (window.BTTNav && typeof window.BTTNav.init === 'function') {
+            window.BTTNav.init();
+        }
     });
 
 })();

@@ -1,0 +1,94 @@
+/**
+ * Navigation Scrollbar & Dropdown Fix
+ * 1. Removes horizontal scrollbar from navigation
+ * 2. Fixes dropdown menu z-index issues
+ */
+
+/* Remove ALL overflow from navigation - no scrollbars at all */
+.nav-container {
+  overflow: visible !important; /* Changed from hidden to visible for dropdowns */
+}
+
+/* Remove overflow from nav wrapper but keep high z-index */
+.forest-nav {
+  overflow: visible !important; /* Changed to visible for dropdown */
+  z-index: 1000 !important; /* Ensure nav is above content */
+}
+
+/* Fix dropdown menu z-index and positioning */
+.nav-user-dropdown,
+.dropdown-menu,
+.nav-dropdown,
+.user-menu-dropdown {
+  z-index: 1100 !important; /* Higher than nav */
+  position: absolute !important;
+  background: rgba(26, 26, 26, 0.98) !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Ensure dropdown parent has relative positioning */
+.nav-user,
+.nav-user-menu,
+.user-dropdown-trigger {
+  position: relative !important;
+}
+
+/* Fix body or main content that might be overlapping */
+main,
+.main-content,
+.dashboard-content,
+body > .container {
+  position: relative;
+  z-index: 1; /* Below navigation */
+}
+
+/* Ensure nav stays on top when scrolling */
+.forest-nav.scrolled {
+  z-index: 1000 !important;
+}
+
+/* Make nav items fit without scroll */
+.nav-main {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  gap: 0.5rem !important;
+}
+
+.nav-item {
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+}
+
+/* Responsive adjustments to prevent overflow */
+@media (max-width: 1200px) {
+  .nav-item {
+    padding: 0.4rem 0.6rem !important;
+    font-size: 0.85rem !important;
+  }
+  
+  .nav-link {
+    padding: 0.4rem 0.6rem !important;
+  }
+  
+  .brand-title {
+    font-size: 0.9rem !important;
+  }
+  
+  .brand-subtitle {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Hide less important nav items on mobile */
+  .nav-item:nth-child(n+4) {
+    display: none !important;
+  }
+  
+  /* Show mobile menu button instead */
+  .nav-mobile-toggle {
+    display: block !important;
+  }
+}

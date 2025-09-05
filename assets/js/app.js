@@ -18,11 +18,22 @@
                 });
                 const data = await response.json();
                 
-                if (!response.ok || !data.success) {
-                    throw new Error(data.error || 'Request failed');
+                // Handle both formats: {success: true, data: ...} and direct arrays/objects
+                if (!response.ok) {
+                    const errorMsg = (data && data.message) || data.error || 'Request failed';
+                    throw new Error(errorMsg);
                 }
                 
-                return data.data;
+                // If response has success field, use the wrapped format
+                if (data && typeof data.success !== 'undefined') {
+                    if (!data.success) {
+                        throw new Error(data.message || data.error || 'Request failed');
+                    }
+                    return data.data;
+                }
+                
+                // Otherwise, return data directly (for ajax-handler.php format)
+                return data;
             } catch (error) {
                 console.error('API Error:', error);
                 BTTUtils.showToast(error.message, 'error');
@@ -31,6 +42,7 @@
         },
 
         post: async function(route, body = {}, files = {}) {
+            console.log('BTTApi.post called:', {route, body, files});
             const formData = new FormData();
             
             // Add regular data
@@ -48,6 +60,7 @@
             }
             
             const url = `${window.BTT.apiUrl}?route=${route}`;
+            console.log('BTTApi.post URL:', url);
             
             try {
                 const response = await fetch(url, {
@@ -56,14 +69,15 @@
                     credentials: 'include' // Changed to ensure cookies are sent
                 });
                 const data = await response.json();
+                console.log('BTTApi.post response:', {ok: response.ok, status: response.status, data});
                 
                 if (!response.ok || !data.success) {
-                    throw new Error(data.error || 'Request failed');
+                    throw new Error(data.message || data.error || 'Request failed');
                 }
                 
                 return data.data;
             } catch (error) {
-                console.error('API Error:', error);
+                console.error('BTTApi.post ERROR:', error);
                 BTTUtils.showToast(error.message, 'error');
                 throw error;
             }
@@ -88,6 +102,8 @@
             }
             
             const url = `${window.BTT.apiUrl}?route=${route}&id=${id}`;
+            console.log('BTTApi.put called with URL:', url);
+            console.log('BTTApi.put files:', files);
             
             try {
                 const response = await fetch(url, {
@@ -96,9 +112,11 @@
                     credentials: 'include' // Changed to ensure cookies are sent
                 });
                 const data = await response.json();
+                console.log('BTTApi.put response:', {ok: response.ok, status: response.status, data});
+                console.log('BTTApi.put response data details:', JSON.stringify(data, null, 2));
                 
                 if (!response.ok || !data.success) {
-                    throw new Error(data.error || 'Request failed');
+                    throw new Error(data.message || data.error || 'Request failed');
                 }
                 
                 return data.data;
@@ -125,7 +143,7 @@
                 const data = await response.json();
                 
                 if (!response.ok || !data.success) {
-                    throw new Error(data.error || 'Request failed');
+                    throw new Error(data.message || data.error || 'Request failed');
                 }
                 
                 return data.data;
@@ -140,18 +158,39 @@
     // Utility Functions
     window.BTTUtils = {
         showToast: function(message, type = 'info') {
-            const container = document.querySelector('.toast-container');
+            const container = document.querySelector('.toast-container') || 
+                             document.querySelector('#toast-container') ||
+                             this.createToastContainer();
+            
             const toast = document.createElement('div');
-            toast.className = `toast alert-${type}`;
+            // Modern toast classes with fallbacks
+            const toastClasses = ['modern-toast', 'toast', `toast-${type}`, `alert-${type}`];
+            toast.className = toastClasses.join(' ');
             toast.textContent = message;
             toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'polite');
             
             container.appendChild(toast);
             
+            // Modern animation with fallback
+            requestAnimationFrame(() => {
+                toast.classList.add('toast-show', 'modern-toast-show');
+            });
+            
             setTimeout(() => {
-                toast.style.opacity = '0';
+                toast.classList.add('toast-hide', 'modern-toast-hide');
                 setTimeout(() => toast.remove(), 300);
             }, 5000);
+        },
+
+        createToastContainer: function() {
+            const container = document.createElement('div');
+            container.className = 'toast-container modern-toast-container';
+            container.id = 'toast-container';
+            container.setAttribute('aria-live', 'polite');
+            container.setAttribute('aria-label', 'Notifications');
+            document.body.appendChild(container);
+            return container;
         },
 
         formatDate: function(dateString) {
@@ -173,20 +212,83 @@
         showModal: function(modalId) {
             const modal = document.getElementById(modalId);
             if (modal) {
-                modal.classList.add('active');
+                // Modern modal classes with fallbacks
+                modal.classList.add('active', 'modern-modal-active', 'modal-show');
                 modal.setAttribute('aria-hidden', 'false');
+                modal.style.display = 'flex';
                 
-                // Focus management
-                const firstInput = modal.querySelector('input, select, textarea, button');
-                if (firstInput) firstInput.focus();
+                // Modern focus management with trap
+                this.setupModalFocusTrap(modal);
+                
+                // Focus first focusable element
+                const firstInput = modal.querySelector('input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), [tabindex]:not([tabindex="-1"])');
+                if (firstInput) {
+                    setTimeout(() => firstInput.focus(), 100);
+                }
+                
+                // Prevent body scroll
+                document.body.style.overflow = 'hidden';
             }
         },
 
         hideModal: function(modalId) {
             const modal = document.getElementById(modalId);
             if (modal) {
-                modal.classList.remove('active');
+                // Modern modal classes with fallbacks
+                modal.classList.remove('active', 'modern-modal-active', 'modal-show');
+                modal.classList.add('modal-hide');
                 modal.setAttribute('aria-hidden', 'true');
+                
+                // Restore body scroll
+                document.body.style.overflow = '';
+                
+                // Clean up after animation
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    modal.classList.remove('modal-hide');
+                    this.removeModalFocusTrap(modal);
+                }, 300);
+            }
+        },
+
+        setupModalFocusTrap: function(modal) {
+            if (modal.hasAttribute('data-focus-trap')) return;
+            modal.setAttribute('data-focus-trap', 'true');
+            
+            const focusableElements = modal.querySelectorAll(
+                'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+            );
+            
+            if (focusableElements.length === 0) return;
+            
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+            
+            const trapFocus = (e) => {
+                if (e.key !== 'Tab') return;
+                
+                if (e.shiftKey) {
+                    if (document.activeElement === firstElement) {
+                        e.preventDefault();
+                        lastElement.focus();
+                    }
+                } else {
+                    if (document.activeElement === lastElement) {
+                        e.preventDefault();
+                        firstElement.focus();
+                    }
+                }
+            };
+            
+            modal.addEventListener('keydown', trapFocus);
+            modal._focusTrap = trapFocus;
+        },
+
+        removeModalFocusTrap: function(modal) {
+            if (modal._focusTrap) {
+                modal.removeEventListener('keydown', modal._focusTrap);
+                delete modal._focusTrap;
+                modal.removeAttribute('data-focus-trap');
             }
         },
 

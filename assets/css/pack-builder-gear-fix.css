@@ -1,0 +1,348 @@
+/**
+ * Pack Builder Gear Library Fix
+ * Improves readability and UI design for gear items in the backpacks page
+ */
+
+/* ===================================
+   GEAR LIST ITEM - COMPLETE REDESIGN
+   =================================== */
+
+/* Main gear list item container */
+.gear-list-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px !important;
+    margin-bottom: 6px !important;
+    background: linear-gradient(135deg, 
+        rgba(30, 41, 59, 0.95), 
+        rgba(15, 23, 42, 0.90)) !important;
+    border: 1px solid rgba(88, 204, 2, 0.25) !important;
+    border-radius: 12px !important;
+    min-height: 56px !important;
+    transition: all 0.25s ease !important;
+    gap: 12px !important;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Hover state for better interactivity */
+.gear-list-item:hover {
+    background: linear-gradient(135deg, 
+        rgba(30, 41, 59, 1), 
+        rgba(15, 23, 42, 0.95)) !important;
+    border-color: #58cc02 !important;
+    transform: translateX(4px);
+    box-shadow: 
+        0 4px 16px rgba(88, 204, 2, 0.2),
+        0 0 0 1px rgba(88, 204, 2, 0.1) inset;
+}
+
+/* Dragging state */
+.gear-list-item.dragging {
+    opacity: 0.6;
+    transform: scale(0.98);
+    cursor: grabbing !important;
+}
+
+/* Category color accent bar */
+.gear-list-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--cat-color, #58cc02);
+    opacity: 0.8;
+    transition: width 0.3s ease;
+}
+
+.gear-list-item:hover::before {
+    width: 6px;
+    opacity: 1;
+}
+
+/* Category-specific colors */
+.gear-list-item[data-item*="shelter"]::before { background: #10b981; }
+.gear-list-item[data-item*="sleep"]::before { background: #8b5cf6; }
+.gear-list-item[data-item*="cooking"]::before { background: #f59e0b; }
+.gear-list-item[data-item*="water"]::before { background: #06b6d4; }
+.gear-list-item[data-item*="clothing"]::before { background: #3b82f6; }
+.gear-list-item[data-item*="navigation"]::before { background: #ef4444; }
+.gear-list-item[data-item*="hygiene"]::before { background: #ec4899; }
+.gear-list-item[data-item*="first-aid"]::before { background: #dc2626; }
+.gear-list-item[data-item*="electronics"]::before { background: #6366f1; }
+.gear-list-item[data-item*="food"]::before { background: #a78bfa; }
+.gear-list-item[data-item*="repair"]::before { background: #78716c; }
+.gear-list-item[data-item*="other"]::before { background: #6b7280; }
+
+/* ===================================
+   GEAR ICON STYLING
+   =================================== */
+
+.gear-list-item .list-item-media {
+    flex-shrink: 0;
+}
+
+.gear-list-item .gear-icon {
+    width: 36px !important;
+    height: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 8px !important;
+    font-size: 18px !important;
+    flex-shrink: 0 !important;
+    color: #ffffff !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) inset;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+/* ===================================
+   GEAR CONTENT - READABLE TEXT
+   =================================== */
+
+.gear-list-item .list-item-content {
+    flex: 1;
+    min-width: 0; /* Enable text truncation */
+}
+
+/* Gear name - high contrast white text */
+.gear-list-item .gear-name,
+.gear-list-item .list-item-title {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+    margin: 0 0 4px 0 !important;
+    color: #ffffff !important;
+    letter-spacing: 0.01em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    display: block !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Gear details - slightly muted but readable */
+.gear-list-item .gear-details,
+.gear-list-item .list-item-subtitle {
+    font-size: 13px !important;
+    line-height: 1.3 !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Individual detail spans */
+.gear-list-item .gear-weight {
+    color: #58cc02 !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+}
+
+.gear-list-item .gear-brand,
+.gear-list-item .gear-category {
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-size: 12px !important;
+    text-transform: capitalize;
+}
+
+/* Separator dots */
+.gear-list-item .gear-details::before {
+    content: none !important;
+}
+
+/* ===================================
+   ADD BUTTON - IMPROVED DESIGN
+   =================================== */
+
+.gear-list-item .list-item-actions {
+    flex-shrink: 0;
+    margin-left: 8px;
+}
+
+.gear-list-item .gear-add-btn {
+    width: 32px !important;
+    height: 32px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #58cc02 !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 16px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.gear-list-item .gear-add-btn:hover {
+    background: #46a302 !important;
+    transform: scale(1.1);
+    box-shadow: 
+        0 4px 8px rgba(88, 204, 2, 0.3),
+        0 0 16px rgba(88, 204, 2, 0.2);
+}
+
+.gear-list-item .gear-add-btn:active {
+    transform: scale(0.95);
+}
+
+/* ===================================
+   GEAR LIBRARY CONTAINER
+   =================================== */
+
+#gear-items,
+#modal-gear-list,
+.gear-list {
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(88, 204, 2, 0.3) transparent;
+}
+
+/* Custom scrollbar for Webkit browsers */
+#gear-items::-webkit-scrollbar,
+#modal-gear-list::-webkit-scrollbar,
+.gear-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+#gear-items::-webkit-scrollbar-track,
+#modal-gear-list::-webkit-scrollbar-track,
+.gear-list::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+#gear-items::-webkit-scrollbar-thumb,
+#modal-gear-list::-webkit-scrollbar-thumb,
+.gear-list::-webkit-scrollbar-thumb {
+    background: rgba(88, 204, 2, 0.4);
+    border-radius: 4px;
+}
+
+#gear-items::-webkit-scrollbar-thumb:hover,
+#modal-gear-list::-webkit-scrollbar-thumb:hover,
+.gear-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(88, 204, 2, 0.6);
+}
+
+/* ===================================
+   EMPTY STATE
+   =================================== */
+
+.empty-gear-library {
+    text-align: center;
+    padding: 48px 24px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.empty-gear-library .empty-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+}
+
+.empty-gear-library .empty-text {
+    font-size: 18px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 8px;
+}
+
+/* ===================================
+   LOADING STATE
+   =================================== */
+
+.gear-loading {
+    text-align: center;
+    padding: 48px 24px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
+}
+
+/* ===================================
+   RESPONSIVE ADJUSTMENTS
+   =================================== */
+
+@media (max-width: 768px) {
+    .gear-list-item {
+        padding: 10px 14px !important;
+        min-height: 52px !important;
+    }
+    
+    .gear-list-item .gear-icon {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 16px !important;
+    }
+    
+    .gear-list-item .gear-name {
+        font-size: 14px !important;
+    }
+    
+    .gear-list-item .gear-details {
+        font-size: 12px !important;
+    }
+    
+    .gear-list-item .gear-add-btn {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 14px !important;
+    }
+}
+
+/* ===================================
+   ANIMATION FOR ADDING ITEMS
+   =================================== */
+
+@keyframes itemAdded {
+    0% {
+        background-color: rgba(88, 204, 2, 0.3);
+        transform: scale(1);
+    }
+    50% {
+        background-color: rgba(88, 204, 2, 0.5);
+        transform: scale(1.02);
+    }
+    100% {
+        background-color: rgba(30, 41, 59, 0.95);
+        transform: scale(1);
+    }
+}
+
+.gear-list-item.item-added {
+    animation: itemAdded 0.6s ease;
+}
+
+/* ===================================
+   QUICK FIX FOR VISIBILITY
+   =================================== */
+
+/* Override any problematic inherited styles */
+.gear-list-item * {
+    color: inherit !important;
+}
+
+/* Ensure text remains visible */
+.gear-list-item .gear-name,
+.gear-list-item .list-item-title,
+.gear-list-item .gear-details,
+.gear-list-item .list-item-subtitle {
+    opacity: 1 !important;
+    visibility: visible !important;
+}

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test with Browser Session</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 1000px; margin: 20px auto; padding: 20px; }
+        .test-section { background: #f5f5f5; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .result { background: #e8f5e9; padding: 10px; margin: 5px 0; border-radius: 3px; font-family: monospace; white-space: pre-wrap; }
+        .error { background: #ffebee; color: #c62828; }
+        button { padding: 8px 16px; margin: 5px; cursor: pointer; }
+        input[type="file"] { margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>🔍 BTT API Test (With Browser Session)</h1>
+    
+    <div class="test-section">
+        <h2>Environment Check</h2>
+        <button onclick="checkEnvironment()">Check Environment</button>
+        <div id="env-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Ajax Handler Endpoints</h2>
+        <button onclick="testAjaxGet()">GET Trips</button>
+        <button onclick="testAjaxPost()">POST New Trip</button>
+        <button onclick="testAjaxPut()">PUT Update Trip</button>
+        <button onclick="testAjaxDelete()">DELETE Trip</button>
+        <div id="ajax-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Test Main API Endpoints</h2>
+        <button onclick="testApiGet()">GET Trips (Main API)</button>
+        <button onclick="testApiPost()">POST New Trip (Main API)</button>
+        <button onclick="testApiPutPhoto()">PUT with Photo (Main API)</button>
+        <input type="file" id="test-photo" accept="image/*">
+        <div id="api-result"></div>
+    </div>
+
+    <script>
+    function showResult(containerId, message, isError = false) {
+        const container = document.getElementById(containerId);
+        const result = document.createElement('div');
+        result.className = `result ${isError ? 'error' : ''}`;
+        result.textContent = message;
+        container.appendChild(result);
+    }
+
+    async function checkEnvironment() {
+        try {
+            // Check if we can access session info via a simple endpoint
+            const response = await fetch('/BTT/ajax-handler.php?route=gear', {
+                method: 'GET',
+                credentials: 'include'
+            });
+            
+            const responseText = await response.text();
+            let parsedData;
+            
+            try {
+                parsedData = JSON.parse(responseText);
+            } catch (e) {
+                parsedData = { raw: responseText.substring(0, 200) };
+            }
+            
+            showResult('env-result', `Environment Check:
+Status: ${response.status}
+Authenticated: ${response.status !== 401 ? 'YES' : 'NO'}
+Response: ${JSON.stringify(parsedData, null, 2)}`);
+        } catch (error) {
+            showResult('env-result', `Environment Check Error: ${error.message}`, true);
+        }
+    }
+
+    async function testAjaxGet() {
+        try {
+            const response = await fetch('/BTT/ajax-handler.php?route=trips', {
+                method: 'GET',
+                credentials: 'include'
+            });
+            
+            const data = await response.json();
+            showResult('ajax-result', `AJAX GET Trips:
+Status: ${response.status}
+Success: ${data.success !== false ? 'YES' : 'NO'}
+Trip count: ${Array.isArray(data) ? data.length : 'Unknown'}
+First trip: ${Array.isArray(data) && data[0] ? JSON.stringify(data[0], null, 2) : 'None'}`);
+        } catch (error) {
+            showResult('ajax-result', `AJAX GET Error: ${error.message}`, true);
+        }
+    }
+
+    async function testAjaxPost() {
+        try {
+            const formData = new FormData();
+            formData.append('title', 'Test Trip from AJAX');
+            formData.append('location', 'Test Location AJAX');
+            formData.append('start_date', '2025-01-01');
+
+            const response = await fetch('/BTT/ajax-handler.php?route=trips', {
+                method: 'POST',
+                body: formData,
+                credentials: 'include'
+            });
+            
+            const data = await response.json();
+            showResult('ajax-result', `AJAX POST Trip:
+Status: ${response.status}
+Response: ${JSON.stringify(data, null, 2)}`);
+        } catch (error) {
+            showResult('ajax-result', `AJAX POST Error: ${error.message}`, true);
+        }
+    }
+
+    async function testAjaxPut() {
+        try {
+            const formData = new FormData();
+            formData.append('_method', 'PUT');
+            formData.append('title', 'Updated Trip Title via AJAX');
+            formData.append('location', 'Updated Location AJAX');
+
+            const response = await fetch('/BTT/ajax-handler.php?route=trips&id=6', {
+                method: 'POST',
+                body: formData,
+                credentials: 'include'
+            });
+            
+            const data = await response.json();
+            showResult('ajax-result', `AJAX PUT Trip:
+Status: ${response.status}
+Response: ${JSON.stringify(data, null, 2)}`);
+        } catch (error) {
+            showResult('ajax-result', `AJAX PUT Error: ${error.message}`, true);
+        }
+    }
+
+    async function testAjaxDelete() {
+        try {
+            const formData = new FormData();
+            formData.append('_method', 'DELETE');
+
+            const response = await fetch('/BTT/ajax-handler.php?route=trips&id=999', {
+                method: 'POST',
+                body: formData,
+                credentials: 'include'
+            });
+            
+            const data = await response.json();
+            showResult('ajax-result', `AJAX DELETE Trip:
+Status: ${response.status}
+Response: ${JSON.stringify(data, null, 2)}`);
+        } catch (error) {
+            showResult('ajax-result', `AJAX DELETE Error: ${error.message}`, true);
+        }
+    }
+
+    async function testApiGet() {
+        try {
+            const response = await fetch('/BTT/api?route=trips', {
+                method: 'GET',
+                credentials: 'include'
+            });
+            
+            const data = await response.json();
+            showResult('api-result', `Main API GET Trips:
+Status: ${response.status}
+Response: ${JSON.stringify(data, null, 2)}`);
+        } catch (error) {
+            showResult('api-result', `Main API GET Error: ${error.message}`, true);
+        }
+    }
+
+    async function testApiPost() {
+        try {
+            const formData = new FormData();
+            formData.append('title', 'Test Trip from Main API');
+            formData.append('location', 'Test Location Main API');
+            formData.append('start_date', '2025-01-01');
+
+            const response = await fetch('/BTT/api?route=trips', {
+                method: 'POST',
+                body: formData,
+                credentials: 'include'
+            });
+            
+            const data = await response.json();
+            showResult('api-result', `Main API POST Trip:
+Status: ${response.status}
+Response: ${JSON.stringify(data, null, 2)}`);
+        } catch (error) {
+            showResult('api-result', `Main API POST Error: ${error.message}`, true);
+        }
+    }
+
+    async function testApiPutPhoto() {
+        const photoInput = document.getElementById('test-photo');
+        if (!photoInput.files.length) {
+            showResult('api-result', 'Please select a photo first for photo upload test', true);
+            return;
+        }
+
+        try {
+            const formData = new FormData();
+            formData.append('_method', 'PUT');
+            formData.append('title', 'Trip with Photo via Main API');
+            formData.append('location', 'Photo Test Location Main API');
+            formData.append('photo', photoInput.files[0]);
+            formData.append('photo_alt_text', 'Test photo from main API');
+
+            showResult('api-result', `Uploading photo: ${photoInput.files[0].name} (${photoInput.files[0].size} bytes)`);
+
+            const response = await fetch('/BTT/api?route=trips&id=6', {
+                method: 'POST',
+                body: formData,
+                credentials: 'include'
+            });
+            
+            const data = await response.json();
+            showResult('api-result', `Main API PUT with Photo:
+Status: ${response.status}
+Response: ${JSON.stringify(data, null, 2)}`);
+        } catch (error) {
+            showResult('api-result', `Main API Photo Upload Error: ${error.message}`, true);
+        }
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,516 @@
+/**
+ * Auth Forest Duolingo Theme
+ * Login and registration page styling with forest theme
+ */
+
+/* Auth Container - Full Screen Forest Background */
+.forest-duo-theme .forest-auth {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--btt-space-4);
+  position: relative;
+  background: linear-gradient(135deg, var(--btt-forest-midnight) 0%, var(--btt-forest-deep) 100%);
+}
+
+/* Enhanced Forest Background with Animated Elements */
+.forest-duo-theme .forest-auth::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 25% 25%, rgba(125, 155, 126, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 75% 75%, rgba(107, 132, 112, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 50% 10%, rgba(93, 120, 99, 0.06) 0%, transparent 30%);
+  animation: forest-ambient 20s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes forest-ambient {
+  0% { opacity: 0.6; transform: scale(1); }
+  100% { opacity: 0.8; transform: scale(1.1); }
+}
+
+/* Auth Card - Glassmorphism with Forest Styling */
+.forest-duo-theme .auth-card {
+  background: linear-gradient(135deg, var(--btt-glass-white), var(--btt-glass-light));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--btt-glass-border);
+  border-radius: var(--btt-radius-2xl);
+  padding: var(--btt-space-8);
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 
+    var(--btt-shadow-xl),
+    0 0 60px rgba(125, 155, 126, 0.1);
+  position: relative;
+  z-index: 1;
+  transform: translateY(-10px);
+  animation: auth-float 6s ease-in-out infinite alternate;
+}
+
+@keyframes auth-float {
+  0% { transform: translateY(-10px); }
+  100% { transform: translateY(-5px); }
+}
+
+/* Auth Header */
+.forest-duo-theme .auth-header {
+  text-align: center;
+  margin-bottom: var(--btt-space-6);
+}
+
+.forest-duo-theme .auth-title {
+  font-family: var(--btt-font-display);
+  font-size: var(--btt-text-3xl);
+  font-weight: var(--btt-font-bold);
+  color: var(--btt-text-primary);
+  margin: 0 0 var(--btt-space-2);
+  background: linear-gradient(135deg, var(--btt-text-primary) 0%, var(--btt-forest-mist) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: var(--btt-leading-tight);
+}
+
+.forest-duo-theme .auth-subtitle {
+  color: var(--btt-text-secondary);
+  margin: 0;
+  font-size: var(--btt-text-base);
+}
+
+/* Form Styling */
+.forest-duo-theme .auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--btt-space-5);
+}
+
+.forest-duo-theme .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--btt-space-2);
+}
+
+.forest-duo-theme .form-label {
+  font-weight: var(--btt-font-medium);
+  color: var(--btt-text-secondary);
+  font-size: var(--btt-text-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--btt-space-1);
+}
+
+.forest-duo-theme .required {
+  color: var(--btt-error);
+  font-weight: var(--btt-font-bold);
+}
+
+.forest-duo-theme .form-input {
+  width: 100%;
+  background: var(--btt-glass-white);
+  border: 2px solid var(--btt-forest-sage);
+  border-radius: var(--btt-radius-lg);
+  padding: var(--btt-space-4) var(--btt-space-5);
+  color: var(--btt-text-primary);
+  font-size: var(--btt-text-base);
+  font-family: var(--btt-font-sans);
+  transition: var(--btt-transition-all);
+  min-height: var(--btt-input-min-height);
+  position: relative;
+}
+
+.forest-duo-theme .form-input:focus {
+  outline: none;
+  border-color: var(--btt-forest-canopy);
+  box-shadow: 0 0 0 3px rgba(125, 155, 126, 0.2);
+  background: var(--btt-glass-light);
+  transform: translateY(-1px);
+}
+
+.forest-duo-theme .form-input:hover {
+  border-color: var(--btt-forest-mist);
+  background: var(--btt-glass-light);
+}
+
+.forest-duo-theme .form-input::placeholder {
+  color: var(--btt-text-muted);
+}
+
+/* Enhanced Input Icons */
+.forest-duo-theme .input-with-icon {
+  position: relative;
+}
+
+.forest-duo-theme .input-with-icon .form-input {
+  padding-left: var(--btt-space-10);
+}
+
+.forest-duo-theme .input-icon {
+  position: absolute;
+  left: var(--btt-space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--btt-text-muted);
+  font-size: var(--btt-text-lg);
+  transition: var(--btt-transition-colors);
+  z-index: 2;
+}
+
+.forest-duo-theme .input-with-icon .form-input:focus + .input-icon {
+  color: var(--btt-forest-canopy);
+}
+
+/* Password Toggle */
+.forest-duo-theme .password-toggle {
+  position: absolute;
+  right: var(--btt-space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--btt-text-muted);
+  cursor: pointer;
+  font-size: var(--btt-text-lg);
+  transition: var(--btt-transition-colors);
+  z-index: 2;
+}
+
+.forest-duo-theme .password-toggle:hover {
+  color: var(--btt-forest-canopy);
+}
+
+/* Remember Me Checkbox */
+.forest-duo-theme .checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: var(--btt-space-2);
+}
+
+.forest-duo-theme .custom-checkbox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.forest-duo-theme .custom-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.forest-duo-theme .checkbox-mark {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--btt-forest-sage);
+  border-radius: var(--btt-radius-sm);
+  background: var(--btt-glass-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--btt-transition-all);
+  position: relative;
+}
+
+.forest-duo-theme .custom-checkbox input[type="checkbox"]:checked + .checkbox-mark {
+  background: var(--btt-gradient-forest);
+  border-color: var(--btt-forest-canopy);
+  transform: scale(1.1);
+}
+
+.forest-duo-theme .custom-checkbox input[type="checkbox"]:checked + .checkbox-mark::after {
+  content: '✓';
+  color: var(--btt-text-primary);
+  font-weight: var(--btt-font-bold);
+  font-size: var(--btt-text-sm);
+}
+
+.forest-duo-theme .custom-checkbox input[type="checkbox"]:focus + .checkbox-mark {
+  box-shadow: 0 0 0 3px rgba(125, 155, 126, 0.2);
+}
+
+/* Submit Button - Duolingo Style */
+.forest-duo-theme .btn-auth-primary {
+  background: var(--btt-gradient-forest);
+  color: var(--btt-text-primary);
+  border: 3px solid var(--btt-forest-canopy);
+  border-radius: var(--btt-radius-lg);
+  padding: var(--btt-space-4) var(--btt-space-6);
+  font-family: var(--btt-font-accent);
+  font-weight: var(--btt-font-bold);
+  font-size: var(--btt-text-lg);
+  text-transform: uppercase;
+  letter-spacing: var(--btt-tracking-wide);
+  box-shadow: 0 6px 0 var(--btt-forest-shadow), var(--btt-shadow-md);
+  transition: all var(--btt-duration-fast) var(--btt-ease-out);
+  cursor: pointer;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--btt-space-2);
+  width: 100%;
+  margin: var(--btt-space-4) 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.forest-duo-theme .btn-auth-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left var(--btt-duration-slow) var(--btt-ease-out);
+}
+
+.forest-duo-theme .btn-auth-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 9px 0 var(--btt-forest-shadow), var(--btt-shadow-lg);
+  background: var(--btt-gradient-moss);
+}
+
+.forest-duo-theme .btn-auth-primary:hover::before {
+  left: 100%;
+}
+
+.forest-duo-theme .btn-auth-primary:active {
+  transform: translateY(2px);
+  box-shadow: 0 3px 0 var(--btt-forest-shadow), var(--btt-shadow-sm);
+}
+
+.forest-duo-theme .btn-auth-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 4px 0 var(--btt-forest-shadow), var(--btt-shadow-sm);
+}
+
+/* Loading State */
+.forest-duo-theme .btn-auth-primary.loading {
+  color: transparent;
+  position: relative;
+}
+
+.forest-duo-theme .btn-auth-primary.loading::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top: 2px solid var(--btt-text-primary);
+  border-radius: 50%;
+  animation: button-spin 1s linear infinite;
+}
+
+@keyframes button-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Auth Links */
+.forest-duo-theme .auth-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--btt-space-3);
+  align-items: center;
+  margin-top: var(--btt-space-4);
+}
+
+.forest-duo-theme .auth-link {
+  color: var(--btt-forest-mist);
+  text-decoration: none;
+  font-size: var(--btt-text-sm);
+  transition: var(--btt-transition-colors);
+  position: relative;
+}
+
+.forest-duo-theme .auth-link:hover {
+  color: var(--btt-text-primary);
+}
+
+.forest-duo-theme .auth-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--btt-forest-canopy);
+  transition: width var(--btt-duration-normal) var(--btt-ease-out);
+}
+
+.forest-duo-theme .auth-link:hover::after {
+  width: 100%;
+}
+
+.forest-duo-theme .auth-link.primary {
+  font-weight: var(--btt-font-medium);
+  color: var(--btt-forest-canopy);
+}
+
+/* Divider */
+.forest-duo-theme .auth-divider {
+  display: flex;
+  align-items: center;
+  margin: var(--btt-space-4) 0;
+  color: var(--btt-text-muted);
+  font-size: var(--btt-text-sm);
+}
+
+.forest-duo-theme .auth-divider::before,
+.forest-duo-theme .auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--btt-glass-border);
+  margin: 0 var(--btt-space-3);
+}
+
+/* Alert Messages */
+.forest-duo-theme .alert {
+  padding: var(--btt-space-3) var(--btt-space-4);
+  border-radius: var(--btt-radius-md);
+  margin-bottom: var(--btt-space-4);
+  font-size: var(--btt-text-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--btt-space-2);
+  animation: alert-slide-down var(--btt-duration-normal) var(--btt-ease-out);
+}
+
+.forest-duo-theme .alert.success {
+  background: rgba(107, 132, 112, 0.1);
+  border: 1px solid rgba(107, 132, 112, 0.3);
+  color: var(--btt-success);
+}
+
+.forest-duo-theme .alert.error {
+  background: rgba(196, 103, 90, 0.1);
+  border: 1px solid rgba(196, 103, 90, 0.3);
+  color: var(--btt-error);
+}
+
+.forest-duo-theme .alert.warning {
+  background: rgba(212, 165, 116, 0.1);
+  border: 1px solid rgba(212, 165, 116, 0.3);
+  color: var(--btt-warning);
+}
+
+@keyframes alert-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Form Validation States */
+.forest-duo-theme .form-input.error {
+  border-color: var(--btt-error);
+  box-shadow: 0 0 0 3px rgba(196, 103, 90, 0.2);
+}
+
+.forest-duo-theme .form-input.success {
+  border-color: var(--btt-success);
+  box-shadow: 0 0 0 3px rgba(107, 132, 112, 0.2);
+}
+
+.forest-duo-theme .field-error {
+  color: var(--btt-error);
+  font-size: var(--btt-text-xs);
+  margin-top: var(--btt-space-1);
+  display: flex;
+  align-items: center;
+  gap: var(--btt-space-1);
+}
+
+/* Social Login Buttons (if needed) */
+.forest-duo-theme .social-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--btt-space-3);
+  margin: var(--btt-space-4) 0;
+}
+
+.forest-duo-theme .btn-social {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--btt-space-3);
+  padding: var(--btt-space-3) var(--btt-space-4);
+  border: 2px solid var(--btt-glass-border);
+  border-radius: var(--btt-radius-lg);
+  background: var(--btt-glass-white);
+  color: var(--btt-text-secondary);
+  text-decoration: none;
+  font-weight: var(--btt-font-medium);
+  transition: var(--btt-transition-all);
+  min-height: 48px;
+}
+
+.forest-duo-theme .btn-social:hover {
+  background: var(--btt-glass-light);
+  border-color: var(--btt-forest-sage);
+  color: var(--btt-text-primary);
+  transform: translateY(-1px);
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .forest-duo-theme .auth-card {
+    padding: var(--btt-space-6);
+    margin: var(--btt-space-2);
+  }
+  
+  .forest-duo-theme .auth-title {
+    font-size: var(--btt-text-2xl);
+  }
+  
+  .forest-duo-theme .btn-auth-primary {
+    font-size: var(--btt-text-base);
+    padding: var(--btt-space-4);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .forest-duo-theme .auth-card {
+    border-width: 2px;
+    border-color: var(--btt-forest-canopy);
+  }
+  
+  .forest-duo-theme .form-input {
+    border-width: 3px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .forest-duo-theme .auth-card {
+    animation: none;
+    transform: translateY(0);
+  }
+  
+  .forest-duo-theme .forest-auth::before {
+    animation: none;
+  }
+  
+  .forest-duo-theme .btn-auth-primary::before {
+    transition: none;
+  }
+}

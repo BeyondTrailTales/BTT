@@ -1,0 +1,314 @@
+/**
+ * BeyondTrailTales Main CSS
+ * Orchestrates the complete design system with CSS cascade layers
+ * Version: 2.0.0
+ * Last Updated: 2025-09-04
+ * 
+ * This file imports all CSS modules in the correct order using
+ * CSS cascade layers for predictable specificity management.
+ * 
+ * ADA Compliant | Mobile-First | Performance-Optimized
+ */
+
+/**
+ * BeyondTrailTales Main CSS
+ * Orchestrates the complete design system
+ * Version: 2.0.0
+ * Last Updated: 2025-09-04
+ * 
+ * ADA Compliant | Mobile-First | Performance-Optimized
+ */
+
+/* ===========================================
+   CSS IMPORTS
+   All imports must be at the top of the file
+   =========================================== */
+
+/* Core foundation */
+@import url('btt-reset.css');
+@import url('btt-tokens.css');
+@import url('btt-base.css');
+
+/* Components */
+@import url('components/btt-navigation.css');
+@import url('components/btt-buttons.css');
+@import url('components/btt-forms.css');
+@import url('components/btt-cards.css');
+@import url('components/btt-modals.css');
+@import url('components/btt-extras.css');
+@import url('components/btt-advanced.css');
+
+/* Theme variations */
+@import url('btt-dark-mode.css');
+
+/* Utilities */
+@import url('btt-utilities.css');
+
+/* ===========================================
+   LAYER DEFINITIONS
+   Define cascade layers in order of precedence
+   =========================================== */
+
+@layer reset, tokens, base, components, utilities, overrides;
+
+/* ===========================================
+   LAYER ASSIGNMENTS
+   Assign imported styles to appropriate layers
+   =========================================== */
+
+/* Reset layer */
+@layer reset {
+  /* CSS reset rules are defined in btt-reset.css */
+}
+
+/* Tokens layer */
+@layer tokens {
+  /* Design tokens are defined in btt-tokens.css */
+}
+
+/* Base layer */
+@layer base {
+  /* Base typography and element styles in btt-base.css */
+}
+
+/* Components layer */
+@layer components {
+  /* All component styles from imported files */
+}
+
+/* Utilities layer */
+@layer utilities {
+  /* Utility classes from btt-utilities.css */
+}
+
+/* ===========================================
+   LAYER: OVERRIDES
+   High-specificity overrides and exceptions
+   =========================================== */
+
+@layer overrides {
+  /* Critical overrides that need maximum specificity */
+  
+  /* Force visible focus for accessibility */
+  *:focus-visible {
+    outline: 3px solid var(--btt-forest-bright) !important;
+    outline-offset: 2px !important;
+  }
+  
+  /* Emergency text readability fix */
+  .force-readable {
+    color: var(--btt-white) !important;
+    background: var(--btt-forest-deep) !important;
+    padding: var(--btt-space-2) !important;
+  }
+  
+  /* Print overrides */
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+  }
+}
+
+/* ===========================================
+   PERFORMANCE OPTIMIZATIONS
+   =========================================== */
+
+/* Prefer GPU acceleration for transforms */
+.will-change-transform {
+  will-change: transform;
+}
+
+/* Optimize for animations */
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* Clean up after animations */
+.animation-done {
+  will-change: auto;
+}
+
+/* ===========================================
+   CRITICAL INLINE STYLES
+   These should eventually be inlined in HTML
+   =========================================== */
+
+/* Prevent FOUC (Flash of Unstyled Content) */
+.no-js .requires-js {
+  display: none;
+}
+
+/* Loading state while CSS loads */
+.css-loading {
+  visibility: hidden;
+}
+
+.css-loading::after {
+  content: '';
+  visibility: visible;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 3px solid var(--btt-forest-bright);
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+}
+
+/* ===========================================
+   BROWSER-SPECIFIC FIXES
+   =========================================== */
+
+/* Safari fixes */
+@supports (-webkit-backdrop-filter: none) {
+  .backdrop-blur {
+    -webkit-backdrop-filter: var(--btt-blur-sm);
+  }
+}
+
+/* Firefox fixes */
+@-moz-document url-prefix() {
+  /* Firefox-specific rules if needed */
+}
+
+/* Edge fixes */
+@supports (-ms-ime-align: auto) {
+  /* Edge-specific rules if needed */
+}
+
+/* ===========================================
+   PROGRESSIVE ENHANCEMENT
+   =========================================== */
+
+/* If backdrop-filter is not supported */
+@supports not (backdrop-filter: blur(10px)) {
+  .glass {
+    background: rgba(10, 40, 24, 0.95);
+  }
+}
+
+/* If CSS Grid is not supported */
+@supports not (display: grid) {
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .grid > * {
+    flex: 1 1 300px;
+    margin: var(--btt-space-2);
+  }
+}
+
+/* If clamp() is not supported */
+@supports not (font-size: clamp(1rem, 2vw, 1.5rem)) {
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
+  h3 { font-size: 1.5rem; }
+  
+  @media (max-width: 768px) {
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.25rem; }
+  }
+}
+
+/* ===========================================
+   CUSTOM SCROLLBARS (Progressive Enhancement)
+   =========================================== */
+
+@supports (scrollbar-width: thin) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--btt-forest-medium) var(--btt-glass-dark);
+  }
+}
+
+@supports selector(::-webkit-scrollbar) {
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--btt-glass-dark);
+    border-radius: var(--btt-radius-full);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--btt-forest-medium);
+    border-radius: var(--btt-radius-full);
+    border: 2px solid var(--btt-glass-dark);
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--btt-forest-light);
+  }
+}
+
+/* ===========================================
+   FUTURE CSS FEATURES (with fallbacks)
+   =========================================== */
+
+/* Container queries (when widely supported) */
+@supports (container-type: inline-size) {
+  .container-query {
+    container-type: inline-size;
+  }
+  
+  @container (min-width: 400px) {
+    .container-responsive {
+      /* Container query styles */
+    }
+  }
+}
+
+/* Subgrid (when widely supported) */
+@supports (grid-template-columns: subgrid) {
+  .subgrid {
+    display: grid;
+    grid-template-columns: subgrid;
+  }
+}
+
+/* ===========================================
+   DEVELOPMENT/DEBUG HELPERS
+   Remove in production
+   =========================================== */
+
+.debug-grid {
+  background-image: 
+    repeating-linear-gradient(0deg, 
+      rgba(255, 0, 0, 0.1) 0, 
+      transparent 1px, 
+      transparent var(--btt-space-4), 
+      rgba(255, 0, 0, 0.1) calc(var(--btt-space-4) + 1px));
+}
+
+.debug-spacing * {
+  outline: 1px dashed rgba(255, 0, 255, 0.3);
+}
+
+.debug-components [class*="card"],
+.debug-components [class*="btn"],
+.debug-components [class*="form"] {
+  outline: 2px solid rgba(0, 255, 0, 0.3);
+}
+
+/* ===========================================
+   VENDOR-SPECIFIC IMPORTS
+   Third-party CSS that needs to be included
+   =========================================== */
+
+/* jQuery UI (if still needed) */
+/* @import url('../jquery-ui.min.css'); */
+
+/* ===========================================
+   END OF MAIN CSS
+   Total size target: < 75KB minified & gzipped
+   Current: ~40KB unminified
+   =========================================== */

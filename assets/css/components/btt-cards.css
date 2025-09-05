@@ -1,0 +1,437 @@
+/**
+ * BeyondTrailTales Card Component
+ * Flexible card system with glassmorphism effects
+ * Version: 2.0.0
+ */
+
+/* ===========================================
+   Base Card Styles
+   =========================================== */
+
+.card {
+  /* Layout */
+  display: flex;
+  flex-direction: column;
+  
+  /* Styling */
+  background: var(--btt-glass-white);
+  backdrop-filter: var(--btt-blur-sm);
+  border: 1px solid var(--btt-glass-border);
+  border-radius: var(--btt-card-radius);
+  box-shadow: var(--btt-card-shadow);
+  
+  /* Spacing */
+  padding: var(--btt-card-padding);
+  margin-bottom: var(--btt-space-4);
+  
+  /* Interaction */
+  transition: var(--btt-transition-all);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover effects */
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--btt-shadow-lg);
+  border-color: var(--btt-glass-border-hover);
+}
+
+/* Clickable cards */
+.card-clickable {
+  cursor: pointer;
+}
+
+.card-clickable:active {
+  transform: translateY(-2px);
+  box-shadow: var(--btt-shadow-md);
+}
+
+/* ===========================================
+   Card Sections
+   =========================================== */
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--btt-space-3);
+  padding: var(--btt-card-padding);
+  margin: calc(var(--btt-card-padding) * -1);
+  margin-bottom: var(--btt-card-padding);
+  background: var(--btt-glass-dark);
+  border-bottom: 1px solid var(--btt-glass-border);
+  border-radius: var(--btt-card-radius) var(--btt-card-radius) 0 0;
+}
+
+.card-title {
+  font-size: var(--btt-text-xl);
+  font-weight: var(--btt-font-semibold);
+  color: var(--btt-mint);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--btt-space-2);
+}
+
+.card-subtitle {
+  font-size: var(--btt-text-sm);
+  color: var(--btt-text-muted);
+  margin-top: var(--btt-space-1);
+}
+
+.card-body {
+  flex: 1;
+  color: var(--btt-text-secondary);
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--btt-space-3);
+  padding: var(--btt-card-padding);
+  margin: calc(var(--btt-card-padding) * -1);
+  margin-top: var(--btt-card-padding);
+  background: var(--btt-glass-dark);
+  border-top: 1px solid var(--btt-glass-border);
+  border-radius: 0 0 var(--btt-card-radius) var(--btt-card-radius);
+}
+
+/* ===========================================
+   Card Variants
+   =========================================== */
+
+/* Elevated card */
+.card-elevated {
+  box-shadow: var(--btt-shadow-xl);
+}
+
+.card-elevated:hover {
+  box-shadow: var(--btt-shadow-2xl);
+  transform: translateY(-6px);
+}
+
+/* Flat card */
+.card-flat {
+  box-shadow: none;
+  border: 2px solid var(--btt-glass-border);
+}
+
+.card-flat:hover {
+  border-color: var(--btt-forest-bright);
+  box-shadow: var(--btt-shadow-sm);
+}
+
+/* Gradient card */
+.card-gradient {
+  background: linear-gradient(135deg, 
+    var(--btt-glass-white) 0%, 
+    var(--btt-glass-light) 100%);
+  border: none;
+}
+
+/* Success card */
+.card-success {
+  border-color: var(--btt-success);
+  border-width: 2px;
+}
+
+.card-success .card-header {
+  background: linear-gradient(135deg, 
+    rgba(16, 185, 129, 0.1) 0%, 
+    rgba(16, 185, 129, 0.05) 100%);
+  border-bottom-color: var(--btt-success);
+}
+
+/* Warning card */
+.card-warning {
+  border-color: var(--btt-warning);
+  border-width: 2px;
+}
+
+.card-warning .card-header {
+  background: linear-gradient(135deg, 
+    rgba(245, 158, 11, 0.1) 0%, 
+    rgba(245, 158, 11, 0.05) 100%);
+  border-bottom-color: var(--btt-warning);
+}
+
+/* Error card */
+.card-error {
+  border-color: var(--btt-error);
+  border-width: 2px;
+}
+
+.card-error .card-header {
+  background: linear-gradient(135deg, 
+    rgba(239, 68, 68, 0.1) 0%, 
+    rgba(239, 68, 68, 0.05) 100%);
+  border-bottom-color: var(--btt-error);
+}
+
+/* ===========================================
+   Card Media
+   =========================================== */
+
+.card-image {
+  position: relative;
+  margin: calc(var(--btt-card-padding) * -1);
+  margin-bottom: var(--btt-card-padding);
+  overflow: hidden;
+  border-radius: var(--btt-card-radius) var(--btt-card-radius) 0 0;
+}
+
+.card-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  transition: var(--btt-transition-transform);
+}
+
+.card:hover .card-image img {
+  transform: scale(1.05);
+}
+
+.card-image-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--btt-space-4);
+  background: linear-gradient(to top, 
+    rgba(10, 40, 24, 0.9) 0%, 
+    transparent 100%);
+  color: var(--btt-white);
+}
+
+/* ===========================================
+   Card Lists & Grids
+   =========================================== */
+
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--btt-space-4);
+}
+
+.card-grid {
+  display: grid;
+  gap: var(--btt-space-4);
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+@media (min-width: 768px) {
+  .card-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .card-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .card-grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ===========================================
+   Special Card Types
+   =========================================== */
+
+/* Trip Card */
+.card-trip {
+  background: linear-gradient(135deg,
+    var(--btt-glass-white) 0%,
+    var(--btt-glass-light) 100%);
+}
+
+.card-trip-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--btt-space-3);
+  margin: var(--btt-space-3) 0;
+  font-size: var(--btt-text-sm);
+  color: var(--btt-text-muted);
+}
+
+.card-trip-meta-item {
+  display: flex;
+  align-items: center;
+  gap: var(--btt-space-1);
+}
+
+/* Pack Card */
+.card-pack {
+  position: relative;
+}
+
+.card-pack-weight {
+  position: absolute;
+  top: var(--btt-space-3);
+  right: var(--btt-space-3);
+  padding: var(--btt-space-1) var(--btt-space-3);
+  background: var(--btt-gradient-forest);
+  color: var(--btt-white);
+  border-radius: var(--btt-radius-full);
+  font-size: var(--btt-text-sm);
+  font-weight: var(--btt-font-semibold);
+}
+
+.card-pack-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--btt-space-2);
+  margin-top: var(--btt-space-4);
+  padding-top: var(--btt-space-4);
+  border-top: 1px solid var(--btt-glass-border);
+}
+
+.card-pack-stat {
+  text-align: center;
+}
+
+.card-pack-stat-value {
+  display: block;
+  font-size: var(--btt-text-xl);
+  font-weight: var(--btt-font-bold);
+  color: var(--btt-forest-bright);
+}
+
+.card-pack-stat-label {
+  display: block;
+  font-size: var(--btt-text-xs);
+  color: var(--btt-text-muted);
+  margin-top: var(--btt-space-1);
+}
+
+/* Gear Card */
+.card-gear {
+  padding: var(--btt-space-4);
+}
+
+.card-gear-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto var(--btt-space-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--btt-glass-light);
+  border-radius: var(--btt-radius-lg);
+  font-size: var(--btt-text-2xl);
+}
+
+.card-gear-name {
+  text-align: center;
+  font-weight: var(--btt-font-semibold);
+  margin-bottom: var(--btt-space-2);
+  color: var(--btt-text-primary);
+}
+
+.card-gear-category {
+  display: inline-block;
+  padding: var(--btt-space-1) var(--btt-space-2);
+  background: var(--btt-glass-medium);
+  border-radius: var(--btt-radius-sm);
+  font-size: var(--btt-text-xs);
+  color: var(--btt-text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--btt-tracking-wide);
+}
+
+/* ===========================================
+   Card Actions
+   =========================================== */
+
+.card-actions {
+  display: flex;
+  gap: var(--btt-space-2);
+  margin-top: var(--btt-space-4);
+}
+
+.card-action {
+  flex: 1;
+}
+
+/* ===========================================
+   Card Loading State
+   =========================================== */
+
+.card-skeleton {
+  animation: skeleton-loading 1.5s infinite;
+  background: linear-gradient(90deg,
+    var(--btt-glass-white) 25%,
+    var(--btt-glass-light) 50%,
+    var(--btt-glass-white) 75%);
+  background-size: 200% 100%;
+}
+
+@keyframes skeleton-loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.card-skeleton .card-title,
+.card-skeleton .card-body {
+  opacity: 0;
+}
+
+/* ===========================================
+   Responsive Adjustments
+   =========================================== */
+
+@media (max-width: 768px) {
+  .card {
+    padding: var(--btt-space-4);
+  }
+  
+  .card-header,
+  .card-footer {
+    padding: var(--btt-space-4);
+    margin: calc(var(--btt-space-4) * -1);
+  }
+  
+  .card-header {
+    margin-bottom: var(--btt-space-4);
+  }
+  
+  .card-footer {
+    margin-top: var(--btt-space-4);
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===========================================
+   Accessibility
+   =========================================== */
+
+.card:focus-visible {
+  outline: 3px solid var(--btt-forest-bright);
+  outline-offset: 2px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .card {
+    border-width: 2px;
+    border-color: var(--btt-text-primary);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .card-image img {
+    transition: none;
+  }
+  
+  .card-skeleton {
+    animation: none;
+    background: var(--btt-glass-light);
+  }
+}

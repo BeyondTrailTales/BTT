@@ -1,0 +1,831 @@
+/* Simple Pack Builder - Easy UX for Adding Items */
+
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Toast notifications */
+.toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    z-index: 10000;
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
+    max-width: 400px;
+}
+
+.toast.show {
+    transform: translateX(0);
+}
+
+.toast-success {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.toast-error {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.toast-info {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+/* Hide footer and mobile nav on pack builder page */
+.pack-builder-page .site-footer,
+.pack-builder-page .mobile-bottom-nav {
+    display: none !important;
+}
+
+/* Ensure pack builder uses full viewport */
+.pack-builder-page .main-wrapper {
+    min-height: 100vh;
+}
+
+.pack-builder-page main {
+    padding-bottom: 0;
+}
+
+.pack-builder-container {
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Header */
+.builder-header {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(10px);
+    flex-shrink: 0;
+}
+
+.builder-header h1 {
+    color: white;
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.builder-header .btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background: #10b981;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #059669;
+    transform: translateY(-1px);
+}
+
+.btn-primary.has-changes {
+    background: #f59e0b;
+    animation: pulse 2s infinite;
+    font-weight: 700;
+}
+
+.btn-primary.has-changes:hover {
+    background: #d97706;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+    50% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Main Content Area */
+.main-content {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 1.5rem;
+    flex: 1;
+    min-height: 0;
+    align-items: start;
+}
+
+/* LEFT SIDE: Sticky Gear Browser */
+.gear-browser {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 1rem;
+    height: calc(100vh - 140px);
+    max-height: calc(100vh - 140px);
+    overflow: hidden;
+}
+
+.gear-browser h2 {
+    color: white;
+    margin: 0 0 1rem 0;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
+/* Simple Search - Fixed */
+.gear-search {
+    position: relative;
+    margin-bottom: 1rem;
+    flex-shrink: 0;
+}
+
+.gear-search input {
+    width: 100%;
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.gear-search input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.gear-search input:focus {
+    outline: none;
+    border-color: #10b981;
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.search-icon {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1.125rem;
+}
+
+/* Simple Category Tabs - Fixed */
+.gear-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-shrink: 0;
+}
+
+.category-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.category-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.category-btn.active {
+    background: #10b981;
+    border-color: #10b981;
+    color: white;
+}
+
+/* Scrollable Gear Items List - FIXED HEIGHT */
+.gear-list {
+    flex: 1;
+    overflow-y: auto;
+    margin: -0.5rem;
+    padding: 0.5rem;
+    min-height: 0;
+    max-height: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.gear-item {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    cursor: grab;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    user-select: none;
+    position: relative;
+    -webkit-user-drag: auto;
+    -khtml-user-drag: auto;
+    -moz-user-drag: auto;
+    -o-user-drag: auto;
+    user-drag: auto;
+}
+
+.gear-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #10b981;
+    transform: translateY(-1px);
+}
+
+.gear-item.dragging {
+    opacity: 0.6;
+    transform: rotate(2deg) scale(0.95);
+    cursor: grabbing;
+    z-index: 1000;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.gear-item-icon {
+    font-size: 1.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: rgba(16, 185, 129, 0.2);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gear-item-info {
+    flex: 1;
+}
+
+.gear-item-name {
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.gear-item-weight {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.875rem;
+}
+
+.gear-item-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+}
+
+.add-btn {
+    background: #10b981;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+    pointer-events: auto;
+    z-index: 10;
+    position: relative;
+}
+
+.add-btn:hover {
+    background: #059669;
+    transform: scale(1.05);
+}
+
+/* Prevent drag when clicking add button */
+.gear-item .add-btn {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
+    pointer-events: auto !important;
+}
+
+/* Ensure gear items are draggable */
+.gear-item[draggable="true"] {
+    -webkit-user-drag: element;
+    -khtml-user-drag: element;
+    -moz-user-drag: element;
+    -o-user-drag: element;
+    user-drag: element;
+}
+
+/* Force draggable styles */
+.gear-item[draggable="true"]:hover {
+    cursor: grab !important;
+}
+
+.gear-item[draggable="true"]:active {
+    cursor: grabbing !important;
+}
+
+/* Ensure pack items are draggable */
+.pack-item[draggable="true"] {
+    -webkit-user-drag: element;
+    -khtml-user-drag: element;
+    -moz-user-drag: element;
+    -o-user-drag: element;
+    user-drag: element;
+}
+
+.pack-item[draggable="true"]:hover {
+    cursor: grab !important;
+}
+
+.pack-item[draggable="true"]:active {
+    cursor: grabbing !important;
+}
+
+/* RIGHT SIDE: Scrollable Pack View */
+.pack-view {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 140px);
+}
+
+/* Pack Header */
+.pack-header {
+    margin-bottom: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pack-name {
+    color: white;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+}
+
+.pack-name:hover {
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 4px;
+}
+
+.pack-name-input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding: 0.25rem 0.75rem;
+    width: auto;
+    min-width: 200px;
+}
+
+
+/* Pack Sections - SIMPLE & COLLAPSIBLE with DROP ZONES */
+.pack-sections {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.pack-section {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.pack-section.drag-over {
+    border: 2px solid #10b981;
+    background: rgba(16, 185, 129, 0.1);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    transform: scale(1.02);
+}
+
+/* Section Header - CLICKABLE TO COLLAPSE */
+.section-header {
+    background: rgba(16, 185, 129, 0.2);
+    padding: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: background-color 0.2s ease;
+    user-select: none;
+}
+
+.section-header:hover {
+    background: rgba(16, 185, 129, 0.3);
+}
+
+.section-toggle {
+    color: white;
+    font-size: 1rem;
+    transition: transform 0.2s ease;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+.section-header.collapsed .section-toggle {
+    transform: rotate(-90deg);
+}
+
+.section-icon {
+    font-size: 1.25rem;
+}
+
+.section-name-input {
+    background: transparent;
+    border: none;
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    flex: 1;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
+
+.section-name-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.section-weight {
+    color: white;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.9375rem;
+}
+
+.section-delete {
+    background: rgba(239, 68, 68, 0.3);
+    border: none;
+    color: white;
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.section-delete:hover {
+    background: rgba(239, 68, 68, 0.5);
+}
+
+/* Section Content - DROP ZONE */
+.section-content {
+    padding: 1rem;
+    display: block;
+    min-height: 100px;
+}
+
+.section-header.collapsed + .section-content {
+    display: none;
+}
+
+.section-items {
+    min-height: 80px;
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 0.75rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.section-items.drag-over {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+    transform: scale(1.01);
+}
+
+.section-items.has-items {
+    border-style: solid;
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.section-empty {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    padding: 1.5rem 1rem;
+    font-style: italic;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 2rem);
+    pointer-events: none;
+}
+
+.section-items.drag-over .section-empty {
+    color: #10b981;
+    font-weight: 600;
+}
+
+/* Pack Item - DRAGGABLE */
+.pack-item {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 10px;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: grab;
+    user-select: none;
+    transition: all 0.2s ease;
+    -webkit-user-drag: auto;
+    -khtml-user-drag: auto;
+    -moz-user-drag: auto;
+    -o-user-drag: auto;
+    user-drag: auto;
+}
+
+.pack-item:hover {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.15);
+    transform: translateY(-1px);
+}
+
+.pack-item.dragging {
+    opacity: 0.6;
+    transform: rotate(-2deg) scale(0.95);
+    cursor: grabbing;
+    z-index: 1000;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Visual feedback for drag ready sections */
+.section-items.drag-ready {
+    border-color: rgba(16, 185, 129, 0.4);
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.pack-item-icon {
+    font-size: 1.125rem;
+    width: 2rem;
+    height: 2rem;
+    background: rgba(16, 185, 129, 0.2);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pack-item-info {
+    flex: 1;
+}
+
+.pack-item-name {
+    color: white;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    margin-bottom: 0.125rem;
+}
+
+.pack-item-details {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8125rem;
+    display: flex;
+    gap: 0.75rem;
+}
+
+.pack-item-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.qty-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qty-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.qty-display {
+    color: white;
+    font-weight: 600;
+    min-width: 2rem;
+    text-align: center;
+    font-size: 0.875rem;
+}
+
+.remove-btn {
+    background: rgba(239, 68, 68, 0.3);
+    border: none;
+    color: white;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.remove-btn:hover {
+    background: rgba(239, 68, 68, 0.5);
+}
+
+/* Add Section Button */
+.add-section-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    text-align: center;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.add-section-btn:hover {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+    color: white;
+}
+
+/* Weight Summary - Now at Top */
+.weight-summary {
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: 10px;
+    padding: 1rem;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.weight-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.weight-stat {
+    text-align: center;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
+}
+
+.weight-stat:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.weight-stat-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.weight-stat-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.weight-stat-value {
+    color: white;
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.weight-stat.total {
+    background: rgba(16, 185, 129, 0.3);
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.weight-stat.total .weight-stat-label {
+    font-size: 1.125rem;
+    color: white;
+    font-weight: 600;
+}
+
+.weight-stat.total .weight-stat-value {
+    font-size: 1.75rem;
+    color: #10b981;
+    font-weight: 700;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-content {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+    }
+    
+    .gear-browser {
+        max-height: 300px;
+    }
+    
+    .weight-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Loading & Empty States */
+.loading {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 2rem;
+    font-style: italic;
+}
+
+.empty-state {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+    padding: 3rem 1rem;
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-state-text {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state-subtext {
+    font-size: 0.9375rem;
+    opacity: 0.8;
+}

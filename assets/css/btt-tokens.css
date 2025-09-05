@@ -1,0 +1,359 @@
+/**
+ * BeyondTrailTales Design Tokens
+ * Core design tokens for the unified design system
+ * Version: 2.0.0
+ * Last Updated: 2025-09-04
+ * 
+ * This file contains all design tokens used throughout the application.
+ * These tokens ensure consistency and make the design system maintainable.
+ * 
+ * ADA Compliant | Mobile-First | Performance-Optimized
+ */
+
+:root {
+  /* ===========================================
+     COLOR SYSTEM
+     =========================================== */
+  
+  /* Sophisticated Forest Palette - Natural & Muted */
+  --btt-forest-midnight: #0a1b0f;    /* Deepest forest background */
+  --btt-forest-deep: #1a2f20;       /* Main dark background */
+  --btt-forest-shadow: #2a4532;     /* Secondary dark */
+  --btt-forest-moss: #3d5a45;       /* Medium forest green */
+  --btt-forest-sage: #4f6b57;       /* Sophisticated sage green */
+  --btt-forest-mist: #6b8470;       /* Light forest green */
+  --btt-forest-canopy: #5d7863;     /* Primary action color - WCAG AA compliant */
+  
+  /* Sophisticated Accent Colors */
+  --btt-cedar: #a0825a;             /* Warm cedar brown */
+  --btt-birch: #b8a082;             /* Light birch beige */
+  --btt-fern: #7a9b7e;              /* Muted fern green */
+  --btt-pine: #5a7c5e;              /* Pine needle green */
+  --btt-bark: #8b6f47;              /* Tree bark brown */
+  --btt-stone: #9ca3a0;             /* River stone gray */
+  
+  /* Refined Highlight Colors */
+  --btt-forest-glow: #7a9b7e;       /* Soft hover states */
+  --btt-success-forest: #6b8470;    /* Success in forest theme */
+  --btt-warning-forest: #d4a574;    /* Warm amber warning */
+  
+  /* Refined Accent Colors */
+  --btt-gold: #d4a574;              /* Warm gold - less vibrant */
+  --btt-amber: #c49363;             /* Muted amber */
+  --btt-copper: #b8956b;            /* Copper accent */
+  --btt-sunset: #d49c6a;            /* Sunset orange - toned down */
+  
+  /* Semantic Colors - Natural Forest Palette - WCAG AA Compliant */
+  --btt-success: var(--btt-fern);        /* Muted fern green for success */
+  --btt-success-light: var(--btt-forest-mist);
+  --btt-success-dark: var(--btt-forest-sage);
+  --btt-warning: var(--btt-gold);        /* Warm gold for warnings */
+  --btt-warning-light: var(--btt-birch);
+  --btt-warning-dark: var(--btt-bark);
+  --btt-error: #c4675a;                  /* Muted red-brown */
+  --btt-error-light: #d88b7d;
+  --btt-error-dark: #a55449;
+  --btt-info: var(--btt-stone);          /* Stone gray for info */
+  --btt-info-light: #b5bcb9;
+  --btt-info-dark: #858b88;
+  
+  /* Neutral Palette */
+  --btt-white: #ffffff;
+  --btt-gray-50: #f9fafb;
+  --btt-gray-100: #f3f4f6;
+  --btt-gray-200: #e5e7eb;
+  --btt-gray-300: #d1d5db;
+  --btt-gray-400: #9ca3af;
+  --btt-gray-500: #6b7280;
+  --btt-gray-600: #4b5563;
+  --btt-gray-700: #374151;
+  --btt-gray-800: #1f2937;
+  --btt-gray-900: #111827;
+  --btt-black: #000000;
+  
+  /* Glassmorphism Colors - Performance Optimized */
+  --btt-glass-white: rgba(255, 255, 255, 0.08);
+  --btt-glass-light: rgba(255, 255, 255, 0.12);
+  --btt-glass-medium: rgba(255, 255, 255, 0.16);
+  --btt-glass-dark: rgba(0, 0, 0, 0.2);
+  --btt-glass-border: rgba(255, 255, 255, 0.18);
+  --btt-glass-border-hover: rgba(134, 239, 172, 0.3);
+  
+  /* Text Colors - Natural Forest Theme */
+  --btt-text-primary: #f5f7f4;                  /* Soft white on dark backgrounds */
+  --btt-text-secondary: #d1d9d3;                /* Light forest gray */
+  --btt-text-muted: #a8b5aa;                    /* Muted forest green */
+  --btt-text-inverse: var(--btt-forest-midnight); /* On light backgrounds */
+  --btt-text-accent: var(--btt-fern);           /* Fern green accent */
+  --btt-text-link: var(--btt-forest-canopy);    /* Natural forest link */
+  --btt-text-link-hover: var(--btt-forest-mist);
+  
+  /* ===========================================
+     TYPOGRAPHY SYSTEM - Fluid & Responsive
+     =========================================== */
+  
+  /* Font Families - Duolingo-inspired friendly typography */
+  --btt-font-sans: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --btt-font-display: 'Nunito', 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+  --btt-font-mono: 'SF Mono', Monaco, Consolas, 'Courier New', monospace;
+  --btt-font-accent: 'Nunito', sans-serif; /* Used for badges and CTAs */
+  
+  /* Font Sizes - Fluid with Clamp */
+  --btt-text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);      /* 12-14px */
+  --btt-text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);         /* 14-16px */
+  --btt-text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);      /* 16-18px */
+  --btt-text-lg: clamp(1.125rem, 1.05rem + 0.35vw, 1.25rem);     /* 18-20px */
+  --btt-text-xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);        /* 20-24px */
+  --btt-text-2xl: clamp(1.5rem, 1.35rem + 0.75vw, 2rem);         /* 24-32px */
+  --btt-text-3xl: clamp(2rem, 1.75rem + 1.25vw, 2.5rem);         /* 32-40px */
+  --btt-text-4xl: clamp(2.5rem, 2rem + 2.5vw, 3.5rem);           /* 40-56px */
+  
+  /* Font Weights */
+  --btt-font-normal: 400;
+  --btt-font-medium: 500;
+  --btt-font-semibold: 600;
+  --btt-font-bold: 700;
+  --btt-font-extrabold: 800;
+  --btt-font-black: 900;
+  
+  /* Line Heights */
+  --btt-leading-none: 1;
+  --btt-leading-tight: 1.25;
+  --btt-leading-snug: 1.375;
+  --btt-leading-normal: 1.5;
+  --btt-leading-relaxed: 1.625;
+  --btt-leading-loose: 2;
+  
+  /* Letter Spacing */
+  --btt-tracking-tighter: -0.05em;
+  --btt-tracking-tight: -0.025em;
+  --btt-tracking-normal: 0;
+  --btt-tracking-wide: 0.025em;
+  --btt-tracking-wider: 0.05em;
+  --btt-tracking-widest: 0.1em;
+  
+  /* ===========================================
+     SPACING SYSTEM - 8pt Grid
+     =========================================== */
+  
+  --btt-space-0: 0;
+  --btt-space-1: 0.25rem;   /* 4px */
+  --btt-space-2: 0.5rem;    /* 8px */
+  --btt-space-3: 0.75rem;   /* 12px */
+  --btt-space-4: 1rem;      /* 16px */
+  --btt-space-5: 1.5rem;    /* 24px */
+  --btt-space-6: 2rem;      /* 32px */
+  --btt-space-7: 2.5rem;    /* 40px */
+  --btt-space-8: 3rem;      /* 48px */
+  --btt-space-9: 3.5rem;    /* 56px */
+  --btt-space-10: 4rem;     /* 64px */
+  --btt-space-12: 6rem;     /* 96px */
+  --btt-space-16: 8rem;     /* 128px */
+  
+  /* Negative Spacing */
+  --btt-space-n1: -0.25rem;
+  --btt-space-n2: -0.5rem;
+  --btt-space-n3: -0.75rem;
+  --btt-space-n4: -1rem;
+  
+  /* ===========================================
+     BORDER RADIUS - Friendly & Modern
+     =========================================== */
+  
+  --btt-radius-none: 0;
+  --btt-radius-sm: 0.375rem;    /* 6px */
+  --btt-radius-md: 0.625rem;    /* 10px */
+  --btt-radius-lg: 1rem;        /* 16px */
+  --btt-radius-xl: 1.5rem;      /* 24px */
+  --btt-radius-2xl: 2rem;       /* 32px */
+  --btt-radius-full: 9999px;    /* Pill shape */
+  
+  /* ===========================================
+     SHADOWS - Elevation System
+     =========================================== */
+  
+  --btt-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --btt-shadow-sm: 0 2px 4px 0 rgb(0 0 0 / 0.06);
+  --btt-shadow-md: 0 4px 8px 0 rgb(0 0 0 / 0.08);
+  --btt-shadow-lg: 0 8px 16px 0 rgb(0 0 0 / 0.1);
+  --btt-shadow-xl: 0 16px 32px 0 rgb(0 0 0 / 0.12);
+  --btt-shadow-2xl: 0 24px 48px 0 rgb(0 0 0 / 0.15);
+  --btt-shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+  
+  /* Colored Shadows */
+  --btt-shadow-success: 0 4px 12px rgba(16, 185, 129, 0.2);
+  --btt-shadow-error: 0 4px 12px rgba(239, 68, 68, 0.2);
+  --btt-shadow-warning: 0 4px 12px rgba(245, 158, 11, 0.2);
+  --btt-shadow-forest: 0 8px 24px rgba(16, 185, 129, 0.15);
+  
+  /* ===========================================
+     ANIMATION & MOTION
+     =========================================== */
+  
+  /* Duration Tokens */
+  --btt-duration-instant: 100ms;
+  --btt-duration-fast: 150ms;
+  --btt-duration-normal: 200ms;
+  --btt-duration-slow: 300ms;
+  --btt-duration-slower: 500ms;
+  
+  /* Easing Functions */
+  --btt-ease-linear: linear;
+  --btt-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --btt-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --btt-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --btt-ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --btt-ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  
+  /* Standard Transitions */
+  --btt-transition-all: all var(--btt-duration-normal) var(--btt-ease-out);
+  --btt-transition-colors: color var(--btt-duration-fast) var(--btt-ease-out), 
+                          background-color var(--btt-duration-fast) var(--btt-ease-out), 
+                          border-color var(--btt-duration-fast) var(--btt-ease-out);
+  --btt-transition-transform: transform var(--btt-duration-normal) var(--btt-ease-out);
+  --btt-transition-opacity: opacity var(--btt-duration-normal) var(--btt-ease-out);
+  
+  /* ===========================================
+     Z-INDEX SCALE
+     =========================================== */
+  
+  --btt-z-negative: -1;
+  --btt-z-base: 0;
+  --btt-z-raised: 10;
+  --btt-z-dropdown: 100;
+  --btt-z-sticky: 200;
+  --btt-z-overlay: 300;
+  --btt-z-modal: 400;
+  --btt-z-popover: 500;
+  --btt-z-tooltip: 600;
+  --btt-z-notification: 700;
+  --btt-z-top: 9999;
+  
+  /* ===========================================
+     LAYOUT TOKENS
+     =========================================== */
+  
+  /* Container Widths */
+  --btt-container-xs: 20rem;     /* 320px */
+  --btt-container-sm: 30rem;     /* 480px */
+  --btt-container-md: 48rem;     /* 768px */
+  --btt-container-lg: 64rem;     /* 1024px */
+  --btt-container-xl: 80rem;     /* 1280px */
+  --btt-container-2xl: 96rem;    /* 1536px */
+  --btt-container-full: 100%;
+  
+  /* Breakpoints */
+  --btt-screen-xs: 22.5rem;      /* 360px */
+  --btt-screen-sm: 30rem;        /* 480px */
+  --btt-screen-md: 48rem;        /* 768px */
+  --btt-screen-lg: 64rem;        /* 1024px */
+  --btt-screen-xl: 80rem;        /* 1280px */
+  --btt-screen-2xl: 96rem;       /* 1536px */
+  
+  /* Grid */
+  --btt-grid-cols: 12;
+  --btt-grid-gap: var(--btt-space-4);
+  
+  /* ===========================================
+     COMPONENT-SPECIFIC TOKENS
+     =========================================== */
+  
+  /* Buttons */
+  --btt-btn-padding-x: var(--btt-space-5);
+  --btt-btn-padding-y: var(--btt-space-3);
+  --btt-btn-min-height: 44px; /* WCAG Touch Target */
+  --btt-btn-border-width: 2px;
+  
+  /* Forms */
+  --btt-input-padding-x: var(--btt-space-4);
+  --btt-input-padding-y: var(--btt-space-3);
+  --btt-input-border-width: 2px;
+  --btt-input-min-height: 44px;
+  
+  /* Cards */
+  --btt-card-padding: var(--btt-space-5);
+  --btt-card-radius: var(--btt-radius-lg);
+  --btt-card-shadow: var(--btt-shadow-md);
+  
+  /* Navigation */
+  --btt-nav-height: 60px;
+  --btt-nav-padding: var(--btt-space-4);
+  
+  /* Modal */
+  --btt-modal-padding: var(--btt-space-6);
+  --btt-modal-radius: var(--btt-radius-xl);
+  --btt-modal-max-width: 600px;
+  
+  /* Toast */
+  --btt-toast-padding: var(--btt-space-4);
+  --btt-toast-radius: var(--btt-radius-md);
+  
+  /* ===========================================
+     SPECIAL EFFECTS
+     =========================================== */
+  
+  /* Glassmorphism - Optimized for Performance */
+  --btt-blur-none: blur(0);
+  --btt-blur-sm: blur(4px);
+  --btt-blur-md: blur(8px);
+  --btt-blur-lg: blur(12px);
+  --btt-blur-xl: blur(16px);
+  
+  /* Sophisticated Forest Gradients */
+  --btt-gradient-forest: linear-gradient(135deg, var(--btt-forest-canopy) 0%, var(--btt-forest-sage) 100%);
+  --btt-gradient-moss: linear-gradient(135deg, var(--btt-fern) 0%, var(--btt-forest-moss) 100%);
+  --btt-gradient-dark: linear-gradient(135deg, var(--btt-forest-midnight) 0%, var(--btt-forest-deep) 100%);
+  --btt-gradient-canopy: linear-gradient(135deg, var(--btt-forest-shadow) 0%, var(--btt-forest-moss) 100%);
+  --btt-gradient-success: linear-gradient(135deg, var(--btt-success-light) 0%, var(--btt-success) 100%);
+  --btt-gradient-warning: linear-gradient(135deg, var(--btt-warning-light) 0%, var(--btt-warning) 100%);
+  --btt-gradient-error: linear-gradient(135deg, var(--btt-error-light) 0%, var(--btt-error) 100%);
+  --btt-gradient-cedar: linear-gradient(135deg, var(--btt-birch) 0%, var(--btt-cedar) 100%);
+  --btt-gradient-stone: linear-gradient(135deg, var(--btt-stone) 0%, #7a8077 100%);
+}
+
+/* ===========================================
+   DARK MODE OVERRIDES (Future Enhancement)
+   =========================================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark mode tokens will be added here */
+  }
+}
+
+/* ===========================================
+   REDUCED MOTION
+   =========================================== */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --btt-duration-instant: 0ms;
+    --btt-duration-fast: 0ms;
+    --btt-duration-normal: 0ms;
+    --btt-duration-slow: 0ms;
+    --btt-duration-slower: 0ms;
+  }
+}
+
+/* ===========================================
+   HIGH CONTRAST MODE
+   =========================================== */
+@media (prefers-contrast: high) {
+  :root {
+    --btt-glass-border: rgba(255, 255, 255, 0.5);
+    --btt-text-primary: var(--btt-white);
+    --btt-text-secondary: var(--btt-gray-100);
+  }
+}
+
+/* ===========================================
+   PRINT STYLES
+   =========================================== */
+@media print {
+  :root {
+    --btt-shadow-xs: none;
+    --btt-shadow-sm: none;
+    --btt-shadow-md: none;
+    --btt-shadow-lg: none;
+    --btt-shadow-xl: none;
+    --btt-shadow-2xl: none;
+  }
+}

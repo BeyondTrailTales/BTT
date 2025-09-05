@@ -1,0 +1,57 @@
+/* Simple Photo Upload Styles */
+.photo-upload-controls {
+  padding: 1rem;
+  background: var(--surface-secondary, rgba(255, 255, 255, 0.1));
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.photo-upload-controls .form-input-file {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px dashed var(--forest-mint, #4ade80);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.photo-upload-controls .form-input-file:hover {
+  border-color: var(--forest-light, #86efac);
+  background: rgba(74, 222, 128, 0.1);
+}
+
+.photo-upload-controls .form-input {
+  background: var(--surface-primary, rgba(0, 0, 0, 0.3));
+  border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.2));
+  color: var(--text-primary);
+  padding: 0.75rem;
+  border-radius: 6px;
+  width: 100%;
+}
+
+.adventure-image-container {
+  min-height: 200px;
+  background: var(--surface-secondary, rgba(255, 255, 255, 0.05));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.placeholder-image {
+  text-align: center;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.7));
+}
+
+.placeholder-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.placeholder-text {
+  font-size: 1.1rem;
+  margin: 0;
+}

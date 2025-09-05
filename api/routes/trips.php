@@ -165,6 +165,13 @@ function getTripById($id) {
             Response::notFound('Trip not found');
         }
         
+        error_log("\n=== GET TRIP BY ID DEBUG ===");
+        error_log("Trip ID: $id");
+        error_log("Trip photo_path: " . ($trip['photo_path'] ?? 'NULL'));
+        error_log("Trip photo_alt_text: " . ($trip['photo_alt_text'] ?? 'NULL'));
+        error_log("Full trip data: " . print_r($trip, true));
+        error_log("=== GET TRIP BY ID DEBUG END ===\n");
+        
         Response::success($trip);
         
     } catch (Exception $e) {
@@ -196,6 +203,11 @@ function createTrip() {
         // Handle photo upload
         $photo_path = null;
         $photo_alt_text = null;
+        
+        // DEBUG: Log $_FILES contents
+        error_log("DEBUG createTrip: _FILES = " . print_r($_FILES, true));
+        error_log("DEBUG createTrip: _POST = " . print_r($_POST, true));
+        error_log("DEBUG createTrip: data = " . print_r($data, true));
         
         if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
             // Validate alt text is provided with photo
@@ -281,6 +293,12 @@ function createTrip() {
  * Update existing trip (only if owned by current user)
  */
 function updateTrip($id) {
+    error_log("\n=== UPDATE TRIP DEBUG START ===");
+    error_log("Trip ID: $id");
+    error_log("_FILES: " . print_r($_FILES, true));
+    error_log("_POST: " . print_r($_POST, true));
+    error_log("php://input: " . file_get_contents('php://input'));
+    
     try {
         // Get current user
         $user = AuthService::getCurrentUser();
@@ -312,6 +330,7 @@ function updateTrip($id) {
         }
         
         $data = get_request_data();
+        error_log("Parsed request data: " . print_r($data, true));
         $update_data = [];
         
         // Update only provided fields (including backpacker fields)
@@ -339,22 +358,52 @@ function updateTrip($id) {
             }
         }
         
+        // Handle photo removal - Enhanced debugging
+        error_log("=== PHOTO REMOVAL DEBUG ===");
+        error_log("remove_photo in data: " . (isset($data['remove_photo']) ? $data['remove_photo'] : 'NOT SET'));
+        error_log("remove_photo type: " . gettype($data['remove_photo'] ?? null));
+        error_log("Comparison result: " . ($data['remove_photo'] === '1' ? 'TRUE' : 'FALSE'));
+        
+        if (isset($data['remove_photo']) && $data['remove_photo'] === '1') {
+            error_log("✅ Photo removal condition MET - processing removal");
+            if ($existing['photo_path']) {
+                error_log("Deleting existing photo file: " . $existing['photo_path']);
+                deletePhotoFile($existing['photo_path']);
+                $update_data['photo_path'] = null;
+                $update_data['photo_alt_text'] = null;
+                error_log("✅ Photo removal data prepared - photo_path=NULL, photo_alt_text=NULL");
+            } else {
+                error_log("ℹ️ No existing photo to remove");
+            }
+        } else {
+            error_log("❌ Photo removal condition NOT MET - skipping removal");
+        }
+        error_log("=== PHOTO REMOVAL DEBUG END ==="); 
+        
         // Handle photo upload/update
         if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+            error_log("Photo file found! Processing upload...");
+            
             // Validate alt text is provided with photo
             if (empty($data['photo_alt_text'])) {
+                error_log("ERROR: Missing photo_alt_text");
                 Response::validationError(['photo_alt_text' => 'Alt text is required when uploading a photo (ADA compliance)']);
             }
             
+            error_log("Alt text provided: " . $data['photo_alt_text']);
             $upload_result = handlePhotoUpload($_FILES['photo']);
+            error_log("Photo upload result: " . print_r($upload_result, true));
+            
             if ($upload_result['success']) {
                 // Delete old photo if exists
                 if ($existing['photo_path']) {
+                    error_log("Deleting old photo: " . $existing['photo_path']);
                     deletePhotoFile($existing['photo_path']);
                 }
                 
                 $update_data['photo_path'] = $upload_result['path'];
                 $update_data['photo_alt_text'] = trim($data['photo_alt_text']);
+                error_log("Photo data to be saved: photo_path=" . $update_data['photo_path'] . ", photo_alt_text=" . $update_data['photo_alt_text']);
             } else {
                 Response::validationError(['photo' => $upload_result['error']]);
             }
@@ -376,8 +425,18 @@ function updateTrip($id) {
         
         $update_data['updated_at'] = date('Y-m-d H:i:s');
         
+        error_log("Final update_data: " . print_r($update_data, true));
+        error_log("Columns being updated: " . implode(', ', array_keys($update_data)));
+        
         // Update trip
-        $db->update('trips', $update_data, 'id = :id', ['id' => $id]);
+        $result = $db->update('trips', $update_data, 'id = :id', ['id' => $id]);
+        error_log("Database update result: " . ($result ? 'SUCCESS' : 'FAILED'));
+        
+        // Verify the update
+        $verify = $db->fetchOne("SELECT photo_path, photo_alt_text FROM trips WHERE id = :id", ['id' => $id]);
+        error_log("Verification after update - photo_path: " . ($verify['photo_path'] ?? 'NULL') . ", photo_alt_text: " . ($verify['photo_alt_text'] ?? 'NULL'));
+        
+        error_log("=== UPDATE TRIP DEBUG END ===\n");
         
         // Return updated trip
         getTripById($id);

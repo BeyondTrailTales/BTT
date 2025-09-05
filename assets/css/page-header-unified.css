@@ -1,0 +1,154 @@
+/**
+ * Unified Page Header Component
+ * Duolingo Forest Theme - Consistent header styling across all pages
+ * Matches the gear.php header design
+ */
+
+/* Main Header Container */
+.gear-header-section {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.05) 100%);
+    border-radius: 0.75rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+/* Header Content Wrapper */
+.gear-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+/* Title Group */
+.gear-title-group {
+    flex: 1;
+}
+
+/* Page Title - Main H1 */
+.gear-page-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #4ade80;
+    margin: 0 0 0.5rem 0;
+}
+
+/* Page Icon */
+.page-icon {
+    font-size: 1.5rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Page Subtitle/Description */
+.gear-page-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Header Actions Container */
+.page-header-actions {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+/* Action Buttons */
+.page-header-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border: none;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    text-decoration: none;
+}
+
+.page-header-action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    background: linear-gradient(135deg, #059669, #047857);
+    color: white;
+}
+
+/* Secondary Action Button */
+.page-header-action--secondary {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    box-shadow: none;
+}
+
+.page-header-action--secondary:hover {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: #10b981;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+/* Focus States for Accessibility */
+.page-header-action:focus-visible {
+    outline: 3px solid #58cc02;
+    outline-offset: 2px;
+}
+
+.gear-page-title:focus-visible {
+    outline: 3px solid #58cc02;
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    .gear-header-section {
+        border: 2px solid #10b981;
+    }
+    
+    .gear-page-title {
+        color: #58cc02;
+        text-shadow: none;
+    }
+    
+    .page-header-action {
+        border: 2px solid currentColor;
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .gear-header-section {
+        padding: 1.5rem 1rem;
+    }
+    
+    .gear-header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+    
+    .gear-page-title {
+        font-size: 1.5rem;
+    }
+    
+    .gear-page-subtitle {
+        font-size: 0.875rem;
+    }
+}

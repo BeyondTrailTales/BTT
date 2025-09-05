@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Checkbox Debug Test</title>
+</head>
+<body>
+    <h1>Packing Checkbox Debug</h1>
+    
+    <div>
+        <p>Open browser console (F12) and test the packing checkboxes.</p>
+        <p>This will show detailed debugging information.</p>
+    </div>
+    
+    <script>
+        // Test if the trip packing module loads
+        if (window.TripPacking) {
+            console.log('✅ TripPacking module available');
+        } else {
+            console.log('❌ TripPacking module NOT available');
+        }
+        
+        // Monitor checkbox changes
+        document.addEventListener('change', function(e) {
+            if (e.target.classList.contains('pack-checkbox')) {
+                console.log('🎯 Checkbox clicked:', {
+                    checked: e.target.checked,
+                    type: e.target.dataset.type,
+                    id: e.target.dataset.id,
+                    element: e.target
+                });
+            }
+        });
+        
+        // Monitor AJAX requests
+        const originalFetch = window.fetch;
+        window.fetch = function(...args) {
+            console.log('🌐 AJAX Request:', args[0], args[1]);
+            return originalFetch.apply(this, args)
+                .then(response => {
+                    console.log('🌐 AJAX Response:', response.status, response.statusText);
+                    return response;
+                })
+                .catch(error => {
+                    console.log('🌐 AJAX Error:', error);
+                    throw error;
+                });
+        };
+        
+        console.log('🔍 Checkbox debugging enabled');
+    </script>
+</body>
+</html>

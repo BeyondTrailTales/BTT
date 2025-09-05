@@ -1,0 +1,605 @@
+/**
+ * Trip Form Improved CSS
+ * Fixes spacing, layout, and adds date range picker styling
+ * Part of BeyondTrailTales Forest Design System
+ */
+
+/* ===========================================
+   FORM GRID IMPROVEMENTS
+   =========================================== */
+
+/* Base form layout */
+#trip-form {
+  max-width: 100%;
+}
+
+#trip-form .form-layout {
+  padding: var(--space-4);
+}
+
+/* Improved form grid spacing */
+#trip-form .form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+  margin-bottom: var(--space-5);
+}
+
+/* Full width for single column items */
+#trip-form .form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Form groups with proper spacing */
+#trip-form .form-group {
+  margin-bottom: var(--space-5);
+  position: relative;
+}
+
+/* Remove double margin when in grid */
+#trip-form .form-grid .form-group {
+  margin-bottom: 0;
+}
+
+/* ===========================================
+   INPUT FIELD IMPROVEMENTS
+   =========================================== */
+
+/* Ensure all inputs have consistent styling */
+#trip-form .form-input,
+#trip-form .form-select,
+#trip-form .form-textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: var(--space-3) var(--space-4);
+  background: var(--glass-bg);
+  border: 2px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+}
+
+/* Focus states with adventure theme */
+#trip-form .form-input:focus,
+#trip-form .form-select:focus,
+#trip-form .form-textarea:focus {
+  outline: none;
+  border-color: var(--adventure-blue);
+  background: var(--glass-light);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+}
+
+/* Labels with better spacing */
+#trip-form .form-label {
+  display: block;
+  margin-bottom: var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-secondary);
+}
+
+/* ===========================================
+   DATE RANGE PICKER
+   =========================================== */
+
+/* Date range container */
+.date-range-container {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.date-range-separator {
+  color: var(--text-muted);
+  font-size: var(--text-lg);
+  padding: 0 var(--space-2);
+}
+
+/* Single date range input field */
+.date-range-input {
+  grid-column: 1 / -1;
+  position: relative;
+  cursor: pointer;
+}
+
+.date-range-input input {
+  width: 100%;
+  padding-left: var(--space-12);
+  cursor: pointer;
+  background-color: var(--glass-bg);
+}
+
+.date-range-input::before {
+  content: "📅";
+  position: absolute;
+  left: var(--space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: var(--text-lg);
+  pointer-events: none;
+}
+
+/* Date picker popup */
+.date-picker-popup {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: var(--space-2);
+  background: var(--forest-canopy);
+  border: 2px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  z-index: 100;
+  padding: var(--space-4);
+  display: none;
+  min-width: 600px;
+}
+
+.date-picker-popup.active {
+  display: block;
+}
+
+/* Date picker header */
+.date-picker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+/* Calendar containers */
+.date-picker-calendars {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+}
+
+/* Calendar headers */
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-3);
+}
+
+.calendar-title {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.calendar-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.nav-btn {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: var(--text-lg);
+  color: var(--text-primary);
+}
+
+.nav-btn:hover {
+  background: var(--adventure-blue);
+  color: white;
+  border-color: var(--adventure-blue);
+}
+
+.current-month {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-primary);
+  min-width: 120px;
+  text-align: center;
+}
+
+/* Calendar styling */
+.date-picker-calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--space-1);
+}
+
+.calendar-day-header {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  color: var(--text-primary);
+}
+
+.calendar-day:hover:not(.other-month) {
+  background: var(--glass-light);
+  color: var(--adventure-blue);
+}
+
+.calendar-day.other-month {
+  color: var(--text-muted);
+  opacity: 0.4;
+}
+
+.calendar-day.today {
+  background: var(--glass-border);
+  font-weight: var(--font-semibold);
+}
+
+.calendar-day.selected {
+  background: var(--adventure-blue);
+  color: white;
+  font-weight: var(--font-semibold);
+}
+
+.calendar-day.in-range {
+  background: rgba(74, 144, 226, 0.2);
+  color: var(--text-primary);
+}
+
+.calendar-day.selected.in-range {
+  background: var(--adventure-blue);
+  color: white;
+}
+
+/* ===========================================
+   SPECIFIC FIELD IMPROVEMENTS
+   =========================================== */
+
+/* Title and location full width */
+#title,
+#location,
+#description,
+#photo_alt_text {
+  width: 100%;
+}
+
+/* Text areas with better sizing */
+#trip-form .form-textarea {
+  min-height: 100px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+/* Trip metadata section improvements */
+.trip-metadata-section {
+  background: var(--glass-subtle);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  margin: var(--space-5) 0;
+}
+
+.metadata-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+  margin-bottom: var(--space-4);
+}
+
+/* ===========================================
+   CLICKABLE HERO IMAGE UPLOAD
+   =========================================== */
+
+.adventure-image-container {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.adventure-image-container.clickable-upload {
+  border: 2px dashed transparent;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.adventure-image-container.clickable-upload:hover {
+  border-color: var(--adventure-blue);
+  transform: scale(1.02);
+}
+
+.adventure-image-container.clickable-upload:hover .placeholder-image {
+  background: rgba(74, 144, 226, 0.1);
+}
+
+/* Enhanced placeholder styling */
+.placeholder-image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  background: var(--glass-subtle);
+  transition: all 0.3s ease;
+  padding: var(--space-6);
+  text-align: center;
+}
+
+.placeholder-icon {
+  font-size: 4rem;
+  margin-bottom: var(--space-4);
+  opacity: 0.6;
+}
+
+.placeholder-text {
+  font-size: var(--text-lg);
+  font-weight: var(--font-medium);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-3) 0;
+}
+
+.upload-hint {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  padding: var(--space-2) var(--space-4);
+  background: var(--glass-bg);
+  border-radius: var(--radius-md);
+  display: inline-block;
+}
+
+/* Upload overlay for existing images */
+.upload-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+  z-index: 5;
+}
+
+.upload-overlay.show {
+  opacity: 1;
+}
+
+.upload-overlay.hidden {
+  display: none;
+}
+
+.upload-overlay-content {
+  text-align: center;
+  color: white;
+}
+
+.upload-icon {
+  font-size: 3rem;
+  margin-bottom: var(--space-3);
+}
+
+.upload-text {
+  font-size: var(--text-lg);
+  font-weight: var(--font-medium);
+  margin: 0;
+}
+
+/* When image exists, show overlay on hover */
+.adventure-image-container:hover .upload-overlay:not(.hidden) {
+  opacity: 1;
+}
+
+/* Improve adventure image styling */
+.adventure-image {
+  transition: all 0.3s ease;
+}
+
+.adventure-image-container:hover .adventure-image {
+  transform: scale(1.05);
+  filter: brightness(0.8);
+}
+
+/* ===========================================
+   PHOTO UPLOAD IMPROVEMENTS
+   =========================================== */
+
+.photo-upload-section {
+  margin: var(--space-6) 0;
+}
+
+.photo-upload-dropzone {
+  border: 2px dashed var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  text-align: center;
+  background: var(--glass-subtle);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.photo-upload-dropzone:hover {
+  border-color: var(--adventure-blue);
+  background: var(--glass-light);
+  transform: translateY(-2px);
+}
+
+.photo-preview-inline {
+  margin-top: var(--space-4);
+}
+
+.preview-image-inline {
+  max-width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--glass-border);
+}
+
+.photo-controls {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  justify-content: center;
+}
+
+/* ===========================================
+   FORM SECTIONS SPACING
+   =========================================== */
+
+#trip-form .form-section {
+  padding: var(--space-4);
+}
+
+/* Tab panels with consistent spacing */
+.form-section[role="tabpanel"] {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===========================================
+   TOGGLE SWITCHES
+   =========================================== */
+
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+  padding: var(--space-2) 0;
+}
+
+.toggle-slider {
+  position: relative;
+  width: 48px;
+  height: 24px;
+  background: var(--glass-border);
+  border-radius: var(--radius-full);
+  transition: all 0.3s ease;
+}
+
+.toggle-slider::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: var(--radius-full);
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background: var(--adventure-blue);
+}
+
+.toggle-switch input:checked + .toggle-slider::after {
+  transform: translateX(24px);
+}
+
+/* ===========================================
+   FORM ACTIONS
+   =========================================== */
+
+.form-actions {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--glass-border);
+  flex-wrap: wrap;
+}
+
+.form-actions .btn {
+  min-width: 140px;
+}
+
+#btn-delete-trip {
+  margin-left: auto;
+}
+
+/* ===========================================
+   RESPONSIVE IMPROVEMENTS
+   =========================================== */
+
+@media (max-width: 768px) {
+  #trip-form .form-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  
+  .metadata-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .date-range-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .form-actions .btn {
+    width: 100%;
+  }
+  
+  #btn-delete-trip {
+    margin-left: 0;
+    margin-top: var(--space-3);
+  }
+}
+
+/* ===========================================
+   ACCESSIBILITY
+   =========================================== */
+
+/* Focus visible for keyboard navigation */
+#trip-form *:focus-visible {
+  outline: 2px solid var(--adventure-blue);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  #trip-form .form-input,
+  #trip-form .form-select,
+  #trip-form .form-textarea {
+    border-width: 3px;
+  }
+}

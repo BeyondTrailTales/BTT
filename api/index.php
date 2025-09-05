@@ -20,6 +20,13 @@ if (!file_exists(DB_PATH) || filesize(DB_PATH) === 0) {
 $route = $_GET['route'] ?? 'health';
 $method = get_http_method();
 
+// DEBUG: Log all API requests
+error_log("DEBUG API: Method=$method, Route=$route, ID=" . ($id ?? 'null'));
+if ($method === 'PUT' && $route === 'trips') {
+    error_log("DEBUG API PUT TRIPS: _FILES = " . print_r($_FILES, true));
+    error_log("DEBUG API PUT TRIPS: _POST = " . print_r($_POST, true));
+}
+
 // Handle ID parameter - can be numeric or string (for special routes)
 $id = $_GET['id'] ?? null;
 if ($id && is_numeric($id)) {

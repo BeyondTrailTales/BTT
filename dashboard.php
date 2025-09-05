@@ -1,7 +1,9 @@
 <?php
 /**
- * BeyondTrailTales - Unified Dashboard
- * Main landing page with overview of trips, backpacks, and achievements
+ * BeyondTrailTales - Dashboard (Trailhead)
+ * 
+ * Gamified dashboard using the new Duolingo Forest theme system
+ * with engaging animations and interactive elements
  */
 
 // Load bootstrap
@@ -15,576 +17,563 @@ $pageTitle = 'Trailhead';
 $pageDescription = 'Your adventure command center - plan trips, manage gear, and track your progress';
 $pageId = 'dashboard';
 
+// Add modern unified CSS for enhanced UI/UX
+$pageStyles = $pageStyles ?? [];
+$pageStyles[] = 'css/btt-unified-modern.css';
+$pageStyles[] = 'css/dashboard-clean.css?v=' . time(); // Clean dashboard design with cache bust
+$pageStyles[] = 'css/nav-scrollbar-fix.css?v=' . time(); // Fix navigation scrollbar
+
+// Force no-cache headers to ensure fresh data
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
+
+// Include Database class
+require_once __DIR__ . '/api/classes/Database.php';
+
+// Get database connection
+$db = Database::getInstance();
+
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    redirect_to_login();
+}
+$user_id = $_SESSION['user_id'];
+
+// Fetch real dashboard data from the database
+$dashboardStats = [];
+
+try {
+    // Debug: Log user_id to check if it's correct
+    error_log("Dashboard loading for user_id: " . $user_id);
+    
+    // Get trip statistics - fetchOne returns array, get first value
+    $trips_count = $db->fetchOne("SELECT COUNT(*) as count FROM trips WHERE user_id = ?", [$user_id]);
+    $dashboardStats['trips_count'] = $trips_count ? $trips_count['count'] : 0;
+    error_log("Trips count: " . $dashboardStats['trips_count']);
+    
+    $completed_trips = $db->fetchOne("SELECT COUNT(*) as count FROM trips WHERE user_id = ? AND completed = 1", [$user_id]);
+    $dashboardStats['completed_trips'] = $completed_trips ? $completed_trips['count'] : 0;
+    
+    $total_miles = $db->fetchOne("SELECT COALESCE(SUM(distance), 0) as miles FROM trips WHERE user_id = ? AND completed = 1 AND distance_unit = 'miles'", [$user_id]);
+    $dashboardStats['total_miles'] = $total_miles ? $total_miles['miles'] : 0;
+    
+    $gear_items = $db->fetchOne("SELECT COUNT(*) as count FROM user_gear WHERE user_id = ? AND deleted_at IS NULL", [$user_id]);
+    $dashboardStats['gear_items'] = $gear_items ? $gear_items['count'] : 0;
+    
+    $backpacks = $db->fetchOne("SELECT COUNT(*) as count FROM backpacks WHERE user_id = ?", [$user_id]);
+    $dashboardStats['backpacks'] = $backpacks ? $backpacks['count'] : 0;
+    
+    $upcoming_trips = $db->fetchOne("SELECT COUNT(*) as count FROM trips WHERE user_id = ? AND completed = 0 AND start_date > date('now')", [$user_id]);
+    $dashboardStats['upcoming_trips'] = $upcoming_trips ? $upcoming_trips['count'] : 0;
+    
+    // Get recent trips with photos for activity feed
+    $recentTrips = $db->fetchAll("
+        SELECT title, photo_path, photo_alt_text, 
+               CASE 
+                 WHEN completed = 1 THEN 'trip_completed' 
+                 ELSE 'trip_planned' 
+               END as type,
+               CASE 
+                 WHEN updated_at > datetime('now', '-1 day') THEN 'today'
+                 WHEN updated_at > datetime('now', '-2 days') THEN '1 day ago'
+                 WHEN updated_at > datetime('now', '-7 days') THEN substr(cast((julianday('now') - julianday(updated_at)) as int), 1, 1) || ' days ago'
+                 WHEN updated_at > datetime('now', '-30 days') THEN substr(cast((julianday('now') - julianday(updated_at))/7 as int), 1, 1) || ' weeks ago'
+                 ELSE 'some time ago'
+               END as date,
+               distance, elevation_gain, completed
+        FROM trips 
+        WHERE user_id = ? 
+        ORDER BY updated_at DESC 
+        LIMIT 3", [$user_id]);
+    
+    // Convert to activity format
+    $recentActivity = [];
+    foreach ($recentTrips as $trip) {
+        $xp = 25; // Base XP
+        if ($trip['completed']) {
+            $xp += ($trip['distance'] * 5) + (($trip['elevation_gain'] / 1000) * 10); // Distance and elevation bonuses
+        }
+        
+        $recentActivity[] = [
+            'type' => $trip['type'],
+            'title' => $trip['title'],
+            'date' => $trip['date'],
+            'xp' => round($xp),
+            'photo_path' => $trip['photo_path'],
+            'photo_alt_text' => $trip['photo_alt_text']
+        ];
+    }
+    
+    // Get recent trips for the adventures card (increased limit to 6)
+    $recentTripsData = $db->fetchAll("
+        SELECT id, title, distance, elevation_gain, start_date, completed, photo_path, photo_alt_text,
+               CASE 
+                 WHEN completed = 1 THEN 'Completed ' || 
+                   CASE 
+                     WHEN start_date > datetime('now', '-1 day') THEN 'today'
+                     WHEN start_date > datetime('now', '-2 days') THEN '1 day ago'
+                     WHEN start_date > datetime('now', '-7 days') THEN substr(cast((julianday('now') - julianday(start_date)) as int), 1, 1) || ' days ago'
+                     WHEN start_date > datetime('now', '-30 days') THEN substr(cast((julianday('now') - julianday(start_date))/7 as int), 1, 1) || ' weeks ago'
+                     ELSE 'some time ago'
+                   END
+                 ELSE 'Planned for ' || date(start_date)
+               END as status_text
+        FROM trips 
+        WHERE user_id = ? 
+        ORDER BY CASE WHEN completed = 1 THEN start_date ELSE updated_at END DESC 
+        LIMIT 6", [$user_id]);
+
+    // Get ALL backpacks with real data (removed LIMIT to show all)
+    $recentBackpacks = $db->fetchAll("
+        SELECT b.id, b.name, b.description, b.created_at, b.updated_at,
+               COUNT(DISTINCT bg.gear_id) as item_count,
+               COALESCE(SUM(CASE WHEN g.weight_g IS NOT NULL THEN g.weight_g ELSE 0 END), 0) as total_weight_g
+        FROM backpacks b
+        LEFT JOIN backpack_gear bg ON b.id = bg.backpack_id
+        LEFT JOIN user_gear g ON bg.gear_id = g.id AND g.deleted_at IS NULL
+        WHERE b.user_id = ?
+        GROUP BY b.id, b.name, b.description, b.created_at, b.updated_at
+        ORDER BY b.updated_at DESC", [$user_id]);
+
+    // Get recent gear additions (increased to show more items)
+    $recentGearItems = $db->fetchAll("
+        SELECT name, category, weight_g, created_at
+        FROM user_gear 
+        WHERE user_id = ? AND deleted_at IS NULL
+        ORDER BY created_at DESC 
+        LIMIT 5", [$user_id]);
+
+} catch (Exception $e) {
+    // Fallback to default values if database query fails
+    error_log("Dashboard data fetch error: " . $e->getMessage());
+    $dashboardStats = [
+        'trips_count' => 0,
+        'completed_trips' => 0,
+        'total_miles' => 0,
+        'gear_items' => 0,
+        'backpacks' => 0,
+        'upcoming_trips' => 0
+    ];
+    $recentActivity = [];
+    $recentTripsData = [];
+    $recentBackpacks = [];
+    $recentGearItems = [];
+}
+
+$achievements = [
+    ['id' => 'first_summit', 'title' => 'First Summit', 'description' => 'Completed your first mountain peak', 'earned' => $dashboardStats['completed_trips'] >= 1],
+    ['id' => 'gear_collector', 'title' => 'Gear Collector', 'description' => 'Added 50+ gear items', 'earned' => $dashboardStats['gear_items'] >= 50],
+    ['id' => 'pack_master', 'title' => 'Pack Master', 'description' => 'Created 5 different packs', 'earned' => $dashboardStats['backpacks'] >= 5],
+    ['id' => 'trail_veteran', 'title' => 'Trail Veteran', 'description' => 'Hiked 500+ miles', 'earned' => $dashboardStats['total_miles'] >= 500]
+];
+
 // Include the unified template header
 require_once __DIR__ . '/includes/template-header.php';
 ?>
 
-<body class="dashboard-page">
-<div class="dashboard-container">
-<!-- Welcome Section -->
-    <section class="welcome-section">
-        <div class="welcome-content">
-            <h1 class="welcome-title">
-                Welcome to your Trailhead, <span class="user-name"><?php echo e($_SESSION['user_name'] ?? 'Explorer'); ?></span>! 🏔️
-            </h1>
-            <p class="welcome-subtitle">Let's get you ready for the trails!</p>
-        </div>
-    </section>
-
-<!-- Quick Actions Bar - Horizontal -->
-    <section class="quick-actions-bar">
-        <div class="quick-actions-container">
-            <a href="<?php echo route_url('trips'); ?>?action=new" class="quick-action-item">
-                <span class="quick-icon">🗺️</span>
-                <span class="quick-label">Plan Trip</span>
-            </a>
-            <a href="<?php echo route_url('backpacks'); ?>?action=quick-pack" class="quick-action-item">
-                <span class="quick-icon">⚡</span>
-                <span class="quick-label">Quick Pack</span>
-            </a>
-            <button class="quick-action-item" onclick="copyLastTrip()">
-                <span class="quick-icon">📋</span>
-                <span class="quick-label">Copy Trip</span>
-            </button>
-            <a href="<?php echo route_url('backpacks'); ?>" class="quick-action-item">
-                <span class="quick-icon">🎒</span>
-                <span class="quick-label">Build Pack</span>
-            </a>
-            <a href="<?php echo route_url('gear'); ?>" class="quick-action-item">
-                <span class="quick-icon">⛺</span>
-                <span class="quick-label">Add Gear</span>
-            </a>
-        </div>
-    </section>
-
-    <!-- Main Dashboard Grid - Truly Horizontal Layout -->
-    <div class="dashboard-horizontal-grid">
+<!-- Modern Dashboard Hero -->
+<div class="modern-dashboard-hero modern-animate-slide-in">
+    <div class="modern-dashboard-hero-content">
+        <h1 class="modern-dashboard-hero-title">Welcome back to your Trailhead! 🏔️</h1>
+        <p class="modern-dashboard-hero-subtitle">Ready for your next adventure? Let's explore what's waiting for you on the trails.</p>
         
-        <!-- Top Row: Trips, Backpacks, and Gear in one line -->
-        <div class="primary-row">
-            
-            <!-- Trips Compact Card -->
-            <div class="compact-card trips-card">
-                <div class="compact-header">
-                    <span class="card-icon">🏔️</span>
-                    <h3>Trips</h3>
-                    <a href="<?php echo route_url('trips'); ?>" class="link-arrow">→</a>
-                </div>
-                <div class="compact-stats">
-                    <div class="stat">
-                        <span class="stat-num" id="upcoming-trips">0</span>
-                        <span class="stat-lbl">Upcoming</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-num" id="completed-trips">0</span>
-                        <span class="stat-lbl">Done</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-num" id="total-miles">0</span>
-                        <span class="stat-lbl">Miles</span>
-                    </div>
-                </div>
-                <div id="next-trip-mini" class="mini-preview">
-                    <!-- Dynamic content -->
-                </div>
-            </div>
-            
-            <!-- Backpacks Compact Card -->
-            <div class="compact-card packs-card">
-                <div class="compact-header">
-                    <span class="card-icon">🎒</span>
-                    <h3>Backpacks</h3>
-                    <a href="<?php echo route_url('backpacks'); ?>" class="link-arrow">→</a>
-                </div>
-                <div class="compact-stats">
-                    <div class="stat">
-                        <span class="stat-num" id="total-packs">0</span>
-                        <span class="stat-lbl">Packs</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-num" id="gear-items">0</span>
-                        <span class="stat-lbl">Gear</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-num" id="avg-weight">0</span>
-                        <span class="stat-lbl">Avg kg</span>
-                    </div>
-                </div>
-                <div class="mini-actions">
-                    <button class="mini-btn" onclick="window.location.href='<?php echo route_url('backpacks'); ?>?action=check'">Check</button>
-                    <button class="mini-btn primary" onclick="window.location.href='<?php echo route_url('backpacks'); ?>?action=new'">New</button>
-                </div>
-            </div>
-            
-            <!-- My Gear Compact Card -->
-            <div class="compact-card gear-card">
-                <div class="compact-header">
-                    <span class="card-icon">⛺</span>
-                    <h3>My Gear</h3>
-                    <a href="<?php echo route_url('gear'); ?>" class="link-arrow">→</a>
-                </div>
-                <div class="compact-stats">
-                    <div class="stat">
-                        <span class="stat-num" id="gear-total">42</span>
-                        <span class="stat-lbl">Items</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-num" id="gear-favorites">8</span>
-                        <span class="stat-lbl">Favs</span>
-                    </div>
-                    <div class="stat">
-                        <span class="stat-num" id="gear-recent">3</span>
-                        <span class="stat-lbl">New</span>
-                    </div>
-                </div>
-                <button class="mini-btn w-full" onclick="window.location.href='<?php echo route_url('gear'); ?>'">Add Gear</button>
-            </div>
-            
-            <!-- Trail Stats Compact -->
-            <div class="compact-card stats-card">
-                <div class="compact-header">
-                    <span class="card-icon">📊</span>
-                    <h3>Trail Stats</h3>
-                </div>
-                <div class="stats-horizontal">
-                    <div class="stat-h">
-                        <span class="h-icon">🏕️</span>
-                        <span class="h-num" id="trips-total">0</span>
-                        <span class="h-lbl">Trips</span>
-                    </div>
-                    <div class="stat-h">
-                        <span class="h-icon">📏</span>
-                        <span class="h-num" id="miles-total">0</span>
-                        <span class="h-lbl">Miles</span>
-                    </div>
-                    <div class="stat-h">
-                        <span class="h-icon">⛰️</span>
-                        <span class="h-num" id="elevation-total">0</span>
-                        <span class="h-lbl">Ft</span>
-                    </div>
-                    <div class="stat-h">
-                        <span class="h-icon">🎒</span>
-                        <span class="h-num" id="packs-total">0</span>
-                        <span class="h-lbl">Packs</span>
-                    </div>
-                </div>
-            </div>
+        <!-- Modern Quick Actions -->
+        <div class="modern-dashboard" style="grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); max-width: 600px; margin: var(--space-xl) auto 0;">
+            <a href="<?php echo route_url('trips'); ?>?action=new" class="modern-btn modern-btn-lg modern-animate-slide-in" style="background: var(--adventure-primary);">
+                🗺️ Plan Adventure
+            </a>
+            <a href="<?php echo route_url('backpacks'); ?>?action=new" class="modern-btn modern-btn-lg modern-animate-slide-in" style="background: var(--pack-primary);">
+                🎒 Build Pack
+            </a>
+            <a href="<?php echo route_url('gear'); ?>?action=add" class="modern-btn modern-btn-lg modern-animate-slide-in" style="background: var(--gear-primary);">
+                📦 Add Gear
+            </a>
         </div>
-        
-        <!-- Second Row: Achievements and Activity Side by Side -->
-        <div class="secondary-row">
-            
-            <!-- Achievements Horizontal -->
-            <div class="achievements-horizontal">
-                <div class="ach-header">
-                    <h3>🏆 Achievements</h3>
-                    <div class="xp-badge">
-                        <span id="total-xp">0</span> XP
-                    </div>
-                </div>
-                <div class="ach-content">
-                    <div class="level-bar">
-                        <span class="lvl">Lvl <span id="user-level">1</span></span>
-                        <div class="progress-inline">
-                            <div class="progress-fill" id="level-progress" style="width: 0%"></div>
-                        </div>
-                        <span class="xp-text"><span id="xp-current">0</span>/<span id="xp-next">100</span></span>
-                    </div>
-                    <div class="badges-row">
-                        <div class="badge-mini earned" title="First Steps">🥾</div>
-                        <div class="badge-mini" title="Summit Seeker">🏔️</div>
-                        <div class="badge-mini" title="Trail Master">🌟</div>
-                        <div class="streak-mini">
-                            🔥 <span id="streak-days">0</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
     </div>
-
-            <!-- Recent Activity Horizontal -->
-            <div class="activity-horizontal">
-                <div class="activity-header">
-                    <h3>Recent Activity</h3>
-                </div>
-                <div class="activity-tabs">
-                    <div class="tab-section">
-                        <h4>Your Adventures</h4>
-                        <div id="recent-trips" class="activity-compact">
-                            <!-- Dynamic content -->
-                        </div>
-                    </div>
-                    <div class="tab-section">
-                        <h4>Your Packs</h4>
-                        <div id="recent-backpacks" class="activity-compact">
-                            <!-- Dynamic content -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 </div>
 
-<!-- Include Dashboard styles -->
-<link rel="stylesheet" href="/BTT/assets/css/dashboard-compact.css">
+<!-- Dashboard Stats Grid -->
+<div class="stats-grid animate-fade-in-up animate-delay-300">
+    <div class="stat-card card-glow">
+        <div class="stat-number animate-count-up"><?php echo $dashboardStats['trips_count']; ?></div>
+        <div class="stat-label">Total Adventures</div>
+    </div>
+    <div class="stat-card card-glow">
+        <div class="stat-number animate-count-up"><?php echo $dashboardStats['completed_trips']; ?></div>
+        <div class="stat-label">Completed</div>
+    </div>
+    <div class="stat-card card-glow">
+        <div class="stat-number animate-count-up"><?php echo $dashboardStats['total_miles']; ?></div>
+        <div class="stat-label">Miles Hiked</div>
+    </div>
+    <div class="stat-card card-glow">
+        <div class="stat-number animate-count-up"><?php echo $dashboardStats['gear_items']; ?></div>
+        <div class="stat-label">Gear Items</div>
+    </div>
+</div>
 
-<script>
-// Load dashboard data
-document.addEventListener('DOMContentLoaded', function() {
-    loadTrailheadData();
-});
-
-async function loadTrailheadData() {
-    // Load overview data
-    loadTripsOverview();
-    loadPacksOverview();
+<!-- Main Dashboard Content Grid -->
+<div class="dashboard-primary-grid animate-fade-in-up animate-delay-500">
     
-    // Load gear stats
-    loadGearStats();
-    
-    // Load achievements
-    loadAchievements();
-    
-    // Load trail stats
-    loadTrailStats();
-    
-    // Load recent activity
-    loadRecentTrips();
-    loadRecentBackpacks();
-}
-
-async function loadTripsOverview() {
-    try {
-        const response = await fetch('<?php echo BTT_API_URL; ?>?route=trips');
-        if (response.ok) {
-            const tripsData = await response.json();
-            const trips = tripsData.data || tripsData || [];
-            
-            // Calculate stats
-            const now = new Date();
-            const upcomingTrips = trips.filter(trip => {
-                if (trip.start_date) {
-                    const startDate = new Date(trip.start_date);
-                    return startDate >= now && !trip.completed;
-                }
-                return false;
-            });
-            const completedTrips = trips.filter(trip => trip.completed);
-            const totalMiles = trips.reduce((sum, trip) => sum + (parseFloat(trip.distance) || 0), 0);
-            
-            // Update stats
-            document.getElementById('upcoming-trips').textContent = upcomingTrips.length;
-            document.getElementById('completed-trips').textContent = completedTrips.length;
-            document.getElementById('total-miles').textContent = Math.round(totalMiles);
-            
-            // Show next trip mini preview
-            const previewContainer = document.getElementById('next-trip-mini');
-            if (upcomingTrips.length > 0) {
-                const nextTrip = upcomingTrips.sort((a, b) => new Date(a.start_date) - new Date(b.start_date))[0];
-                const daysUntil = Math.ceil((new Date(nextTrip.start_date) - now) / (1000 * 60 * 60 * 24));
-                
-                previewContainer.innerHTML = `
-                    <strong>${escapeHtml(nextTrip.title)}</strong><br>
-                    <span style="opacity: 0.7">📅 ${daysUntil} days away</span>
-                `;
-            } else {
-                previewContainer.innerHTML = `<span style="opacity: 0.6">No upcoming trips</span>`;
-            }
-        }
-    } catch (error) {
-        console.error('Error loading trips overview:', error);
-    }
-}
-
-async function loadPacksOverview() {
-    try {
-        const response = await fetch('<?php echo BTT_API_URL; ?>?route=backpacks');
-        if (response.ok) {
-            const backpacksData = await response.json();
-            const backpacks = backpacksData.data || backpacksData || [];
-            
-            // Calculate stats
-            const totalPacks = backpacks.length;
-            const gearCount = backpacks.reduce((sum, pack) => sum + (pack.total_items || 0), 0);
-            const avgWeight = totalPacks > 0 ? 
-                backpacks.reduce((sum, pack) => sum + (pack.base_weight_g || 0), 0) / totalPacks / 1000 : 0;
-            
-            // Update stats
-            document.getElementById('total-packs').textContent = totalPacks;
-            document.getElementById('gear-items').textContent = gearCount;
-            document.getElementById('avg-weight').textContent = avgWeight.toFixed(1) + 'kg';
-        }
-    } catch (error) {
-        console.error('Error loading packs overview:', error);
-    }
-}
-
-async function loadPackStatus() {
-    try {
-        const response = await fetch('<?php echo BTT_API_URL; ?>?route=backpacks');
-        if (response.ok) {
-            const backpacksData = await response.json();
-            const backpacks = backpacksData.data || backpacksData || [];
-            
-            if (backpacks.length > 0) {
-                // Get the most recently used pack
-                const latestPack = backpacks[0];
-                const baseWeight = latestPack.base_weight_g ? (latestPack.base_weight_g / 1000).toFixed(1) + 'kg' : '--';
-                const itemCount = latestPack.total_items || 0;
-                
-                document.getElementById('base-weight').textContent = baseWeight;
-                document.getElementById('total-items').textContent = itemCount;
-            }
-        }
-    } catch (error) {
-        console.error('Error loading pack status:', error);
-    }
-}
-
-async function loadGearStats() {
-    // This would need a gear endpoint - for now using placeholder
-    document.getElementById('gear-total').textContent = '42';
-    document.getElementById('gear-favorites').textContent = '8';
-    document.getElementById('gear-recent').textContent = '3';
-}
-
-async function loadAchievements() {
-    try {
-        const response = await fetch('/BTT/api/routes/gamification.php?action=status');
-        if (response.ok) {
-            const stats = await response.json();
-            
-            // Update XP and level
-            document.getElementById('total-xp').textContent = stats.total_xp || 0;
-            document.getElementById('user-level').textContent = stats.level || 1;
-            document.getElementById('xp-current').textContent = stats.current_xp || 0;
-            document.getElementById('xp-next').textContent = stats.next_level_xp || 100;
-            document.getElementById('streak-days').textContent = stats.streak_days || 0;
-            
-            // Update progress bar
-            const progress = ((stats.current_xp || 0) / (stats.next_level_xp || 100)) * 100;
-            document.getElementById('level-progress').style.width = progress + '%';
-        }
-    } catch (error) {
-        console.error('Error loading achievements:', error);
-    }
-}
-
-async function loadTrailStats() {
-    try {
-        // Load trips
-        const tripsResponse = await fetch('<?php echo BTT_API_URL; ?>?route=trips');
-        if (tripsResponse.ok) {
-            const tripsData = await tripsResponse.json();
-            const trips = tripsData.data || tripsData || [];
-            document.getElementById('trips-total').textContent = trips.length;
-            
-            // Calculate total miles and elevation
-            let totalMiles = 0;
-            let totalElevation = 0;
-            trips.forEach(trip => {
-                if (trip.distance && trip.distance_unit === 'miles') {
-                    totalMiles += parseFloat(trip.distance);
-                } else if (trip.distance && trip.distance_unit === 'km') {
-                    totalMiles += parseFloat(trip.distance) * 0.621371;
-                }
-                if (trip.elevation_gain) {
-                    totalElevation += parseInt(trip.elevation_gain);
-                }
-            });
-            
-            document.getElementById('miles-total').textContent = Math.round(totalMiles);
-            document.getElementById('elevation-total').textContent = totalElevation.toLocaleString();
-        }
-        
-        // Load packs
-        const packsResponse = await fetch('<?php echo BTT_API_URL; ?>?route=backpacks');
-        if (packsResponse.ok) {
-            const packsData = await packsResponse.json();
-            const packs = packsData.data || packsData || [];
-            document.getElementById('packs-total').textContent = packs.length;
-        }
-    } catch (error) {
-        console.error('Error loading trail stats:', error);
-    }
-}
-
-// Quick action: Copy Last Trip
-async function copyLastTrip() {
-    if (typeof UX !== 'undefined' && UX.loading) {
-        UX.loading.show('Finding your last adventure...');
-    }
-    
-    try {
-        // Get the most recent trip
-        const response = await fetch('<?php echo BTT_API_URL; ?>?route=trips');
-        if (response.ok) {
-            const tripsData = await response.json();
-            const trips = tripsData.data || tripsData || [];
-            
-            if (trips.length > 0) {
-                // Sort by created date or ID to get most recent
-                const lastTrip = trips[trips.length - 1];
-                
-                // Redirect to new trip form with copied data
-                const params = new URLSearchParams({
-                    action: 'new',
-                    copy_from: lastTrip.id,
-                    title: lastTrip.title + ' (Copy)',
-                    location: lastTrip.location || '',
-                    trip_type: lastTrip.trip_type || ''
-                });
-                
-                window.location.href = '<?php echo route_url('trips'); ?>?' + params.toString();
-            } else {
-                if (typeof UX !== 'undefined' && UX.toast) {
-                    UX.toast.info('No previous trips to copy. Start fresh!');
-                }
-                window.location.href = '<?php echo route_url('trips'); ?>?action=new';
-            }
-        }
-    } catch (error) {
-        console.error('Error copying trip:', error);
-        if (typeof UX !== 'undefined' && UX.toast) {
-            UX.toast.error('Failed to copy trip. Please try again.');
-        }
-    } finally {
-        if (typeof UX !== 'undefined' && UX.loading) {
-            UX.loading.hide();
-        }
-    }
-}
-
-async function loadStatistics() {
-    try {
-        // Load trips count
-        const tripsResponse = await fetch('<?php echo BTT_API_URL; ?>?route=trips');
-        if (tripsResponse.ok) {
-            const tripsData = await tripsResponse.json();
-            const trips = tripsData.data || [];
-            document.getElementById('trips-count').textContent = trips.length || 0;
-        }
-        
-        // Load backpacks count
-        const backpacksResponse = await fetch('<?php echo BTT_API_URL; ?>?route=backpacks');
-        if (backpacksResponse.ok) {
-            const backpacksData = await backpacksResponse.json();
-            const backpacks = backpacksData.data || [];
-            document.getElementById('backpacks-count').textContent = backpacks.length || 0;
-        }
-        
-        // Load gamification stats
-        const gamificationResponse = await fetch('/BTT/api/routes/gamification.php?action=status');
-        if (gamificationResponse.ok) {
-            const stats = await gamificationResponse.json();
-            document.getElementById('level-display').textContent = stats.level || 1;
-            document.getElementById('streak-display').textContent = stats.streak_days || 0;
-        }
-    } catch (error) {
-        console.error('Error loading statistics:', error);
-    }
-}
-
-async function loadRecentTrips() {
-    const container = document.getElementById('recent-trips');
-    
-    try {
-        const response = await fetch('<?php echo BTT_API_URL; ?>?route=trips');
-        if (response.ok) {
-            const tripsData = await response.json();
-            const trips = tripsData.data || [];
-            
-            if (trips && trips.length > 0) {
-                // Show only the 3 most recent trips
-                const recentTrips = trips.slice(0, 3);
-                
-                let html = '';
-                recentTrips.forEach(trip => {
-                    const startDate = trip.start_date ? new Date(trip.start_date).toLocaleDateString() : 'Not set';
-                    html += `
-                        <div class="activity-item">
-                            <div>
-                                <div class="activity-item-title">${escapeHtml(trip.title)}</div>
-                                <div class="activity-item-meta">📅 ${startDate}</div>
+    <!-- Recent Adventures Card -->
+    <div class="card card-adventures dashboard-card dashboard-card-adventures animate-float">
+        <div class="card-header">
+            <h2 class="card-title">🗺️ Recent Adventures</h2>
+            <p class="card-subtitle">Your latest trail conquests</p>
+        </div>
+        <div class="card-body">
+            <?php 
+            // Debug output
+            error_log("Recent trips data count: " . count($recentTripsData ?? []));
+            if (!empty($recentTripsData)): ?>
+                <div class="recent-trips-list">
+                    <?php foreach ($recentTripsData as $trip): ?>
+                        <div class="trip-item" onclick="location.href='<?php echo route_url('trips'); ?>?view=<?= $trip['id'] ?? '' ?>'">
+                            <?php if (!empty($trip['photo_path']) && file_exists(__DIR__ . '/' . $trip['photo_path'])): ?>
+                                <div class="trip-photo">
+                                    <img src="<?= htmlspecialchars($trip['photo_path']) ?>" 
+                                         alt="<?= htmlspecialchars($trip['photo_alt_text'] ?? 'Trip photo') ?>" 
+                                         class="trip-photo-img"
+                                         onerror="this.parentElement.innerHTML='<div class=\'trip-icon\'><?= $trip['completed'] ? '⛰️' : '🗺️' ?></div>'">
+                                </div>
+                            <?php else: ?>
+                                <div class="trip-icon"><?= $trip['completed'] ? '⛰️' : '🗺️' ?></div>
+                            <?php endif; ?>
+                            <div class="trip-info">
+                                <h4><?= htmlspecialchars($trip['title'] ?? 'Untitled Adventure') ?></h4>
+                                <p>
+                                    <?php if (($trip['distance'] ?? 0) > 0): ?>
+                                        <?= number_format($trip['distance'], 1) ?> miles
+                                        <?php if (($trip['elevation_gain'] ?? 0) > 0): ?>
+                                            • <?= number_format($trip['elevation_gain']) ?> ft elevation
+                                        <?php endif; ?>
+                                    <?php else: ?>
+                                        Adventure details to be added
+                                    <?php endif; ?>
+                                </p>
+                                <span class="trip-date"><?= htmlspecialchars($trip['status_text'] ?? 'Adventure planned') ?></span>
                             </div>
-                            <a href="<?php echo route_url('trips'); ?>" class="btn btn-sm btn-secondary">View</a>
-                        </div>
-                    `;
-                });
-                
-                container.innerHTML = html;
-            } else {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">🗺️</div>
-                        <p>No trips yet</p>
-                        <a href="<?php echo route_url('trips'); ?>" class="btn btn-primary btn-sm">Plan Your First Trip</a>
-                    </div>
-                `;
-            }
-        }
-    } catch (error) {
-        container.innerHTML = '<div class="error-state">Failed to load trips</div>';
-    }
-}
-
-async function loadRecentBackpacks() {
-    const container = document.getElementById('recent-backpacks');
-    
-    try {
-        const response = await fetch('<?php echo BTT_API_URL; ?>?route=backpacks');
-        if (response.ok) {
-            const backpacksData = await response.json();
-            const backpacks = backpacksData.data || [];
-            
-            if (backpacks && backpacks.length > 0) {
-                // Show only the 3 most recent backpacks
-                const recentBackpacks = backpacks.slice(0, 3);
-                
-                let html = '';
-                recentBackpacks.forEach(backpack => {
-                    const weight = backpack.base_weight || 0;
-                    html += `
-                        <div class="activity-item">
-                            <div>
-                                <div class="activity-item-title">${escapeHtml(backpack.name)}</div>
-                                <div class="activity-item-meta">⚖️ ${weight} kg</div>
+                            <div class="trip-badge">
+                                <?php if ($trip['completed']): ?>
+                                    <span class="badge badge-success">Completed</span>
+                                <?php else: ?>
+                                    <span class="badge badge-info">Planned</span>
+                                <?php endif; ?>
                             </div>
-                            <a href="<?php echo route_url('backpacks'); ?>" class="btn btn-sm btn-secondary">View</a>
                         </div>
-                    `;
-                });
-                
-                container.innerHTML = html;
-            } else {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">🎒</div>
-                        <p>No backpacks yet</p>
-                        <a href="<?php echo route_url('backpacks'); ?>" class="btn btn-primary btn-sm">Create Your First Backpack</a>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <div class="empty-state">
+                    <div class="empty-state-icon">🗺️</div>
+                    <h3 class="empty-state-title">No adventures yet!</h3>
+                    <p class="empty-state-description">Start planning your first hiking adventure and begin earning XP!</p>
+                    <div style="margin-top: 1rem;">
+                        <a href="<?php echo route_url('trips'); ?>?action=new" class="btn btn-adventures">Plan First Adventure</a>
                     </div>
-                `;
-            }
-        }
-    } catch (error) {
-        container.innerHTML = '<div class="error-state">Failed to load backpacks</div>';
-    }
-}
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="card-footer">
+            <a href="<?php echo route_url('trips'); ?>" class="btn btn-adventures">View All Adventures</a>
+        </div>
+    </div>
+    
+    <!-- Backpack Management Card -->
+    <div class="card card-backpacks dashboard-card dashboard-card-backpacks animate-float">
+        <div class="card-header">
+            <h2 class="card-title">🎒 My Backpacks</h2>
+            <p class="card-subtitle">Organized gear for every adventure</p>
+        </div>
+        <div class="card-body">
+            <?php 
+            error_log("Recent backpacks data count: " . count($recentBackpacks ?? []));
+            if (!empty($recentBackpacks)): ?>
+                <div class="pack-preview-grid">
+                    <?php foreach ($recentBackpacks as $pack): ?>
+                        <div class="pack-preview" onclick="location.href='<?php echo route_url('backpacks'); ?>?view=<?= $pack['id'] ?>'">
+                            <div class="pack-icon">🎒</div>
+                            <div style="flex: 1;">
+                                <h4><?= htmlspecialchars($pack['name'] ?? 'Unnamed Pack') ?></h4>
+                                <p>
+                                    <?= (int)$pack['item_count'] ?> items • 
+                                    <?php 
+                                    $weightLbs = round(($pack['total_weight_g'] ?? 0) / 453.592, 1);
+                                    echo $weightLbs > 0 ? $weightLbs . ' lbs' : 'No weight data';
+                                    ?>
+                                </p>
+                                <?php if (!empty($pack['description'])): ?>
+                                    <p style="font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-top: 0.25rem;">
+                                        <?= htmlspecialchars(substr($pack['description'], 0, 50)) ?><?= strlen($pack['description']) > 50 ? '...' : '' ?>
+                                    </p>
+                                <?php endif; ?>
+                            </div>
+                            <span class="pack-status badge <?= $pack['item_count'] > 0 ? 'badge-success' : 'badge-info' ?>">
+                                <?= $pack['item_count'] > 0 ? 'Ready' : 'Empty' ?>
+                            </span>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <div class="empty-state">
+                    <div class="empty-state-icon">🎒</div>
+                    <h3 class="empty-state-title">No packs created yet!</h3>
+                    <p class="empty-state-description">Create your first backpack and start organizing your gear efficiently.</p>
+                    <div style="margin-top: 1rem;">
+                        <a href="<?php echo route_url('backpacks'); ?>?action=new" class="btn btn-backpacks">Create First Pack</a>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="card-footer">
+            <a href="<?php echo route_url('backpacks'); ?>?action=new" class="btn btn-backpacks">Create New Pack</a>
+            <a href="<?php echo route_url('backpacks'); ?>" class="btn btn-secondary">View All Packs</a>
+        </div>
+    </div>
+    
+    <!-- Gear Library Card -->
+    <div class="card card-gear dashboard-card dashboard-card-gear animate-float">
+        <div class="card-header">
+            <h2 class="card-title">📦 Gear Library</h2>
+            <p class="card-subtitle">Your complete equipment collection</p>
+        </div>
+        <div class="card-body">
+            <?php if (!empty($recentGearItems)): ?>
+                <div class="gear-summary">
+                    <div class="gear-total">
+                        <div class="gear-total-number"><?= $dashboardStats['gear_items'] ?></div>
+                        <div class="gear-total-label">Total Items</div>
+                    </div>
+                </div>
+                
+                <!-- Recent Gear Additions -->
+                <div class="recent-gear">
+                    <h4>Recently Added</h4>
+                    <?php foreach ($recentGearItems as $gear): ?>
+                        <div class="gear-item-row" onclick="location.href='<?php echo route_url('gear'); ?>'">
+                            <span class="gear-item-icon">
+                                <?php
+                                $categoryIcons = [
+                                    'shelter' => '⛺',
+                                    'sleep' => '🛏️',
+                                    'cooking' => '🍳',
+                                    'water' => '💧',
+                                    'clothing' => '👕',
+                                    'footwear' => '🥾',
+                                    'navigation' => '🧭',
+                                    'first-aid' => '🏥',
+                                    'electronics' => '📱',
+                                    'tools' => '🔧'
+                                ];
+                                echo $categoryIcons[$gear['category'] ?? 'other'] ?? '📦';
+                                ?>
+                            </span>
+                            <span class="gear-item-name"><?= htmlspecialchars($gear['name'] ?? 'Unnamed Item') ?></span>
+                            <span class="gear-item-weight">
+                                <?php
+                                if (($gear['weight_g'] ?? 0) > 0) {
+                                    $weightLbs = round($gear['weight_g'] / 453.592, 1);
+                                    echo $weightLbs . ' lbs';
+                                } else {
+                                    echo 'No weight';
+                                }
+                                ?>
+                            </span>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <div class="empty-state">
+                    <div class="empty-state-icon">📦</div>
+                    <h3 class="empty-state-title">Build your gear library!</h3>
+                    <p class="empty-state-description">Add your hiking equipment to track weights, organize gear, and build perfect packs.</p>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="card-footer">
+            <a href="<?php echo route_url('gear'); ?>?action=add" class="btn btn-gear">Add Gear</a>
+            <a href="<?php echo route_url('gear'); ?>" class="btn btn-secondary">Browse Library</a>
+        </div>
+    </div>
+    
+    <!-- Progress & Achievements Card -->
+    <div class="card card-progress dashboard-card dashboard-card-progress animate-float twinkle-stars">
+        <div class="card-header">
+            <h2 class="card-title">🏆 Achievements</h2>
+            <p class="card-subtitle">Track your hiking milestones</p>
+        </div>
+        <div class="card-body">
+            <div class="achievements-grid">
+                <?php foreach ($achievements as $achievement): ?>
+                    <div class="achievement <?php echo $achievement['earned'] ? 'earned' : 'locked'; ?>">
+                        <div class="achievement-icon">
+                            <?php if ($achievement['earned']): ?>
+                                🏅
+                            <?php else: ?>
+                                🔒
+                            <?php endif; ?>
+                        </div>
+                        <div class="achievement-content">
+                            <h4 class="achievement-title"><?php echo htmlspecialchars($achievement['title']); ?></h4>
+                            <p class="achievement-description"><?php echo htmlspecialchars($achievement['description']); ?></p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="<?php echo route_url('dashboard'); ?>?view=achievements" class="btn btn-progress">View All Achievements</a>
+        </div>
+    </div>
+    
+</div>
 
-// Utility function to escape HTML
-function escapeHtml(text) {
-    const map = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#039;'
-    };
-    return text.replace(/[&<>"']/g, m => map[m]);
-}
-</script>
+<!-- Secondary Dashboard Content -->
+<div class="dashboard-secondary-grid animate-fade-in-up animate-delay-700">
+    
+    <!-- Activity Feed -->
+    <div class="card animate-float">
+        <div class="card-header">
+            <h2 class="card-title">📈 Recent Activity</h2>
+            <p class="card-subtitle">Your latest trail achievements</p>
+        </div>
+        <div class="card-body">
+            <?php if (!empty($recentActivity)): ?>
+                <div class="activity-feed">
+                    <?php foreach ($recentActivity as $activity): ?>
+                        <div class="activity-item">
+                            <?php if (!empty($activity['photo_path'])): ?>
+                                <div class="activity-photo">
+                                    <img src="<?= htmlspecialchars($activity['photo_path']) ?>" 
+                                         alt="<?= htmlspecialchars($activity['photo_alt_text'] ?? 'Trip photo') ?>" 
+                                         class="activity-photo-img">
+                                </div>
+                            <?php else: ?>
+                                <div class="activity-icon">
+                                    <?php 
+                                    $icons = [
+                                        'trip_completed' => '✅',
+                                        'trip_planned' => '🗺️',
+                                        'gear_added' => '📦',
+                                        'pack_created' => '🎒',
+                                        'achievement_earned' => '🏆'
+                                    ];
+                                    echo $icons[$activity['type']] ?? '📝';
+                                    ?>
+                                </div>
+                            <?php endif; ?>
+                            <div class="activity-content">
+                                <h4><?php echo htmlspecialchars($activity['title'] ?? 'Activity'); ?></h4>
+                                <span class="activity-date"><?php echo htmlspecialchars($activity['date'] ?? 'Recently'); ?></span>
+                            </div>
+                            <div class="activity-xp">
+                                <span class="badge badge-success">+<?php echo $activity['xp']; ?> XP</span>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <div class="empty-state">
+                    <div class="empty-state-icon">📈</div>
+                    <h3 class="empty-state-title">No activity yet!</h3>
+                    <p class="empty-state-description">Start exploring to see your activity feed here.</p>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+    
+    <!-- Weather Widget -->
+    <div class="card animate-float">
+        <div class="card-header">
+            <h2 class="card-title">🌤️ Trail Conditions</h2>
+            <p class="card-subtitle">Current conditions for your area</p>
+        </div>
+        <div class="card-body">
+            <div class="weather-info">
+                <div class="current-weather">
+                    <div class="weather-icon">☀️</div>
+                    <div class="weather-temp">72°F</div>
+                    <div class="weather-desc">Partly Cloudy</div>
+                </div>
+                <div class="weather-details">
+                    <div class="weather-detail">
+                        <span class="detail-label">Humidity</span>
+                        <span class="detail-value">45%</span>
+                    </div>
+                    <div class="weather-detail">
+                        <span class="detail-label">Wind</span>
+                        <span class="detail-value">8 mph</span>
+                    </div>
+                    <div class="weather-detail">
+                        <span class="detail-label">UV Index</span>
+                        <span class="detail-value">6</span>
+                    </div>
+                </div>
+            </div>
+            <div class="trail-conditions">
+                <h4>Trail Alerts</h4>
+                <div class="condition-item">
+                    <span class="condition-icon">✅</span>
+                    <span class="condition-text">White Mountains: Good conditions</span>
+                </div>
+                <div class="condition-item">
+                    <span class="condition-icon">⚠️</span>
+                    <span class="condition-text">Green Mountains: Muddy trails</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-secondary">Update Location</button>
+        </div>
+    </div>
+    
+    <!-- Upcoming Trips -->
+    <div class="card animate-float">
+        <div class="card-header">
+            <h2 class="card-title">📅 Upcoming Adventures</h2>
+            <p class="card-subtitle">Your planned expeditions</p>
+        </div>
+        <div class="card-body">
+            <?php if ($dashboardStats['upcoming_trips'] > 0): ?>
+                <div class="upcoming-trips">
+                    <div class="trip-preview">
+                        <div class="trip-date">
+                            <div class="date-month">OCT</div>
+                            <div class="date-day">15</div>
+                        </div>
+                        <div class="trip-details">
+                            <h4>Presidential Traverse</h4>
+                            <p>18.2 miles • NH, USA</p>
+                            <span class="trip-prep badge badge-warning">Pack Ready: 85%</span>
+                        </div>
+                    </div>
+                    <div class="trip-preview">
+                        <div class="trip-date">
+                            <div class="date-month">NOV</div>
+                            <div class="date-day">3</div>
+                        </div>
+                        <div class="trip-details">
+                            <h4>Mount Katahdin</h4>
+                            <p>10.4 miles • ME, USA</p>
+                            <span class="trip-prep badge badge-info">Planning</span>
+                        </div>
+                    </div>
+                </div>
+            <?php else: ?>
+                <div class="empty-state">
+                    <div class="empty-state-icon">📅</div>
+                    <h3 class="empty-state-title">No trips planned</h3>
+                    <p class="empty-state-description">Plan your next adventure and start building excitement!</p>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="card-footer">
+            <a href="<?php echo route_url('trips'); ?>?action=new" class="btn btn-primary">Plan New Trip</a>
+        </div>
+    </div>
+    
+</div>
 
-<?php
-// Include the unified template footer
-require_once __DIR__ . '/public/includes/template-footer.php';
-?>
+
+<?php require_once __DIR__ . '/includes/template-footer.php'; ?>

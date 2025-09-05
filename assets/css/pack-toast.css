@@ -1,0 +1,31 @@
+/* Toast notifications for pack builder */
+.pack-toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 6px;
+    z-index: 10000;
+    transform: translateX(400px);
+    transition: all 0.3s ease;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.pack-toast.show {
+    transform: translateX(0);
+}
+
+.pack-toast-success {
+    background: rgba(16, 185, 129, 0.95);
+}
+
+.pack-toast-info {
+    background: rgba(59, 130, 246, 0.95);
+}
+
+.pack-toast-error {
+    background: rgba(239, 68, 68, 0.95);
+}

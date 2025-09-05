@@ -1,0 +1,432 @@
+/**
+ * Gear Page Spacing Fixes
+ * Addresses search icon spacing, tab overlap, and gear card sizing issues
+ * @version 1.0.0
+ */
+
+/* ===========================================
+   SEARCH BAR SPACING FIXES
+   =========================================== */
+
+/* Fix search bar padding and icon spacing */
+.search-bar.forest-search {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 0.875rem 1rem; /* Increased padding */
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Increased gap between icon and input */
+    margin-bottom: 1.25rem;
+    transition: all 0.3s ease;
+    min-height: 48px; /* Ensure consistent height */
+}
+
+.search-bar.forest-search:focus-within {
+    border-color: #4caf50;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.15);
+}
+
+.search-icon {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.7);
+    flex-shrink: 0; /* Prevent icon from shrinking */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px; /* Fixed width for consistent spacing */
+}
+
+.search-bar input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    font-size: 0.95rem;
+    flex: 1;
+    font-family: inherit;
+    line-height: 1.4;
+    padding: 0; /* Remove default padding */
+}
+
+.search-bar input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* ===========================================
+   TAB SPACING FIXES
+   =========================================== */
+
+/* Fix gear tabs overlap and spacing */
+.gear-tabs.forest-tabs {
+    display: flex;
+    gap: 0.5rem; /* Increased gap between tabs */
+    margin-bottom: 1.5rem;
+    padding: 0.375rem; /* Slightly more padding */
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+}
+
+.gear-tab {
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1rem; /* Consistent padding */
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+    flex: 1;
+    justify-content: center;
+    line-height: 1.3;
+    min-width: 0; /* Allow flex items to shrink */
+    white-space: nowrap; /* Prevent text wrapping within tabs */
+}
+
+.gear-tab:hover {
+    background: rgba(76, 175, 80, 0.08);
+    color: rgba(255, 255, 255, 0.8);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.1);
+}
+
+.gear-tab.active {
+    background: rgba(76, 175, 80, 0.2);
+    color: #ffffff;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.15);
+}
+
+/* Tab content spacing */
+.tab-icon {
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.tab-text {
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin: 0 0.25rem; /* Add margin between text and count */
+}
+
+.tab-count {
+    background: rgba(255, 255, 255, 0.15);
+    color: inherit;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.15rem 0.4rem;
+    border-radius: 10px;
+    min-width: 1.2rem;
+    text-align: center;
+    line-height: 1.2;
+    flex-shrink: 0;
+}
+
+/* ===========================================
+   GEAR CARD SIZE IMPROVEMENTS
+   =========================================== */
+
+/* Make gear cards more compact and better sized */
+.gear-items-container .gear-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    padding: 0.5rem 0;
+}
+
+/* Improved gear cards - more compact but still readable */
+.gear-card {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 20, 0, 0.3));
+    backdrop-filter: blur(8px);
+    border: 1.5px solid rgba(88, 204, 2, 0.15);
+    border-radius: 12px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    min-height: 180px; /* Reduced from huge default */
+    max-height: 220px; /* Prevent cards from becoming too tall */
+    display: flex;
+    flex-direction: column;
+}
+
+.gear-card:hover {
+    transform: translateY(-3px) scale(1.02);
+    border-color: #58cc02;
+    box-shadow: 
+        0 8px 20px rgba(88, 204, 2, 0.25),
+        0 0 30px rgba(88, 204, 2, 0.1);
+}
+
+/* Gear card header - better spacing */
+.gear-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    min-height: 2.5rem; /* Reserve space for title */
+}
+
+.gear-name {
+    flex: 1;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+}
+
+.gear-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+/* Gear card body - better information layout */
+.gear-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.gear-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gear-category-badge {
+    padding: 0.25rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 999px;
+    letter-spacing: 0.3px;
+    background: rgba(76, 175, 80, 0.2);
+    color: #ffffff;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.gear-weight {
+    font-weight: 700;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+}
+
+/* Gear notes - truncated appropriately */
+.gear-notes {
+    margin-top: 0.5rem;
+}
+
+.gear-notes-text {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+    line-height: 1.4;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Gear card actions - always at bottom */
+.gear-card-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(88, 204, 2, 0.1);
+}
+
+.btn-icon {
+    padding: 0.4rem;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    border: 1.5px solid rgba(88, 204, 2, 0.2);
+    background: rgba(88, 204, 2, 0.1);
+    color: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.btn-icon:hover {
+    background: rgba(88, 204, 2, 0.2);
+    border-color: rgba(88, 204, 2, 0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(88, 204, 2, 0.2);
+}
+
+/* ===========================================
+   RESPONSIVE IMPROVEMENTS
+   =========================================== */
+
+/* Tablet size adjustments */
+@media (max-width: 1200px) {
+    .gear-items-container .gear-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 0.875rem;
+    }
+    
+    .gear-card {
+        min-height: 170px;
+        padding: 0.875rem;
+    }
+}
+
+/* Mobile size adjustments */
+@media (max-width: 768px) {
+    .gear-tabs.forest-tabs {
+        gap: 0.25rem;
+        padding: 0.25rem;
+    }
+    
+    .gear-tab {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+    }
+    
+    .tab-text {
+        display: none; /* Hide text on very small screens, keep icons */
+    }
+    
+    .gear-items-container .gear-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 0.75rem;
+    }
+    
+    .gear-card {
+        min-height: 150px;
+        padding: 0.75rem;
+    }
+    
+    .search-bar.forest-search {
+        padding: 0.75rem;
+        gap: 0.75rem;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+    .gear-items-container .gear-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+    
+    .gear-card {
+        min-height: 140px;
+        padding: 0.625rem;
+    }
+    
+    .gear-name {
+        font-size: 0.9rem;
+    }
+    
+    .gear-icon {
+        font-size: 1.25rem;
+    }
+}
+
+/* ===========================================
+   LIST VIEW IMPROVEMENTS
+   =========================================== */
+
+.gear-grid.list-view {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.gear-grid.list-view .gear-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    min-height: 80px;
+    max-height: 80px;
+}
+
+.gear-grid.list-view .gear-card-header {
+    flex: 1;
+    margin-bottom: 0;
+    min-height: auto;
+}
+
+.gear-grid.list-view .gear-card-body {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0;
+    flex: 2;
+}
+
+.gear-grid.list-view .gear-meta {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    flex: none;
+}
+
+.gear-grid.list-view .gear-notes {
+    display: none;
+}
+
+.gear-grid.list-view .gear-card-actions {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+    margin-left: 0;
+}
+
+/* ===========================================
+   COMPACT VIEW (ULTRA DENSE)
+   =========================================== */
+
+.gear-grid.compact-view {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.5rem;
+}
+
+.gear-grid.compact-view .gear-card {
+    min-height: 120px;
+    max-height: 140px;
+    padding: 0.625rem;
+}
+
+.gear-grid.compact-view .gear-name {
+    font-size: 0.85rem;
+    -webkit-line-clamp: 1; /* Only 1 line in compact */
+}
+
+.gear-grid.compact-view .gear-notes {
+    display: none; /* Hide notes in compact view */
+}
+
+.gear-grid.compact-view .gear-icon {
+    font-size: 1.25rem;
+}

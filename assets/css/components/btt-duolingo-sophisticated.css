@@ -1,0 +1,1112 @@
+/**
+ * BeyondTrailTales - Duolingo-Inspired Sophisticated Components
+ * Component library with Duolingo UX patterns and sophisticated forest colors
+ * Version: 2.0.0
+ * Last Updated: 2025-09-04
+ * 
+ * ADA Compliant | Mobile-First | Performance-Optimized
+ */
+
+/* ===========================================
+   BUTTON COMPONENTS - DUOLINGO INSPIRED
+   =========================================== */
+
+/* Primary Action Button - Forest Green */
+.btn-duo-primary {
+  background: var(--btt-gradient-forest);
+  border: 3px solid transparent;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 18px;
+  font-family: var(--btt-font-accent);
+  font-weight: 800;
+  font-size: 1.125rem;
+  text-transform: none;
+  letter-spacing: 0.025em;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  min-height: 54px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(93, 120, 99, 0.25);
+}
+
+.btn-duo-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.6s;
+}
+
+.btn-duo-primary:hover::before {
+  left: 100%;
+}
+
+.btn-duo-primary:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(93, 120, 99, 0.4);
+  background: linear-gradient(135deg, var(--btt-forest-mist) 0%, var(--btt-forest-canopy) 100%);
+}
+
+.btn-duo-primary:active {
+  transform: translateY(0) scale(1.01);
+  transition: all 0.1s ease;
+}
+
+/* Secondary Button - Cedar Accent */
+.btn-duo-secondary {
+  background: transparent;
+  border: 3px solid var(--btt-cedar);
+  color: var(--btt-cedar);
+  padding: 1rem 2rem;
+  border-radius: 18px;
+  font-family: var(--btt-font-accent);
+  font-weight: 700;
+  font-size: 1.125rem;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  min-height: 54px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.btn-duo-secondary:hover {
+  background: var(--btt-cedar);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(160, 130, 90, 0.3);
+}
+
+/* Danger Button - Sophisticated Red */
+.btn-duo-danger {
+  background: linear-gradient(135deg, var(--btt-error) 0%, var(--btt-error-dark) 100%);
+  border: 3px solid transparent;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 18px;
+  font-family: var(--btt-font-accent);
+  font-weight: 700;
+  font-size: 1.125rem;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  min-height: 54px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(196, 103, 90, 0.25);
+}
+
+.btn-duo-danger:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(196, 103, 90, 0.4);
+}
+
+/* Small Button Variant */
+.btn-duo-sm {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.975rem;
+  min-height: 44px;
+  border-radius: 14px;
+}
+
+/* Large Button Variant */
+.btn-duo-lg {
+  padding: 1.25rem 2.5rem;
+  font-size: 1.25rem;
+  min-height: 64px;
+  border-radius: 20px;
+}
+
+/* ===========================================
+   CARD COMPONENTS - DUOLINGO INSPIRED
+   =========================================== */
+
+.card-duo-sophisticated {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  border: 2px solid rgba(122, 155, 126, 0.15);
+  border-radius: 24px;
+  padding: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(10, 27, 15, 0.15);
+}
+
+.card-duo-sophisticated:hover {
+  transform: translateY(-6px);
+  border-color: rgba(122, 155, 126, 0.3);
+  box-shadow: 0 16px 50px rgba(10, 27, 15, 0.25);
+}
+
+/* Card Header with Gradient */
+.card-header-duo {
+  background: var(--btt-gradient-moss);
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-header-duo::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: card-shimmer 4s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes card-shimmer {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.card-header-duo .card-title {
+  color: white;
+  font-family: var(--btt-font-display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  position: relative;
+  z-index: 1;
+}
+
+.card-header-duo .card-meta {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.925rem;
+  margin: 0.5rem 0 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Card Content Area */
+.card-content-duo {
+  padding: 1.5rem;
+  color: var(--btt-text-primary);
+}
+
+/* Card Actions Footer */
+.card-actions-duo {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgba(122, 155, 126, 0.15);
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ===========================================
+   PROGRESS COMPONENTS
+   =========================================== */
+
+/* Duolingo-style Progress Bar */
+.progress-duo {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  height: 12px;
+  overflow: hidden;
+  position: relative;
+  margin: 1rem 0;
+}
+
+.progress-duo .progress-fill {
+  background: var(--btt-gradient-moss);
+  height: 100%;
+  border-radius: 12px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.progress-duo .progress-fill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: progress-shine 2s linear infinite;
+}
+
+@keyframes progress-shine {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Circular Progress Ring - Sophisticated */
+.ring-duo-sophisticated {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem auto;
+}
+
+.ring-duo-sophisticated svg {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+}
+
+.ring-duo-sophisticated .ring-track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 8;
+}
+
+.ring-duo-sophisticated .ring-fill {
+  fill: none;
+  stroke: url(#sophisticated-gradient);
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ring-duo-sophisticated .ring-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: var(--btt-text-primary);
+}
+
+.ring-duo-sophisticated .ring-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--btt-fern);
+  display: block;
+  line-height: 1;
+}
+
+.ring-duo-sophisticated .ring-label {
+  font-size: 0.825rem;
+  color: var(--btt-text-muted);
+  margin-top: 0.25rem;
+}
+
+/* ===========================================
+   BADGE & ACHIEVEMENT COMPONENTS
+   =========================================== */
+
+.achievement-duo {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(122, 155, 126, 0.2);
+  border-radius: 20px;
+  min-width: 100px;
+  min-height: 100px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.achievement-duo::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: var(--btt-gradient-moss);
+  border-radius: 20px;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
+.achievement-duo.earned::before {
+  opacity: 1;
+  background: var(--btt-gradient-moss);
+  animation: earned-glow 0.5s ease;
+}
+
+@keyframes earned-glow {
+  0% { 
+    opacity: 0; 
+    transform: scale(0.8);
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.1);
+  }
+  100% { 
+    opacity: 1; 
+    transform: scale(1);
+  }
+}
+
+.achievement-duo.available {
+  background: rgba(212, 165, 116, 0.08);
+  border-color: var(--btt-gold);
+  animation: pulse-gentle 3s ease-in-out infinite;
+}
+
+@keyframes pulse-gentle {
+  0%, 100% { 
+    border-color: var(--btt-gold); 
+    box-shadow: 0 0 0 0 rgba(212, 165, 116, 0.4);
+  }
+  50% { 
+    border-color: var(--btt-copper); 
+    box-shadow: 0 0 0 8px rgba(212, 165, 116, 0);
+  }
+}
+
+.achievement-duo.locked {
+  opacity: 0.3;
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(168, 181, 170, 0.1);
+  cursor: not-allowed;
+  filter: grayscale(70%);
+}
+
+.achievement-duo:hover:not(.locked) {
+  transform: translateY(-6px) scale(1.08);
+  border-color: var(--btt-forest-mist);
+  box-shadow: 0 12px 35px rgba(122, 155, 126, 0.3);
+}
+
+.achievement-duo .achievement-icon {
+  font-size: 2rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  transition: all 0.3s ease;
+}
+
+.achievement-duo:hover .achievement-icon {
+  transform: scale(1.1);
+}
+
+.achievement-duo .achievement-title {
+  font-family: var(--btt-font-accent);
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-align: center;
+  color: var(--btt-text-primary);
+  line-height: 1.2;
+}
+
+.achievement-duo.earned .achievement-title {
+  color: var(--btt-fern);
+}
+
+/* Level Badge - Duolingo Style */
+.level-duo {
+  background: var(--btt-gradient-cedar);
+  border: 3px solid white;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--btt-font-accent);
+  font-weight: 900;
+  font-size: 1.125rem;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 
+    0 4px 15px rgba(160, 130, 90, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.2);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.level-duo:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 
+    0 8px 25px rgba(160, 130, 90, 0.5),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3);
+}
+
+/* XP Chip - Duolingo Style */
+.xp-duo {
+  background: rgba(122, 155, 126, 0.15);
+  border: 2px solid var(--btt-fern);
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--btt-fern);
+  font-family: var(--btt-font-accent);
+  font-weight: 800;
+  font-size: 1rem;
+  transition: all 0.25s ease;
+}
+
+.xp-duo:hover {
+  background: rgba(122, 155, 126, 0.2);
+  transform: scale(1.05);
+}
+
+.xp-duo .xp-icon {
+  font-size: 1.25rem;
+}
+
+/* Streak Counter - Duolingo Style */
+.streak-duo {
+  background: var(--btt-gradient-cedar);
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  border-radius: 50px;
+  padding: 0.75rem 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: white;
+  font-family: var(--btt-font-accent);
+  font-weight: 800;
+  font-size: 1.125rem;
+  box-shadow: 0 4px 15px rgba(212, 165, 116, 0.3);
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.streak-duo::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, 
+    transparent 30%, 
+    rgba(255,255,255,0.1) 50%, 
+    transparent 70%);
+  animation: streak-shine 3s ease-in-out infinite;
+}
+
+@keyframes streak-shine {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+.streak-duo:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 25px rgba(212, 165, 116, 0.5);
+}
+
+.streak-duo .streak-icon {
+  font-size: 1.5rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* ===========================================
+   INPUT COMPONENTS - DUOLINGO INSPIRED
+   =========================================== */
+
+.input-duo {
+  background: rgba(255, 255, 255, 0.06);
+  border: 3px solid rgba(122, 155, 126, 0.2);
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  color: var(--btt-text-primary);
+  font-size: 1.125rem;
+  font-family: var(--btt-font-sans);
+  font-weight: 500;
+  transition: all 0.25s ease;
+  width: 100%;
+  min-height: 54px;
+}
+
+.input-duo:focus {
+  outline: none;
+  border-color: var(--btt-fern);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 4px rgba(122, 155, 126, 0.15);
+  transform: scale(1.01);
+}
+
+.input-duo::placeholder {
+  color: var(--btt-text-muted);
+  opacity: 0.7;
+  font-weight: 500;
+}
+
+/* Input with Icon */
+.input-duo-icon {
+  position: relative;
+}
+
+.input-duo-icon .input-duo {
+  padding-left: 3.5rem;
+}
+
+.input-duo-icon .input-icon {
+  position: absolute;
+  left: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.25rem;
+  color: var(--btt-text-muted);
+  z-index: 10;
+}
+
+.input-duo-icon .input-duo:focus + .input-icon {
+  color: var(--btt-fern);
+}
+
+/* ===========================================
+   NOTIFICATION COMPONENTS
+   =========================================== */
+
+.notification-duo {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  border: 2px solid rgba(122, 155, 126, 0.2);
+  border-radius: 18px;
+  padding: 1.25rem 1.5rem;
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.notification-duo::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--btt-gradient-moss);
+}
+
+.notification-duo.success::before {
+  background: var(--btt-gradient-moss);
+}
+
+.notification-duo.warning::before {
+  background: var(--btt-gradient-cedar);
+}
+
+.notification-duo.error::before {
+  background: linear-gradient(180deg, var(--btt-error) 0%, var(--btt-error-dark) 100%);
+}
+
+.notification-duo .notification-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.notification-duo .notification-content {
+  flex: 1;
+}
+
+.notification-duo .notification-title {
+  font-family: var(--btt-font-accent);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--btt-text-primary);
+  margin: 0 0 0.25rem;
+}
+
+.notification-duo .notification-message {
+  font-size: 0.925rem;
+  color: var(--btt-text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ===========================================
+   TAB COMPONENTS - DUOLINGO INSPIRED
+   =========================================== */
+
+.tabs-duo {
+  display: flex;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 0.25rem;
+  gap: 0.25rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(122, 155, 126, 0.15);
+}
+
+.tab-duo {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--btt-text-muted);
+  padding: 0.875rem 1.25rem;
+  border-radius: 12px;
+  font-family: var(--btt-font-accent);
+  font-weight: 700;
+  font-size: 0.975rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.tab-duo:hover {
+  color: var(--btt-text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tab-duo.active {
+  background: var(--btt-gradient-moss);
+  color: white;
+  box-shadow: 0 2px 8px rgba(122, 155, 126, 0.3);
+  transform: scale(1.02);
+}
+
+/* ===========================================
+   MODAL COMPONENTS - DUOLINGO INSPIRED
+   =========================================== */
+
+.modal-duo-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 27, 15, 0.8);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  opacity: 0;
+  animation: modal-appear 0.3s ease forwards;
+}
+
+@keyframes modal-appear {
+  to { opacity: 1; }
+}
+
+.modal-duo {
+  background: var(--btt-forest-shadow);
+  border: 2px solid rgba(122, 155, 126, 0.2);
+  border-radius: 28px;
+  padding: 0;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 25px 80px rgba(10, 27, 15, 0.6);
+  transform: scale(0.9) translateY(20px);
+  animation: modal-enter 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes modal-enter {
+  to {
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-duo .modal-header {
+  background: var(--btt-gradient-moss);
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.modal-duo .modal-header::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: modal-shimmer 4s linear infinite;
+}
+
+@keyframes modal-shimmer {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.modal-duo .modal-title {
+  color: white;
+  font-family: var(--btt-font-display);
+  font-weight: 800;
+  font-size: 1.75rem;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.modal-duo .modal-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 12px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  z-index: 2;
+}
+
+.modal-duo .modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.modal-duo .modal-content {
+  padding: 2rem;
+  color: var(--btt-text-primary);
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.modal-duo .modal-footer {
+  padding: 1.5rem 2rem 2rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  border-top: 1px solid rgba(122, 155, 126, 0.15);
+}
+
+/* ===========================================
+   SKILL TREE COMPONENTS
+   =========================================== */
+
+.skill-tree-duo {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1.5rem 0;
+}
+
+.skill-level-duo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  gap: 1rem;
+}
+
+.skill-level-duo::before {
+  content: '';
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 50%;
+  height: 3px;
+  background: var(--btt-gradient-moss);
+  border-radius: 2px;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+.skill-node-duo {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2.5px solid rgba(122, 155, 126, 0.2);
+  border-radius: 18px;
+  width: 90px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+}
+
+.skill-node-duo.complete {
+  background: rgba(122, 155, 126, 0.15);
+  border-color: var(--btt-fern);
+  box-shadow: 0 4px 15px rgba(122, 155, 126, 0.3);
+}
+
+.skill-node-duo.active {
+  border-color: var(--btt-gold);
+  box-shadow: 
+    0 0 0 4px rgba(212, 165, 116, 0.2),
+    0 4px 15px rgba(212, 165, 116, 0.3);
+  animation: skill-pulse 2s ease-in-out infinite;
+}
+
+@keyframes skill-pulse {
+  0%, 100% { 
+    box-shadow: 
+      0 0 0 4px rgba(212, 165, 116, 0.2),
+      0 4px 15px rgba(212, 165, 116, 0.3);
+  }
+  50% { 
+    box-shadow: 
+      0 0 0 8px rgba(212, 165, 116, 0.1),
+      0 8px 25px rgba(212, 165, 116, 0.4);
+  }
+}
+
+.skill-node-duo.locked {
+  opacity: 0.3;
+  cursor: not-allowed;
+  filter: grayscale(80%);
+}
+
+.skill-node-duo:hover:not(.locked) {
+  transform: translateY(-4px) scale(1.08);
+  border-color: var(--btt-forest-mist);
+}
+
+.skill-node-duo .skill-icon {
+  font-size: 1.5rem;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.3));
+}
+
+.skill-node-duo .skill-title {
+  font-family: var(--btt-font-accent);
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-align: center;
+  color: var(--btt-text-primary);
+  line-height: 1.1;
+}
+
+.skill-node-duo.complete .skill-title {
+  color: var(--btt-fern);
+}
+
+/* ===========================================
+   TOAST NOTIFICATIONS - DUOLINGO INSPIRED
+   =========================================== */
+
+.toast-duo {
+  background: rgba(42, 69, 50, 0.95);
+  backdrop-filter: blur(16px);
+  border: 2px solid var(--btt-fern);
+  border-radius: 16px;
+  padding: 1rem 1.5rem;
+  color: white;
+  font-family: var(--btt-font-accent);
+  font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 8px 25px rgba(122, 155, 126, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 2000;
+  max-width: 400px;
+  transform: translateX(100%);
+  animation: toast-slide-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes toast-slide-in {
+  to { transform: translateX(0); }
+}
+
+.toast-duo.success {
+  border-color: var(--btt-fern);
+  background: rgba(122, 155, 126, 0.2);
+}
+
+.toast-duo.warning {
+  border-color: var(--btt-gold);
+  background: rgba(212, 165, 116, 0.2);
+}
+
+.toast-duo.error {
+  border-color: var(--btt-error);
+  background: rgba(196, 103, 90, 0.2);
+}
+
+.toast-duo .toast-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.toast-duo .toast-close {
+  background: none;
+  border: none;
+  color: currentColor;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  margin-left: auto;
+}
+
+.toast-duo .toast-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.1);
+}
+
+/* ===========================================
+   RESPONSIVE DESIGN
+   =========================================== */
+
+@media (max-width: 768px) {
+  .achievement-duo {
+    min-width: 80px;
+    min-height: 80px;
+    padding: 1rem;
+  }
+  
+  .level-duo {
+    width: 50px;
+    height: 50px;
+    font-size: 1rem;
+  }
+  
+  .skill-node-duo {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .skill-node-duo .skill-icon {
+    font-size: 1.25rem;
+  }
+  
+  .btn-duo-primary,
+  .btn-duo-secondary,
+  .btn-duo-danger {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  .toast-duo {
+    top: 1rem;
+    right: 1rem;
+    left: 1rem;
+    max-width: none;
+  }
+  
+  .modal-duo {
+    margin: 1rem;
+    border-radius: 20px;
+  }
+  
+  .modal-duo .modal-header {
+    padding: 1.5rem;
+  }
+  
+  .modal-duo .modal-content {
+    padding: 1.5rem;
+  }
+  
+  .modal-duo .modal-footer {
+    padding: 1rem 1.5rem 1.5rem;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .modal-duo .modal-footer .btn-duo-primary,
+  .modal-duo .modal-footer .btn-duo-secondary {
+    width: 100%;
+  }
+}
+
+/* ===========================================
+   ACCESSIBILITY ENHANCEMENTS
+   =========================================== */
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus indicators */
+.achievement-duo:focus,
+.skill-node-duo:focus,
+.btn-duo-primary:focus,
+.btn-duo-secondary:focus,
+.input-duo:focus,
+.tab-duo:focus {
+  outline: 3px solid var(--btt-fern);
+  outline-offset: 2px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .duo-card-sophisticated,
+  .achievement-duo,
+  .skill-node-duo,
+  .modal-duo,
+  .notification-duo {
+    border-width: 4px;
+  }
+  
+  .btn-duo-primary,
+  .btn-duo-secondary,
+  .btn-duo-danger {
+    border-width: 4px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .achievement-duo,
+  .skill-node-duo,
+  .btn-duo-primary,
+  .btn-duo-secondary,
+  .level-duo,
+  .xp-duo,
+  .streak-duo,
+  .modal-duo,
+  .toast-duo {
+    animation: none;
+    transition: none;
+  }
+  
+  .duo-card-sophisticated:hover,
+  .achievement-duo:hover,
+  .skill-node-duo:hover,
+  .btn-duo-primary:hover,
+  .action-sophisticated:hover {
+    transform: none;
+  }
+}

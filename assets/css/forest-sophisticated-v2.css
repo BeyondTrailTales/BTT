@@ -1,0 +1,389 @@
+/**
+ * BeyondTrailTales - Sophisticated Forest Theme v2
+ * Much more muted, elegant forest colors - NO bright greens
+ * Compact, professional design inspired by modern apps
+ */
+
+/* ===========================================
+   REFINED FOREST COLOR PALETTE
+   =========================================== */
+:root {
+  /* Deep Forest Base Colors - Very Muted */
+  --forest-deep: #1a2e1f;          /* Deep forest background */
+  --forest-darker: #0f1a12;        /* Darker forest for contrast */
+  --forest-medium: #2a3f2e;        /* Medium forest tone */
+  --forest-light: #3d5242;         /* Lighter forest tone */
+  --forest-mist: #556b5a;          /* Muted forest green */
+  
+  /* Sophisticated Earth Tones */
+  --earth-clay: #6b5b4f;          /* Clay brown */
+  --earth-stone: #687068;         /* Stone gray-green */
+  --earth-bark: #5c4a3a;          /* Tree bark brown */
+  --earth-moss: #4a5d4a;          /* Muted moss green */
+  
+  /* Elegant Accent Colors */
+  --accent-sage: #7a8471;         /* Sage green - very muted */
+  --accent-pine: #556652;         /* Pine needle color */
+  --accent-cedar: #8b7355;        /* Cedar wood tone */
+  --accent-fern: #6b7c5e;         /* Muted fern green */
+  
+  /* Professional Text Colors */
+  --text-primary: #f4f6f4;        /* Soft white */
+  --text-secondary: #d2d8d0;      /* Light gray-green */
+  --text-muted: #a8b2a4;          /* Muted green-gray */
+  --text-accent: var(--accent-sage);
+  
+  /* Modern Surface Colors */
+  --surface-dark: rgba(26, 46, 31, 0.95);
+  --surface-medium: rgba(42, 63, 46, 0.9);
+  --surface-light: rgba(61, 82, 66, 0.85);
+  --surface-overlay: rgba(15, 26, 18, 0.8);
+  
+  /* Glass Effects - Much Subtler */
+  --glass-subtle: rgba(244, 246, 244, 0.05);
+  --glass-light: rgba(244, 246, 244, 0.08);
+  --glass-medium: rgba(244, 246, 244, 0.12);
+  --glass-border: rgba(122, 132, 113, 0.2);
+  
+  /* Semantic Colors - Professional */
+  --success: var(--accent-fern);
+  --warning: var(--accent-cedar);
+  --error: #a65a4a;
+  --info: var(--earth-stone);
+}
+
+/* ===========================================
+   GLOBAL THEME APPLICATION
+   =========================================== */
+.sophisticated-forest-theme {
+  background: linear-gradient(135deg, var(--forest-darker) 0%, var(--forest-deep) 100%);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* Remove the bright green header completely */
+.sophisticated-forest-theme .unified-nav {
+  background: var(--surface-dark);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+/* ===========================================
+   COMPACT DASHBOARD REDESIGN
+   =========================================== */
+
+/* Welcome Section - Much More Compact */
+.sophisticated-forest-theme .welcome-section {
+  background: var(--surface-medium);
+  border-radius: 16px;
+  padding: 24px 32px;
+  margin-bottom: 24px;
+  text-align: left; /* Left align for professionalism */
+  border: 1px solid var(--glass-border);
+}
+
+.sophisticated-forest-theme .welcome-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 8px 0;
+}
+
+.sophisticated-forest-theme .welcome-subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Quick Actions - Horizontal Row, Not Grid */
+.sophisticated-forest-theme .quick-actions-section {
+  margin-bottom: 24px;
+}
+
+.sophisticated-forest-theme .quick-actions-grid {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.sophisticated-forest-theme .quick-action-card {
+  background: var(--glass-light);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 16px;
+  min-width: 120px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.sophisticated-forest-theme .quick-action-card:hover {
+  background: var(--glass-medium);
+  transform: translateY(-1px);
+}
+
+.sophisticated-forest-theme .quick-action-icon {
+  font-size: 20px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.sophisticated-forest-theme .quick-action-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+
+.sophisticated-forest-theme .quick-action-subtitle {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* Dashboard Grid - Compact 2x2 Layout */
+.sophisticated-forest-theme .dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.sophisticated-forest-theme .card-forest {
+  background: var(--glass-light);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.2s ease;
+}
+
+.sophisticated-forest-theme .card-forest:hover {
+  background: var(--glass-medium);
+  transform: translateY(-1px);
+}
+
+.sophisticated-forest-theme .card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.sophisticated-forest-theme .card-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--surface-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.sophisticated-forest-theme .card-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  flex: 1;
+  margin-left: 12px;
+}
+
+.sophisticated-forest-theme .btn-duo-secondary {
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.sophisticated-forest-theme .btn-duo-secondary:hover {
+  background: var(--glass-subtle);
+  color: var(--text-secondary);
+}
+
+/* Compact Stats */
+.sophisticated-forest-theme .compact-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.sophisticated-forest-theme .stat {
+  text-align: center;
+}
+
+.sophisticated-forest-theme .stat-num {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.sophisticated-forest-theme .stat-lbl {
+  display: block;
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+/* Achievements Row - Single Compact Row */
+.sophisticated-forest-theme .achievements-horizontal {
+  background: var(--glass-light);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.sophisticated-forest-theme .ach-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.sophisticated-forest-theme .ach-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.sophisticated-forest-theme .xp-badge {
+  background: var(--accent-sage);
+  color: var(--text-primary);
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.sophisticated-forest-theme .level-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sophisticated-forest-theme .progress-inline {
+  flex: 1;
+  height: 6px;
+  background: var(--surface-dark);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.sophisticated-forest-theme .progress-fill {
+  height: 100%;
+  background: var(--accent-sage);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.sophisticated-forest-theme .badges-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.sophisticated-forest-theme .badge-mini {
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+  background: var(--surface-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  opacity: 0.5;
+}
+
+.sophisticated-forest-theme .badge-mini.earned {
+  background: var(--accent-sage);
+  opacity: 1;
+}
+
+.sophisticated-forest-theme .streak-mini {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--accent-cedar);
+  color: var(--text-primary);
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+/* Remove the secondary row completely - too much content */
+.sophisticated-forest-theme .secondary-row {
+  display: none; /* Hide for now - too cluttered */
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .sophisticated-forest-theme .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .sophisticated-forest-theme .quick-actions-grid {
+    gap: 8px;
+  }
+  
+  .sophisticated-forest-theme .quick-action-card {
+    min-width: 100px;
+    padding: 12px;
+  }
+}
+
+/* ===========================================
+   BUTTONS AND INTERACTIVE ELEMENTS
+   =========================================== */
+
+.sophisticated-forest-theme .btn-duo-primary {
+  background: var(--accent-sage);
+  color: var(--text-primary);
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sophisticated-forest-theme .btn-duo-primary:hover {
+  background: var(--accent-pine);
+  transform: translateY(-1px);
+}
+
+/* Remove all the bright green navigation styling */
+.sophisticated-forest-theme .nav-forest .nav-brand {
+  color: var(--text-primary);
+}
+
+.sophisticated-forest-theme .nav-forest .nav-link {
+  color: var(--text-muted);
+}
+
+.sophisticated-forest-theme .nav-forest .nav-link:hover,
+.sophisticated-forest-theme .nav-forest .nav-link.active {
+  color: var(--text-primary);
+  background: var(--glass-subtle);
+}

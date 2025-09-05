@@ -1,0 +1,105 @@
+/**
+ * Forest Gamified Tokens CSS
+ * Extended design tokens for Duolingo-inspired gamified dashboard
+ * Sunset accents and gradients while maintaining WCAG AA compliance
+ */
+
+:root {
+  /* ==================== Sunset Accent Colors ==================== */
+  --sunset-ember: #fb923c;     /* Warm orange */
+  --sunset-gold: #fbbf24;      /* Golden yellow */
+  --sunset-coral: #f97316;     /* Orange-coral */
+  --sunset-rose: #fb7185;      /* Soft pinkish red */
+  --sunset-amber: #fcd34d;     /* Light amber */
+  --sunset-peach: #fed7aa;     /* Soft peach */
+  
+  /* ==================== Enhanced Forest Colors ==================== */
+  --forest-emerald: #10b981;   /* Vibrant emerald */
+  --forest-sage: #86efac;      /* Soft sage */
+  --forest-pine: #065f46;      /* Deep pine */
+  --forest-meadow: #bbf7d0;    /* Light meadow */
+  
+  /* ==================== Gradient Definitions ==================== */
+  --grad-forest: linear-gradient(135deg, var(--forest-mint, #4ade80), var(--forest-leaf, #22c55e));
+  --grad-sunset: linear-gradient(135deg, var(--sunset-ember), var(--sunset-gold));
+  --grad-dusk: linear-gradient(135deg, #0b132b 0%, #0a2818 50%, #1a4d35 100%);
+  --grad-dawn: linear-gradient(135deg, #fed7aa 0%, #fbbf24 50%, #f97316 100%);
+  --grad-achievement: linear-gradient(135deg, var(--sunset-gold) 0%, var(--sunset-ember) 50%, var(--sunset-coral) 100%);
+  --grad-xp: linear-gradient(135deg, var(--forest-mint, #4ade80) 0%, var(--sunset-gold) 100%);
+  
+  /* ==================== Focus and Glow Effects ==================== */
+  --focus-outline: 2px solid var(--forest-mint, #4ade80);
+  --focus-outline-offset: 3px;
+  --glow-forest: 0 0 24px rgba(74, 222, 128, 0.25);
+  --glow-sunset: 0 0 24px rgba(251, 146, 60, 0.25);
+  --glow-achievement: 0 0 32px rgba(251, 191, 36, 0.35);
+  --glow-xp: 0 0 20px rgba(74, 222, 128, 0.3);
+  
+  /* ==================== Component Sizing ==================== */
+  /* Progress Rings */
+  --ring-size: 120px;
+  --ring-size-sm: 80px;
+  --ring-size-lg: 160px;
+  --ring-stroke: 12px;
+  --ring-stroke-sm: 8px;
+  --ring-stroke-lg: 16px;
+  
+  /* Skill Nodes */
+  --skill-node-size: 120px;
+  --skill-node-size-sm: 90px;
+  --skill-node-size-lg: 150px;
+  
+  /* Badges */
+  --badge-size: 48px;
+  --badge-size-sm: 32px;
+  --badge-size-lg: 64px;
+  
+  /* ==================== WCAG-Compliant Text Colors ==================== */
+  --text-on-glass: #eaf6ef;        /* Light text on dark glass */
+  --text-on-sunset: #1a1a1a;       /* Dark text on sunset backgrounds */
+  --text-on-forest: #ffffff;       /* White text on forest backgrounds */
+  --text-on-achievement: #0a2818;  /* Dark text on achievement badges */
+  
+  /* ==================== Animation Timings ==================== */
+  --anim-duration-quick: 200ms;
+  --anim-duration-normal: 400ms;
+  --anim-duration-slow: 600ms;
+  --anim-duration-xslow: 800ms;
+  --anim-easing-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --anim-easing-smooth: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --anim-easing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  
+  /* ==================== Z-Index Layers ==================== */
+  --z-parallax: 1;
+  --z-content: 10;
+  --z-skill-tree: 15;
+  --z-card-hover: 20;
+  --z-modal-backdrop: 40;
+  --z-modal: 50;
+  --z-notification: 60;
+  --z-tooltip: 70;
+  
+  /* ==================== Gamification Metrics ==================== */
+  --xp-multiplier: 1.5;
+  --streak-bonus: 2;
+  --achievement-points: 100;
+  --level-threshold: 1000;
+}
+
+/* Dark Mode Overrides (if needed) */
+[data-theme="forest-gamified-dark"] {
+  --sunset-ember: #fb923c;
+  --sunset-gold: #fbbf24;
+  --text-on-glass: #f0fdf4;
+  --text-on-sunset: #0a0a0a;
+}
+
+/* Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --anim-duration-quick: 0.01ms;
+    --anim-duration-normal: 0.01ms;
+    --anim-duration-slow: 0.01ms;
+    --anim-duration-xslow: 0.01ms;
+  }
+}

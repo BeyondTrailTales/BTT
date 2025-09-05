@@ -15,114 +15,272 @@ require_auth();
 
 // Page metadata for SEO and accessibility
 $pageId = 'gear';
-$pageTitle = 'My Gear';
-$pageDescription = 'Manage your outdoor gear inventory with categories, tags, and weight tracking';
+$pageTitle = 'Trail Gear Library';
+$pageDescription = 'Manage your ultralight gear inventory with smart categorization and weight tracking';
 
-// Page-specific styles
-$pageStyles = $pageStyles ?? [];
-$pageStyles[] = 'css/pack-builder.css';         // Base layout and components shared with packs
-$pageStyles[] = 'css/gear-page.css';            // Gear page specific styling
-
-// Add page-specific scripts
+// Add page-specific scripts and CSS
 $pageScripts = $pageScripts ?? [];
-$pageScripts[] = 'js/gear-page.js';           // Main gear page functionality
+$pageScripts[] = 'js/gear-page.js';
+$pageScripts[] = 'js/gear-library-enhanced.js';
+$pageScripts[] = 'js/gear-forest-enhancements.js';
+
+$pageStyles = $pageStyles ?? [];
+$pageStyles[] = 'css/forest-duo-master.css';
+$pageStyles[] = 'css/duolingo-forest-master.css';
+$pageStyles[] = 'css/gear-ux-refined.css';
+$pageStyles[] = 'css/gear-spacing-fixes.css'; // Fix spacing issues
+$pageStyles[] = 'css/gear-color-system.css'; // Color coordination system
+
+// Include Database class
+require_once __DIR__ . '/api/classes/Database.php';
+
+// Get database connection and check user
+$db = Database::getInstance();
+
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    redirect_to_login();
+}
+$user_id = $_SESSION['user_id'];
+
+// Fetch gear statistics from database
+try {
+    // fetchOne returns array, get first value
+    $total_count = $db->fetchOne("SELECT COUNT(*) as count FROM user_gear WHERE user_id = ? AND deleted_at IS NULL", [$user_id]);
+    $total_weight = $db->fetchOne("SELECT COALESCE(SUM(weight_g), 0) as weight FROM user_gear WHERE user_id = ? AND deleted_at IS NULL", [$user_id]);
+    $categories_count = $db->fetchOne("SELECT COUNT(DISTINCT category) as count FROM user_gear WHERE user_id = ? AND deleted_at IS NULL", [$user_id]);
+    
+    $gearStats = [
+        'total_count' => $total_count ? $total_count['count'] : 0,
+        'total_weight' => $total_weight ? $total_weight['weight'] : 0,
+        'categories_count' => $categories_count ? $categories_count['count'] : 0
+    ];
+} catch (Exception $e) {
+    error_log("Gear stats fetch error: " . $e->getMessage());
+    $gearStats = ['total_count' => 0, 'total_weight' => 0, 'categories_count' => 0];
+}
 
 // Include the unified template header
 require_once __DIR__ . '/includes/template-header.php';
 ?>
 
-<!-- Main Gear Container -->
-<div class="gear-page">
-<div class="pack-builder-container" id="main-content">
+<!-- Forest Duo Gear Library Page -->
+<div class="forest-duo-theme gear-forest-page">
   
-  <!-- Header Section -->
-  <div class="gear-header-section">
-    <div class="gear-header-content">
-      <div class="gear-title-group">
-        <h1 class="gear-page-title">
-          <span class="page-icon" aria-hidden="true">📦</span>
-          My Gear Library
-        </h1>
-        <p id="page-description" class="gear-page-subtitle">
-          Track and organize all your outdoor equipment
-        </p>
+  <!-- Enhanced Forest Hero Header -->
+  <div class="hero-forest gear-hero">
+    <div class="hero-particles"></div>
+    <div class="hero-content">
+      <div class="hero-badges">
+        <div class="xp-chip">
+          <span class="xp-icon">⚖️</span>
+          <span class="xp-value">Ultralight Pro</span>
+        </div>
+        <div class="level-badge">
+          <span class="level-icon">🎯</span>
+          <span class="level-text">Gear Master</span>
+        </div>
       </div>
-      <button id="btn-add-gear" class="btn-action" aria-label="Add new gear item">
-        <i class="icon">➕</i> Add Gear
-      </button>
+      <h1 class="hero-title">⚡ Trail Gear Arsenal</h1>
+      <p class="hero-subtitle">Curate your ultralight setup • Track every gram • Optimize for the trail</p>
     </div>
+    <div class="hero-glow"></div>
   </div>
 
-  <!-- Filters and Search Bar -->
-  <div class="gear-toolbar" role="region" aria-label="Search and filter controls">
-    <div class="toolbar-row">
-      <!-- Search -->
-      <div class="search-bar">
-        <label for="gear-search" class="visually-hidden">Search gear</label>
-        <span class="search-icon" aria-hidden="true">🔍</span>
-        <input 
-          id="gear-search" 
-          type="search" 
-          placeholder="Search by name, tags, or notes..." 
-          aria-label="Search gear items"
-          autocomplete="off"
-        />
-      </div>
-
-      <!-- Category Filter -->
-      <div class="filter-group">
-        <label for="category-filter">Category:</label>
-        <select id="category-filter" aria-label="Filter by category">
-          <option value="">All Categories</option>
-          <option value="shelter">Shelter</option>
-          <option value="sleep">Sleep System</option>
-          <option value="cooking">Cooking</option>
-          <option value="clothing">Clothing</option>
-          <option value="navigation">Navigation</option>
-          <option value="hygiene">Hygiene</option>
-          <option value="first-aid">First Aid</option>
-          <option value="electronics">Electronics</option>
-          <option value="water">Water</option>
-          <option value="food-storage">Food Storage</option>
-          <option value="repair">Repair</option>
-          <option value="other">Other</option>
-        </select>
-      </div>
-
-      <!-- Sort -->
-      <div class="filter-group">
-        <label for="sort-gear">Sort by:</label>
-        <select id="sort-gear" aria-label="Sort gear items">
-          <option value="name">Name (A-Z)</option>
-          <option value="category">Category</option>
-          <option value="weight-asc">Weight (Light to Heavy)</option>
-          <option value="weight-desc">Weight (Heavy to Light)</option>
-          <option value="recent">Recently Added</option>
-        </select>
-      </div>
-
-      <!-- Weight Unit Toggle -->
-      <div class="filter-group">
-        <label for="weight-unit">Units:</label>
-        <select id="weight-unit" aria-label="Weight display units">
-          <option value="grams">Grams</option>
-          <option value="ounces">Ounces</option>
-          <option value="pounds">Pounds</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Results Count -->
-    <div class="toolbar-status" role="status" aria-live="polite" aria-atomic="true">
-      <span id="result-count">Loading gear...</span>
-    </div>
-  </div>
-
-  <!-- Main Content Area -->
-  <div class="pack-content">
+  <!-- Two-Column Layout Container -->
+  <div class="gear-layout-two-column forest-gear-container" id="main-content">
     
-    <!-- Gear Items List -->
-    <div class="gear-items-container" id="gear-items" role="region" aria-label="Gear items list">
+    <!-- Left Sidebar - Filters and Controls -->
+    <div class="gear-sidebar forest-sidebar">
+      <!-- Enhanced Action Bar with Trail Focus -->
+      <div class="gear-action-bar forest-action-bar">
+        <div class="gear-header-main">
+          <div class="gear-title-section">
+            <h2 class="gear-view-title">
+              <span class="title-icon">🏔️</span>
+              Trail Arsenal
+            </h2>
+            <div class="gear-stats-summary">
+              <div class="stat-chip">
+                <span class="stat-icon">📊</span>
+                <span class="stat-value" id="total-gear-count"><?= number_format($gearStats['total_count']) ?></span>
+                <span class="stat-label">Items</span>
+              </div>
+              <div class="stat-chip">
+                <span class="stat-icon">⚖️</span>
+                <span class="stat-value" id="total-gear-weight"><?= number_format($gearStats['total_weight']) ?>g</span>
+                <span class="stat-label">Total</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="gear-actions forest-actions">
+          <!-- Trail-focused Search -->
+        <div class="search-bar forest-search">
+          <span class="search-icon">🔍</span>
+          <input type="search" placeholder="Find gear, brands, or categories..." id="gear-search-main" aria-label="Search gear">
+          <div class="search-suggestions" id="gear-search-suggestions"></div>
+        </div>
+        
+        <!-- Gear Library Tabs -->
+        <div class="gear-tabs forest-tabs">
+          <button class="gear-tab active" data-tab="all" role="tab" aria-selected="true">
+            <span class="tab-icon">🌟</span>
+            <span class="tab-text">All Gear</span>
+            <span class="tab-count" id="all-count">0</span>
+          </button>
+          <button class="gear-tab" data-tab="custom" role="tab" aria-selected="false">
+            <span class="tab-icon">🎒</span>
+            <span class="tab-text">My Custom Gear</span>
+            <span class="tab-count" id="custom-count">0</span>
+          </button>
+          <button class="gear-tab" data-tab="default" role="tab" aria-selected="false">
+            <span class="tab-icon">📚</span>
+            <span class="tab-text">Default Library</span>
+            <span class="tab-count" id="default-count">0</span>
+          </button>
+        </div>
+
+        <!-- Quick Category Filters -->
+        <div class="quick-filters">
+          <button class="filter-chip active" data-category="all">
+            <span class="chip-icon">🌟</span>
+            <span class="chip-text">All Categories</span>
+          </button>
+          <button class="filter-chip" data-category="shelter">
+            <span class="chip-icon">⛺</span>
+            <span class="chip-text">Shelter</span>
+          </button>
+          <button class="filter-chip" data-category="sleep">
+            <span class="chip-icon">🛌</span>
+            <span class="chip-text">Sleep</span>
+          </button>
+          <button class="filter-chip" data-category="cooking">
+            <span class="chip-icon">🔥</span>
+            <span class="chip-text">Cooking</span>
+          </button>
+          <button class="filter-chip" data-category="water">
+            <span class="chip-icon">💧</span>
+            <span class="chip-text">Water</span>
+          </button>
+          <button class="filter-chip" data-category="clothing">
+            <span class="chip-icon">👕</span>
+            <span class="chip-text">Clothing</span>
+          </button>
+          <button class="filter-chip" data-category="footwear">
+            <span class="chip-icon">🥾</span>
+            <span class="chip-text">Footwear</span>
+          </button>
+          <button class="filter-chip" data-category="navigation">
+            <span class="chip-icon">🧭</span>
+            <span class="chip-text">Navigation</span>
+          </button>
+          <button class="filter-chip" data-category="first-aid">
+            <span class="chip-icon">🏥</span>
+            <span class="chip-text">First Aid</span>
+          </button>
+          <button class="filter-chip" data-category="electronics">
+            <span class="chip-icon">📱</span>
+            <span class="chip-text">Electronics</span>
+          </button>
+          <button class="filter-chip" data-category="tools">
+            <span class="chip-icon">🔧</span>
+            <span class="chip-text">Tools</span>
+          </button>
+          <button class="filter-chip" data-category="ultralight">
+            <span class="chip-icon">🪶</span>
+            <span class="chip-text">Ultralight</span>
+          </button>
+        </div>
+        
+        <button id="btn-add-gear" class="btn-action forest-btn-primary" aria-label="Add new gear item">
+          <span class="btn-icon">⚡</span>
+          <span class="btn-text">Add Gear</span>
+          <div class="btn-shine"></div>
+        </button>
+        </div>
+      </div>
+
+      <!-- Advanced Controls Section -->
+      <div class="gear-advanced-controls forest-controls">
+        <!-- Display Options -->
+        <div class="control-section">
+          <h3 class="control-section-title">
+            <span class="section-icon">👁️</span>
+            Display Options
+          </h3>
+          
+          <!-- View Mode -->
+          <div class="control-group">
+            <label class="control-label">View Mode:</label>
+            <div class="view-mode-buttons">
+              <button class="view-mode-btn active" data-view="grid" aria-label="Grid view">
+                <span class="view-icon">⊞</span>
+              </button>
+              <button class="view-mode-btn" data-view="list" aria-label="List view">
+                <span class="view-icon">☰</span>
+              </button>
+              <button class="view-mode-btn" data-view="compact" aria-label="Compact view">
+                <span class="view-icon">▦</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Density -->
+          <div class="control-group">
+            <label for="density-select" class="control-label">Density:</label>
+            <select id="density-select" class="forest-select" aria-label="Display density">
+              <option value="comfortable">Comfortable</option>
+              <option value="compact">Compact</option>
+              <option value="ultra-compact">Ultra Compact</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Sort & Filter Section -->
+        <div class="control-section">
+          <h3 class="control-section-title">
+            <span class="section-icon">🔧</span>
+            Sort & Filter
+          </h3>
+          
+          <!-- Sort Options -->
+          <div class="control-group">
+            <label for="sort-gear" class="control-label">Sort by:</label>
+            <select id="sort-gear" class="forest-select" aria-label="Sort gear items">
+              <option value="name">📝 Name (A-Z)</option>
+              <option value="category">🏷️ Category</option>
+              <option value="weight-asc">⚖️ Weight (Light to Heavy)</option>
+              <option value="weight-desc">⚖️ Weight (Heavy to Light)</option>
+              <option value="recent">🆕 Recently Added</option>
+              <option value="essential">⭐ Essential First</option>
+            </select>
+          </div>
+
+          <!-- Weight Unit Toggle -->
+          <div class="control-group">
+            <label for="weight-unit" class="control-label">Units:</label>
+            <select id="weight-unit" class="forest-select" aria-label="Weight display units">
+              <option value="grams">Grams</option>
+              <option value="ounces">Ounces</option>
+              <option value="pounds">Pounds</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Results Status -->
+        <div class="results-status" role="status" aria-live="polite" aria-atomic="true">
+          <span id="result-count">Loading gear...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Main Content Area -->
+    <div class="gear-main-content forest-main-content">
+      
+      <!-- Gear Items Container -->
+      <div class="gear-items-container" id="gear-items" role="region" aria-label="Gear items list">
       
       <!-- Loading State -->
       <div class="loading-spinner" id="gear-loading">
@@ -150,13 +308,13 @@ require_once __DIR__ . '/includes/template-header.php';
         </button>
       </div>
 
-      <!-- Gear Grid/List (populated by JavaScript) -->
-      <div class="gear-grid" id="gear-grid" style="display: none;">
-        <!-- Gear cards will be inserted here by JavaScript -->
+        <!-- Gear Grid/List (populated by JavaScript) -->
+        <div class="gear-grid" id="gear-grid" style="display: none;">
+          <!-- Gear cards will be inserted here by JavaScript -->
+        </div>
       </div>
     </div>
   </div>
-</div>
 </div>
 
 <!-- Add/Edit Gear Modal -->
@@ -203,18 +361,32 @@ require_once __DIR__ . '/includes/template-header.php';
           aria-describedby="category-error"
         >
           <option value="">Select category...</option>
-          <option value="shelter">Shelter</option>
-          <option value="sleep">Sleep System</option>
-          <option value="cooking">Cooking</option>
-          <option value="clothing">Clothing</option>
-          <option value="navigation">Navigation</option>
-          <option value="hygiene">Hygiene</option>
-          <option value="first-aid">First Aid</option>
-          <option value="electronics">Electronics</option>
-          <option value="water">Water</option>
-          <option value="food-storage">Food Storage</option>
-          <option value="repair">Repair</option>
-          <option value="other">Other</option>
+          <optgroup label="⛺ Core Systems">
+            <option value="shelter">Shelter</option>
+            <option value="sleep">Sleep System</option>
+            <option value="cooking">Cooking</option>
+            <option value="water">Water & Hydration</option>
+          </optgroup>
+          <optgroup label="👕 Clothing & Protection">
+            <option value="clothing">Clothing</option>
+            <option value="footwear">Footwear</option>
+            <option value="rain-gear">Rain Gear</option>
+          </optgroup>
+          <optgroup label="🧭 Navigation & Safety">
+            <option value="navigation">Navigation</option>
+            <option value="first-aid">First Aid</option>
+            <option value="emergency">Emergency</option>
+          </optgroup>
+          <optgroup label="📱 Electronics & Tools">
+            <option value="electronics">Electronics</option>
+            <option value="tools">Tools</option>
+            <option value="repair">Repair</option>
+          </optgroup>
+          <optgroup label="🧼 Personal Care">
+            <option value="hygiene">Hygiene</option>
+            <option value="food-storage">Food Storage</option>
+            <option value="other">Other</option>
+          </optgroup>
         </select>
         <div class="form-error" id="category-error" role="alert"></div>
       </div>
@@ -322,9 +494,21 @@ require_once __DIR__ . '/includes/template-header.php';
 <script>
   // Initialize configuration
   window.GearConfig = {
-    apiUrl: '<?php echo BTT_API_URL; ?>',
+    apiUrl: '<?php echo route_url("api"); ?>',
     csrfToken: '<?php echo csrf_token(); ?>'
   };
+
+  // Initialize GearManager when DOM is loaded
+  document.addEventListener('DOMContentLoaded', function() {
+    if (window.GearManager) {
+      console.log('Initializing GearManager...');
+      // Update API configuration for AJAX handler
+      GearManager.config.apiUrl = '<?php echo route_url(""); ?>/ajax-handler.php';
+      GearManager.init();
+    } else {
+      console.error('GearManager not found - check that gear-page.js is loaded');
+    }
+  });
 </script>
 
 <?php

@@ -1,645 +1,806 @@
 /**
- * Dashboard Clean UI
- * Horizontal-focused layout with proper spacing and responsive design
+ * Clean Dashboard Design
+ * Simplified, focused layout with better visual hierarchy
+ * @version 2.0.0
  */
 
-/* Dashboard Container Layout */
-.ux-refresh .dashboard-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: var(--ux-space-4, 1rem);
+/* ===========================================
+   HIDE CLUTTERED ELEMENTS
+   =========================================== */
+
+/* Remove only secondary content - not primary cards */
+.dashboard-secondary-grid {
+  display: none !important;
 }
 
-/* Welcome Banner - More Compact */
-.ux-refresh .welcome-banner {
-  background: linear-gradient(135deg, rgba(74, 222, 128, 0.1) 0%, rgba(34, 197, 94, 0.1) 100%);
-  border: 1px solid rgba(74, 222, 128, 0.2);
-  border-radius: var(--ux-radius-xl, 1rem);
-  padding: var(--ux-space-6, 1.5rem) var(--ux-space-8, 2rem);
-  margin-bottom: var(--ux-space-6, 1.5rem);
+/* Remove specific animations but not the cards themselves */
+.twinkle-stars::before,
+.twinkle-stars::after {
+  display: none !important;
+}
+
+/* Keep cards visible, just remove glow effect */
+.card-glow::before {
+  display: none !important;
+}
+
+/* ===========================================
+   CLEAN HERO SECTION
+   =========================================== */
+
+/* Fix dashboard padding issue */
+body[data-page="dashboard"] {
+  padding-top: 0 !important;
+}
+
+.modern-dashboard-hero {
+  background: linear-gradient(135deg, 
+    rgba(46, 125, 50, 0.95) 0%, 
+    rgba(27, 94, 32, 0.95) 100%
+  ) !important;
+  border-radius: 16px;
+  padding: 2rem;
+  margin: 0 0 2rem 0 !important; /* Remove any top margin */
   text-align: center;
+  max-width: 100%;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modern-dashboard-hero-title {
+  font-size: 2rem !important;
+  font-weight: 700;
+  color: #ffffff !important;
+  margin: 0 0 0.5rem 0 !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.modern-dashboard-hero-subtitle {
+  font-size: 1rem !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  margin: 0 0 2rem 0 !important;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===========================================
+   SIMPLIFIED QUICK ACTIONS
+   =========================================== */
+
+.modern-dashboard {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 1rem !important;
+  max-width: 600px !important;
+  margin: 0 auto !important;
+}
+
+.modern-btn {
+  padding: 1rem 1.25rem !important;
+  border-radius: 12px !important;
+  border: none !important;
+  color: white !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  text-decoration: none !important;
+  text-align: center !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 48px !important;
+}
+
+.modern-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+  text-decoration: none !important;
+  color: white !important;
+}
+
+/* ===========================================
+   CLEAN STATS GRID
+   =========================================== */
+
+.stats-grid {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 1.25rem !important;
+  margin: 2rem auto 3rem !important;
+  max-width: 800px !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px !important;
+  padding: 1.25rem 1rem !important;
+  text-align: center !important;
+  transition: all 0.3s ease !important;
+}
+
+.stat-card:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(76, 175, 80, 0.3) !important;
+  transform: translateY(-2px) !important;
+}
+
+.stat-number {
+  font-size: 1.75rem !important;
+  font-weight: 700 !important;
+  color: #4caf50 !important;
+  margin-bottom: 0.25rem !important;
+  display: block !important;
+}
+
+.stat-label {
+  font-size: 0.8rem !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
 }
 
-.ux-refresh .welcome-banner h1 {
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  color: var(--ux-primary, #4ade80);
-  margin-bottom: var(--ux-space-2, 0.5rem);
-  font-weight: var(--ux-font-bold, 700);
-}
-
-.ux-refresh .welcome-banner p {
-  font-size: var(--ux-text-base, 1rem);
-  color: var(--ux-forest-mist, #e0e0e0);
-  opacity: 0.9;
-  margin: 0;
-}
-
-/* Main Dashboard Grid - Horizontal Focus */
-.ux-refresh .dashboard-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-areas:
-    "quick-start quick-start"
-    "next-trip pack-status"
-    "my-gear achievements"
-    "trail-stats trail-stats"
-    "recent recent";
-  gap: var(--ux-space-4, 1rem);
-  margin-bottom: var(--ux-space-8, 2rem);
-}
-
-/* Quick Start Section - Horizontal */
-.ux-refresh .quick-start-section {
-  grid-area: quick-start;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--ux-radius-lg, 0.75rem);
-  padding: var(--ux-space-5, 1.25rem);
-}
-
-.ux-refresh .quick-start-header {
-  display: flex;
-  align-items: center;
-  gap: var(--ux-space-2, 0.5rem);
-  margin-bottom: var(--ux-space-4, 1rem);
-  padding-bottom: var(--ux-space-3, 0.75rem);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.ux-refresh .quick-start-header h2 {
-  font-size: var(--ux-text-lg, 1.125rem);
-  color: var(--ux-primary, #4ade80);
-  font-weight: var(--ux-font-semibold, 600);
-  margin: 0;
-}
-
-.ux-refresh .quick-actions-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--ux-space-3, 0.75rem);
-}
-
-.ux-refresh .quick-action {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--ux-radius-md, 0.5rem);
-  padding: var(--ux-space-4, 1rem);
-  text-align: center;
-  cursor: pointer;
-  transition: all var(--ux-transition-base, 250ms);
-  position: relative;
-  overflow: hidden;
-  min-height: 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--ux-space-2, 0.5rem);
-}
-
-.ux-refresh .quick-action:hover {
-  background: rgba(74, 222, 128, 0.05);
-  border-color: var(--ux-primary, #4ade80);
-  transform: translateY(-2px);
-}
-
-.ux-refresh .quick-action-icon {
-  font-size: 1.5rem;
-}
-
-.ux-refresh .quick-action-label {
-  font-size: var(--ux-text-sm, 0.875rem);
-  color: var(--ux-forest-fog, #f5f5f5);
-  font-weight: var(--ux-font-medium, 500);
-}
-
-.ux-refresh .quick-action-sub {
-  font-size: var(--ux-text-xs, 0.75rem);
-  color: var(--ux-forest-mist, #e0e0e0);
-  opacity: 0.7;
-}
-
-/* Next Trip Card - Compact */
-.ux-refresh .next-trip-card {
-  grid-area: next-trip;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--ux-radius-lg, 0.75rem);
-  padding: var(--ux-space-5, 1.25rem);
-  position: relative;
-  overflow: hidden;
-}
-
-.ux-refresh .card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--ux-space-3, 0.75rem);
-  padding-bottom: var(--ux-space-2, 0.5rem);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
+/* ===========================================
+   SIMPLIFIED MAIN CARDS
+   =========================================== */
 
-.ux-refresh .card-title {
-  font-size: var(--ux-text-base, 1rem);
-  color: var(--ux-primary, #4ade80);
-  font-weight: var(--ux-font-semibold, 600);
-  margin: 0;
+.dashboard-primary-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+  gap: 1.5rem !important;
+  max-width: 1000px !important;
+  margin: 0 auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
-.ux-refresh .card-link {
-  font-size: var(--ux-text-sm, 0.875rem);
-  color: var(--ux-forest-sky, #87ceeb);
-  text-decoration: none;
-  transition: color var(--ux-transition-fast, 150ms);
+/* Ensure all cards are visible */
+.dashboard-card,
+.card {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
-.ux-refresh .card-link:hover {
-  color: var(--ux-primary, #4ade80);
+.dashboard-card {
+  background: rgba(255, 255, 255, 0.03) !important;
+  backdrop-filter: blur(15px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 16px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
 }
 
-.ux-refresh .trip-info {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ux-space-2, 0.5rem);
+.dashboard-card:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(76, 175, 80, 0.2) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15) !important;
 }
 
-.ux-refresh .trip-name {
-  font-size: var(--ux-text-lg, 1.125rem);
-  color: var(--ux-forest-fog, #f5f5f5);
-  font-weight: var(--ux-font-medium, 500);
-  margin-bottom: var(--ux-space-1, 0.25rem);
-}
-
-.ux-refresh .trip-details {
-  display: flex;
-  gap: var(--ux-space-3, 0.75rem);
-  flex-wrap: wrap;
-  font-size: var(--ux-text-sm, 0.875rem);
-  color: var(--ux-forest-mist, #e0e0e0);
-}
-
-.ux-refresh .trip-detail {
-  display: flex;
-  align-items: center;
-  gap: var(--ux-space-1, 0.25rem);
-}
-
-.ux-refresh .countdown {
-  background: rgba(74, 222, 128, 0.1);
-  border: 1px solid rgba(74, 222, 128, 0.2);
-  border-radius: var(--ux-radius-md, 0.5rem);
-  padding: var(--ux-space-2, 0.5rem) var(--ux-space-3, 0.75rem);
-  margin-top: var(--ux-space-3, 0.75rem);
-  text-align: center;
-  font-size: var(--ux-text-sm, 0.875rem);
-  color: var(--ux-primary, #4ade80);
-  font-weight: var(--ux-font-medium, 500);
-}
+/* ===========================================
+   CLEAN CARD HEADERS
+   =========================================== */
 
-/* Pack Status Card - Compact */
-.ux-refresh .pack-status-card {
-  grid-area: pack-status;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--ux-radius-lg, 0.75rem);
-  padding: var(--ux-space-5, 1.25rem);
+.card-header {
+  padding: 1.25rem 1.25rem 0.75rem !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
 }
 
-.ux-refresh .pack-stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--ux-space-3, 0.75rem);
-  margin-bottom: var(--ux-space-3, 0.75rem);
+.card-title {
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  color: #ffffff !important;
+  margin: 0 0 0.25rem 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
 }
 
-.ux-refresh .pack-stat {
-  text-align: center;
-  padding: var(--ux-space-2, 0.5rem);
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: var(--ux-radius-md, 0.5rem);
+.card-subtitle {
+  font-size: 0.85rem !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  margin: 0 !important;
 }
 
-.ux-refresh .pack-stat-value {
-  font-size: var(--ux-text-xl, 1.25rem);
-  color: var(--ux-forest-fog, #f5f5f5);
-  font-weight: var(--ux-font-bold, 700);
-  margin-bottom: var(--ux-space-1, 0.25rem);
-}
-
-.ux-refresh .pack-stat-label {
-  font-size: var(--ux-text-xs, 0.75rem);
-  color: var(--ux-forest-mist, #e0e0e0);
-  opacity: 0.7;
-}
+/* ===========================================
+   SIMPLIFIED CARD CONTENT
+   =========================================== */
 
-.ux-refresh .pack-actions {
-  display: flex;
-  gap: var(--ux-space-2, 0.5rem);
+.card-body {
+  padding: 1.25rem !important;
 }
 
-.ux-refresh .pack-action-btn {
-  flex: 1;
-  padding: var(--ux-space-2, 0.5rem);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--ux-radius-md, 0.5rem);
-  color: var(--ux-forest-fog, #f5f5f5);
-  font-size: var(--ux-text-sm, 0.875rem);
-  cursor: pointer;
-  transition: all var(--ux-transition-fast, 150ms);
-  text-align: center;
-  text-decoration: none;
+/* Clean trip items */
+.recent-trips-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.75rem !important;
+  max-height: 400px !important;
+  overflow-y: auto !important;
+  padding-right: 0.5rem !important;
 }
 
-.ux-refresh .pack-action-btn:hover {
-  background: rgba(74, 222, 128, 0.1);
-  border-color: var(--ux-primary, #4ade80);
+/* Custom scrollbar for trips list */
+.recent-trips-list::-webkit-scrollbar {
+  width: 6px !important;
 }
 
-.ux-refresh .pack-action-btn.primary {
-  background: rgba(74, 222, 128, 0.1);
-  border-color: var(--ux-primary, #4ade80);
-  color: var(--ux-primary, #4ade80);
+.recent-trips-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-radius: 3px !important;
 }
 
-/* My Gear Card - Compact */
-.ux-refresh .my-gear-card {
-  grid-area: my-gear;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--ux-radius-lg, 0.75rem);
-  padding: var(--ux-space-5, 1.25rem);
+.recent-trips-list::-webkit-scrollbar-thumb {
+  background: rgba(74, 144, 226, 0.3) !important;
+  border-radius: 3px !important;
 }
 
-.ux-refresh .gear-stats {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: var(--ux-space-4, 1rem);
-  padding-bottom: var(--ux-space-3, 0.75rem);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+.recent-trips-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(74, 144, 226, 0.5) !important;
 }
 
-.ux-refresh .gear-stat {
-  display: flex;
-  align-items: center;
-  gap: var(--ux-space-2, 0.5rem);
-  font-size: var(--ux-text-sm, 0.875rem);
+.trip-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  padding: 0.75rem !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  transition: all 0.2s ease !important;
 }
 
-.ux-refresh .gear-stat-icon {
-  font-size: 1rem;
+.trip-item:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(76, 175, 80, 0.2) !important;
 }
 
-.ux-refresh .gear-stat-value {
-  color: var(--ux-forest-fog, #f5f5f5);
-  font-weight: var(--ux-font-medium, 500);
+.trip-icon, .trip-photo {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1.1rem !important;
+  background: rgba(76, 175, 80, 0.1) !important;
+  flex-shrink: 0 !important;
 }
 
-.ux-refresh .add-gear-btn {
-  width: 100%;
-  padding: var(--ux-space-3, 0.75rem);
-  background: rgba(74, 222, 128, 0.05);
-  border: 1px solid rgba(74, 222, 128, 0.2);
-  border-radius: var(--ux-radius-md, 0.5rem);
-  color: var(--ux-primary, #4ade80);
-  font-size: var(--ux-text-sm, 0.875rem);
-  font-weight: var(--ux-font-medium, 500);
-  cursor: pointer;
-  transition: all var(--ux-transition-fast, 150ms);
+.trip-photo-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 8px !important;
 }
 
-.ux-refresh .add-gear-btn:hover {
-  background: rgba(74, 222, 128, 0.1);
-  transform: translateY(-1px);
+.trip-info {
+  flex: 1 !important;
 }
 
-/* Achievements Card - Compact Horizontal */
-.ux-refresh .achievements-card {
-  grid-area: achievements;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--ux-radius-lg, 0.75rem);
-  padding: var(--ux-space-5, 1.25rem);
+.trip-info h4 {
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  color: #ffffff !important;
+  margin: 0 0 0.25rem 0 !important;
 }
 
-.ux-refresh .level-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--ux-space-3, 0.75rem);
+.trip-info p {
+  font-size: 0.8rem !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  margin: 0 0 0.25rem 0 !important;
 }
 
-.ux-refresh .level-text {
-  font-size: var(--ux-text-base, 1rem);
-  color: var(--ux-forest-fog, #f5f5f5);
-  font-weight: var(--ux-font-medium, 500);
+.trip-date {
+  font-size: 0.7rem !important;
+  color: rgba(255, 255, 255, 0.5) !important;
 }
 
-.ux-refresh .xp-text {
-  font-size: var(--ux-text-sm, 0.875rem);
-  color: var(--ux-forest-honey, #fbbf24);
+.trip-badge {
+  flex-shrink: 0 !important;
 }
 
-.ux-refresh .xp-bar {
-  height: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: var(--ux-radius-full, 9999px);
-  overflow: hidden;
-  margin-bottom: var(--ux-space-4, 1rem);
+.badge {
+  padding: 0.2rem 0.4rem !important;
+  border-radius: 6px !important;
+  font-size: 0.65rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
 }
 
-.ux-refresh .xp-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--ux-forest-honey, #fbbf24), var(--ux-primary, #4ade80));
-  transition: width var(--ux-transition-slow, 350ms);
+.badge-success {
+  background: rgba(76, 175, 80, 0.2) !important;
+  color: #4caf50 !important;
+  border: 1px solid rgba(76, 175, 80, 0.3) !important;
 }
 
-.ux-refresh .badges-row {
-  display: flex;
-  gap: var(--ux-space-2, 0.5rem);
-  justify-content: center;
+.badge-info {
+  background: rgba(33, 150, 243, 0.2) !important;
+  color: #2196f3 !important;
+  border: 1px solid rgba(33, 150, 243, 0.3) !important;
 }
 
-.ux-refresh .badge {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--ux-space-1, 0.25rem);
-  padding: var(--ux-space-2, 0.5rem);
-  opacity: 0.5;
-  transition: opacity var(--ux-transition-fast, 150ms);
-}
+/* ===========================================
+   CLEAN EMPTY STATES
+   =========================================== */
 
-.ux-refresh .badge.earned {
-  opacity: 1;
+.empty-state {
+  text-align: center !important;
+  padding: 1.5rem 1rem !important;
 }
 
-.ux-refresh .badge-icon {
-  font-size: 1.5rem;
+.empty-state-icon {
+  font-size: 2.5rem !important;
+  margin-bottom: 0.75rem !important;
+  opacity: 0.6 !important;
 }
 
-.ux-refresh .badge-name {
-  font-size: var(--ux-text-xs, 0.75rem);
-  color: var(--ux-forest-mist, #e0e0e0);
-  white-space: nowrap;
+.empty-state-title {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: #ffffff !important;
+  margin: 0 0 0.5rem 0 !important;
 }
 
-.ux-refresh .streak-indicator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--ux-space-2, 0.5rem);
-  padding: var(--ux-space-2, 0.5rem);
-  background: rgba(251, 191, 36, 0.1);
-  border: 1px solid rgba(251, 191, 36, 0.2);
-  border-radius: var(--ux-radius-md, 0.5rem);
-  margin-top: var(--ux-space-3, 0.75rem);
-  font-size: var(--ux-text-sm, 0.875rem);
-  color: var(--ux-forest-honey, #fbbf24);
+.empty-state-description {
+  font-size: 0.85rem !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  margin: 0 !important;
+  line-height: 1.4 !important;
 }
 
-/* Trail Stats - Full Width Horizontal */
-.ux-refresh .trail-stats-card {
-  grid-area: trail-stats;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--ux-radius-lg, 0.75rem);
-  padding: var(--ux-space-5, 1.25rem);
-}
+/* ===========================================
+   SIMPLIFIED CARD FOOTERS
+   =========================================== */
 
-.ux-refresh .stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--ux-space-4, 1rem);
+.card-footer {
+  padding: 0.75rem 1.25rem 1.25rem !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  display: flex !important;
+  gap: 0.5rem !important;
+  flex-wrap: wrap !important;
 }
 
-.ux-refresh .stat-item {
-  display: flex;
-  align-items: center;
-  gap: var(--ux-space-3, 0.75rem);
-  padding: var(--ux-space-3, 0.75rem);
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: var(--ux-radius-md, 0.5rem);
-  transition: all var(--ux-transition-fast, 150ms);
+.btn {
+  padding: 0.6rem 1rem !important;
+  border-radius: 8px !important;
+  border: none !important;
+  font-weight: 600 !important;
+  font-size: 0.8rem !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
-.ux-refresh .stat-item:hover {
-  background: rgba(255, 255, 255, 0.05);
-  transform: translateY(-1px);
+.btn-adventures {
+  background: var(--adventure-primary, #4a90e2) !important;
+  color: white !important;
 }
 
-.ux-refresh .stat-icon {
-  font-size: 1.5rem;
-  opacity: 0.8;
+.btn-backpacks {
+  background: var(--pack-primary, #9c27b0) !important;
+  color: white !important;
 }
 
-.ux-refresh .stat-content {
-  flex: 1;
+.btn-gear {
+  background: var(--gear-primary, #ff9800) !important;
+  color: white !important;
 }
 
-.ux-refresh .stat-value {
-  font-size: var(--ux-text-xl, 1.25rem);
-  color: var(--ux-forest-fog, #f5f5f5);
-  font-weight: var(--ux-font-bold, 700);
-  line-height: 1;
-  margin-bottom: var(--ux-space-1, 0.25rem);
+.btn-progress {
+  background: var(--progress-primary, #4caf50) !important;
+  color: white !important;
 }
 
-.ux-refresh .stat-label {
-  font-size: var(--ux-text-xs, 0.75rem);
-  color: var(--ux-forest-mist, #e0e0e0);
-  opacity: 0.7;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
-/* Recent Activity - Full Width */
-.ux-refresh .recent-activity-section {
-  grid-area: recent;
-  margin-top: var(--ux-space-4, 1rem);
+.btn:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2) !important;
+  text-decoration: none !important;
 }
 
-.ux-refresh .section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--ux-space-4, 1rem);
-  padding-bottom: var(--ux-space-2, 0.5rem);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  color: white !important;
 }
 
-.ux-refresh .section-title {
-  font-size: var(--ux-text-lg, 1.125rem);
-  color: var(--ux-primary, #4ade80);
-  font-weight: var(--ux-font-semibold, 600);
-}
+/* ===========================================
+   CLEAN ACHIEVEMENTS
+   =========================================== */
 
-.ux-refresh .activity-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--ux-space-4, 1rem);
+.achievements-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 0.5rem !important;
 }
 
-.ux-refresh .activity-card {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--ux-radius-lg, 0.75rem);
-  padding: var(--ux-space-5, 1.25rem);
+.achievement {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  padding: 0.75rem !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  transition: all 0.2s ease !important;
 }
 
-.ux-refresh .activity-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ux-space-3, 0.75rem);
+.achievement.earned {
+  background: rgba(76, 175, 80, 0.05) !important;
+  border-color: rgba(76, 175, 80, 0.2) !important;
 }
 
-.ux-refresh .activity-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--ux-space-3, 0.75rem);
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: var(--ux-radius-md, 0.5rem);
-  transition: all var(--ux-transition-fast, 150ms);
+.achievement.locked {
+  opacity: 0.6 !important;
 }
 
-.ux-refresh .activity-item:hover {
-  background: rgba(74, 222, 128, 0.05);
-  transform: translateX(2px);
+.achievement-icon {
+  font-size: 1.25rem !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-radius: 8px !important;
+  flex-shrink: 0 !important;
 }
 
-.ux-refresh .activity-info {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ux-space-1, 0.25rem);
+.achievement.earned .achievement-icon {
+  background: rgba(76, 175, 80, 0.1) !important;
 }
 
-.ux-refresh .activity-name {
-  font-size: var(--ux-text-base, 1rem);
-  color: var(--ux-forest-fog, #f5f5f5);
-  font-weight: var(--ux-font-medium, 500);
+.achievement-content {
+  flex: 1 !important;
 }
 
-.ux-refresh .activity-meta {
-  font-size: var(--ux-text-sm, 0.875rem);
-  color: var(--ux-forest-mist, #e0e0e0);
-  opacity: 0.7;
+.achievement-title {
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  color: #ffffff !important;
+  margin: 0 0 0.25rem 0 !important;
 }
 
-.ux-refresh .activity-action {
-  padding: var(--ux-space-2, 0.5rem) var(--ux-space-3, 0.75rem);
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: var(--ux-radius-md, 0.5rem);
-  color: var(--ux-forest-fog, #f5f5f5);
-  font-size: var(--ux-text-sm, 0.875rem);
-  cursor: pointer;
-  transition: all var(--ux-transition-fast, 150ms);
-  text-decoration: none;
+.achievement-description {
+  font-size: 0.75rem !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  margin: 0 !important;
+  line-height: 1.3 !important;
 }
 
-.ux-refresh .activity-action:hover {
-  background: rgba(74, 222, 128, 0.1);
-  border-color: var(--ux-primary, #4ade80);
-  color: var(--ux-primary, #4ade80);
-}
+/* ===========================================
+   RESPONSIVE DESIGN
+   =========================================== */
 
-/* Responsive Design */
-@media (max-width: 1024px) {
-  .ux-refresh .dashboard-grid {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "quick-start"
-      "next-trip"
-      "pack-status"
-      "trail-stats"
-      "my-gear"
-      "achievements"
-      "recent";
-  }
-  
-  .ux-refresh .quick-actions-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .ux-refresh .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .ux-refresh .activity-grid {
-    grid-template-columns: 1fr;
+/* Force 4 columns on larger screens */
+@media (min-width: 769px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
   }
 }
 
 @media (max-width: 768px) {
-  .ux-refresh .dashboard-container {
-    padding: var(--ux-space-3, 0.75rem);
+  .modern-dashboard {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.75rem !important;
   }
   
-  .ux-refresh .welcome-banner {
-    padding: var(--ux-space-4, 1rem);
+  .modern-btn {
+    padding: 0.75rem 1rem !important;
+    font-size: 0.85rem !important;
   }
   
-  .ux-refresh .quick-actions-grid {
-    grid-template-columns: 1fr;
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1rem !important;
   }
   
-  .ux-refresh .pack-stats {
-    grid-template-columns: 1fr;
+  .dashboard-primary-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
   }
   
-  .ux-refresh .gear-stats {
-    flex-direction: column;
-    gap: var(--ux-space-2, 0.5rem);
+  .modern-dashboard-hero {
+    padding: 1.5rem 1rem !important;
   }
   
-  .ux-refresh .badges-row {
-    flex-wrap: wrap;
-  }
-  
-  .ux-refresh .stats-grid {
-    grid-template-columns: 1fr;
+  .modern-dashboard-hero-title {
+    font-size: 1.75rem !important;
   }
 }
 
-/* Loading States */
-.ux-refresh .skeleton-dashboard {
-  animation: pulse 1.5s ease-in-out infinite;
-  background: linear-gradient(90deg, 
-    rgba(255, 255, 255, 0.03) 25%, 
-    rgba(255, 255, 255, 0.06) 50%, 
-    rgba(255, 255, 255, 0.03) 75%);
-  background-size: 200% 100%;
-  border-radius: var(--ux-radius-md, 0.5rem);
+@media (max-width: 480px) {
+  .modern-dashboard {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  .card-footer {
+    flex-direction: column !important;
+  }
+  
+  .btn {
+    width: 100% !important;
+  }
 }
 
-/* Empty States */
-.ux-refresh .empty-dashboard {
-  text-align: center;
-  padding: var(--ux-space-8, 2rem);
-  color: var(--ux-forest-mist, #e0e0e0);
-  opacity: 0.7;
+/* ===========================================
+   HIDE ANIMATIONS & EFFECTS
+   =========================================== */
+
+.animate-count-up,
+.animate-fade-in-up,
+.animate-delay-300,
+.animate-delay-500,
+.animate-delay-700,
+.modern-animate-slide-in {
+  animation: none !important;
 }
 
-.ux-refresh .empty-icon {
-  font-size: 3rem;
-  margin-bottom: var(--ux-space-4, 1rem);
-  opacity: 0.3;
+/* ===========================================
+   ENHANCED TRIP PHOTO DISPLAY
+   =========================================== */
+
+.trip-photo {
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+  flex-shrink: 0 !important;
 }
 
-.ux-refresh .empty-title {
-  font-size: var(--ux-text-lg, 1.125rem);
-  margin-bottom: var(--ux-space-2, 0.5rem);
+.trip-photo-img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 10px !important;
+  transition: transform 0.2s ease !important;
 }
 
-.ux-refresh .empty-description {
-  font-size: var(--ux-text-sm, 0.875rem);
-  margin-bottom: var(--ux-space-4, 1rem);
+.trip-item:hover .trip-photo-img {
+  transform: scale(1.05) !important;
+}
+
+/* ===========================================
+   INTERACTIVE ELEMENTS
+   =========================================== */
+
+.dashboard-card {
+  cursor: pointer !important;
+  position: relative !important;
+}
+
+.dashboard-card::after {
+  content: "Click to view details" !important;
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+  font-size: 0.7rem !important;
+  color: rgba(255, 255, 255, 0.4) !important;
+  opacity: 0 !important;
+  transition: opacity 0.2s ease !important;
+}
+
+.dashboard-card:hover::after {
+  opacity: 1 !important;
+}
+
+.trip-item, .pack-preview, .gear-item-row {
+  cursor: pointer !important;
+}
+
+.trip-item:hover, .pack-preview:hover, .gear-item-row:hover {
+  transform: translateX(4px) !important;
+}
+
+/* ===========================================
+   SIMPLIFY CONTAINER
+   =========================================== */
+
+body {
+  padding: 1rem !important;
+}
+
+.container {
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+/* ===========================================
+   PACK PREVIEW GRID
+   =========================================== */
+
+.pack-preview-grid {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.75rem !important;
+  max-height: 400px !important;
+  overflow-y: auto !important;
+  padding-right: 0.5rem !important;
+}
+
+/* Custom scrollbar for pack preview */
+.pack-preview-grid::-webkit-scrollbar {
+  width: 6px !important;
+}
+
+.pack-preview-grid::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-radius: 3px !important;
+}
+
+.pack-preview-grid::-webkit-scrollbar-thumb {
+  background: rgba(156, 39, 176, 0.3) !important;
+  border-radius: 3px !important;
+}
+
+.pack-preview-grid::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 39, 176, 0.5) !important;
+}
+
+.pack-preview {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  padding: 0.75rem !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  transition: all 0.2s ease !important;
+}
+
+.pack-preview:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(156, 39, 176, 0.2) !important;
+}
+
+.pack-icon {
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1.25rem !important;
+  background: rgba(156, 39, 176, 0.1) !important;
+  border-radius: 8px !important;
+  flex-shrink: 0 !important;
+}
+
+.pack-preview h4 {
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  color: #ffffff !important;
+  margin: 0 0 0.25rem 0 !important;
+  flex: 1 !important;
+}
+
+.pack-preview p {
+  font-size: 0.8rem !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  margin: 0 !important;
+}
+
+.pack-status {
+  margin-left: auto !important;
+  flex-shrink: 0 !important;
+}
+
+.badge-warning {
+  background: rgba(255, 152, 0, 0.2) !important;
+  color: #ff9800 !important;
+  border: 1px solid rgba(255, 152, 0, 0.3) !important;
+}
+
+/* ===========================================
+   GEAR SUMMARY & RECENT GEAR
+   =========================================== */
+
+.gear-summary {
+  display: flex !important;
+  justify-content: center !important;
+  margin-bottom: 1rem !important;
+  padding-bottom: 1rem !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.gear-total {
+  text-align: center !important;
+  padding: 0.75rem !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-radius: 8px !important;
+  min-width: 100px !important;
+}
+
+.gear-total-number {
+  font-size: 1.75rem !important;
+  font-weight: 700 !important;
+  color: #ff9800 !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.gear-total-label {
+  font-size: 0.75rem !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+.recent-gear {
+  display: block !important;
+}
+
+.recent-gear h4 {
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+  color: #ffffff !important;
+  margin: 0 0 0.75rem 0 !important;
+  text-align: center !important;
+}
+
+.gear-item-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  padding: 0.5rem 0.75rem !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-radius: 6px !important;
+  margin-bottom: 0.5rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.gear-item-row:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.gear-item-row:last-child {
+  margin-bottom: 0 !important;
+}
+
+.gear-item-icon {
+  font-size: 1rem !important;
+  width: 24px !important;
+  text-align: center !important;
+  flex-shrink: 0 !important;
+}
+
+.gear-item-name {
+  font-size: 0.85rem !important;
+  color: #ffffff !important;
+  font-weight: 500 !important;
+  flex: 1 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.gear-item-weight {
+  font-size: 0.75rem !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 4px !important;
+  flex-shrink: 0 !important;
 }

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Comprehensive Pack Save Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body { 
+            font-family: monospace; 
+            background: #1a1a1a; 
+            color: #fff; 
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .test-section {
+            background: #2a2a2a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 1px solid #444;
+        }
+        .test-section h3 {
+            color: #10b981;
+            margin-top: 0;
+        }
+        button {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #059669;
+        }
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+        pre {
+            background: #1a1a1a;
+            padding: 10px;
+            overflow: auto;
+            border-radius: 5px;
+            border: 1px solid #333;
+            max-height: 300px;
+        }
+        .result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .success {
+            background: #10b98120;
+            border: 1px solid #10b981;
+        }
+        .error {
+            background: #ef444420;
+            border: 1px solid #ef4444;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status.ok { background: #10b981; }
+        .status.fail { background: #ef4444; }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Comprehensive Pack Save Test</h1>
+    
+    <div class="test-section">
+        <h3>1. Select Pack to Test</h3>
+        <input type="number" id="packId" placeholder="Pack ID" value="">
+        <button onclick="loadPack()">Load Pack</button>
+        <div id="packInfo"></div>
+    </div>
+    
+    <div class="grid">
+        <div class="test-section">
+            <h3>2. JavaScript State</h3>
+            <button onclick="checkJsState()">Check Current State</button>
+            <pre id="jsState">Click button to check...</pre>
+        </div>
+        
+        <div class="test-section">
+            <h3>3. Database State</h3>
+            <button onclick="checkDbState()">Check DB State</button>
+            <pre id="dbState">Click button to check...</pre>
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h3>4. Test Save Process</h3>
+        <button onclick="testSave()">Test Save</button>
+        <div id="saveResult"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>5. Add Test Data</h3>
+        <button onclick="addTestSection()">Add Test Section</button>
+        <button onclick="addTestItem()">Add Test Item</button>
+        <div id="testDataResult"></div>
+    </div>
+    
+    <script>
+        let packBuilder = null;
+        let currentPackId = null;
+        
+        async function loadPack() {
+            const packId = $('#packId').val();
+            if (!packId) {
+                alert('Please enter a pack ID');
+                return;
+            }
+            
+            currentPackId = packId;
+            
+            // Navigate to pack builder with this ID
+            window.location.href = `/BTT/pack-builder.php?id=${packId}`;
+        }
+        
+        async function checkJsState() {
+            try {
+                // Get the packBuilder instance from the pack builder window
+                if (window.opener && window.opener.packBuilder) {
+                    packBuilder = window.opener.packBuilder;
+                }
+                
+                if (!packBuilder) {
+                    $('#jsState').text('Pack builder not found. Please open this from the pack builder page.');
+                    return;
+                }
+                
+                const state = {
+                    packId: packBuilder.currentPack.id,
+                    packName: packBuilder.currentPack.name,
+                    hasUnsavedChanges: packBuilder.hasUnsavedChanges,
+                    isSaving: packBuilder.isSaving,
+                    sections: packBuilder.currentPack.sections.map(s => ({
+                        id: s.id,
+                        name: s.name,
+                        icon: s.icon,
+                        itemCount: s.items ? s.items.length : 0,
+                        collapsed: s.collapsed
+                    })),
+                    totalItems: packBuilder.currentPack.sections.reduce((sum, s) => sum + (s.items?.length || 0), 0)
+                };
+                
+                $('#jsState').text(JSON.stringify(state, null, 2));
+            } catch (error) {
+                $('#jsState').text('Error: ' + error.message);
+            }
+        }
+        
+        async function checkDbState() {
+            if (!currentPackId) {
+                currentPackId = $('#packId').val();
+            }
+            
+            if (!currentPackId) {
+                $('#dbState').text('Please enter a pack ID first');
+                return;
+            }
+            
+            try {
+                const response = await $.ajax({
+                    url: `/BTT/test-pack-save-validation.php?id=${currentPackId}`,
+                    method: 'GET',
+                    dataType: 'json'
+                });
+                
+                $('#dbState').text(JSON.stringify(response, null, 2));
+            } catch (error) {
+                $('#dbState').text('Error: ' + error.responseText);
+            }
+        }
+        
+        async function testSave() {
+            if (!packBuilder) {
+                $('#saveResult').html('<div class="result error">Pack builder not found</div>');
+                return;
+            }
+            
+            $('#saveResult').html('<div class="result">Saving...</div>');
+            
+            // Trigger save
+            packBuilder.savePack();
+            
+            // Wait for save to complete
+            setTimeout(async () => {
+                await checkDbState();
+                $('#saveResult').html('<div class="result success">Save completed. Check database state above.</div>');
+            }, 2000);
+        }
+        
+        function addTestSection() {
+            if (!packBuilder) {
+                $('#testDataResult').html('<div class="result error">Pack builder not found</div>');
+                return;
+            }
+            
+            const testSection = {
+                id: `test_section_${Date.now()}`,
+                name: 'Test Section ' + new Date().toLocaleTimeString(),
+                icon: '🧪',
+                items: [],
+                collapsed: false
+            };
+            
+            packBuilder.currentPack.sections.push(testSection);
+            packBuilder.renderPackSections();
+            packBuilder.markUnsaved();
+            
+            $('#testDataResult').html(`<div class="result success">Added section: ${testSection.name}</div>`);
+        }
+        
+        function addTestItem() {
+            if (!packBuilder) {
+                $('#testDataResult').html('<div class="result error">Pack builder not found</div>');
+                return;
+            }
+            
+            const section = packBuilder.currentPack.sections[0];
+            if (!section) {
+                $('#testDataResult').html('<div class="result error">No sections found</div>');
+                return;
+            }
+            
+            const testItem = {
+                id: `test_item_${Date.now()}`,
+                gear_id: 'test-gear-1',
+                name: 'Test Item ' + new Date().toLocaleTimeString(),
+                weight_g: Math.floor(Math.random() * 500),
+                category: 'test',
+                icon: '🧪',
+                quantity: 1
+            };
+            
+            section.items.push(testItem);
+            packBuilder.renderPackSections();
+            packBuilder.updateWeights();
+            packBuilder.markUnsaved();
+            
+            $('#testDataResult').html(`<div class="result success">Added item: ${testItem.name} to ${section.name}</div>`);
+        }
+        
+        // If opened from pack builder, get reference
+        if (window.opener && window.opener.packBuilder) {
+            packBuilder = window.opener.packBuilder;
+            currentPackId = packBuilder.currentPack.id;
+            $('#packId').val(currentPackId);
+            $('#packInfo').html(`<span class="status ok">Connected to pack: ${packBuilder.currentPack.name}</span>`);
+        }
+    </script>
+    
+    <p>
+        <strong>Instructions:</strong><br>
+        1. Open this page from the pack builder using: window.open('/BTT/test-pack-save-comprehensive.html')<br>
+        2. Or enter a pack ID manually and click Load Pack<br>
+        3. Use the buttons to check JavaScript and Database states<br>
+        4. Add test sections/items and save to verify persistence
+    </p>
+</body>
+</html>

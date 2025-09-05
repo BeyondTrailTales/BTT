@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Backpack Initialization</title>
+</head>
+<body>
+    <h1>Backpack Initialization Test</h1>
+    
+    <h2>Console Output:</h2>
+    <pre id="console-output" style="background: #f0f0f0; padding: 20px; font-family: monospace; white-space: pre-wrap;"></pre>
+    
+    <h2>Network Requests:</h2>
+    <pre id="network-output" style="background: #f0f0f0; padding: 20px; font-family: monospace; white-space: pre-wrap;"></pre>
+    
+    <script>
+        // Capture console logs
+        const consoleOutput = document.getElementById('console-output');
+        const originalLog = console.log;
+        const originalWarn = console.warn;
+        const originalError = console.error;
+        
+        const logMessages = [];
+        
+        console.log = function(...args) {
+            const message = args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : arg
+            ).join(' ');
+            logMessages.push('[LOG] ' + message);
+            consoleOutput.textContent = logMessages.join('\n');
+            originalLog.apply(console, args);
+        };
+        
+        console.warn = function(...args) {
+            const message = args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : arg
+            ).join(' ');
+            logMessages.push('[WARN] ' + message);
+            consoleOutput.textContent = logMessages.join('\n');
+            originalWarn.apply(console, args);
+        };
+        
+        console.error = function(...args) {
+            const message = args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : arg
+            ).join(' ');
+            logMessages.push('[ERROR] ' + message);
+            consoleOutput.textContent = logMessages.join('\n');
+            originalError.apply(console, args);
+        };
+        
+        // Track network requests
+        const networkOutput = document.getElementById('network-output');
+        const networkRequests = [];
+        
+        const originalFetch = window.fetch;
+        window.fetch = function(...args) {
+            const url = args[0];
+            const startTime = Date.now();
+            networkRequests.push(`[${new Date().toLocaleTimeString()}] FETCH: ${url}`);
+            networkOutput.textContent = networkRequests.join('\n');
+            
+            return originalFetch.apply(this, args).then(response => {
+                const duration = Date.now() - startTime;
+                networkRequests.push(`[${new Date().toLocaleTimeString()}] RESPONSE: ${url} (${response.status}) - ${duration}ms`);
+                networkOutput.textContent = networkRequests.join('\n');
+                return response;
+            }).catch(error => {
+                const duration = Date.now() - startTime;
+                networkRequests.push(`[${new Date().toLocaleTimeString()}] ERROR: ${url} - ${error.message} - ${duration}ms`);
+                networkOutput.textContent = networkRequests.join('\n');
+                throw error;
+            });
+        };
+        
+        // Load the page after 1 second
+        setTimeout(() => {
+            console.log('Loading backpacks page in iframe...');
+            const iframe = document.createElement('iframe');
+            iframe.src = '/BTT/backpacks.php';
+            iframe.style.width = '100%';
+            iframe.style.height = '600px';
+            iframe.style.border = '1px solid #ccc';
+            document.body.appendChild(iframe);
+            
+            // Monitor iframe load
+            iframe.onload = () => {
+                console.log('Iframe loaded successfully');
+            };
+            
+            iframe.onerror = (e) => {
+                console.error('Iframe error:', e);
+            };
+        }, 1000);
+    </script>
+</body>
+</html>

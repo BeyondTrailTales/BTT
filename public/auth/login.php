@@ -10,7 +10,7 @@ require_once dirname(dirname(__DIR__)) . '/app/bootstrap.php';
 
 // If already logged in, redirect
 if (is_authenticated()) {
-    $returnTo = $_GET['returnTo'] ?? BASE_URL . '/public/trips.php';
+    $returnTo = $_GET['returnTo'] ?? BASE_URL . '/dashboard.php';
     header('Location: ' . $returnTo);
     exit;
 }
@@ -24,7 +24,8 @@ $pageDescription = 'Sign in to your BeyondTrailTales account';
 require_once BASE_PATH . '/public/includes/template-header.php';
 ?>
 
-<div class="auth-container">
+<body class="sophisticated-forest-theme">
+<div class="auth-container forest-auth">
     <div class="auth-card">
         <!-- Logo/Title -->
         <div class="auth-header">
@@ -554,7 +555,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Redirect after short delay
                 setTimeout(() => {
                     const returnTo = new URLSearchParams(window.location.search).get('returnTo');
-                    const redirectUrl = returnTo || '<?php echo BASE_URL; ?>/dashboard';
+                    const redirectUrl = returnTo || '<?php echo BASE_URL; ?>/dashboard.php';
                     console.log('Redirecting to:', redirectUrl);
                     window.location.href = redirectUrl;
                 }, 500);

@@ -1,0 +1,516 @@
+/**
+ * Gear Color Coordination System
+ * Color coding for gear items by category across all pages
+ */
+
+:root {
+  /* Gear Category Colors - Primary (Muted & Sophisticated) */
+  --gear-shelter: #8B6F47; /* Muted Brown - Tents/Shelters */
+  --gear-sleep: #5B7C99; /* Muted Steel Blue - Sleep system */
+  --gear-cooking: #B85450; /* Muted Terra Cotta - Cooking gear */
+  --gear-water: #4A90A4; /* Muted Teal - Water/hydration */
+  --gear-clothing: #7B68A6; /* Muted Purple - Clothing */
+  --gear-footwear: #6B5B45; /* Muted Earth Brown - Boots/shoes */
+  --gear-rain-gear: #5B8FA8; /* Muted Sky Blue - Rain protection */
+  --gear-navigation: #C67E3B; /* Muted Copper - Maps/GPS */
+  --gear-first-aid: #A66B8C; /* Muted Mauve - Medical */
+  --gear-emergency: #C85A54; /* Muted Coral - Emergency gear */
+  --gear-electronics: #6B8E6F; /* Muted Sage Green - Tech gear */
+  --gear-tools: #6B6B6B; /* Muted Gray - Tools/repair */
+  --gear-repair: #8A8A8A; /* Muted Silver - Repair items */
+  --gear-hygiene: #A89B9D; /* Muted Taupe - Personal care */
+  --gear-food-storage: #C2915F; /* Muted Amber - Food containers */
+  --gear-other: #9B9B9B; /* Muted Light Gray - Miscellaneous */
+  --gear-ultralight: #D4AF37; /* Muted Gold - Special ultralight items */
+
+  /* Light versions for backgrounds */
+  --gear-shelter-light: rgba(139, 111, 71, 0.15);
+  --gear-sleep-light: rgba(91, 124, 153, 0.15);
+  --gear-cooking-light: rgba(184, 84, 80, 0.15);
+  --gear-water-light: rgba(74, 144, 164, 0.15);
+  --gear-clothing-light: rgba(123, 104, 166, 0.15);
+  --gear-footwear-light: rgba(107, 91, 69, 0.15);
+  --gear-rain-gear-light: rgba(91, 143, 168, 0.15);
+  --gear-navigation-light: rgba(198, 126, 59, 0.15);
+  --gear-first-aid-light: rgba(166, 107, 140, 0.15);
+  --gear-emergency-light: rgba(200, 90, 84, 0.15);
+  --gear-electronics-light: rgba(107, 142, 111, 0.15);
+  --gear-tools-light: rgba(107, 107, 107, 0.15);
+  --gear-repair-light: rgba(138, 138, 138, 0.15);
+  --gear-hygiene-light: rgba(168, 155, 157, 0.15);
+  --gear-food-storage-light: rgba(194, 145, 95, 0.15);
+  --gear-other-light: rgba(155, 155, 155, 0.15);
+  --gear-ultralight-light: rgba(212, 175, 55, 0.15);
+
+  /* Darker versions for hover states */
+  --gear-shelter-dark: rgba(139, 111, 71, 0.8);
+  --gear-sleep-dark: rgba(91, 124, 153, 0.8);
+  --gear-cooking-dark: rgba(184, 84, 80, 0.8);
+  --gear-water-dark: rgba(74, 144, 164, 0.8);
+  --gear-clothing-dark: rgba(123, 104, 166, 0.8);
+  --gear-footwear-dark: rgba(107, 91, 69, 0.8);
+  --gear-rain-gear-dark: rgba(91, 143, 168, 0.8);
+  --gear-navigation-dark: rgba(198, 126, 59, 0.8);
+  --gear-first-aid-dark: rgba(166, 107, 140, 0.8);
+  --gear-emergency-dark: rgba(200, 90, 84, 0.8);
+  --gear-electronics-dark: rgba(107, 142, 111, 0.8);
+  --gear-tools-dark: rgba(107, 107, 107, 0.8);
+  --gear-repair-dark: rgba(138, 138, 138, 0.8);
+  --gear-hygiene-dark: rgba(168, 155, 157, 0.8);
+  --gear-food-storage-dark: rgba(194, 145, 95, 0.8);
+  --gear-other-dark: rgba(155, 155, 155, 0.8);
+  --gear-ultralight-dark: rgba(212, 175, 55, 0.8);
+}
+
+/* Base gear item styling with color coordination */
+.gear-item, .pack-item {
+  position: relative;
+  border-left: 4px solid transparent;
+  transition: all 0.3s ease;
+}
+
+/* Category-based left border colors */
+.gear-item[data-category="shelter"] {
+  border-left-color: var(--gear-shelter);
+  background: linear-gradient(135deg, var(--gear-shelter-light), transparent);
+}
+
+.gear-item[data-category="sleep"] {
+  border-left-color: var(--gear-sleep);
+  background: linear-gradient(135deg, var(--gear-sleep-light), transparent);
+}
+
+.gear-item[data-category="cooking"] {
+  border-left-color: var(--gear-cooking);
+  background: linear-gradient(135deg, var(--gear-cooking-light), transparent);
+}
+
+.gear-item[data-category="water"] {
+  border-left-color: var(--gear-water);
+  background: linear-gradient(135deg, var(--gear-water-light), transparent);
+}
+
+.gear-item[data-category="clothing"] {
+  border-left-color: var(--gear-clothing);
+  background: linear-gradient(135deg, var(--gear-clothing-light), transparent);
+}
+
+.gear-item[data-category="footwear"] {
+  border-left-color: var(--gear-footwear);
+  background: linear-gradient(135deg, var(--gear-footwear-light), transparent);
+}
+
+.gear-item[data-category="rain-gear"] {
+  border-left-color: var(--gear-rain-gear);
+  background: linear-gradient(135deg, var(--gear-rain-gear-light), transparent);
+}
+
+.gear-item[data-category="navigation"] {
+  border-left-color: var(--gear-navigation);
+  background: linear-gradient(135deg, var(--gear-navigation-light), transparent);
+}
+
+.gear-item[data-category="first-aid"] {
+  border-left-color: var(--gear-first-aid);
+  background: linear-gradient(135deg, var(--gear-first-aid-light), transparent);
+}
+
+.gear-item[data-category="emergency"] {
+  border-left-color: var(--gear-emergency);
+  background: linear-gradient(135deg, var(--gear-emergency-light), transparent);
+}
+
+.gear-item[data-category="electronics"] {
+  border-left-color: var(--gear-electronics);
+  background: linear-gradient(135deg, var(--gear-electronics-light), transparent);
+}
+
+.gear-item[data-category="tools"] {
+  border-left-color: var(--gear-tools);
+  background: linear-gradient(135deg, var(--gear-tools-light), transparent);
+}
+
+.gear-item[data-category="repair"] {
+  border-left-color: var(--gear-repair);
+  background: linear-gradient(135deg, var(--gear-repair-light), transparent);
+}
+
+.gear-item[data-category="hygiene"] {
+  border-left-color: var(--gear-hygiene);
+  background: linear-gradient(135deg, var(--gear-hygiene-light), transparent);
+}
+
+.gear-item[data-category="food-storage"] {
+  border-left-color: var(--gear-food-storage);
+  background: linear-gradient(135deg, var(--gear-food-storage-light), transparent);
+}
+
+.gear-item[data-category="other"] {
+  border-left-color: var(--gear-other);
+  background: linear-gradient(135deg, var(--gear-other-light), transparent);
+}
+
+.gear-item[data-category="ultralight"] {
+  border-left-color: var(--gear-ultralight);
+  background: linear-gradient(135deg, var(--gear-ultralight-light), transparent);
+}
+
+/* Pack items with Duolingo forest theme backgrounds */
+.pack-item[data-category="shelter"] {
+  border-left-color: var(--gear-shelter);
+  background: linear-gradient(135deg, #f8f9fa, #f0f4f7);
+}
+
+.pack-item[data-category="sleep"] {
+  border-left-color: var(--gear-sleep);
+  background: linear-gradient(135deg, #f0f7fc, #e8f2fa);
+}
+
+.pack-item[data-category="cooking"] {
+  border-left-color: var(--gear-cooking);
+  background: linear-gradient(135deg, #fdf5f3, #faf0ed);
+}
+
+.pack-item[data-category="water"] {
+  border-left-color: var(--gear-water);
+  background: linear-gradient(135deg, #f0f8fa, #e8f3f7);
+}
+
+.pack-item[data-category="clothing"] {
+  border-left-color: var(--gear-clothing);
+  background: linear-gradient(135deg, #f5f3f9, #efebf6);
+}
+
+.pack-item[data-category="footwear"] {
+  border-left-color: var(--gear-footwear);
+  background: linear-gradient(135deg, #f8f6f3, #f2ede8);
+}
+
+.pack-item[data-category="rain-gear"] {
+  border-left-color: var(--gear-rain-gear);
+  background: linear-gradient(135deg, #f0f6fa, #e8f1f7);
+}
+
+.pack-item[data-category="navigation"] {
+  border-left-color: var(--gear-navigation);
+  background: linear-gradient(135deg, #fdf7f0, #faf2e8);
+}
+
+.pack-item[data-category="first-aid"] {
+  border-left-color: var(--gear-first-aid);
+  background: linear-gradient(135deg, #f9f3f6, #f4ecf1);
+}
+
+.pack-item[data-category="emergency"] {
+  border-left-color: var(--gear-emergency);
+  background: linear-gradient(135deg, #fdf4f3, #faebe9);
+}
+
+.pack-item[data-category="electronics"] {
+  border-left-color: var(--gear-electronics);
+  background: linear-gradient(135deg, #f3f8f4, #ebf3ec);
+}
+
+.pack-item[data-category="tools"] {
+  border-left-color: var(--gear-tools);
+  background: linear-gradient(135deg, #f5f5f5, #efefef);
+}
+
+.pack-item[data-category="repair"] {
+  border-left-color: var(--gear-repair);
+  background: linear-gradient(135deg, #f7f7f7, #f1f1f1);
+}
+
+.pack-item[data-category="hygiene"] {
+  border-left-color: var(--gear-hygiene);
+  background: linear-gradient(135deg, #f8f7f7, #f2f0f0);
+}
+
+.pack-item[data-category="food-storage"] {
+  border-left-color: var(--gear-food-storage);
+  background: linear-gradient(135deg, #fdf8f1, #faf3e8);
+}
+
+.pack-item[data-category="other"] {
+  border-left-color: var(--gear-other);
+  background: linear-gradient(135deg, #f7f7f7, #f1f1f1);
+}
+
+.pack-item[data-category="ultralight"] {
+  border-left-color: var(--gear-ultralight);
+  background: linear-gradient(135deg, #fffcf0, #fff9e6);
+}
+
+/* Category badges/tags */
+.gear-category-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.gear-category-badge.shelter {
+  background-color: var(--gear-shelter-light);
+  color: var(--gear-shelter-dark);
+  border: 1px solid var(--gear-shelter);
+}
+
+.gear-category-badge.sleep {
+  background-color: var(--gear-sleep-light);
+  color: var(--gear-sleep-dark);
+  border: 1px solid var(--gear-sleep);
+}
+
+.gear-category-badge.cooking {
+  background-color: var(--gear-cooking-light);
+  color: var(--gear-cooking-dark);
+  border: 1px solid var(--gear-cooking);
+}
+
+.gear-category-badge.water {
+  background-color: var(--gear-water-light);
+  color: var(--gear-water-dark);
+  border: 1px solid var(--gear-water);
+}
+
+.gear-category-badge.clothing {
+  background-color: var(--gear-clothing-light);
+  color: var(--gear-clothing-dark);
+  border: 1px solid var(--gear-clothing);
+}
+
+.gear-category-badge.footwear {
+  background-color: var(--gear-footwear-light);
+  color: var(--gear-footwear-dark);
+  border: 1px solid var(--gear-footwear);
+}
+
+.gear-category-badge.rain-gear {
+  background-color: var(--gear-rain-gear-light);
+  color: var(--gear-rain-gear-dark);
+  border: 1px solid var(--gear-rain-gear);
+}
+
+.gear-category-badge.navigation {
+  background-color: var(--gear-navigation-light);
+  color: var(--gear-navigation-dark);
+  border: 1px solid var(--gear-navigation);
+}
+
+.gear-category-badge.first-aid {
+  background-color: var(--gear-first-aid-light);
+  color: var(--gear-first-aid-dark);
+  border: 1px solid var(--gear-first-aid);
+}
+
+.gear-category-badge.emergency {
+  background-color: var(--gear-emergency-light);
+  color: var(--gear-emergency-dark);
+  border: 1px solid var(--gear-emergency);
+}
+
+.gear-category-badge.electronics {
+  background-color: var(--gear-electronics-light);
+  color: var(--gear-electronics-dark);
+  border: 1px solid var(--gear-electronics);
+}
+
+.gear-category-badge.tools {
+  background-color: var(--gear-tools-light);
+  color: var(--gear-tools-dark);
+  border: 1px solid var(--gear-tools);
+}
+
+.gear-category-badge.repair {
+  background-color: var(--gear-repair-light);
+  color: var(--gear-repair-dark);
+  border: 1px solid var(--gear-repair);
+}
+
+.gear-category-badge.hygiene {
+  background-color: var(--gear-hygiene-light);
+  color: var(--gear-hygiene-dark);
+  border: 1px solid var(--gear-hygiene);
+}
+
+.gear-category-badge.food-storage {
+  background-color: var(--gear-food-storage-light);
+  color: var(--gear-food-storage-dark);
+  border: 1px solid var(--gear-food-storage);
+}
+
+.gear-category-badge.other {
+  background-color: var(--gear-other-light);
+  color: var(--gear-other-dark);
+  border: 1px solid var(--gear-other);
+}
+
+.gear-category-badge.ultralight {
+  background-color: var(--gear-ultralight-light);
+  color: var(--gear-ultralight-dark);
+  border: 1px solid var(--gear-ultralight);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+/* Filter chips color coordination */
+.filter-chip[data-category] {
+  transition: all 0.3s ease;
+}
+
+.filter-chip[data-category="shelter"]:hover,
+.filter-chip[data-category="shelter"].active {
+  background-color: var(--gear-shelter-light);
+  border-color: var(--gear-shelter);
+  color: var(--gear-shelter-dark);
+}
+
+.filter-chip[data-category="sleep"]:hover,
+.filter-chip[data-category="sleep"].active {
+  background-color: var(--gear-sleep-light);
+  border-color: var(--gear-sleep);
+  color: var(--gear-sleep-dark);
+}
+
+.filter-chip[data-category="cooking"]:hover,
+.filter-chip[data-category="cooking"].active {
+  background-color: var(--gear-cooking-light);
+  border-color: var(--gear-cooking);
+  color: var(--gear-cooking-dark);
+}
+
+.filter-chip[data-category="water"]:hover,
+.filter-chip[data-category="water"].active {
+  background-color: var(--gear-water-light);
+  border-color: var(--gear-water);
+  color: var(--gear-water-dark);
+}
+
+.filter-chip[data-category="clothing"]:hover,
+.filter-chip[data-category="clothing"].active {
+  background-color: var(--gear-clothing-light);
+  border-color: var(--gear-clothing);
+  color: var(--gear-clothing-dark);
+}
+
+.filter-chip[data-category="footwear"]:hover,
+.filter-chip[data-category="footwear"].active {
+  background-color: var(--gear-footwear-light);
+  border-color: var(--gear-footwear);
+  color: var(--gear-footwear-dark);
+}
+
+.filter-chip[data-category="navigation"]:hover,
+.filter-chip[data-category="navigation"].active {
+  background-color: var(--gear-navigation-light);
+  border-color: var(--gear-navigation);
+  color: var(--gear-navigation-dark);
+}
+
+.filter-chip[data-category="first-aid"]:hover,
+.filter-chip[data-category="first-aid"].active {
+  background-color: var(--gear-first-aid-light);
+  border-color: var(--gear-first-aid);
+  color: var(--gear-first-aid-dark);
+}
+
+.filter-chip[data-category="electronics"]:hover,
+.filter-chip[data-category="electronics"].active {
+  background-color: var(--gear-electronics-light);
+  border-color: var(--gear-electronics);
+  color: var(--gear-electronics-dark);
+}
+
+.filter-chip[data-category="tools"]:hover,
+.filter-chip[data-category="tools"].active {
+  background-color: var(--gear-tools-light);
+  border-color: var(--gear-tools);
+  color: var(--gear-tools-dark);
+}
+
+.filter-chip[data-category="ultralight"]:hover,
+.filter-chip[data-category="ultralight"].active {
+  background-color: var(--gear-ultralight-light);
+  border-color: var(--gear-ultralight);
+  color: var(--gear-ultralight-dark);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+/* Pack builder drag zones color coding */
+.pack-section .gear-item, .pack-section .pack-item {
+  margin-bottom: 0.5rem;
+}
+
+.pack-section .gear-item:hover, .pack-section .pack-item:hover {
+  border-left-width: 6px;
+  transform: translateX(2px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Gear grid cards color coordination */
+.gear-card[data-category] {
+  border-left: 4px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.gear-card[data-category]:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: currentColor;
+  opacity: 0.7;
+}
+
+/* Apply the same color system to gear cards */
+.gear-card[data-category="shelter"] { border-left-color: var(--gear-shelter); color: var(--gear-shelter); }
+.gear-card[data-category="sleep"] { border-left-color: var(--gear-sleep); color: var(--gear-sleep); }
+.gear-card[data-category="cooking"] { border-left-color: var(--gear-cooking); color: var(--gear-cooking); }
+.gear-card[data-category="water"] { border-left-color: var(--gear-water); color: var(--gear-water); }
+.gear-card[data-category="clothing"] { border-left-color: var(--gear-clothing); color: var(--gear-clothing); }
+.gear-card[data-category="footwear"] { border-left-color: var(--gear-footwear); color: var(--gear-footwear); }
+.gear-card[data-category="rain-gear"] { border-left-color: var(--gear-rain-gear); color: var(--gear-rain-gear); }
+.gear-card[data-category="navigation"] { border-left-color: var(--gear-navigation); color: var(--gear-navigation); }
+.gear-card[data-category="first-aid"] { border-left-color: var(--gear-first-aid); color: var(--gear-first-aid); }
+.gear-card[data-category="emergency"] { border-left-color: var(--gear-emergency); color: var(--gear-emergency); }
+.gear-card[data-category="electronics"] { border-left-color: var(--gear-electronics); color: var(--gear-electronics); }
+.gear-card[data-category="tools"] { border-left-color: var(--gear-tools); color: var(--gear-tools); }
+.gear-card[data-category="repair"] { border-left-color: var(--gear-repair); color: var(--gear-repair); }
+.gear-card[data-category="hygiene"] { border-left-color: var(--gear-hygiene); color: var(--gear-hygiene); }
+.gear-card[data-category="food-storage"] { border-left-color: var(--gear-food-storage); color: var(--gear-food-storage); }
+.gear-card[data-category="other"] { border-left-color: var(--gear-other); color: var(--gear-other); }
+.gear-card[data-category="ultralight"] { 
+  border-left-color: var(--gear-ultralight); 
+  color: var(--gear-ultralight);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+/* Reset color for text content inside cards */
+.gear-card .gear-name,
+.gear-card .gear-details,
+.gear-card .gear-weight,
+.gear-item .item-name,
+.gear-item .item-details,
+.pack-item .pack-item-name,
+.pack-item .pack-item-icon,
+.pack-item .pack-item-weight {
+  color: #3c3c3c !important;
+}
+
+/* Ensure pack items have proper contrast */
+.pack-item {
+  color: #3c3c3c;
+}
+
+/* Category badges with proper text color */
+.gear-category-badge {
+  color: inherit !important;
+  opacity: 0.9;
+}

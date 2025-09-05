@@ -1,0 +1,186 @@
+/**
+ * Pack Builder Scrollbar Fix
+ * Removes duplicate scrollbars and ensures clean scrolling
+ */
+
+/* Remove duplicate scrollbars from main container */
+.pack-builder-container {
+    overflow: visible !important;
+    height: auto !important;
+}
+
+/* Only allow scrolling in gear library */
+.gear-library-panel {
+    overflow: visible !important;
+}
+
+.gear-library-panel .card {
+    overflow: visible !important;
+}
+
+.gear-library-panel .card-body {
+    overflow: visible !important;
+    max-height: none !important;
+}
+
+/* Gear items container should be the only scrollable area */
+.gear-items-container {
+    max-height: 500px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding-right: 8px;
+    margin-right: -8px;
+}
+
+/* Pack builder panel should not scroll */
+.pack-builder-panel {
+    overflow: visible !important;
+}
+
+.pack-builder-panel .card {
+    overflow: visible !important;
+}
+
+.pack-builder-panel .card-body {
+    overflow: visible !important;
+    max-height: none !important;
+}
+
+/* Pack sections should not create their own scrollbar */
+.pack-sections-container {
+    overflow: visible !important;
+    max-height: none !important;
+}
+
+.pack-sections {
+    overflow: visible !important;
+    max-height: none !important;
+}
+
+/* Individual sections should not scroll */
+.pack-section {
+    overflow: visible !important;
+}
+
+.section-content {
+    overflow: visible !important;
+}
+
+/* Drop zones should not create scrollbars */
+.gear-drop-zone {
+    overflow: visible !important;
+    min-height: 100px;
+    max-height: none !important;
+}
+
+/* Fix any body/html scrolling issues */
+body.backpacks-forest-page {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* Ensure main content area doesn't create extra scrollbars */
+#main-content {
+    overflow: visible !important;
+}
+
+.dashboard {
+    overflow: visible !important;
+}
+
+/* Custom scrollbar styling for the gear library */
+.gear-items-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.gear-items-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.gear-items-container::-webkit-scrollbar-thumb {
+    background: rgba(16, 185, 129, 0.6);
+    border-radius: 3px;
+}
+
+.gear-items-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(16, 185, 129, 0.8);
+}
+
+/* Firefox scrollbar styling */
+.gear-items-container {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(16, 185, 129, 0.6) rgba(255, 255, 255, 0.1);
+}
+
+/* Make sure no other elements have scrollbars unless needed */
+.forest-duo-theme * {
+    overflow: visible;
+}
+
+/* Only specific elements should scroll */
+.gear-items-container,
+body,
+html {
+    /* These are the only elements that should scroll */
+}
+
+/* Remove any forced heights that might cause scrollbars */
+.pack-view,
+#view-builder {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+/* Section Toggle Functionality */
+.pack-section {
+    margin-bottom: 1rem;
+    transition: all 0.2s ease;
+}
+
+.pack-section.collapsed .section-content {
+    display: none;
+}
+
+.section-toggle,
+.btn-section-toggle {
+    cursor: pointer !important;
+    user-select: none;
+    transition: transform 0.2s ease;
+    background: transparent !important;
+    border: none !important;
+    padding: 4px !important;
+    font-size: 1em !important;
+    color: #ffffff !important;
+}
+
+.section-toggle:hover,
+.btn-section-toggle:hover {
+    transform: scale(1.1);
+    color: #10b981 !important;
+}
+
+.section-header {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-radius: 6px;
+    padding: 0.75rem !important;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-header:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.section-content {
+    transition: all 0.2s ease;
+    overflow: hidden;
+}
+
+.pack-section.collapsed .section-header {
+    opacity: 0.7;
+}

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pack Builder UX Test</title>
+    <link rel="stylesheet" href="assets/css/pack-builder-horizontal-ux.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="pack-builder-container">
+        <!-- Header with Back Button -->
+        <div class="builder-header">
+            <div class="header-actions">
+                <a href="/BTT/backpacks.php" class="btn btn-secondary">
+                    ← Back to Packs
+                </a>
+                <h1>🎒 Horizontal UX Pack Builder</h1>
+                <div class="save-actions">
+                    <button class="btn btn-primary">💾 Save Pack</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Duolingo Forest Pack Builder Interface -->
+        <div class="forest-duo-theme pack-builder-page">
+            <!-- Two-Column Builder Layout -->
+            <div class="pack-builder-container">
+            <!-- Left Column: Gear Library -->
+            <div class="gear-library-panel">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">🎒 Gear Library</h3>
+                        <button class="btn btn-sm btn-secondary">+ Add Custom</button>
+                    </div>
+                    <div class="card-body">
+                        <!-- Search and Filters -->
+                        <div class="gear-controls">
+                            <input type="search" placeholder="Search gear..." class="gear-search-input">
+                            <div class="gear-categories">
+                                <button class="category-filter active" data-category="all">All</button>
+                                <button class="category-filter" data-category="shelter">🏕️ Shelter</button>
+                                <button class="category-filter" data-category="sleep">🛌 Sleep</button>
+                                <button class="category-filter" data-category="cooking">🍳 Cooking</button>
+                                <button class="category-filter" data-category="water">💧 Water</button>
+                                <button class="category-filter" data-category="clothing">👕 Clothing</button>
+                                <button class="category-filter" data-category="navigation">🧭 Navigation</button>
+                                <button class="category-filter" data-category="safety">🏥 Safety</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Gear Items -->
+                        <div class="gear-items-container">
+                            <div class="gear-category-section">
+                                <h4 class="gear-category-title">Shelter</h4>
+                                <div class="gear-category-items">
+                                    <div class="gear-item" draggable="true">
+                                        <div class="gear-item-content">
+                                            <div class="gear-item-icon">🏕️</div>
+                                            <div class="gear-item-details">
+                                                <div class="gear-item-name">Ultralight Tent</div>
+                                                <div class="gear-item-weight">1.2kg</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="gear-item" draggable="true">
+                                        <div class="gear-item-content">
+                                            <div class="gear-item-icon">🪵</div>
+                                            <div class="gear-item-details">
+                                                <div class="gear-item-name">Tarp</div>
+                                                <div class="gear-item-weight">400g</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="gear-category-section">
+                                <h4 class="gear-category-title">Sleep</h4>
+                                <div class="gear-category-items">
+                                    <div class="gear-item" draggable="true">
+                                        <div class="gear-item-content">
+                                            <div class="gear-item-icon">🛏️</div>
+                                            <div class="gear-item-details">
+                                                <div class="gear-item-name">Sleeping Bag</div>
+                                                <div class="gear-item-weight">800g</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="gear-item" draggable="true">
+                                        <div class="gear-item-content">
+                                            <div class="gear-item-icon">🧽</div>
+                                            <div class="gear-item-details">
+                                                <div class="gear-item-name">Sleeping Pad</div>
+                                                <div class="gear-item-weight">450g</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column: Pack Builder -->
+            <div class="pack-builder-panel">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">📦 Horizontal Pack Builder</h2>
+                        <div class="pack-actions-top">
+                            <button class="btn btn-sm btn-secondary">⚙️ Settings</button>
+                            <button class="btn btn-sm btn-primary">💾 Save Pack</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Pack Details Form -->
+                        <div class="pack-details-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Pack Name *</label>
+                                    <input type="text" value="Weekend Mountain Trip" placeholder="e.g., Weekend in the Mountains">
+                                </div>
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <textarea placeholder="Brief description of this pack's purpose">3-day hiking trip with moderate weather conditions</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pack Header with Name -->
+                        <div class="pack-header-display">
+                            <h3 class="pack-name-display">Weekend Mountain Trip</h3>
+                            <div class="pack-quick-stats">
+                                <span class="stat-item">Total Weight: <strong>3.2kg</strong></span>
+                                <span class="stat-item">Items: <strong>8</strong></span>
+                            </div>
+                        </div>
+
+                        <!-- Pack Sections - HORIZONTAL GRID LAYOUT -->
+                        <div class="pack-sections-container">
+                            <div class="section-header-controls">
+                                <h4>Pack Sections</h4>
+                                <button class="btn btn-sm btn-secondary">+ Add Section</button>
+                            </div>
+                            
+                            <div class="pack-sections">
+                                <!-- Main Pack Section -->
+                                <div class="pack-section" data-section="main">
+                                    <div class="section-header">
+                                        <button class="section-toggle">▼</button>
+                                        <span class="section-icon">🎒</span>
+                                        <input type="text" class="section-name" value="Main Pack" placeholder="Section name">
+                                        <span class="section-weight">2.1kg</span>
+                                        <button class="btn-delete-section">×</button>
+                                    </div>
+                                    <div class="section-content">
+                                        <div class="gear-drop-zone dropzone" data-section="main">
+                                            <div class="pack-item">
+                                                <div class="pack-item-content">
+                                                    <div class="pack-item-icon">🏕️</div>
+                                                    <div class="pack-item-details">
+                                                        <div class="pack-item-name">Ultralight Tent</div>
+                                                        <div class="pack-item-meta">
+                                                            <span class="pack-item-weight">1.2kg</span>
+                                                            <span class="pack-item-quantity">×1</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="pack-item-actions">
+                                                        <button class="btn-quantity-down">-</button>
+                                                        <button class="btn-quantity-up">+</button>
+                                                        <button class="btn-remove-item">×</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="pack-item">
+                                                <div class="pack-item-content">
+                                                    <div class="pack-item-icon">🛏️</div>
+                                                    <div class="pack-item-details">
+                                                        <div class="pack-item-name">Sleeping Bag</div>
+                                                        <div class="pack-item-meta">
+                                                            <span class="pack-item-weight">800g</span>
+                                                            <span class="pack-item-quantity">×1</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="pack-item-actions">
+                                                        <button class="btn-quantity-down">-</button>
+                                                        <button class="btn-quantity-up">+</button>
+                                                        <button class="btn-remove-item">×</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Worn Items Section -->
+                                <div class="pack-section" data-section="worn">
+                                    <div class="section-header">
+                                        <button class="section-toggle">▼</button>
+                                        <span class="section-icon">👕</span>
+                                        <input type="text" class="section-name" value="Worn Items" placeholder="Section name">
+                                        <span class="section-weight">0.8kg</span>
+                                        <button class="btn-delete-section">×</button>
+                                    </div>
+                                    <div class="section-content">
+                                        <div class="gear-drop-zone dropzone" data-section="worn">
+                                            <div class="pack-item">
+                                                <div class="pack-item-content">
+                                                    <div class="pack-item-icon">🥾</div>
+                                                    <div class="pack-item-details">
+                                                        <div class="pack-item-name">Hiking Boots</div>
+                                                        <div class="pack-item-meta">
+                                                            <span class="pack-item-weight">800g</span>
+                                                            <span class="pack-item-quantity">×1</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="pack-item-actions">
+                                                        <button class="btn-quantity-down">-</button>
+                                                        <button class="btn-quantity-up">+</button>
+                                                        <button class="btn-remove-item">×</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Consumables Section -->
+                                <div class="pack-section" data-section="consumables">
+                                    <div class="section-header">
+                                        <button class="section-toggle">▼</button>
+                                        <span class="section-icon">🍎</span>
+                                        <input type="text" class="section-name" value="Consumables" placeholder="Section name">
+                                        <span class="section-weight">0.3kg</span>
+                                        <button class="btn-delete-section">×</button>
+                                    </div>
+                                    <div class="section-content">
+                                        <div class="gear-drop-zone dropzone" data-section="consumables">
+                                            <p class="drop-hint">🍎 Drag food, water, fuel here</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Weight Summary -->
+                        <div class="weight-summary">
+                            <h4>📊 Weight Summary</h4>
+                            <div class="weight-stats">
+                                <div class="weight-stat">
+                                    <span class="weight-label">Base Weight:</span>
+                                    <span class="weight-value">2.1kg</span>
+                                </div>
+                                <div class="weight-stat">
+                                    <span class="weight-label">Worn Weight:</span>
+                                    <span class="weight-value">0.8kg</span>
+                                </div>
+                                <div class="weight-stat">
+                                    <span class="weight-label">Consumable Weight:</span>
+                                    <span class="weight-value">0.3kg</span>
+                                </div>
+                                <div class="weight-stat weight-total">
+                                    <span class="weight-label">Total Weight:</span>
+                                    <span class="weight-value">3.2kg</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        console.log('🎒 Horizontal Pack Builder UX Test Loaded');
+        console.log('✅ Key Improvements:');
+        console.log('   📐 Horizontal grid layout for pack sections');
+        console.log('   🎯 Larger drop zones for easier targeting');
+        console.log('   📱 Compact gear library with efficient filters');
+        console.log('   👀 Better visual hierarchy and spacing');
+        console.log('   📏 Less vertical scrolling required');
+        console.log('   🔧 All functionality preserved 100%');
+    </script>
+</body>
+</html>

@@ -45,6 +45,16 @@ $uxRefreshEnabled = $_SESSION['ux_refresh'] ?? $_COOKIE['ux_refresh'] ?? true; /
     <title><?php echo e($pageTitle); ?> - BeyondTrailTales</title>
     <meta name="description" content="<?php echo e($pageDescription); ?>">
     
+    <!-- Duolingo Forest Theme System -->
+    <link rel="stylesheet" href="<?php echo asset_url('css/theme/variables.css'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/theme/components.css'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/theme/navigation.css'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/theme/pages.css'); ?>">
+    <link rel="stylesheet" href="<?php echo asset_url('css/theme/animations.css'); ?>">
+    
+    <!-- Clean Unified Design System - Global Application -->
+    <link rel="stylesheet" href="<?php echo asset_url('css/btt-unified-clean.css'); ?>">
+    
     <?php if ($isTestPage): ?>
     <meta name="robots" content="noindex,nofollow">
     <?php endif; ?>
@@ -53,37 +63,12 @@ $uxRefreshEnabled = $_SESSION['ux_refresh'] ?? $_COOKIE['ux_refresh'] ?? true; /
     <link rel="canonical" href="<?php echo page_meta('canonical'); ?>">
     
     <!-- Theme Color -->
-    <meta name="theme-color" content="#0a2818">
+    <meta name="theme-color" content="#2d5a3d">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Forest Theme CSS - Load in correct order -->
-    <link rel="stylesheet" href="<?php echo asset_url('css/forest-tokens.css'); ?>">
-    <link rel="stylesheet" href="<?php echo asset_url('css/forest-base.css'); ?>">
-    <link rel="stylesheet" href="<?php echo asset_url('css/forest-components.css'); ?>">
-    <link rel="stylesheet" href="<?php echo asset_url('css/forest-theme.css'); ?>">
-    <link rel="stylesheet" href="<?php echo asset_url('css/forest-animations.css'); ?>">
-    <!-- Enhanced Forest CSS for Professional Polish -->
-    <link rel="stylesheet" href="<?php echo asset_url('css/forest-enhanced.css'); ?>">
-    <!-- Premium Forest Tokens and Components -->
-    <link rel="stylesheet" href="<?php echo asset_url('css/forest-premium.css'); ?>">
-    <link rel="stylesheet" href="<?php echo asset_url('css/buttons-premium.css'); ?>">
-    <!-- Authentication Navigation Styles -->
-    <link rel="stylesheet" href="<?php echo asset_url('css/auth-nav.css'); ?>">
-    <!-- Dropdown Arrow Fix - Must load after forest-enhanced.css -->
-    <link rel="stylesheet" href="<?php echo asset_url('css/dropdown-fix.css'); ?>">
-    <!-- UX Refresh Styles - Task-first design for backpackers -->
-    <?php if ($uxRefreshEnabled): ?>
-    <link rel="stylesheet" href="<?php echo asset_url('css/ux-refresh.css'); ?>">
-    <link rel="stylesheet" href="<?php echo asset_url('css/mobile-nav.css'); ?>">
-    <?php endif; ?>
-    <!-- Loading Animations and Skeleton Screens -->
-    <!-- <link rel="stylesheet" href="<?php echo asset_url('css/skeleton-loader.css'); ?>"> -->
-    <!-- Premium Card System -->
-    <!-- <link rel="stylesheet" href="<?php echo asset_url('css/card-system.css'); ?>"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
     
     <!-- Page-specific styles -->
     <?php if (isset($pageStyles)): ?>
@@ -92,423 +77,230 @@ $uxRefreshEnabled = $_SESSION['ux_refresh'] ?? $_COOKIE['ux_refresh'] ?? true; /
         <?php endforeach; ?>
     <?php endif; ?>
     
-    <style>
-        /* CSS Variable Compatibility Layer */
-        :root {
-            /* Map premium variables to token variables for consistency */
-            --forest-mint: #4ade80;  /* Ensure this is always defined */
-            --forest-leaf: #22c55e;
-            --forest-glow: #86efac;
-            --forest-canopy: var(--forest-moss, #2d5a3d);
-            --surface-primary: var(--bg-surface, rgba(10, 40, 24, 0.95));
-            --surface-secondary: rgba(15, 50, 30, 0.9);
-            --glass-bg: var(--bg-overlay, rgba(10, 40, 24, 0.85));
-            --glass-bg-hover: rgba(74, 222, 128, 0.08);
-            --glass-border: rgba(74, 222, 128, 0.2);
-            --glass-blur: blur(10px);
-            --glass-blur-heavy: blur(20px);
-            --text-inverse: var(--forest-deep, #0a2818);
-            --duration-standard: 250ms;
-            --duration-quick: 150ms;
-            --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
-            --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            --transition-all: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
-            --radius-md: 0.5rem;
-            --radius-lg: 0.75rem;
-            --radius-full: 9999px;
-        }
-        
-        /* Global Forest Theme Application */
-        body {
-            background: var(--forest-deep, #0a2818);
-            background-image: 
-                radial-gradient(circle at 20% 50%, rgba(76, 175, 80, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(139, 195, 74, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, rgba(46, 125, 50, 0.08) 0%, transparent 50%);
-            background-attachment: fixed;
-            color: var(--text-primary, #f8f9fa);
-            min-height: 100vh;
-            margin: 0;
-            padding: 0;
-        }
-        
-        /* Forest Overlay Pattern */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: 
-                repeating-linear-gradient(
-                    45deg,
-                    transparent,
-                    transparent 35px,
-                    rgba(76, 175, 80, 0.02) 35px,
-                    rgba(76, 175, 80, 0.02) 70px
-                );
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        /* Ensure content is above the pattern */
-        .main-wrapper {
-            position: relative;
-            z-index: 1;
-        }
-        
-        /* Unified Navigation Styles */
-        .unified-nav {
-            background: var(--glass-bg);
-            backdrop-filter: var(--glass-blur-heavy);
-            border-bottom: 1px solid var(--glass-border);
-            position: sticky;
-            top: 0;
-            z-index: 10; /* Lowered significantly to stay behind all modals and popups */
-            transition: var(--transition-all);
-        }
-        
-        .nav-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 var(--space-4);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            min-height: 60px;
-        }
-        
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: var(--space-2);
-            text-decoration: none;
-            color: var(--forest-mint);
-            font-size: var(--text-xl);
-            font-weight: var(--font-bold);
-            transition: var(--transition-all);
-        }
-        
-        .nav-brand:hover {
-            color: var(--forest-leaf);
-            transform: translateY(-1px);
-        }
-        
-        .nav-brand-icon {
-            font-size: 1.5rem;
-        }
-        
-        .nav-menu {
-            display: flex;
-            align-items: center;
-            gap: var(--space-2);
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-        
-        .nav-item {
-            position: relative;
-        }
-        
-        .nav-link {
-            display: flex;
-            align-items: center;
-            gap: var(--space-2);
-            padding: var(--space-2) var(--space-3);
-            color: var(--text-primary);
-            text-decoration: none;
-            border-radius: var(--radius-lg);
-            transition: var(--transition-all);
-            font-weight: var(--font-medium);
-            position: relative;
-        }
-        
-        .nav-link:hover {
-            background: var(--glass-bg-hover);
-            color: var(--forest-mint);
-            transform: translateY(-1px);
-        }
-        
-        .nav-link.active {
-            color: var(--forest-leaf);
-            background: rgba(var(--forest-leaf-rgb), 0.1);
-        }
-        
-        .nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: var(--space-3);
-            right: var(--space-3);
-            height: 2px;
-            background: var(--gradient-success);
-            border-radius: var(--radius-full);
-        }
-        
-        .nav-icon {
-            font-size: 1.2rem;
-        }
-        
-        /* Mobile Menu Toggle */
-        .mobile-menu-toggle {
-            display: none;
-            background: transparent;
-            border: none;
-            color: var(--text-primary);
-            padding: var(--space-2);
-            cursor: pointer;
-            border-radius: var(--radius-lg);
-            transition: var(--transition-all);
-        }
-        
-        .mobile-menu-toggle:hover {
-            background: var(--glass-bg-hover);
-        }
-        
-        .mobile-menu-toggle:focus {
-            outline: 2px solid var(--forest-mint);
-            outline-offset: 2px;
-        }
-        
-        /* Mobile Menu */
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 60px;
-            left: 0;
-            right: 0;
-            background: var(--forest-canopy);
-            backdrop-filter: var(--glass-blur-heavy);
-            border-bottom: 1px solid var(--glass-border);
-            padding: var(--space-4);
-            box-shadow: var(--shadow-lg);
-            z-index: 9; /* Lower than trip form panel and other modals */
-            max-height: calc(100vh - 60px);
-            overflow-y: auto;
-        }
-        
-        .mobile-menu.active {
-            display: block;
-            animation: slideDown 0.3s ease-out;
-        }
-        
-        .mobile-menu .nav-menu {
-            flex-direction: column;
-            align-items: stretch;
-            gap: var(--space-1);
-        }
-        
-        .mobile-menu .nav-link {
-            width: 100%;
-            justify-content: flex-start;
-            padding: var(--space-3) var(--space-4);
-        }
-        
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .mobile-menu-toggle {
-                display: flex;
-                align-items: center;
-                gap: var(--space-1);
-            }
-            
-            .desktop-nav {
-                display: none;
-            }
-        }
-        
-        /* Skip Link */
-        .skip-link {
-            position: absolute;
-            top: -40px;
-            left: 0;
-            background: var(--forest-leaf);
-            color: var(--forest-deep);
-            padding: var(--space-2) var(--space-4);
-            text-decoration: none;
-            border-radius: 0 0 var(--radius-lg) 0;
-            font-weight: var(--font-bold);
-            z-index: 15; /* Above nav but below modals */
-            transition: top 0.3s;
-        }
-        
-        .skip-link:focus {
-            top: 0;
-            outline: 2px solid var(--forest-mint);
-            outline-offset: 2px;
-        }
-        
-        /* Main Content Wrapper */
-        .main-wrapper {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .main-content {
-            flex: 1;
-            padding: var(--space-6) 0;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 var(--space-4);
-        }
-    </style>
+    <!-- Navigation JavaScript -->
+    <script src="<?php echo asset_url('js/duolingo-forest-nav.js'); ?>" defer></script>
 </head>
 <?php 
-// Build body classes based on feature flags
-$bodyClasses = ['forest-theme'];
+// Get user level/XP data for gamification (mock data for now)
+$userLevel = 5;
+$userXP = 340;
+$userXPToNext = 500;
+$xpPercentage = ($userXP / $userXPToNext) * 100;
+
+// Build body classes
+$bodyClasses = ['duolingo-forest-theme', 'btt-app'];
 if ($uxRefreshEnabled) {
     $bodyClasses[] = 'ux-refresh';
 }
 ?>
 <body data-page="<?php echo e($pageId); ?>" class="<?php echo implode(' ', $bodyClasses); ?>">
-    <!-- Skip to main content for accessibility -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <!-- Skip Navigation Link for Accessibility -->
+    <a href="#main-content" class="skip-navigation">Skip to main content</a>
     
-    <div class="main-wrapper">
-        <!-- Unified Navigation -->
-        <nav class="unified-nav" role="navigation" aria-label="Main navigation">
+    <!-- Floating Forest Leaves Background -->
+    <div class="floating-leaves" aria-hidden="true">
+        <div class="leaf" style="left: 10%; animation-delay: 0s;">🍃</div>
+        <div class="leaf" style="left: 20%; animation-delay: 3s;">🌿</div>
+        <div class="leaf" style="left: 35%; animation-delay: 7s;">🍃</div>
+        <div class="leaf" style="left: 50%; animation-delay: 12s;">🌱</div>
+        <div class="leaf" style="left: 65%; animation-delay: 5s;">🍃</div>
+        <div class="leaf" style="left: 80%; animation-delay: 9s;">🌿</div>
+        <div class="leaf" style="left: 90%; animation-delay: 15s;">🍃</div>
+    </div>
+    
+    <div class="page-wrapper">
+        <!-- Gamified Forest Navigation -->
+        <nav class="forest-nav" role="navigation" aria-label="Main navigation">
             <div class="nav-container">
+                <!-- Brand/Logo -->
                 <a href="<?php echo route_url(); ?>" class="nav-brand" aria-label="BeyondTrailTales Home">
                     <span class="nav-brand-icon">🌲</span>
-                    <span>BeyondTrailTales</span>
+                    <span class="nav-brand-text">BeyondTrailTales</span>
                 </a>
                 
-                <!-- Desktop Navigation -->
-                <ul class="nav-menu desktop-nav">
-                    <li class="nav-item">
+                <!-- Section Navigation -->
+                <ul class="nav-sections">
+                    <li class="nav-section-item">
                         <a href="<?php echo route_url('dashboard'); ?>" 
-                           class="nav-link <?php echo active_class('dashboard'); ?>"
+                           class="nav-section-link <?php echo active_class('dashboard'); ?>" 
+                           data-section="dashboard"
                            aria-current="<?php echo aria_current('dashboard'); ?>">
-                            <span class="nav-icon">🏔️</span>
+                            <span class="nav-section-icon">🏔️</span>
                             <span>Trailhead</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-section-item">
                         <a href="<?php echo route_url('trips'); ?>" 
-                           class="nav-link <?php echo active_class('trips'); ?>"
+                           class="nav-section-link <?php echo active_class('trips'); ?>"
+                           data-section="adventures" 
                            aria-current="<?php echo aria_current('trips'); ?>">
-                            <span class="nav-icon">🗺️</span>
-                            <span>Plan Trip</span>
+                            <span class="nav-section-icon">🗺️</span>
+                            <span>Adventures</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-section-item">
                         <a href="<?php echo route_url('backpacks'); ?>" 
-                           class="nav-link <?php echo active_class('backpacks'); ?>"
+                           class="nav-section-link <?php echo active_class('backpacks'); ?>"
+                           data-section="backpacks" 
                            aria-current="<?php echo aria_current('backpacks'); ?>">
-                            <span class="nav-icon">🎒</span>
-                            <span>Pack & Gear</span>
+                            <span class="nav-section-icon">🎒</span>
+                            <span>Backpacks</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-section-item">
                         <a href="<?php echo route_url('gear'); ?>" 
-                           class="nav-link <?php echo active_class('gear'); ?>"
+                           class="nav-section-link <?php echo active_class('gear'); ?>"
+                           data-section="gear" 
                            aria-current="<?php echo aria_current('gear'); ?>">
-                            <span class="nav-icon">📦</span>
-                            <span>My Gear</span>
+                            <span class="nav-section-icon">📦</span>
+                            <span>Gear</span>
                         </a>
                     </li>
                 </ul>
                 
-                <!-- Authentication Navigation -->
-                <?php if ($currentUser): ?>
-                    <!-- User is logged in -->
-                    <div class="nav-user-menu">
-                        <button class="nav-user-button" aria-expanded="false" aria-controls="user-menu">
-                            <span class="nav-user-name"><?php echo htmlspecialchars($currentUser['username'] ?? $currentUser['email']); ?></span>
-                            <svg class="icon-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
-                        </button>
-                        <div class="nav-dropdown" id="user-menu" hidden>
-                            <a href="<?php echo route_url('profile'); ?>" class="dropdown-link">Profile</a>
-                            <a href="<?php echo route_url('settings'); ?>" class="dropdown-link">Settings</a>
-                            <div class="dropdown-divider"></div>
-                            <form method="post" action="<?php echo BTT_API_URL; ?>/?route=auth&id=logout" class="logout-form">
-                                <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
-                                <button type="submit" class="dropdown-link logout-btn">Logout</button>
-                            </form>
+                <!-- User Gamification & Quick Actions -->
+                <div class="nav-user-gamified">
+                    <?php if ($currentUser): ?>
+                        <!-- User Level Display -->
+                        <div class="user-level-display">
+                            <div class="user-avatar-nav">
+                                <?php echo strtoupper(substr($currentUser['username'] ?? $currentUser['email'], 0, 1)); ?>
+                            </div>
+                            <div class="user-level-info">
+                                <div class="user-level-number">Level <?php echo $userLevel; ?></div>
+                                <div class="user-xp-mini">
+                                    <div class="user-xp-fill" style="width: <?php echo $xpPercentage; ?>%;"></div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                <?php else: ?>
-                    <!-- User is not logged in -->
-                    <div class="nav-auth-links">
-                        <a class="nav-link<?php echo active_class('login'); ?>" href="<?php echo route_url('public/auth/login.php'); ?>">Login</a>
-                        <a class="nav-link nav-link-primary<?php echo active_class('register'); ?>" href="<?php echo route_url('public/auth/register.php'); ?>">Sign Up</a>
-                    </div>
-                <?php endif; ?>
+                        
+                        <!-- Quick Actions Dropdown -->
+                        <div class="nav-quick-actions">
+                            <button class="quick-actions-trigger" aria-expanded="false" aria-controls="quick-actions-menu">
+                                <span class="quick-actions-icon">⚡</span>
+                                <span>Quick</span>
+                            </button>
+                            <div class="quick-actions-menu" id="quick-actions-menu">
+                                <div class="quick-actions-grid">
+                                    <a href="<?php echo route_url('trips'); ?>?action=new" class="quick-action-item" data-section="adventures">
+                                        <div class="quick-action-icon">🗺️</div>
+                                        <div class="quick-action-text">Plan Trip</div>
+                                    </a>
+                                    <a href="<?php echo route_url('backpacks'); ?>?action=new" class="quick-action-item" data-section="backpacks">
+                                        <div class="quick-action-icon">🎒</div>
+                                        <div class="quick-action-text">New Pack</div>
+                                    </a>
+                                    <a href="<?php echo route_url('gear'); ?>?action=add" class="quick-action-item" data-section="gear">
+                                        <div class="quick-action-icon">➕</div>
+                                        <div class="quick-action-text">Add Gear</div>
+                                    </a>
+                                    <a href="<?php echo route_url('dashboard'); ?>?view=stats" class="quick-action-item" data-section="dashboard">
+                                        <div class="quick-action-icon">📊</div>
+                                        <div class="quick-action-text">Stats</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- User Menu Dropdown -->
+                        <div class="dropdown">
+                            <button class="dropdown-trigger" aria-expanded="false" aria-controls="user-dropdown">
+                                <span><?php echo htmlspecialchars($currentUser['username'] ?? 'User'); ?></span>
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                </svg>
+                            </button>
+                            <div class="dropdown-menu" id="user-dropdown">
+                                <a href="<?php echo route_url('profile'); ?>" class="dropdown-item">
+                                    👤 Profile
+                                </a>
+                                <a href="<?php echo route_url('settings'); ?>" class="dropdown-item">
+                                    ⚙️ Settings
+                                </a>
+                                <a href="<?php echo route_url('dashboard'); ?>?view=achievements" class="dropdown-item">
+                                    🏆 Achievements
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <form method="post" action="<?php echo BTT_API_URL; ?>/?route=auth&id=logout" style="margin: 0;">
+                                    <input type="hidden" name="csrf_token" value="<?php echo csrf_token(); ?>">
+                                    <button type="submit" class="dropdown-item">
+                                        🚪 Logout
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    <?php else: ?>
+                        <!-- Authentication Links -->
+                        <div class="nav-auth-links">
+                            <a href="<?php echo route_url('public/auth/login.php'); ?>" class="btn btn-secondary">
+                                Login
+                            </a>
+                            <a href="<?php echo route_url('public/auth/register.php'); ?>" class="btn btn-primary">
+                                Start Adventure
+                            </a>
+                        </div>
+                    <?php endif; ?>
+                </div>
                 
                 <!-- Mobile Menu Toggle -->
-                <button class="mobile-menu-toggle" 
+                <button class="mobile-nav-toggle" 
                         aria-label="Toggle navigation menu" 
                         aria-expanded="false"
-                        aria-controls="mobile-nav-menu"
-                        onclick="toggleMobileMenu(this)">
+                        aria-controls="mobile-nav">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 12h18M3 6h18M3 18h18" />
+                        <path d="M3 12h18M3 6h18M3 18h18"/>
                     </svg>
-                    <span>Menu</span>
                 </button>
             </div>
             
-            <!-- Mobile Menu -->
-            <div id="mobile-nav-menu" class="mobile-menu" role="region" aria-hidden="true">
-                <ul class="nav-menu">
-                    <li class="nav-item">
+            <!-- Mobile Navigation Menu -->
+            <div id="mobile-nav" class="mobile-nav-menu">
+                <div class="mobile-nav-content">
+                    <nav class="mobile-nav-sections">
                         <a href="<?php echo route_url('dashboard'); ?>" 
-                           class="nav-link <?php echo active_class('dashboard'); ?>"
-                           aria-current="<?php echo aria_current('dashboard'); ?>">
-                            <span class="nav-icon">🏔️</span>
+                           class="mobile-nav-link <?php echo active_class('dashboard'); ?>" 
+                           data-section="dashboard">
+                            <span class="mobile-nav-icon">🏔️</span>
                             <span>Trailhead</span>
                         </a>
-                    </li>
-                    <li class="nav-item">
                         <a href="<?php echo route_url('trips'); ?>" 
-                           class="nav-link <?php echo active_class('trips'); ?>"
-                           aria-current="<?php echo aria_current('trips'); ?>">
-                            <span class="nav-icon">🗺️</span>
-                            <span>Plan Trip</span>
+                           class="mobile-nav-link <?php echo active_class('trips'); ?>"
+                           data-section="adventures">
+                            <span class="mobile-nav-icon">🗺️</span>
+                            <span>Adventures</span>
                         </a>
-                    </li>
-                    <li class="nav-item">
                         <a href="<?php echo route_url('backpacks'); ?>" 
-                           class="nav-link <?php echo active_class('backpacks'); ?>"
-                           aria-current="<?php echo aria_current('backpacks'); ?>">
-                            <span class="nav-icon">🎒</span>
-                            <span>Pack & Gear</span>
+                           class="mobile-nav-link <?php echo active_class('backpacks'); ?>"
+                           data-section="backpacks">
+                            <span class="mobile-nav-icon">🎒</span>
+                            <span>Backpacks</span>
                         </a>
-                    </li>
-                    <li class="nav-item">
                         <a href="<?php echo route_url('gear'); ?>" 
-                           class="nav-link <?php echo active_class('gear'); ?>"
-                           aria-current="<?php echo aria_current('gear'); ?>">
-                            <span class="nav-icon">📦</span>
-                            <span>My Gear</span>
+                           class="mobile-nav-link <?php echo active_class('gear'); ?>"
+                           data-section="gear">
+                            <span class="mobile-nav-icon">📦</span>
+                            <span>Gear</span>
                         </a>
-                    </li>
-                </ul>
+                    </nav>
+                    
+                    <?php if ($currentUser): ?>
+                        <div class="mobile-user-section">
+                            <div class="mobile-user-info">
+                                <div class="mobile-user-avatar">
+                                    <?php echo strtoupper(substr($currentUser['username'] ?? $currentUser['email'], 0, 1)); ?>
+                                </div>
+                                <div class="mobile-user-details">
+                                    <h3 class="mobile-user-name"><?php echo htmlspecialchars($currentUser['username'] ?? 'User'); ?></h3>
+                                    <p class="mobile-user-level">Level <?php echo $userLevel; ?> • <?php echo $userXP; ?>/<?php echo $userXPToNext; ?> XP</p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
         </nav>
         
-        <!-- Main Content -->
-        <main id="main-content" class="main-content" role="main">
-            <div class="container">
+        <!-- Main Page Content -->
+        <main id="main-content" class="page-content" role="main">
+            <div class="page-container">
                 <!-- Page content will be inserted here -->

@@ -1,0 +1,694 @@
+/**
+ * BeyondTrailTales - Sophisticated Forest Theme
+ * Natural, muted forest colors inspired by Duolingo's UX patterns
+ * Avoids bright lime greens in favor of sophisticated earth tones
+ * Version: 2.0.0
+ * Last Updated: 2025-09-04
+ * 
+ * ADA Compliant | Mobile-First | Performance-Optimized
+ */
+
+/* ===========================================
+   BASE THEME SETUP
+   =========================================== */
+
+.forest-sophisticated {
+  /* Override bright colors with sophisticated alternatives */
+  --primary-action: var(--btt-forest-canopy);
+  --primary-hover: var(--btt-forest-mist);
+  --accent-color: var(--btt-fern);
+  --accent-hover: var(--btt-forest-sage);
+  --success-color: var(--btt-success-forest);
+  --warning-color: var(--btt-warning-forest);
+  
+  /* Background system */
+  --bg-primary: var(--btt-forest-midnight);
+  --bg-secondary: var(--btt-forest-deep);
+  --bg-elevated: var(--btt-forest-shadow);
+  
+  /* Text system */
+  --text-primary: var(--btt-text-primary);
+  --text-secondary: var(--btt-text-secondary);
+  --text-muted: var(--btt-text-muted);
+  --text-accent: var(--btt-text-accent);
+  
+  font-family: var(--btt-font-sans);
+  background: var(--btt-gradient-dark);
+  color: var(--text-primary);
+  min-height: 100vh;
+}
+
+/* ===========================================
+   DUOLINGO-INSPIRED COMPONENTS
+   =========================================== */
+
+/* Sophisticated Card System */
+.duo-card-sophisticated {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(122, 155, 126, 0.15);
+  border-radius: 20px;
+  padding: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.duo-card-sophisticated::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--btt-gradient-moss);
+  border-radius: 20px 20px 0 0;
+}
+
+.duo-card-sophisticated:hover {
+  transform: translateY(-4px);
+  border-color: rgba(122, 155, 126, 0.3);
+  box-shadow: 0 12px 40px rgba(26, 47, 32, 0.4);
+}
+
+/* Sophisticated Button System */
+.btn-forest-primary {
+  background: var(--btt-gradient-forest);
+  border: 2px solid transparent;
+  color: white;
+  padding: 0.875rem 2rem;
+  border-radius: 16px;
+  font-family: var(--btt-font-accent);
+  font-weight: 700;
+  font-size: 1rem;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.btn-forest-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.6s;
+}
+
+.btn-forest-primary:hover::before {
+  left: 100%;
+}
+
+.btn-forest-primary:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(93, 120, 99, 0.4);
+}
+
+.btn-forest-primary:active {
+  transform: translateY(-1px) scale(1.01);
+}
+
+.btn-forest-secondary {
+  background: transparent;
+  border: 2px solid var(--btt-forest-canopy);
+  color: var(--btt-forest-mist);
+  padding: 0.875rem 2rem;
+  border-radius: 16px;
+  font-family: var(--btt-font-accent);
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.btn-forest-secondary:hover {
+  background: var(--btt-forest-canopy);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Sophisticated Progress Elements */
+.progress-sophisticated {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  height: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-sophisticated .progress-bar {
+  background: var(--btt-gradient-moss);
+  height: 100%;
+  border-radius: 12px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.progress-sophisticated .progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 2s linear infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+/* Sophisticated Badge System */
+.achievement-sophisticated {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 2px solid rgba(122, 155, 126, 0.2);
+  border-radius: 16px;
+  min-width: 80px;
+  min-height: 80px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.achievement-sophisticated.earned {
+  background: rgba(122, 155, 126, 0.15);
+  border-color: var(--btt-fern);
+  box-shadow: 0 4px 15px rgba(122, 155, 126, 0.2);
+}
+
+.achievement-sophisticated.available {
+  background: rgba(212, 165, 116, 0.1);
+  border-color: var(--btt-gold);
+  animation: pulse-available 2s ease-in-out infinite;
+}
+
+@keyframes pulse-available {
+  0%, 100% { 
+    border-color: var(--btt-gold); 
+    box-shadow: 0 0 0 0 rgba(212, 165, 116, 0.4);
+  }
+  50% { 
+    border-color: var(--btt-copper); 
+    box-shadow: 0 0 0 8px rgba(212, 165, 116, 0);
+  }
+}
+
+.achievement-sophisticated.locked {
+  opacity: 0.4;
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(168, 181, 170, 0.2);
+  cursor: not-allowed;
+}
+
+.achievement-sophisticated:hover:not(.locked) {
+  transform: translateY(-4px) scale(1.05);
+  border-color: var(--btt-forest-mist);
+}
+
+/* ===========================================
+   SOPHISTICATED NAVIGATION
+   =========================================== */
+
+.nav-sophisticated {
+  background: rgba(26, 47, 32, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(122, 155, 126, 0.2);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-sophisticated .nav-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-sophisticated .nav-brand {
+  color: var(--btt-text-primary);
+  font-family: var(--btt-font-display);
+  font-weight: 800;
+  font-size: 1.5rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.nav-sophisticated .nav-brand:hover {
+  color: var(--btt-fern);
+  transform: scale(1.05);
+}
+
+.nav-sophisticated .nav-links {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.nav-sophisticated .nav-link {
+  color: var(--btt-text-secondary);
+  text-decoration: none;
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.nav-sophisticated .nav-link:hover {
+  color: var(--btt-text-primary);
+  background: rgba(122, 155, 126, 0.1);
+  transform: translateY(-1px);
+}
+
+.nav-sophisticated .nav-link.active {
+  color: var(--btt-fern);
+  background: rgba(122, 155, 126, 0.15);
+}
+
+/* ===========================================
+   DASHBOARD SOPHISTICATED LAYOUT
+   =========================================== */
+
+.dashboard-sophisticated {
+  background: var(--btt-gradient-dark);
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+
+.dashboard-sophisticated .container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Hero Section - More Refined */
+.hero-sophisticated {
+  background: rgba(42, 69, 50, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(122, 155, 126, 0.2);
+  border-radius: 24px;
+  padding: 3rem 2rem;
+  margin-bottom: 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-sophisticated::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: 
+    radial-gradient(circle, rgba(122, 155, 126, 0.05) 0%, transparent 70%),
+    radial-gradient(circle at 80% 20%, rgba(93, 120, 99, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 20% 80%, rgba(79, 107, 87, 0.08) 0%, transparent 50%);
+  animation: float-subtle 15s ease-in-out infinite;
+}
+
+@keyframes float-subtle {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(10px, -10px) rotate(1deg); }
+  66% { transform: translate(-5px, 5px) rotate(-0.5deg); }
+}
+
+.hero-sophisticated .hero-title {
+  font-family: var(--btt-font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  color: var(--btt-text-primary);
+  margin-bottom: 0.75rem;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-sophisticated .hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--btt-text-secondary);
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-sophisticated .user-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-sophisticated .stat-pill {
+  background: rgba(122, 155, 126, 0.15);
+  border: 1px solid rgba(122, 155, 126, 0.3);
+  border-radius: 50px;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--btt-fern);
+  font-weight: 700;
+}
+
+/* Quick Actions - Sophisticated */
+.actions-sophisticated {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.action-sophisticated {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(122, 155, 126, 0.15);
+  border-radius: 18px;
+  padding: 1.5rem;
+  text-decoration: none;
+  color: var(--btt-text-primary);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.action-sophisticated::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--btt-gradient-moss);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.action-sophisticated:hover::before {
+  opacity: 1;
+}
+
+.action-sophisticated:hover {
+  transform: translateY(-6px) scale(1.02);
+  border-color: rgba(122, 155, 126, 0.4);
+  box-shadow: 0 12px 40px rgba(26, 47, 32, 0.3);
+}
+
+.action-sophisticated .action-icon {
+  font-size: 2rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.action-sophisticated .action-label {
+  font-family: var(--btt-font-accent);
+  font-weight: 700;
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* Sophisticated Dashboard Grid */
+.dashboard-grid-sophisticated {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Card Variants with Sophisticated Colors */
+.card-trips-sophisticated {
+  background: linear-gradient(135deg, 
+    rgba(93, 120, 99, 0.1) 0%, 
+    rgba(79, 107, 87, 0.05) 100%);
+  border-color: rgba(93, 120, 99, 0.3);
+}
+
+.card-packs-sophisticated {
+  background: linear-gradient(135deg, 
+    rgba(160, 130, 90, 0.1) 0%, 
+    rgba(139, 111, 71, 0.05) 100%);
+  border-color: rgba(160, 130, 90, 0.3);
+}
+
+.card-gear-sophisticated {
+  background: linear-gradient(135deg, 
+    rgba(156, 163, 160, 0.1) 0%, 
+    rgba(133, 139, 136, 0.05) 100%);
+  border-color: rgba(156, 163, 160, 0.3);
+}
+
+.card-achievements-sophisticated {
+  background: linear-gradient(135deg, 
+    rgba(212, 165, 116, 0.1) 0%, 
+    rgba(184, 149, 107, 0.05) 100%);
+  border-color: rgba(212, 165, 116, 0.3);
+}
+
+/* ===========================================
+   SOPHISTICATED FORM ELEMENTS
+   =========================================== */
+
+.form-sophisticated {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.input-sophisticated {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(122, 155, 126, 0.2);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  color: var(--btt-text-primary);
+  font-size: 1rem;
+  font-family: var(--btt-font-sans);
+  transition: all 0.25s ease;
+}
+
+.input-sophisticated:focus {
+  outline: none;
+  border-color: var(--btt-fern);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 4px rgba(122, 155, 126, 0.1);
+}
+
+.input-sophisticated::placeholder {
+  color: var(--btt-text-muted);
+  opacity: 0.7;
+}
+
+/* Sophisticated Select Dropdown */
+.select-sophisticated {
+  appearance: none;
+  background: rgba(255, 255, 255, 0.05) url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b8470' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e") no-repeat right 0.75rem center/1.5em 1.5em;
+  border: 2px solid rgba(122, 155, 126, 0.2);
+  border-radius: 14px;
+  padding: 1rem 3rem 1rem 1.25rem;
+  color: var(--btt-text-primary);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.select-sophisticated:focus {
+  outline: none;
+  border-color: var(--btt-fern);
+  box-shadow: 0 0 0 4px rgba(122, 155, 126, 0.1);
+}
+
+/* ===========================================
+   SOPHISTICATED NOTIFICATIONS
+   =========================================== */
+
+.notification-sophisticated {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(122, 155, 126, 0.2);
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.notification-sophisticated.success {
+  border-color: var(--btt-fern);
+  background: rgba(122, 155, 126, 0.08);
+}
+
+.notification-sophisticated.warning {
+  border-color: var(--btt-gold);
+  background: rgba(212, 165, 116, 0.08);
+}
+
+.notification-sophisticated.error {
+  border-color: var(--btt-error);
+  background: rgba(196, 103, 90, 0.08);
+}
+
+/* ===========================================
+   SOPHISTICATED MODAL SYSTEM
+   =========================================== */
+
+.modal-sophisticated {
+  background: rgba(26, 47, 32, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(122, 155, 126, 0.2);
+  border-radius: 24px;
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(10, 27, 15, 0.5);
+}
+
+.modal-sophisticated .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(122, 155, 126, 0.15);
+}
+
+.modal-sophisticated .modal-title {
+  font-family: var(--btt-font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--btt-text-primary);
+  margin: 0;
+}
+
+.modal-sophisticated .modal-close {
+  background: none;
+  border: none;
+  color: var(--btt-text-muted);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.modal-sophisticated .modal-close:hover {
+  color: var(--btt-text-primary);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* ===========================================
+   RESPONSIVE ADJUSTMENTS
+   =========================================== */
+
+@media (max-width: 768px) {
+  .dashboard-sophisticated .container {
+    padding: 0 1rem;
+  }
+  
+  .hero-sophisticated {
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .actions-sophisticated {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .dashboard-grid-sophisticated {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .action-sophisticated {
+    padding: 1.25rem;
+  }
+  
+  .nav-sophisticated .nav-container {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-sophisticated .user-stats {
+    gap: 1rem;
+  }
+  
+  .hero-sophisticated .stat-pill {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+  
+  .actions-sophisticated {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===========================================
+   ACCESSIBILITY ENHANCEMENTS
+   =========================================== */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .forest-sophisticated {
+    --text-primary: #ffffff;
+    --text-secondary: #e0e0e0;
+    --primary-action: #7a9b7e;
+    --accent-color: #a0b5a3;
+  }
+  
+  .duo-card-sophisticated,
+  .action-sophisticated,
+  .modal-sophisticated {
+    border-width: 3px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .duo-card-sophisticated,
+  .action-sophisticated,
+  .btn-forest-primary,
+  .btn-forest-secondary,
+  .achievement-sophisticated {
+    transition: none;
+    animation: none;
+  }
+  
+  .hero-sophisticated::before {
+    animation: none;
+  }
+}
+
+/* Focus indicators */
+.duo-card-sophisticated:focus,
+.action-sophisticated:focus,
+.achievement-sophisticated:focus {
+  outline: 3px solid var(--btt-fern);
+  outline-offset: 2px;
+}

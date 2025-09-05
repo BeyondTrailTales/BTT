@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Drag & Drop Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body { 
+            font-family: monospace; 
+            background: #333; 
+            color: #fff; 
+            padding: 20px; 
+        }
+        .test-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .source, .target {
+            background: #444;
+            padding: 20px;
+            border-radius: 10px;
+            min-height: 200px;
+        }
+        .draggable {
+            background: #10b981;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            cursor: grab;
+        }
+        .draggable:active {
+            cursor: grabbing;
+        }
+        .draggable.dragging {
+            opacity: 0.5;
+        }
+        .target {
+            border: 2px dashed #666;
+        }
+        .target.drag-over {
+            background: #10b98120;
+            border-color: #10b981;
+        }
+        .log {
+            background: #222;
+            padding: 10px;
+            height: 200px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Drag & Drop Test</h1>
+    
+    <div class="test-area">
+        <div class="source">
+            <h3>Source Items</h3>
+            <div class="draggable" draggable="true" data-id="1">Item 1</div>
+            <div class="draggable" draggable="true" data-id="2">Item 2</div>
+            <div class="draggable" draggable="true" data-id="3">Item 3</div>
+        </div>
+        
+        <div class="target">
+            <h3>Drop Zone</h3>
+        </div>
+    </div>
+    
+    <h3>Event Log:</h3>
+    <div class="log" id="log"></div>
+    
+    <script>
+        const log = (msg) => {
+            const time = new Date().toLocaleTimeString();
+            $('#log').append(`<div>[${time}] ${msg}</div>`);
+            $('#log').scrollTop($('#log')[0].scrollHeight);
+        };
+        
+        // Test basic drag events
+        $(document).on('dragstart', '.draggable', (e) => {
+            log('✅ dragstart fired on: ' + $(e.target).text());
+            e.originalEvent.dataTransfer.setData('text/plain', $(e.target).data('id'));
+            $(e.target).addClass('dragging');
+        });
+        
+        $(document).on('dragend', '.draggable', (e) => {
+            log('✅ dragend fired');
+            $(e.target).removeClass('dragging');
+        });
+        
+        $(document).on('dragover', '.target', (e) => {
+            e.preventDefault();
+            $(e.target).addClass('drag-over');
+        });
+        
+        $(document).on('dragleave', '.target', (e) => {
+            $(e.target).removeClass('drag-over');
+        });
+        
+        $(document).on('drop', '.target', (e) => {
+            e.preventDefault();
+            const id = e.originalEvent.dataTransfer.getData('text/plain');
+            log('✅ drop fired with id: ' + id);
+            
+            const $item = $(`.draggable[data-id="${id}"]`);
+            $(e.target).append($item);
+            $(e.target).removeClass('drag-over');
+        });
+        
+        // Test that draggable attribute is set
+        $('.draggable').each(function() {
+            const isDraggable = $(this).attr('draggable');
+            log(`Item "${$(this).text()}" draggable="${isDraggable}"`);
+        });
+    </script>
+    
+    <p><a href="/BTT/pack-builder.php">Back to Pack Builder</a></p>
+</body>
+</html>

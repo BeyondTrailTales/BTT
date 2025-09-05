@@ -1,0 +1,416 @@
+/**
+ * Compact Gear Cards - Duolingo-style Dense Layout
+ * Show more items at once with smaller, efficient cards
+ * @version 1.0.0
+ */
+
+/* ==================== Compact Grid Layout ==================== */
+.gear-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)) !important;
+    gap: 0.75rem !important;
+    padding: 0.5rem 0 !important;
+}
+
+/* Tighter grid on larger screens */
+@media (min-width: 1400px) {
+    .gear-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important;
+    }
+}
+
+@media (min-width: 1600px) {
+    .gear-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important;
+        gap: 0.625rem !important;
+    }
+}
+
+/* ==================== Compact Gear Card ==================== */
+.gear-card {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 20, 0, 0.3)) !important;
+    backdrop-filter: blur(8px) !important;
+    border: 1.5px solid rgba(88, 204, 2, 0.15) !important;
+    border-radius: 12px !important;
+    padding: 0.875rem !important;
+    transition: all 0.2s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
+    min-height: 140px !important; /* Ensure consistent height */
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Smaller hover effect */
+.gear-card:hover {
+    transform: translateY(-3px) scale(1.02) !important;
+    border-color: #58cc02 !important;
+    box-shadow: 
+        0 8px 16px rgba(88, 204, 2, 0.2),
+        0 0 30px rgba(88, 204, 2, 0.05) !important;
+}
+
+/* ==================== Compact Card Header ==================== */
+.gear-card-header {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    margin-bottom: 0.5rem !important;
+}
+
+.gear-icon {
+    font-size: 1.25rem !important;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2)) !important;
+}
+
+.gear-name {
+    flex: 1 !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    color: var(--color-text) !important;
+    margin: 0 !important;
+    line-height: 1.3 !important;
+    /* Allow name to wrap to 2 lines */
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    word-break: break-word !important;
+    min-height: 2.4rem !important; /* Reserve space for 2 lines */
+}
+
+/* Smaller badges */
+.gear-badge {
+    padding: 0.125rem 0.375rem !important;
+    font-size: 0.625rem !important;
+    font-weight: 700 !important;
+    border-radius: 6px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* ==================== Compact Card Body ==================== */
+.gear-card-body {
+    margin-bottom: 0.5rem !important;
+}
+
+.gear-meta {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 0.375rem !important;
+    padding-bottom: 0.375rem !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Compact category badges */
+.gear-category-badge {
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.7rem !important;
+    font-weight: 600 !important;
+    border-radius: 999px !important;
+    letter-spacing: 0.3px !important;
+}
+
+.gear-category-badge::before {
+    font-size: 0.8rem !important;
+    margin-right: 0.2rem !important;
+}
+
+.gear-weight {
+    font-weight: 700 !important;
+    color: var(--color-text) !important;
+    font-size: 0.85rem !important;
+}
+
+/* Hide or minimize tags in compact view */
+.gear-tags {
+    display: none !important;
+}
+
+/* Truncate notes more aggressively */
+.gear-notes {
+    margin-top: 0.375rem !important;
+    padding-top: 0.375rem !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.gear-notes-text {
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-size: 0.75rem !important;
+    line-height: 1.3 !important;
+    margin: 0 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* ==================== Compact Card Actions ==================== */
+.gear-card-actions {
+    display: flex !important;
+    gap: 0.375rem !important;
+    justify-content: flex-end !important;
+    margin-top: auto !important; /* Push to bottom */
+    padding-top: 0.5rem !important;
+    border-top: 1px solid rgba(88, 204, 2, 0.08) !important;
+}
+
+.btn-icon {
+    padding: 0.375rem !important;
+    font-size: 0.9rem !important;
+    border-radius: 8px !important;
+    border: 1.5px solid rgba(88, 204, 2, 0.2) !important;
+}
+
+.btn-icon:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 3px 10px rgba(88, 204, 2, 0.2) !important;
+}
+
+/* ==================== Ultra Compact Mode (List View) ==================== */
+.gear-grid.list-view {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.375rem !important;
+}
+
+.gear-grid.list-view .gear-card {
+    display: flex !important;
+    align-items: center !important;
+    padding: 0.625rem 0.875rem !important;
+    border-radius: 8px !important;
+}
+
+.gear-grid.list-view .gear-card-header {
+    flex: 1 !important;
+    margin-bottom: 0 !important;
+}
+
+.gear-grid.list-view .gear-card-body {
+    display: flex !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    margin-bottom: 0 !important;
+}
+
+.gear-grid.list-view .gear-meta {
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.gear-grid.list-view .gear-notes {
+    display: none !important;
+}
+
+.gear-grid.list-view .gear-card-actions {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    border-top: none !important;
+    margin-left: auto !important;
+}
+
+/* ==================== Category Color Bars - Compact ==================== */
+.gear-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    border-radius: 0 2px 2px 0;
+}
+
+/* Apply category colors to the bar */
+.gear-card.cat-shelter::before { background: var(--cat-shelter) !important; }
+.gear-card.cat-sleep::before { background: var(--cat-sleep) !important; }
+.gear-card.cat-cooking::before { background: var(--cat-cooking) !important; }
+.gear-card.cat-clothing::before { background: var(--cat-clothing) !important; }
+.gear-card.cat-navigation::before { background: var(--cat-navigation) !important; }
+.gear-card.cat-hygiene::before { background: var(--cat-hygiene) !important; }
+.gear-card.cat-first-aid::before { background: var(--cat-firstaid) !important; }
+.gear-card.cat-electronics::before { background: var(--cat-electronics) !important; }
+.gear-card.cat-water::before { background: var(--cat-water) !important; }
+.gear-card.cat-food-storage::before { background: var(--cat-foodstorage) !important; }
+.gear-card.cat-repair::before { background: var(--cat-repair) !important; }
+.gear-card.cat-other::before { background: var(--cat-other) !important; }
+
+/* ==================== Dense View Toggle Button ==================== */
+.view-density-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.875rem;
+    background: linear-gradient(135deg, rgba(88, 204, 2, 0.15), rgba(88, 204, 2, 0.08));
+    border: 1.5px solid #58cc02;
+    border-radius: 10px;
+    color: #58cc02;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.view-density-toggle:hover {
+    background: linear-gradient(135deg, rgba(88, 204, 2, 0.25), rgba(88, 204, 2, 0.15));
+    transform: translateY(-1px);
+}
+
+/* ==================== Responsive Breakpoints ==================== */
+@media (max-width: 1200px) {
+    .gear-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important;
+    }
+}
+
+@media (max-width: 992px) {
+    .gear-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .gear-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
+        gap: 0.5rem !important;
+    }
+    
+    .gear-card {
+        padding: 0.75rem !important;
+    }
+    
+    .gear-icon {
+        font-size: 1.125rem !important;
+    }
+    
+    .gear-name {
+        font-size: 0.85rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .gear-grid {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 0.5rem !important;
+    }
+}
+
+/* ==================== Performance Optimizations ==================== */
+.gear-card {
+    will-change: transform;
+    contain: layout style paint;
+}
+
+/* Reduce animations for performance */
+@media (prefers-reduced-motion: reduce) {
+    .gear-card {
+        transition: none !important;
+    }
+    
+    .gear-card:hover {
+        transform: none !important;
+    }
+}
+
+/* ==================== Grid Density Modes ==================== */
+/* Standard density (default) - shown above */
+
+/* Comfortable density */
+.gear-grid.density-comfortable {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important;
+    gap: 1rem !important;
+}
+
+.gear-grid.density-comfortable .gear-card {
+    padding: 1.125rem !important;
+}
+
+/* Compact density */
+.gear-grid.density-compact {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+    gap: 0.5rem !important;
+}
+
+.gear-grid.density-compact .gear-card {
+    padding: 0.625rem !important;
+    min-height: 120px !important;
+}
+
+.gear-grid.density-compact .gear-name {
+    font-size: 0.8rem !important;
+    min-height: 2rem !important;
+}
+
+.gear-grid.density-compact .gear-category-badge {
+    font-size: 0.65rem !important;
+    padding: 0.2rem 0.4rem !important;
+}
+
+.gear-grid.density-compact .btn-icon {
+    padding: 0.3rem !important;
+    font-size: 0.8rem !important;
+}
+
+/* Ultra-compact density for maximum items */
+.gear-grid.density-ultra {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)) !important;
+    gap: 0.375rem !important;
+}
+
+.gear-grid.density-ultra .gear-card {
+    padding: 0.5rem !important;
+    min-height: 100px !important;
+    border-radius: 8px !important;
+}
+
+.gear-grid.density-ultra .gear-card-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.25rem !important;
+}
+
+.gear-grid.density-ultra .gear-icon {
+    font-size: 1rem !important;
+}
+
+.gear-grid.density-ultra .gear-name {
+    font-size: 0.75rem !important;
+    min-height: 1.8rem !important;
+    line-height: 1.2 !important;
+}
+
+.gear-grid.density-ultra .gear-badge {
+    display: none !important; /* Hide badge to save space */
+}
+
+.gear-grid.density-ultra .gear-meta {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.25rem !important;
+}
+
+.gear-grid.density-ultra .gear-category-badge {
+    font-size: 0.6rem !important;
+    padding: 0.15rem 0.3rem !important;
+}
+
+.gear-grid.density-ultra .gear-category-badge::before {
+    display: none !important; /* Hide icon to save space */
+}
+
+.gear-grid.density-ultra .gear-weight {
+    font-size: 0.75rem !important;
+}
+
+.gear-grid.density-ultra .gear-card-actions {
+    gap: 0.25rem !important;
+}
+
+.gear-grid.density-ultra .btn-icon {
+    padding: 0.25rem !important;
+    font-size: 0.75rem !important;
+    border-radius: 6px !important;
+}

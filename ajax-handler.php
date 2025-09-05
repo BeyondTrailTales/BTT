@@ -11,6 +11,8 @@ while (ob_get_level()) {
 ob_start();
 
 require_once __DIR__ . '/app/bootstrap.php';
+require_once __DIR__ . '/app/helpers/achievement_helper.php';
+require_once __DIR__ . '/api/routes/trip_packing.php';
 
 // Check authentication
 if (!isset($_SESSION['user_id'])) {
@@ -33,8 +35,15 @@ $db->exec('PRAGMA foreign_keys = ON');
 
 $user_id = $_SESSION['user_id'];
 $method = $_SERVER['REQUEST_METHOD'];
+
+// Handle method override for FormData requests (from BTTApi.put and BTTApi.delete)
+if ($method === 'POST' && isset($_POST['_method'])) {
+    $method = strtoupper($_POST['_method']);
+}
+
 $route = $_GET['route'] ?? '';
 $id = $_GET['id'] ?? null;
+$action = $_GET['action'] ?? null;
 
 // Debug logging (only to error log, not output)
 if (defined('BTT_DEBUG') && BTT_DEBUG) {
@@ -68,6 +77,7 @@ try {
             CREATE TABLE backpack_gear (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 backpack_id INTEGER NOT NULL,
+                gear_id INTEGER DEFAULT NULL,
                 custom_name VARCHAR(255) NOT NULL,
                 custom_weight INTEGER DEFAULT 0,
                 custom_category VARCHAR(100) DEFAULT 'other',
@@ -138,6 +148,25 @@ try {
     }
 } catch (Exception $e) {
     if (defined('BTT_DEBUG') && BTT_DEBUG) error_log("AJAX Handler: Error checking/creating tables: " . $e->getMessage());
+}
+
+// Check if backpack_gear table has gear_id column and add it if missing
+try {
+    $columns = $db->query("PRAGMA table_info(backpack_gear)")->fetchAll(PDO::FETCH_ASSOC);
+    $hasGearId = false;
+    foreach ($columns as $col) {
+        if ($col['name'] === 'gear_id') {
+            $hasGearId = true;
+            break;
+        }
+    }
+    
+    if (!$hasGearId) {
+        if (defined('BTT_DEBUG') && BTT_DEBUG) error_log("AJAX Handler: Adding missing gear_id column to backpack_gear table");
+        $db->exec("ALTER TABLE backpack_gear ADD COLUMN gear_id INTEGER DEFAULT NULL");
+    }
+} catch (Exception $e) {
+    if (defined('BTT_DEBUG') && BTT_DEBUG) error_log("AJAX Handler: Error checking gear_id column: " . $e->getMessage());
 }
 
 // Helper function to get icon for category
@@ -221,15 +250,9 @@ try {
                 }
             }
             
-            // Return in the expected format for GearManager.js
+            // Return the gear items directly (GearManager.js expects array or object with success/data)
             ob_clean();
-            echo json_encode([
-                'success' => true,
-                'data' => [
-                    'items' => $gear,
-                    'total' => count($gear)
-                ]
-            ]);
+            echo json_encode($gear);
             exit;
         }
         
@@ -335,137 +358,249 @@ try {
     
     // Handle trips
     if ($route === 'trips') {
-        if ($method === 'GET') {
-            if ($id) {
-                // Get single trip
-                $stmt = $db->prepare("SELECT * FROM trips WHERE id = ? AND user_id = ?");
-                $stmt->execute([$id, $user_id]);
-                $trip = $stmt->fetch(PDO::FETCH_ASSOC);
-                
-                ob_clean();
-                echo json_encode($trip ?: ['success' => false, 'message' => 'Trip not found']);
-                exit;
-            } else {
-                // Get all trips
-                $stmt = $db->prepare("SELECT * FROM trips WHERE user_id = ? ORDER BY created_at DESC");
-                $stmt->execute([$user_id]);
-                $trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                
-                ob_clean();
-                echo json_encode($trips);
-                exit;
+        try {
+            if ($method === 'GET') {
+                if ($id && $action === 'packing-list') {
+                    // Handle trip packing list requests
+                    require_once __DIR__ . '/api/routes/trip_packing.php';
+                    handleTripPackingRoute($method, [$id, 'packing-list']);
+                    exit;
+                } elseif ($id) {
+                    // Get single trip
+                    $stmt = $db->prepare("SELECT * FROM trips WHERE id = ? AND user_id = ?");
+                    $stmt->execute([$id, $user_id]);
+                    $trip = $stmt->fetch(PDO::FETCH_ASSOC);
+                    
+                    ob_clean();
+                    echo json_encode($trip ?: ['success' => false, 'message' => 'Trip not found']);
+                    exit;
+                } else {
+                    // Get all trips
+                    $stmt = $db->prepare("SELECT * FROM trips WHERE user_id = ? ORDER BY created_at DESC");
+                    $stmt->execute([$user_id]);
+                    $trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    
+                    ob_clean();
+                    echo json_encode($trips);
+                    exit;
+                }
             }
+        } catch (Exception $e) {
+            ob_clean();
+            echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
+            exit;
+        }
+        
+        // Handle packing list actions for non-GET methods
+        if ($id && $action === 'packing-list') {
+            require_once __DIR__ . '/api/routes/trip_packing.php';
+            handleTripPackingRoute($method, [$id, 'packing-list']);
             exit;
         }
         
         if ($method === 'POST') {
-            // Create new trip
-            $data = json_decode(file_get_contents('php://input'), true);
-            
-            if (empty($data['title'])) {
+            try {
+                // Create new trip - handle both FormData and JSON input
+                $rawInput = file_get_contents('php://input');
+                $data = json_decode($rawInput, true);
+                
+                // If JSON decode failed, try $_POST (for FormData)
+                if ($data === null && !empty($_POST)) {
+                    $data = $_POST;
+                }
+                
+                if (empty($data['title'])) {
+                    ob_clean();
+                    echo json_encode(['success' => false, 'message' => 'Title is required']);
+                    exit;
+                }
+                
+                $stmt = $db->prepare("
+                    INSERT INTO trips (
+                        user_id, title, location, start_date, end_date, description, 
+                        trip_type, distance, distance_unit, elevation_gain, difficulty,
+                        favorite, completed, backpack_id, photo_path, photo_alt_text,
+                        permit_required, permit_cost, permit_info, trailhead_parking, parking_cost,
+                        cell_coverage, crowd_level, water_sources, trail_conditions,
+                        pre_trip_notes, post_trip_notes, lessons_learned, created_at, updated_at
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
+                ");
+                
+                $stmt->execute([
+                    $user_id,
+                    $data['title'],
+                    $data['location'] ?? '',
+                    $data['start_date'] ?? null,
+                    $data['end_date'] ?? null,
+                    $data['description'] ?? '',
+                    $data['trip_type'] ?? null,
+                    (float)($data['distance'] ?? 0),
+                    $data['distance_unit'] ?? 'miles',
+                    (float)($data['elevation_gain'] ?? 0),
+                    $data['difficulty'] ?? null,
+                    (int)($data['favorite'] ?? 0),
+                    (int)($data['completed'] ?? 0),
+                    !empty($data['backpack_id']) ? (int)$data['backpack_id'] : null,
+                    $data['photo_path'] ?? null,
+                    $data['photo_alt_text'] ?? null,
+                    (int)($data['permit_required'] ?? 0),
+                    !empty($data['permit_cost']) ? (float)$data['permit_cost'] : null,
+                    $data['permit_info'] ?? null,
+                    $data['trailhead_parking'] ?? null,
+                    !empty($data['parking_cost']) ? (float)$data['parking_cost'] : null,
+                    $data['cell_coverage'] ?? null,
+                    $data['crowd_level'] ?? null,
+                    $data['water_sources'] ?? null,
+                    $data['trail_conditions'] ?? null,
+                    $data['pre_trip_notes'] ?? null,
+                    $data['post_trip_notes'] ?? null,
+                    $data['lessons_learned'] ?? null
+                ]);
+                
+                $tripId = $db->lastInsertId();
+                
+                // Return created trip
+                $stmt = $db->prepare("SELECT * FROM trips WHERE id = ?");
+                $stmt->execute([$tripId]);
+                $trip = $stmt->fetch(PDO::FETCH_ASSOC);
+                
                 ob_clean();
-                echo json_encode(['success' => false, 'message' => 'Title is required']);
+                echo json_encode($trip);
+                exit;
+            } catch (Exception $e) {
+                ob_clean();
+                echo json_encode(['success' => false, 'message' => 'Failed to create trip: ' . $e->getMessage()]);
                 exit;
             }
-            
-            $stmt = $db->prepare("
-                INSERT INTO trips (
-                    user_id, title, location, start_date, end_date, description, 
-                    trip_type, distance, distance_unit, elevation_gain, difficulty,
-                    favorite, completed, created_at, updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
-            ");
-            
-            $stmt->execute([
-                $user_id,
-                $data['title'],
-                $data['location'] ?? '',
-                $data['start_date'] ?? null,
-                $data['end_date'] ?? null,
-                $data['description'] ?? '',
-                $data['trip_type'] ?? null,
-                (float)($data['distance'] ?? 0),
-                $data['distance_unit'] ?? 'miles',
-                (float)($data['elevation_gain'] ?? 0),
-                $data['difficulty'] ?? null,
-                (int)($data['favorite'] ?? 0),
-                (int)($data['completed'] ?? 0)
-            ]);
-            
-            $tripId = $db->lastInsertId();
-            
-            // Return created trip
-            $stmt = $db->prepare("SELECT * FROM trips WHERE id = ?");
-            $stmt->execute([$tripId]);
-            $trip = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            ob_clean();
-            echo json_encode($trip);
-            exit;
         }
         
         if ($method === 'PUT') {
-            // Update trip
-            if (!$id) {
+            try {
+                // Update trip
+                if (!$id) {
+                    ob_clean();
+                    echo json_encode(['success' => false, 'message' => 'ID required']);
+                    exit;
+                }
+                
+                // Handle both FormData and JSON input
+                $rawInput = file_get_contents('php://input');
+                $data = json_decode($rawInput, true);
+                
+                // If JSON decode failed, try $_POST (for FormData)
+                if ($data === null && !empty($_POST)) {
+                    $data = $_POST;
+                    // Remove the _method field from data
+                    unset($data['_method']);
+                }
+                
+                // Build dynamic UPDATE query based on provided fields
+                $updateFields = [];
+                $updateValues = [];
+                
+                // Handle photo removal first
+                if (isset($data['remove_photo']) && $data['remove_photo'] === '1') {
+                    // Get existing trip to find photo path
+                    $stmt = $db->prepare("SELECT photo_path FROM trips WHERE id = ? AND user_id = ?");
+                    $stmt->execute([$id, $user_id]);
+                    $existing = $stmt->fetch(PDO::FETCH_ASSOC);
+                    
+                    if ($existing && $existing['photo_path']) {
+                        // Delete the physical file
+                        $photoPath = __DIR__ . '/' . $existing['photo_path'];
+                        if (file_exists($photoPath)) {
+                            @unlink($photoPath);
+                        }
+                    }
+                    
+                    // Set photo fields to null
+                    $data['photo_path'] = null;
+                    $data['photo_alt_text'] = null;
+                }
+                
+                $allowedFields = [
+                    'title', 'location', 'start_date', 'end_date', 'description',
+                    'trip_type', 'distance', 'distance_unit', 'elevation_gain', 'difficulty',
+                    'favorite', 'completed', 'backpack_id', 'photo_path', 'photo_alt_text',
+                    'permit_required', 'permit_cost', 'permit_info', 'trailhead_parking', 'parking_cost',
+                    'cell_coverage', 'crowd_level', 'water_sources', 'trail_conditions',
+                    'pre_trip_notes', 'post_trip_notes', 'lessons_learned'
+                ];
+                
+                foreach ($allowedFields as $field) {
+                    if (array_key_exists($field, $data)) {
+                        $updateFields[] = "$field = ?";
+                        
+                        // Handle different field types
+                        if (in_array($field, ['favorite', 'completed', 'permit_required'])) {
+                            $updateValues[] = (int)$data[$field];
+                        } elseif (in_array($field, ['distance', 'elevation_gain', 'permit_cost', 'parking_cost'])) {
+                            $updateValues[] = $data[$field] !== '' ? (float)$data[$field] : null;
+                        } elseif ($field === 'backpack_id') {
+                            $updateValues[] = !empty($data[$field]) ? (int)$data[$field] : null;
+                        } else {
+                            $updateValues[] = $data[$field];
+                        }
+                    }
+                }
+                
+                if (empty($updateFields)) {
+                    ob_clean();
+                    echo json_encode(['success' => false, 'message' => 'No fields to update']);
+                    exit;
+                }
+                
+                $updateFields[] = "updated_at = datetime('now')";
+                
+                $stmt = $db->prepare("
+                    UPDATE trips 
+                    SET " . implode(', ', $updateFields) . "
+                    WHERE id = ? AND user_id = ?
+                ");
+                
+                $updateValues[] = $id;
+                $updateValues[] = $user_id;
+                
+                $stmt->execute($updateValues);
+                
+                // Return updated trip
+                $stmt = $db->prepare("SELECT * FROM trips WHERE id = ?");
+                $stmt->execute([$id]);
+                $trip = $stmt->fetch(PDO::FETCH_ASSOC);
+                
                 ob_clean();
-                echo json_encode(['success' => false, 'message' => 'ID required']);
+                echo json_encode($trip);
+                exit;
+            } catch (Exception $e) {
+                ob_clean();
+                echo json_encode(['success' => false, 'message' => 'Failed to update trip: ' . $e->getMessage()]);
                 exit;
             }
-            
-            $data = json_decode(file_get_contents('php://input'), true);
-            
-            $stmt = $db->prepare("
-                UPDATE trips 
-                SET title = ?, location = ?, start_date = ?, end_date = ?, description = ?,
-                    trip_type = ?, distance = ?, distance_unit = ?, elevation_gain = ?, difficulty = ?,
-                    favorite = ?, completed = ?, updated_at = datetime('now')
-                WHERE id = ? AND user_id = ?
-            ");
-            
-            $stmt->execute([
-                $data['title'] ?? '',
-                $data['location'] ?? '',
-                $data['start_date'] ?? null,
-                $data['end_date'] ?? null,
-                $data['description'] ?? '',
-                $data['trip_type'] ?? null,
-                (float)($data['distance'] ?? 0),
-                $data['distance_unit'] ?? 'miles',
-                (float)($data['elevation_gain'] ?? 0),
-                $data['difficulty'] ?? null,
-                (int)($data['favorite'] ?? 0),
-                (int)($data['completed'] ?? 0),
-                $id,
-                $user_id
-            ]);
-            
-            // Return updated trip
-            $stmt = $db->prepare("SELECT * FROM trips WHERE id = ?");
-            $stmt->execute([$id]);
-            $trip = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            ob_clean();
-            echo json_encode($trip);
-            exit;
         }
         
         if ($method === 'DELETE') {
-            // Delete trip
-            if (!$id) {
+            try {
+                // Delete trip
+                if (!$id) {
+                    ob_clean();
+                    echo json_encode(['success' => false, 'message' => 'ID required']);
+                    exit;
+                }
+                
+                $stmt = $db->prepare("DELETE FROM trips WHERE id = ? AND user_id = ?");
+                $stmt->execute([$id, $user_id]);
+                
                 ob_clean();
-                echo json_encode(['success' => false, 'message' => 'ID required']);
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Trip deleted successfully'
+                ]);
+                exit;
+            } catch (Exception $e) {
+                ob_clean();
+                echo json_encode(['success' => false, 'message' => 'Failed to delete trip: ' . $e->getMessage()]);
                 exit;
             }
-            
-            $stmt = $db->prepare("DELETE FROM trips WHERE id = ? AND user_id = ?");
-            $stmt->execute([$id, $user_id]);
-            
-            ob_clean();
-            echo json_encode([
-                'success' => true,
-                'message' => 'Trip deleted successfully'
-            ]);
-            exit;
         }
     }
     
@@ -483,36 +618,151 @@ try {
                     
                     // Get items for this backpack
                     if ($pack) {
-                        $stmt = $db->prepare("SELECT * FROM backpack_gear WHERE backpack_id = ?");
+                        $stmt = $db->prepare("SELECT * FROM backpack_gear WHERE backpack_id = ? ORDER BY section, position");
                         $stmt->execute([$id]);
                         $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         if (defined('BTT_DEBUG') && BTT_DEBUG) error_log("AJAX Handler: Found " . count($items) . " items for backpack $id");
                         
+                        // Load saved sections metadata
+                        $savedSections = [];
+                        if (!empty($pack['sections'])) {
+                            $savedSections = json_decode($pack['sections'], true) ?: [];
+                        }
+                        
+                        // Create a map of saved section data by ID
+                        $sectionMap = [];
+                        foreach ($savedSections as $section) {
+                            $sectionMap[$section['id']] = $section;
+                        }
+                        
+                        // Default section data for fallback
+                        $defaultSectionNames = [
+                            'main' => 'Main Pack',
+                            'worn' => 'Worn Items',
+                            'consumables' => 'Consumables',
+                            'emergency' => 'Emergency Kit',
+                            'electronics' => 'Electronics',
+                            'cooking' => 'Cooking Gear',
+                            'shelter' => 'Shelter System'
+                        ];
+                        
+                        $defaultSectionIcons = [
+                            'main' => '🎒',
+                            'worn' => '👕',
+                            'consumables' => '🍎',
+                            'emergency' => '🚨',
+                            'electronics' => '📱',
+                            'cooking' => '🍳',
+                            'shelter' => '🏕️'
+                        ];
+                        
+                        $categoryIcons = [
+                            'shelter' => '🏕️',
+                            'sleep' => '🛏️',
+                            'clothing' => '👕',
+                            'cooking' => '🍳',
+                            'water' => '💧',
+                            'food' => '🍞',
+                            'navigation' => '🧭',
+                            'safety' => '🚨',
+                            'tools' => '🔧',
+                            'electronics' => '📱',
+                            'personal' => '🧴',
+                            'other' => '📦'
+                        ];
+                        
                         // Organize items into sections
                         $sections = [];
+                        
+                        // First, create all sections from saved metadata
+                        foreach ($savedSections as $section) {
+                            $sections[$section['id']] = [
+                                'id' => $section['id'],
+                                'name' => $section['name'],
+                                'icon' => $section['icon'],
+                                'items' => [],
+                                'collapsed' => $section['collapsed'] ?? false
+                            ];
+                        }
+                        
+                        // Then add items to sections
                         foreach ($items as $item) {
-                            $section = $item['section'] ?? 'main';
-                            if (!isset($sections[$section])) {
-                                $sections[$section] = [
-                                    'id' => $section,
-                                    'name' => ucfirst($section),
-                                    'items' => []
+                            $sectionId = $item['section'] ?? 'main';
+                            
+                            // If section doesn't exist in saved data, create it with defaults
+                            if (!isset($sections[$sectionId])) {
+                                $sections[$sectionId] = [
+                                    'id' => $sectionId,
+                                    'name' => isset($sectionMap[$sectionId]) ? $sectionMap[$sectionId]['name'] : ($defaultSectionNames[$sectionId] ?? ucfirst($sectionId)),
+                                    'icon' => isset($sectionMap[$sectionId]) ? $sectionMap[$sectionId]['icon'] : ($defaultSectionIcons[$sectionId] ?? '📦'),
+                                    'items' => [],
+                                    'collapsed' => isset($sectionMap[$sectionId]) ? $sectionMap[$sectionId]['collapsed'] : false
                                 ];
                             }
-                            $sections[$section]['items'][] = [
+                            $itemCategory = $item['custom_category'] ?? 'other';
+                            $sections[$sectionId]['items'][] = [
+                                'id' => $item['id'],
+                                'gear_id' => $item['gear_id'],
                                 'name' => $item['custom_name'] ?? 'Unknown',
                                 'weight_g' => $item['custom_weight'] ?? 0,
                                 'quantity' => $item['quantity'] ?? 1,
-                                'category' => $item['custom_category'] ?? 'other'
+                                'category' => $itemCategory,
+                                'icon' => $categoryIcons[$itemCategory] ?? '📦',
+                                'notes' => $item['notes'] ?? '',
+                                'worn' => (bool)($item['worn'] ?? false),
+                                'consumable' => (bool)($item['consumable'] ?? false)
                             ];
                         }
+                        
+                        // If no saved sections, ensure default sections exist
+                        if (empty($savedSections)) {
+                            if (!isset($sections['main'])) {
+                                $sections['main'] = [
+                                    'id' => 'main',
+                                    'name' => 'Main Pack',
+                                    'icon' => '🎒',
+                                    'items' => [],
+                                    'collapsed' => false
+                                ];
+                            }
+                            if (!isset($sections['worn'])) {
+                                $sections['worn'] = [
+                                    'id' => 'worn',
+                                    'name' => 'Worn Items',
+                                    'icon' => '👕',
+                                    'items' => [],
+                                    'collapsed' => false
+                                ];
+                            }
+                            if (!isset($sections['consumables'])) {
+                                $sections['consumables'] = [
+                                    'id' => 'consumables',
+                                    'name' => 'Consumables',
+                                    'icon' => '🍎',
+                                    'items' => [],
+                                    'collapsed' => false
+                                ];
+                            }
+                        }
+                        
                         $pack['sections'] = array_values($sections);
+                        $pack['items'] = $items; // Also include raw items for compatibility
                     } else {
                         if (defined('BTT_DEBUG') && BTT_DEBUG) error_log("AJAX Handler: Backpack $id not found for user $user_id");
                     }
                     
                     ob_clean();
-                    echo json_encode($pack ?: ['success' => false, 'message' => 'Backpack not found']);
+                    if ($pack) {
+                        echo json_encode([
+                            'success' => true,
+                            'data' => $pack
+                        ]);
+                    } else {
+                        echo json_encode([
+                            'success' => false,
+                            'message' => 'Backpack not found'
+                        ]);
+                    }
                     exit;
                 } else {
                     // Get all backpacks
@@ -550,9 +800,24 @@ try {
                     exit;
                 }
                 
+                // Save sections metadata as JSON
+                $sectionsJson = null;
+                if (isset($data['sections']) && is_array($data['sections'])) {
+                    $sectionsMetadata = [];
+                    foreach ($data['sections'] as $section) {
+                        $sectionsMetadata[] = [
+                            'id' => $section['id'],
+                            'name' => $section['name'] ?? 'Unnamed Section',
+                            'icon' => $section['icon'] ?? '📦',
+                            'collapsed' => $section['collapsed'] ?? false
+                        ];
+                    }
+                    $sectionsJson = json_encode($sectionsMetadata);
+                }
+                
                 $stmt = $db->prepare("
-                    INSERT INTO backpacks (user_id, name, description, capacity_l, weight_empty_g, type, created_at, updated_at) 
-                    VALUES (?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
+                    INSERT INTO backpacks (user_id, name, description, capacity_l, weight_empty_g, type, sections, created_at, updated_at) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
                 ");
                 
                 $stmt->execute([
@@ -561,34 +826,88 @@ try {
                     $data['description'] ?? '',
                     $data['capacity_l'] ?? 65,
                     $data['weight_empty_g'] ?? 0,
-                    $data['type'] ?? 'custom'
+                    $data['type'] ?? 'custom',
+                    $sectionsJson
                 ]);
                 
                 $packId = $db->lastInsertId();
                 
                 // Save sections and items if provided
                 if (isset($data['sections']) && is_array($data['sections'])) {
-                    foreach ($data['sections'] as $section) {
+                    $position = 0;
+                    foreach ($data['sections'] as $sectionIndex => $section) {
                         if (isset($section['items']) && is_array($section['items'])) {
-                            foreach ($section['items'] as $item) {
-                                $stmt = $db->prepare("
-                                    INSERT INTO backpack_gear 
-                                    (backpack_id, custom_name, custom_weight, custom_category, quantity, section, position) 
-                                    VALUES (?, ?, ?, ?, ?, ?, ?)
-                                ");
-                                $stmt->execute([
-                                    $packId,
-                                    $item['name'] ?? 'Unknown',
-                                    $item['weight_g'] ?? 0,
-                                    $item['category'] ?? 'other',
-                                    $item['quantity'] ?? 1,
-                                    $section['id'] ?? 'main',
-                                    0
-                                ]);
+                            foreach ($section['items'] as $itemIndex => $item) {
+                                // Check if we need to add missing columns
+                                try {
+                                    $stmt = $db->prepare("
+                                        INSERT INTO backpack_gear 
+                                        (backpack_id, gear_id, custom_name, custom_weight, custom_category, quantity, section, position, custom_notes, worn, consumable) 
+                                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                                    ");
+                                    $stmt->execute([
+                                        $packId,
+                                        (isset($item['is_custom']) && $item['is_custom']) ? null : ($item['gear_id'] ?? null),
+                                        $item['name'] ?? 'Unknown',
+                                        $item['weight_g'] ?? 0,
+                                        $item['category'] ?? 'other',
+                                        $item['quantity'] ?? 1,
+                                        $section['id'] ?? 'main',
+                                        $position++,
+                                        $item['custom_notes'] ?? '',
+                                        isset($item['worn']) && $item['worn'] ? 1 : 0,
+                                        isset($item['consumable']) && $item['consumable'] ? 1 : 0
+                                    ]);
+                                } catch (PDOException $e) {
+                                    // If columns are missing, try without them
+                                    $stmt = $db->prepare("
+                                        INSERT INTO backpack_gear 
+                                        (backpack_id, custom_name, custom_weight, custom_category, quantity, section, position) 
+                                        VALUES (?, ?, ?, ?, ?, ?, ?)
+                                    ");
+                                    $stmt->execute([
+                                        $packId,
+                                        $item['name'] ?? 'Unknown',
+                                        $item['weight_g'] ?? 0,
+                                        $item['category'] ?? 'other',
+                                        $item['quantity'] ?? 1,
+                                        $section['id'] ?? 'main',
+                                        $position++
+                                    ]);
+                                }
                             }
                         }
                     }
                 }
+                
+                // Get stats for the created pack
+                $stmt = $db->prepare("
+                    SELECT SUM(custom_weight * quantity) as total_weight, COUNT(*) as item_count, SUM(quantity) as total_quantity
+                    FROM backpack_gear 
+                    WHERE backpack_id = ?
+                ");
+                $stmt->execute([$packId]);
+                $packStats = $stmt->fetch(PDO::FETCH_ASSOC);
+                
+                // Get detailed section counts
+                $stmt = $db->prepare("
+                    SELECT section, COUNT(*) as item_types, SUM(quantity) as total_quantity
+                    FROM backpack_gear 
+                    WHERE backpack_id = ?
+                    GROUP BY section
+                    ORDER BY section
+                ");
+                $stmt->execute([$packId]);
+                $sectionStats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                
+                // Check for achievements
+                $achievementContext = [
+                    'action' => 'backpack_created',
+                    'pack_id' => $packId,
+                    'pack_weight' => $packStats['total_weight'] / 1000,
+                    'item_count' => $packStats['item_count']
+                ];
+                $earnedAchievements = check_achievements_safe($user_id, $achievementContext, $db);
                 
                 // Return created pack
                 $stmt = $db->prepare("SELECT * FROM backpacks WHERE id = ?");
@@ -599,7 +918,14 @@ try {
                 echo json_encode([
                     'success' => true,
                     'data' => $pack,
-                    'message' => 'Backpack created successfully'
+                    'message' => 'Backpack created successfully',
+                    'stats' => [
+                        'total_items' => (int)$packStats['item_count'],
+                        'total_quantity' => (int)$packStats['total_quantity'],
+                        'total_weight' => (float)$packStats['total_weight'],
+                        'sections' => $sectionStats
+                    ],
+                    'achievements' => $earnedAchievements
                 ]);
                 exit;
                 break;
@@ -613,15 +939,31 @@ try {
                 
                 $data = json_decode(file_get_contents('php://input'), true);
                 
+                // Save sections metadata as JSON
+                $sectionsJson = null;
+                if (isset($data['sections']) && is_array($data['sections'])) {
+                    $sectionsMetadata = [];
+                    foreach ($data['sections'] as $section) {
+                        $sectionsMetadata[] = [
+                            'id' => $section['id'],
+                            'name' => $section['name'] ?? 'Unnamed Section',
+                            'icon' => $section['icon'] ?? '📦',
+                            'collapsed' => $section['collapsed'] ?? false
+                        ];
+                    }
+                    $sectionsJson = json_encode($sectionsMetadata);
+                }
+                
                 $stmt = $db->prepare("
                     UPDATE backpacks 
-                    SET name = ?, description = ?, updated_at = datetime('now')
+                    SET name = ?, description = ?, sections = ?, updated_at = datetime('now')
                     WHERE id = ? AND user_id = ?
                 ");
                 
                 $stmt->execute([
                     $data['name'] ?? '',
                     $data['description'] ?? '',
+                    $sectionsJson,
                     $id,
                     $user_id
                 ]);
@@ -631,27 +973,80 @@ try {
                 
                 // Save new items
                 if (isset($data['sections']) && is_array($data['sections'])) {
-                    foreach ($data['sections'] as $section) {
+                    $position = 0;
+                    foreach ($data['sections'] as $sectionIndex => $section) {
                         if (isset($section['items']) && is_array($section['items'])) {
-                            foreach ($section['items'] as $item) {
-                                $stmt = $db->prepare("
-                                    INSERT INTO backpack_gear 
-                                    (backpack_id, custom_name, custom_weight, custom_category, quantity, section, position) 
-                                    VALUES (?, ?, ?, ?, ?, ?, ?)
-                                ");
-                                $stmt->execute([
-                                    $id,
-                                    $item['name'] ?? 'Unknown',
-                                    $item['weight_g'] ?? 0,
-                                    $item['category'] ?? 'other',
-                                    $item['quantity'] ?? 1,
-                                    $section['id'] ?? 'main',
-                                    0
-                                ]);
+                            foreach ($section['items'] as $itemIndex => $item) {
+                                try {
+                                    // Try with all columns first
+                                    $stmt = $db->prepare("
+                                        INSERT INTO backpack_gear 
+                                        (backpack_id, gear_id, custom_name, custom_weight, custom_category, quantity, section, position, custom_notes, worn, consumable) 
+                                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                                    ");
+                                    $stmt->execute([
+                                        $id,
+                                        (isset($item['is_custom']) && $item['is_custom']) ? null : ($item['gear_id'] ?? null),
+                                        $item['name'] ?? 'Unknown',
+                                        $item['weight_g'] ?? 0,
+                                        $item['category'] ?? 'other',
+                                        $item['quantity'] ?? 1,
+                                        $section['id'] ?? 'main',
+                                        $position++,
+                                        $item['custom_notes'] ?? '',
+                                        isset($item['worn']) && $item['worn'] ? 1 : 0,
+                                        isset($item['consumable']) && $item['consumable'] ? 1 : 0
+                                    ]);
+                                } catch (PDOException $e) {
+                                    // Fallback if columns don't exist
+                                    $stmt = $db->prepare("
+                                        INSERT INTO backpack_gear 
+                                        (backpack_id, gear_id, custom_name, custom_weight, custom_category, quantity, section, position) 
+                                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                                    ");
+                                    $stmt->execute([
+                                        $id,
+                                        (isset($item['is_custom']) && $item['is_custom']) ? null : ($item['gear_id'] ?? null),
+                                        $item['name'] ?? 'Unknown',
+                                        $item['weight_g'] ?? 0,
+                                        $item['category'] ?? 'other',
+                                        $item['quantity'] ?? 1,
+                                        $section['id'] ?? 'main',
+                                        $position++
+                                    ]);
+                                }
                             }
                         }
                     }
                 }
+                
+                // Calculate pack weight and check achievements
+                $stmt = $db->prepare("
+                    SELECT SUM(custom_weight * quantity) as total_weight, COUNT(*) as item_count, SUM(quantity) as total_quantity
+                    FROM backpack_gear 
+                    WHERE backpack_id = ?
+                ");
+                $stmt->execute([$id]);
+                $packStats = $stmt->fetch(PDO::FETCH_ASSOC);
+                
+                // Get detailed section counts for confirmation
+                $stmt = $db->prepare("
+                    SELECT section, COUNT(*) as item_types, SUM(quantity) as total_quantity
+                    FROM backpack_gear 
+                    WHERE backpack_id = ?
+                    GROUP BY section
+                    ORDER BY section
+                ");
+                $stmt->execute([$id]);
+                $sectionStats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                
+                $achievementContext = [
+                    'action' => 'pack_updated',
+                    'pack_id' => $id,
+                    'pack_weight' => $packStats['total_weight'] / 1000, // Convert to kg
+                    'item_count' => $packStats['item_count']
+                ];
+                $earnedAchievements = check_achievements_safe($user_id, $achievementContext, $db);
                 
                 // Return updated pack
                 $stmt = $db->prepare("SELECT * FROM backpacks WHERE id = ?");
@@ -662,7 +1057,14 @@ try {
                 echo json_encode([
                     'success' => true,
                     'data' => $pack,
-                    'message' => 'Backpack updated successfully'
+                    'message' => 'Backpack updated successfully',
+                    'stats' => [
+                        'total_items' => (int)$packStats['item_count'],
+                        'total_quantity' => (int)$packStats['total_quantity'],
+                        'total_weight' => (float)$packStats['total_weight'],
+                        'sections' => $sectionStats
+                    ],
+                    'achievements' => $earnedAchievements
                 ]);
                 exit;
                 break;
@@ -687,6 +1089,82 @@ try {
                 ]);
                 exit;
                 break;
+        }
+    }
+    
+    // Handle individual backpack gear items
+    if ($route === 'backpack-gear') {
+        if ($method === 'POST') {
+            // Add item to backpack
+            $backpack_id = $_POST['backpack_id'] ?? null;
+            $custom_name = $_POST['custom_name'] ?? '';
+            $custom_weight = intval($_POST['custom_weight'] ?? 0);
+            $custom_category = $_POST['custom_category'] ?? 'other';
+            $quantity = intval($_POST['quantity'] ?? 1);
+            $section = $_POST['section'] ?? 'main';
+            $gear_id = $_POST['gear_id'] ?? null;
+            $notes = $_POST['notes'] ?? '';
+            
+            if (!$backpack_id || !$custom_name) {
+                ob_clean();
+                echo json_encode(['success' => false, 'message' => 'Missing required fields']);
+                exit;
+            }
+            
+            // Verify backpack belongs to user
+            $stmt = $db->prepare("SELECT id FROM backpacks WHERE id = ? AND user_id = ?");
+            $stmt->execute([$backpack_id, $user_id]);
+            if (!$stmt->fetch()) {
+                ob_clean();
+                echo json_encode(['success' => false, 'message' => 'Backpack not found']);
+                exit;
+            }
+            
+            // Insert item
+            $stmt = $db->prepare("
+                INSERT INTO backpack_gear (backpack_id, custom_name, custom_weight, custom_category, quantity, section, gear_id, custom_notes) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            ");
+            $stmt->execute([$backpack_id, $custom_name, $custom_weight, $custom_category, $quantity, $section, $gear_id, $notes ?? '']);
+            
+            // Update backpack's updated_at timestamp
+            $stmt = $db->prepare("UPDATE backpacks SET updated_at = CURRENT_TIMESTAMP WHERE id = ?");
+            $stmt->execute([$backpack_id]);
+            
+            ob_clean();
+            echo json_encode(['success' => true, 'item_id' => $db->lastInsertId()]);
+            exit;
+            
+        } elseif ($method === 'DELETE') {
+            // Remove item from backpack
+            $item_id = $_GET['item_id'] ?? null;
+            $backpack_id = $_GET['backpack_id'] ?? null;
+            
+            if (!$item_id || !$backpack_id) {
+                ob_clean();
+                echo json_encode(['success' => false, 'message' => 'Missing item_id or backpack_id']);
+                exit;
+            }
+            
+            // Verify backpack belongs to user and item exists
+            $stmt = $db->prepare("
+                DELETE FROM backpack_gear 
+                WHERE id = ? AND backpack_id IN (SELECT id FROM backpacks WHERE id = ? AND user_id = ?)
+            ");
+            $stmt->execute([$item_id, $backpack_id, $user_id]);
+            
+            if ($stmt->rowCount() > 0) {
+                // Update backpack's updated_at timestamp
+                $stmt = $db->prepare("UPDATE backpacks SET updated_at = CURRENT_TIMESTAMP WHERE id = ?");
+                $stmt->execute([$backpack_id]);
+                
+                ob_clean();
+                echo json_encode(['success' => true]);
+            } else {
+                ob_clean();
+                echo json_encode(['success' => false, 'message' => 'Item not found']);
+            }
+            exit;
         }
     }
     

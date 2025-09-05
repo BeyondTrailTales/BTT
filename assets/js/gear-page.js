@@ -24,11 +24,16 @@
         state: {
             items: [],
             filteredItems: [],
+            customItems: [],
+            defaultItems: [],
             filters: {
                 search: '',
                 category: '',
                 tags: []
             },
+            currentTab: 'all',
+            viewMode: 'grid',
+            displayDensity: 'comfortable',
             sort: {
                 field: 'name',
                 direction: 'asc'
@@ -46,13 +51,54 @@
         },
 
         /**
-         * Initialize the gear manager
+         * Initialize the gear manager with modern compatibility
          */
         init: function() {
             console.log('GearManager.init() called');
+            
+            // Initialize compatibility layer if available
+            if (window.BTTCompat) {
+                window.BTTCompat.initializeElement(document.body);
+            }
+            
+            // Connect to state manager if available
+            if (window.BTTState) {
+                this.initStateConnections();
+            }
+            
             this.bindEvents();
             this.restoreUserPreferences();
             this.loadGear();
+        },
+
+        /**
+         * Initialize connections to centralized state manager
+         */
+        initStateConnections: function() {
+            // Subscribe to gear data changes
+            this.unsubscribeGearData = window.BTTState.subscribe('data.gear', (newGear, oldGear) => {
+                if (newGear && Array.isArray(newGear)) {
+                    this.state.items = newGear;
+                    this.state.customItems = newGear.filter(item => !item.is_default);
+                    this.state.defaultItems = newGear.filter(item => item.is_default);
+                    this.updateTabCounts();
+                    this.filterAndRender();
+                }
+            });
+            
+            // Subscribe to gear filters
+            this.unsubscribeFilters = window.BTTState.subscribe('filters.gear', (newFilters) => {
+                if (newFilters) {
+                    this.state.filters = { ...this.state.filters, ...newFilters };
+                    this.filterAndRender();
+                }
+            });
+            
+            // Subscribe to loading state
+            this.unsubscribeLoading = window.BTTState.subscribe('ui.loading', (loading) => {
+                this.state.isLoading = loading;
+                this.renderItems();
+            });
         },
 
         /**
@@ -66,9 +112,9 @@
                 self.showAddModal();
             });
 
-            // Search with debounce
+            // Search with debounce - use the main search bar
             let searchTimeout;
-            $('#gear-search').on('input', function() {
+            $('#gear-search-main').on('input', function() {
                 clearTimeout(searchTimeout);
                 const value = $(this).val();
                 searchTimeout = setTimeout(function() {
@@ -77,9 +123,38 @@
                 }, self.config.debounceDelay);
             });
 
-            // Category filter
-            $('#category-filter').on('change', function() {
-                self.state.filters.category = $(this).val();
+            // Tab switching
+            $('.gear-tab').on('click', function() {
+                const tab = $(this).data('tab');
+                
+                // Remove active class from all tabs
+                $('.gear-tab').removeClass('active').attr('aria-selected', 'false');
+                // Add active class to clicked tab
+                $(this).addClass('active').attr('aria-selected', 'true');
+                
+                // Update current tab
+                self.state.currentTab = tab;
+                
+                // Filter and render based on new tab
+                self.filterAndRender();
+            });
+
+            // Filter chip buttons
+            $('.filter-chip').on('click', function() {
+                const category = $(this).data('category');
+                
+                // Remove active class from all chips
+                $('.filter-chip').removeClass('active');
+                // Add active class to clicked chip
+                $(this).addClass('active');
+                
+                // Set filter based on category
+                if (category === 'all') {
+                    self.state.filters.category = '';
+                } else {
+                    self.state.filters.category = category;
+                }
+                
                 self.filterAndRender();
             });
 
@@ -94,10 +169,35 @@
                     self.state.sort = { field: 'category', direction: 'asc' };
                 } else if (value === 'recent') {
                     self.state.sort = { field: 'created_at', direction: 'desc' };
+                } else if (value === 'essential') {
+                    self.state.sort = { field: 'essential', direction: 'desc' };
                 } else {
                     self.state.sort = { field: 'name', direction: 'asc' };
                 }
                 self.filterAndRender();
+            });
+
+            // View mode buttons
+            $('.view-mode-btn').on('click', function() {
+                const viewMode = $(this).data('view');
+                
+                // Remove active class from all view buttons
+                $('.view-mode-btn').removeClass('active');
+                // Add active class to clicked button
+                $(this).addClass('active');
+                
+                // Update view mode
+                self.state.viewMode = viewMode;
+                localStorage.setItem('gear-view-mode', viewMode);
+                
+                self.applyViewMode();
+            });
+
+            // Density selector
+            $('#density-select').on('change', function() {
+                self.state.displayDensity = $(this).val();
+                localStorage.setItem('gear-display-density', self.state.displayDensity);
+                self.applyDisplayDensity();
             });
 
             // Weight unit toggle
@@ -128,6 +228,27 @@
 
             // Focus trap for modals
             this.setupFocusTrap();
+            
+            // Keyboard navigation for tabs
+            $('.gear-tab').on('keydown', function(e) {
+                if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    const tabs = $('.gear-tab');
+                    const currentIndex = tabs.index(this);
+                    let nextIndex;
+                    
+                    if (e.key === 'ArrowRight') {
+                        nextIndex = (currentIndex + 1) % tabs.length;
+                    } else {
+                        nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+                    }
+                    
+                    tabs.eq(nextIndex).focus().click();
+                } else if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    $(this).click();
+                }
+            });
         },
 
         /**
@@ -165,6 +286,19 @@
                 this.state.weightUnit = savedUnit;
                 $('#weight-unit').val(savedUnit);
             }
+            
+            const savedViewMode = localStorage.getItem('gear-view-mode');
+            if (savedViewMode) {
+                this.state.viewMode = savedViewMode;
+                $('.view-mode-btn').removeClass('active');
+                $(`.view-mode-btn[data-view="${savedViewMode}"]`).addClass('active');
+            }
+            
+            const savedDensity = localStorage.getItem('gear-display-density');
+            if (savedDensity) {
+                this.state.displayDensity = savedDensity;
+                $('#density-select').val(savedDensity);
+            }
         },
 
         /**
@@ -176,20 +310,38 @@
             self.setLoading(true);
 
             $.ajax({
-                url: self.config.apiUrl + '/?route=gear',
+                url: self.config.apiUrl + '?route=gear',
                 method: 'GET',
                 dataType: 'json',
-                headers: {
-                    'X-CSRF-Token': self.config.csrfToken
-                },
                 success: function(response) {
-                    console.log('API Response:', response);
-                    if (response && response.success && response.data) {
-                        self.state.items = response.data.items || [];
-                        console.log('Loaded', self.state.items.length, 'items');
+                    console.log('Gear API Response:', response);
+                    // AJAX handler returns the items directly from the gear endpoint
+                    if (Array.isArray(response)) {
+                        self.state.items = response;
+                        
+                        // Separate custom and default items
+                        self.state.customItems = response.filter(item => !item.is_default);
+                        self.state.defaultItems = response.filter(item => item.is_default);
+                        
+                        console.log('Loaded', self.state.items.length, 'total items');
+                        console.log('Custom:', self.state.customItems.length, 'Default:', self.state.defaultItems.length);
+                        
+                        self.updateTabCounts();
+                        self.filterAndRender();
+                    } else if (response && response.success && response.data && response.data.items) {
+                        self.state.items = response.data.items;
+                        
+                        // Separate custom and default items
+                        self.state.customItems = response.data.items.filter(item => !item.is_default);
+                        self.state.defaultItems = response.data.items.filter(item => item.is_default);
+                        
+                        console.log('Loaded', self.state.items.length, 'total items');
+                        console.log('Custom:', self.state.customItems.length, 'Default:', self.state.defaultItems.length);
+                        
+                        self.updateTabCounts();
                         self.filterAndRender();
                     } else {
-                        console.error('Invalid response format:', response);
+                        console.error('Invalid gear response format:', response);
                         self.showError('Failed to load gear items');
                         self.setLoading(false);
                     }
@@ -210,7 +362,17 @@
          * Filter items and render
          */
         filterAndRender: function() {
-            let filtered = [...this.state.items];
+            // Start with items based on current tab
+            let filtered = [];
+            
+            if (this.state.currentTab === 'custom') {
+                filtered = [...this.state.customItems];
+            } else if (this.state.currentTab === 'default') {
+                filtered = [...this.state.defaultItems];
+            } else {
+                // 'all' tab shows everything
+                filtered = [...this.state.items];
+            }
 
             // Apply search filter
             if (this.state.filters.search) {
@@ -228,9 +390,20 @@
 
             // Apply category filter
             if (this.state.filters.category) {
-                filtered = filtered.filter(item => 
-                    item.category === this.state.filters.category
-                );
+                const category = this.state.filters.category;
+                
+                if (category === 'favorites') {
+                    // Filter for favorited items (if we have a favorite field)
+                    filtered = filtered.filter(item => item.is_favorite);
+                } else if (category === 'ultralight') {
+                    // Filter for ultralight items (under 100g typically)
+                    filtered = filtered.filter(item => (item.weight_g || 0) <= 100);
+                } else {
+                    // Normal category filter
+                    filtered = filtered.filter(item => 
+                        item.category === category
+                    );
+                }
             }
 
             // Apply sorting
@@ -242,6 +415,20 @@
                     compareValue = (a[field] || 0) - (b[field] || 0);
                 } else if (field === 'created_at') {
                     compareValue = new Date(b[field] || 0) - new Date(a[field] || 0);
+                } else if (field === 'essential') {
+                    // Define essential categories
+                    const essentialCategories = ['shelter', 'sleep', 'water', 'first-aid', 'navigation'];
+                    const aEssential = essentialCategories.includes(a.category);
+                    const bEssential = essentialCategories.includes(b.category);
+                    
+                    if (aEssential && !bEssential) return -1;
+                    if (!aEssential && bEssential) return 1;
+                    
+                    // If both essential or both non-essential, sort by category then name
+                    compareValue = (a.category || '').localeCompare(b.category || '');
+                    if (compareValue === 0) {
+                        compareValue = (a.name || '').localeCompare(b.name || '');
+                    }
                 } else {
                     compareValue = (a[field] || '').toString()
                         .localeCompare((b[field] || '').toString());
@@ -300,6 +487,9 @@
             
             $('#gear-grid').html(itemsHtml).show();
 
+            // Apply current view mode and density
+            this.applyViewMode();
+            
             // Bind item-specific events
             this.bindItemEvents();
         },
@@ -316,17 +506,19 @@
             
             const categoryIcon = this.getCategoryIcon(item.category);
             const isDefault = item.is_default || false;
+            const isCustom = item.is_custom || false;
 
             return `
-                <div class="gear-card ${isDefault ? 'default-item' : ''}" data-item-id="${item.id}">
+                <div class="gear-card ${isDefault ? 'default-item' : ''} ${isCustom ? 'custom-item' : ''}" data-item-id="${item.id}" data-category="${item.category || 'other'}">
                     <div class="gear-card-header">
                         <span class="gear-icon" aria-hidden="true">${categoryIcon}</span>
                         <h3 class="gear-name">${this.escapeHtml(item.name)}</h3>
-                        ${isDefault ? '<span class="gear-badge">Default</span>' : ''}
+                        ${isDefault ? '<span class="gear-badge default-badge">📚 Default</span>' : ''}
+                        ${isCustom ? '<span class="gear-badge custom-badge">🎒 My Gear</span>' : ''}
                     </div>
                     <div class="gear-card-body">
                         <div class="gear-meta">
-                            <span class="gear-category">${this.formatCategory(item.category)}</span>
+                            <span class="gear-category gear-category-badge ${item.category || 'other'}">${this.formatCategory(item.category)}</span>
                             <span class="gear-weight">${weightDisplay}</span>
                         </div>
                         ${tags ? `<div class="gear-tags">${tags}</div>` : ''}
@@ -382,17 +574,37 @@
         },
 
         /**
+         * Update tab count badges
+         */
+        updateTabCounts: function() {
+            $('#all-count').text(this.state.items.length);
+            $('#custom-count').text(this.state.customItems.length);
+            $('#default-count').text(this.state.defaultItems.length);
+        },
+
+        /**
          * Update result count display
          */
         updateResultCount: function() {
             const count = this.state.filteredItems.length;
-            const total = this.state.items.length;
+            let total = this.state.items.length;
+            
+            // Adjust total based on current tab
+            if (this.state.currentTab === 'custom') {
+                total = this.state.customItems.length;
+            } else if (this.state.currentTab === 'default') {
+                total = this.state.defaultItems.length;
+            }
+            
             let message = '';
-
+            
             if (this.state.filters.search || this.state.filters.category) {
                 message = `Showing ${count} of ${total} items`;
             } else {
-                message = `${count} item${count !== 1 ? 's' : ''} total`;
+                const tabName = this.state.currentTab === 'custom' ? 'custom' : 
+                               this.state.currentTab === 'default' ? 'default' : '';
+                const tabSuffix = tabName ? ` ${tabName}` : '';
+                message = `${count}${tabSuffix} item${count !== 1 ? 's' : ''} total`;
             }
 
             $('#result-count').text(message);
@@ -525,12 +737,12 @@
                 notes: $('#gear-notes').val().trim()
             };
 
-            // Determine URL and method
-            let url = self.config.apiUrl + '/?route=gear';
+            // Determine URL and method for AJAX handler
+            let url = self.config.apiUrl + '?route=gear';
             let method = 'POST';
             
             if (isEdit) {
-                url += '/' + this.state.currentEditItem.id;
+                url += '&id=' + this.state.currentEditItem.id;
                 method = 'PUT';
             }
 
@@ -540,9 +752,6 @@
                 method: method,
                 data: JSON.stringify(formData),
                 contentType: 'application/json',
-                headers: {
-                    'X-CSRF-Token': self.config.csrfToken
-                },
                 success: function(response) {
                     if (response.success) {
                         self.closeModal();
@@ -608,11 +817,8 @@
             if (!this.deleteItemId) return;
 
             $.ajax({
-                url: self.config.apiUrl + '/?route=gear/' + this.deleteItemId,
+                url: self.config.apiUrl + '?route=gear&id=' + this.deleteItemId,
                 method: 'DELETE',
-                headers: {
-                    'X-CSRF-Token': self.config.csrfToken
-                },
                 success: function(response) {
                     if (response.success) {
                         self.closeDeleteModal();
@@ -639,10 +845,57 @@
                 tags: []
             };
             
-            $('#gear-search').val('');
-            $('#category-filter').val('');
+            $('#gear-search-main').val('');
+            $('.filter-chip').removeClass('active');
+            $('.filter-chip[data-category="all"]').addClass('active');
             
             this.filterAndRender();
+        },
+
+        /**
+         * Switch to a specific tab
+         */
+        switchToTab: function(tabName) {
+            $('.gear-tab').removeClass('active').attr('aria-selected', 'false');
+            $(`.gear-tab[data-tab="${tabName}"]`).addClass('active').attr('aria-selected', 'true');
+            this.state.currentTab = tabName;
+            this.filterAndRender();
+        },
+
+        /**
+         * Apply view mode to gear grid
+         */
+        applyViewMode: function() {
+            const $grid = $('#gear-grid');
+            
+            // Remove all view mode classes
+            $grid.removeClass('list-view compact ultra-compact');
+            
+            if (this.state.viewMode === 'list') {
+                $grid.addClass('list-view');
+            } else {
+                // Apply density for grid views
+                this.applyDisplayDensity();
+            }
+        },
+
+        /**
+         * Apply display density to gear grid
+         */
+        applyDisplayDensity: function() {
+            const $grid = $('#gear-grid');
+            
+            // Remove density classes
+            $grid.removeClass('compact ultra-compact');
+            
+            // Only apply density to grid views (not list view)
+            if (this.state.viewMode !== 'list') {
+                if (this.state.displayDensity === 'compact') {
+                    $grid.addClass('compact');
+                } else if (this.state.displayDensity === 'ultra-compact') {
+                    $grid.addClass('ultra-compact');
+                }
+            }
         },
 
         /**
@@ -693,15 +946,19 @@
             const icons = {
                 'shelter': '⛺',
                 'sleep': '🛌',
-                'cooking': '🍳',
-                'clothing': '👕',
-                'navigation': '🧭',
-                'hygiene': '🧼',
-                'first-aid': '🏥',
-                'electronics': '📱',
+                'cooking': '🔥',
                 'water': '💧',
+                'clothing': '👕',
+                'footwear': '🥾',
+                'rain-gear': '🌧️',
+                'navigation': '🧭',
+                'first-aid': '🏥',
+                'emergency': '🚨',
+                'electronics': '📱',
+                'tools': '🔧',
+                'repair': '🛠️',
+                'hygiene': '🧼',
                 'food-storage': '🥫',
-                'repair': '🔧',
                 'other': '📦'
             };
             
@@ -759,19 +1016,38 @@
         },
 
         /**
-         * Show toast notification
+         * Show toast notification with modern compatibility
          */
         showToast: function(message, type) {
+            // Use unified toast system if available
+            if (window.BTTUtils && window.BTTUtils.showToast) {
+                window.BTTUtils.showToast(message, type);
+                return;
+            }
+            
+            // Use compatibility layer if available
+            if (window.BTTCompat && window.BTTCompat.showToast) {
+                window.BTTCompat.showToast(message, type);
+                return;
+            }
+            
+            // Fallback to legacy implementation
             const toastId = 'toast-' + Date.now();
             const toastHtml = `
-                <div id="${toastId}" class="toast toast-${type}" role="alert" aria-live="polite">
+                <div id="${toastId}" class="toast modern-toast toast-${type}" role="alert" aria-live="polite">
                     <span class="toast-icon">${type === 'success' ? '✓' : '⚠️'}</span>
                     <span class="toast-message">${this.escapeHtml(message)}</span>
                     <button class="toast-close" aria-label="Close notification">×</button>
                 </div>
             `;
             
-            $('#toast-container').append(toastHtml);
+            const container = $('#toast-container, #modern-toast-container').first();
+            if (container.length === 0) {
+                $('body').append('<div id="toast-container" class="toast-container modern-toast-container" aria-live="polite"></div>');
+                container = $('#toast-container');
+            }
+            
+            container.append(toastHtml);
             
             const $toast = $('#' + toastId);
             
@@ -789,9 +1065,9 @@
                 });
             }, 5000);
             
-            // Animate in
+            // Animate in with modern classes
             setTimeout(function() {
-                $toast.addClass('toast-show');
+                $toast.addClass('toast-show modern-toast-show');
             }, 10);
         }
     };

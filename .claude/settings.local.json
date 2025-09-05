@@ -44,7 +44,21 @@
       "Bash(npm run type-check:*)",
       "Bash(npm run:*)",
       "Bash(npx tsc:*)",
-      "Bash(ren:*)"
+      "Bash(ren:*)",
+      "Bash(rg:*)",
+      "Bash(start http://localhost/BTT/backpacks)",
+      "Bash(git -C ../BTT_BACKUP_20250905_102216 status)",
+      "Bash(git -C ../BTT_BACKUP_20250905_102216 add .)",
+      "Bash(git -C ../BTT_BACKUP_20250905_102216 commit -m \"$(cat <<''EOF''\nComplete BTT Project Backup - $(date +%Y-%m-%d_%H:%M:%S)\n\nFull backup of Backpacking Trip Tracker project including:\n- All source code and assets\n- Complete Git history and branches\n- Database files and logs\n- Test files and documentation\n- Configuration files\n\nThis backup represents the complete state of the project at backup time.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git -C ../BTT_BACKUP_20250905_102216 log --oneline -5)",
+      "Bash(sqlite3:*)",
+      "Bash(gh repo create:*)",
+      "Bash(git push:*)",
+      "Bash(git remote:*)",
+      "Bash(git remote add:*)",
+      "Bash(powershell Compress-Archive:*)",
+      "Bash(powershell:*)",
+      "Bash(dir:*)"
     ],
     "deny": []
   }

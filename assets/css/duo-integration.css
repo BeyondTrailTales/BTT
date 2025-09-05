@@ -1,0 +1,397 @@
+/**
+ * BeyondTrailTales - Duolingo Theme Integration
+ * Seamlessly integrates Duolingo styling with existing forest theme
+ * 
+ * @version 1.0.0
+ */
+
+/* ===========================================
+   THEME INTEGRATION VARIABLES
+   =========================================== */
+
+:root {
+  /* Extend existing forest theme with Duolingo elements */
+  --duo-primary: #58cc02;
+  --duo-accent: #ffc800;
+  --duo-success: #00d084;
+  --duo-shadow-button: 0 4px 0 #4caf50;
+  --duo-transition-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --duo-font-family: 'Nunito', var(--font-sans, sans-serif);
+}
+
+/* ===========================================
+   BODY THEME ACTIVATION
+   =========================================== */
+
+/* Apply Duolingo theme when class is present */
+body.duo-theme {
+  font-family: var(--duo-font-family);
+}
+
+/* ===========================================
+   ENHANCED EXISTING BUTTONS
+   =========================================== */
+
+/* Enhance existing btn-primary with Duolingo style */
+body.duo-theme .btn-primary,
+body.duo-theme .btn.btn-primary {
+  background: linear-gradient(180deg, var(--duo-primary) 0%, #4caf50 100%);
+  border: none;
+  box-shadow: var(--duo-shadow-button);
+  font-weight: 700;
+  transition: all 0.2s var(--duo-transition-bounce);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+body.duo-theme .btn-primary:hover,
+body.duo-theme .btn.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #4caf50;
+  background: linear-gradient(180deg, #6dd604 0%, var(--duo-primary) 100%);
+}
+
+body.duo-theme .btn-primary:active,
+body.duo-theme .btn.btn-primary:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 #4caf50;
+}
+
+/* Enhance secondary buttons */
+body.duo-theme .btn-secondary,
+body.duo-theme .btn.btn-secondary {
+  background: white;
+  color: var(--duo-primary);
+  border: 2px solid var(--duo-primary);
+  font-weight: 600;
+  transition: all 0.2s var(--duo-transition-bounce);
+}
+
+body.duo-theme .btn-secondary:hover,
+body.duo-theme .btn.btn-secondary:hover {
+  background: var(--duo-primary);
+  color: white;
+  transform: translateY(-1px);
+}
+
+/* ===========================================
+   ENHANCED EXISTING CARDS
+   =========================================== */
+
+/* Enhance existing cards with Duolingo flair */
+body.duo-theme .card,
+body.duo-theme .forest-card {
+  border: 2px solid rgba(88, 204, 2, 0.1);
+  transition: all 0.3s var(--duo-transition-bounce);
+  position: relative;
+  overflow: hidden;
+}
+
+body.duo-theme .card::before,
+body.duo-theme .forest-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--duo-primary) 0%, var(--duo-accent) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+body.duo-theme .card:hover,
+body.duo-theme .forest-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(88, 204, 2, 0.3);
+  box-shadow: 0 8px 24px rgba(88, 204, 2, 0.2);
+}
+
+body.duo-theme .card:hover::before,
+body.duo-theme .forest-card:hover::before {
+  opacity: 1;
+}
+
+/* ===========================================
+   ENHANCED EXISTING NAVIGATION
+   =========================================== */
+
+/* Enhance existing nav with Duolingo style */
+body.duo-theme .unified-nav {
+  background: linear-gradient(135deg, var(--duo-primary) 0%, #4caf50 100%);
+  border-bottom: 3px solid #4caf50;
+  box-shadow: 0 4px 12px rgba(88, 204, 2, 0.3);
+}
+
+body.duo-theme .nav-link:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  color: var(--duo-accent);
+  border-radius: 25px;
+}
+
+body.duo-theme .nav-link.active {
+  background: var(--duo-accent);
+  color: var(--duo-primary);
+  font-weight: 700;
+  border-radius: 25px;
+  box-shadow: 0 4px 0 #e6b800;
+}
+
+/* ===========================================
+   ENHANCED FORM ELEMENTS
+   =========================================== */
+
+/* Enhance existing form inputs */
+body.duo-theme input[type="text"],
+body.duo-theme input[type="email"],
+body.duo-theme input[type="password"],
+body.duo-theme input[type="number"],
+body.duo-theme textarea,
+body.duo-theme select {
+  border: 2px solid #e0e7e0;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-family: var(--duo-font-family);
+  font-weight: 500;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+body.duo-theme input[type="text"]:focus,
+body.duo-theme input[type="email"]:focus,
+body.duo-theme input[type="password"]:focus,
+body.duo-theme input[type="number"]:focus,
+body.duo-theme textarea:focus,
+body.duo-theme select:focus {
+  border-color: var(--duo-primary);
+  box-shadow: 0 0 0 3px rgba(88, 204, 2, 0.2);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+/* ===========================================
+   DUOLINGO POPUP SYSTEM
+   =========================================== */
+
+/* Non-conflicting popup system */
+.duo-success-popup,
+.duo-save-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  animation: duo-overlay-in 0.3s ease;
+}
+
+.duo-success-popup.show,
+.duo-save-popup.show {
+  display: flex;
+}
+
+.duo-popup-content {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 90%;
+  overflow: hidden;
+  border: 3px solid var(--duo-primary);
+  animation: duo-popup-in 0.5s var(--duo-transition-bounce);
+}
+
+.duo-popup-header {
+  background: linear-gradient(135deg, var(--duo-primary) 0%, #4caf50 100%);
+  padding: 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.duo-popup-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+  animation: duo-shimmer 3s linear infinite;
+}
+
+.duo-popup-icon {
+  font-size: 64px;
+  margin-bottom: 12px;
+  display: block;
+  position: relative;
+  z-index: 1;
+  animation: duo-icon-bounce 0.8s var(--duo-transition-bounce);
+}
+
+.duo-popup-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: white;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 1;
+}
+
+.duo-popup-body {
+  padding: 24px;
+  text-align: center;
+}
+
+.duo-popup-message {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c3e2f;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.duo-popup-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* ===========================================
+   DUOLINGO TOAST NOTIFICATIONS
+   =========================================== */
+
+.duo-toast-container {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 10001;
+  max-width: 400px;
+}
+
+.duo-toast {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-left: 4px solid var(--duo-primary);
+  transform: translateX(100%);
+  transition: all 0.4s var(--duo-transition-bounce);
+  position: relative;
+  overflow: hidden;
+}
+
+.duo-toast.show {
+  transform: translateX(0);
+}
+
+.duo-toast::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: var(--duo-primary);
+  animation: duo-toast-timer 4s linear;
+}
+
+.duo-toast-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+  color: var(--duo-primary);
+}
+
+.duo-toast-content {
+  flex: 1;
+}
+
+.duo-toast-title {
+  font-weight: 700;
+  color: #2c3e2f;
+  margin-bottom: 4px;
+}
+
+.duo-toast-message {
+  font-weight: 500;
+  color: #5a6b5e;
+  font-size: 14px;
+}
+
+/* ===========================================
+   ANIMATIONS
+   =========================================== */
+
+@keyframes duo-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes duo-popup-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes duo-shimmer {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes duo-icon-bounce {
+  0% { transform: scale(0) rotate(-180deg); }
+  50% { transform: scale(1.2) rotate(-90deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes duo-toast-timer {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+
+/* ===========================================
+   UTILITY CLASSES
+   =========================================== */
+
+.duo-text-primary { color: var(--duo-primary); }
+.duo-text-accent { color: var(--duo-accent); }
+.duo-bg-primary { background: var(--duo-primary); }
+.duo-bg-accent { background: var(--duo-accent); }
+
+.duo-font-bold { font-weight: 700; }
+.duo-font-extra-bold { font-weight: 800; }
+
+.duo-animate-bounce {
+  animation: duo-icon-bounce 0.6s var(--duo-transition-bounce);
+}
+
+/* ===========================================
+   RESPONSIVE
+   =========================================== */
+
+@media (max-width: 768px) {
+  .duo-popup-content {
+    margin: 16px;
+    width: calc(100% - 32px);
+  }
+  
+  .duo-toast-container {
+    right: 16px;
+    left: 16px;
+    max-width: none;
+  }
+}

@@ -1,0 +1,419 @@
+/**
+ * Dashboard Forest Duolingo Theme Extensions
+ * Specific styles for dashboard components using forest theme
+ */
+
+/* Dashboard Grid Layout */
+.forest-duo-theme .dashboard-grid {
+  display: grid;
+  gap: var(--btt-space-6);
+  margin-bottom: var(--btt-space-8);
+}
+
+.forest-duo-theme .stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--btt-space-4);
+}
+
+/* Enhanced Card Stats */
+.forest-duo-theme .compact-stats {
+  display: flex;
+  justify-content: space-between;
+  margin: var(--btt-space-4) 0;
+}
+
+.forest-duo-theme .stat {
+  text-align: center;
+  flex: 1;
+}
+
+.forest-duo-theme .stat-num {
+  display: block;
+  font-size: var(--btt-text-2xl);
+  font-weight: var(--btt-font-bold);
+  color: var(--btt-forest-canopy);
+  line-height: 1;
+}
+
+.forest-duo-theme .stat-lbl {
+  display: block;
+  font-size: var(--btt-text-xs);
+  color: var(--btt-text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--btt-tracking-wide);
+  margin-top: var(--btt-space-1);
+}
+
+/* Trip Photo Styles */
+.forest-duo-theme .trip-photo {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--btt-radius-md);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--btt-forest-moss);
+  border: 2px solid var(--btt-forest-canopy);
+}
+
+.forest-duo-theme .trip-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+.forest-duo-theme .trip-item:hover .trip-photo-img {
+  transform: scale(1.05);
+}
+
+/* Activity Photo Styles */
+.forest-duo-theme .activity-photo {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--btt-radius-sm);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--btt-forest-moss);
+  border: 2px solid var(--btt-duo-green);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.forest-duo-theme .activity-photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+.forest-duo-theme .activity-item:hover .activity-photo-img {
+  transform: scale(1.05);
+}
+
+/* Enhanced Trip Item Layout */
+.forest-duo-theme .trip-item {
+  display: flex;
+  align-items: center;
+  gap: var(--btt-space-4);
+  padding: var(--btt-space-4);
+  border-radius: var(--btt-radius-lg);
+  background: var(--btt-forest-ground);
+  border: 1px solid var(--btt-forest-canopy-light);
+  transition: all 0.2s ease;
+}
+
+.forest-duo-theme .trip-item:hover {
+  background: var(--btt-forest-sunlight);
+  border-color: var(--btt-forest-canopy);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(var(--btt-forest-shadow-rgb), 0.15);
+}
+
+/* Enhanced Activity Item Layout */
+.forest-duo-theme .activity-item {
+  display: flex;
+  align-items: center;
+  gap: var(--btt-space-3);
+  padding: var(--btt-space-3);
+  border-radius: var(--btt-radius-md);
+  background: var(--btt-forest-ground);
+  border: 1px solid var(--btt-forest-canopy-light);
+  transition: all 0.2s ease;
+  margin-bottom: var(--btt-space-3);
+}
+
+.forest-duo-theme .activity-item:hover {
+  background: var(--btt-forest-sunlight);
+  border-color: var(--btt-duo-green);
+  transform: translateX(2px);
+}
+
+/* Mini Preview Content */
+.forest-duo-theme .mini-preview {
+  margin-top: var(--btt-space-3);
+  padding: var(--btt-space-3);
+  background: var(--btt-glass-white);
+  border-radius: var(--btt-radius-md);
+  font-size: var(--btt-text-sm);
+  color: var(--btt-text-secondary);
+}
+
+/* Mini Actions */
+.forest-duo-theme .mini-actions {
+  display: flex;
+  gap: var(--btt-space-2);
+  margin-top: var(--btt-space-3);
+}
+
+.forest-duo-theme .mini-btn {
+  flex: 1;
+  padding: var(--btt-space-2) var(--btt-space-3);
+  border: 1px solid var(--btt-forest-sage);
+  border-radius: var(--btt-radius-md);
+  background: transparent;
+  color: var(--btt-text-secondary);
+  font-size: var(--btt-text-sm);
+  font-weight: var(--btt-font-medium);
+  cursor: pointer;
+  transition: var(--btt-transition-all);
+}
+
+.forest-duo-theme .mini-btn:hover {
+  background: var(--btt-glass-white);
+  border-color: var(--btt-forest-mist);
+  color: var(--btt-text-primary);
+}
+
+.forest-duo-theme .mini-btn.primary {
+  background: var(--btt-gradient-forest);
+  border-color: var(--btt-forest-canopy);
+  color: var(--btt-text-primary);
+}
+
+.forest-duo-theme .mini-btn.primary:hover {
+  background: var(--btt-gradient-moss);
+}
+
+/* Horizontal Stats */
+.forest-duo-theme .stats-horizontal {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--btt-space-3);
+  margin-top: var(--btt-space-3);
+}
+
+.forest-duo-theme .stat-h {
+  display: flex;
+  align-items: center;
+  gap: var(--btt-space-2);
+  padding: var(--btt-space-2);
+  background: var(--btt-glass-white);
+  border-radius: var(--btt-radius-md);
+}
+
+.forest-duo-theme .h-icon {
+  font-size: var(--btt-text-lg);
+}
+
+.forest-duo-theme .h-num {
+  font-weight: var(--btt-font-bold);
+  color: var(--btt-forest-canopy);
+}
+
+.forest-duo-theme .h-lbl {
+  font-size: var(--btt-text-xs);
+  color: var(--btt-text-muted);
+  margin-left: auto;
+}
+
+/* Achievements Section */
+.forest-duo-theme .achievements-horizontal,
+.forest-duo-theme .activity-horizontal {
+  background: var(--btt-glass-white);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--btt-glass-border);
+  border-radius: var(--btt-radius-xl);
+  padding: var(--btt-space-5);
+  margin-bottom: var(--btt-space-4);
+}
+
+.forest-duo-theme .ach-header,
+.forest-duo-theme .activity-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--btt-space-4);
+}
+
+.forest-duo-theme .ach-header h3,
+.forest-duo-theme .activity-header h3 {
+  margin: 0;
+  font-size: var(--btt-text-lg);
+  color: var(--btt-text-primary);
+}
+
+.forest-duo-theme .xp-badge {
+  background: var(--btt-gradient-cedar);
+  color: var(--btt-text-primary);
+  padding: var(--btt-space-1) var(--btt-space-3);
+  border-radius: var(--btt-radius-full);
+  font-size: var(--btt-text-sm);
+  font-weight: var(--btt-font-bold);
+}
+
+/* Level Progress Bar */
+.forest-duo-theme .level-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--btt-space-3);
+  margin-bottom: var(--btt-space-3);
+}
+
+.forest-duo-theme .lvl {
+  font-weight: var(--btt-font-bold);
+  color: var(--btt-forest-canopy);
+  white-space: nowrap;
+}
+
+.forest-duo-theme .progress-inline {
+  flex: 1;
+  height: 8px;
+  background: var(--btt-forest-shadow);
+  border-radius: var(--btt-radius-full);
+  overflow: hidden;
+}
+
+.forest-duo-theme .progress-fill {
+  height: 100%;
+  background: var(--btt-gradient-forest);
+  border-radius: var(--btt-radius-full);
+  transition: width var(--btt-duration-slow) var(--btt-ease-out);
+}
+
+.forest-duo-theme .xp-text {
+  font-size: var(--btt-text-sm);
+  color: var(--btt-text-muted);
+  white-space: nowrap;
+}
+
+/* Badge Row */
+.forest-duo-theme .badges-row {
+  display: flex;
+  align-items: center;
+  gap: var(--btt-space-2);
+}
+
+.forest-duo-theme .badge-mini {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--btt-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--btt-text-lg);
+  background: var(--btt-glass-dark);
+  border: 2px solid var(--btt-forest-shadow);
+  opacity: 0.5;
+  transition: var(--btt-transition-all);
+}
+
+.forest-duo-theme .badge-mini.earned {
+  background: var(--btt-gradient-forest);
+  border-color: var(--btt-forest-canopy);
+  opacity: 1;
+  box-shadow: 0 2px 8px rgba(125, 155, 126, 0.3);
+}
+
+.forest-duo-theme .streak-mini {
+  display: flex;
+  align-items: center;
+  gap: var(--btt-space-1);
+  background: var(--btt-gradient-cedar);
+  color: var(--btt-text-primary);
+  padding: var(--btt-space-1) var(--btt-space-2);
+  border-radius: var(--btt-radius-full);
+  font-size: var(--btt-text-sm);
+  font-weight: var(--btt-font-bold);
+  margin-left: var(--btt-space-2);
+}
+
+/* Activity Sections */
+.forest-duo-theme .activity-tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--btt-space-4);
+}
+
+.forest-duo-theme .tab-section h4 {
+  font-size: var(--btt-text-base);
+  color: var(--btt-text-secondary);
+  margin: 0 0 var(--btt-space-3);
+  font-weight: var(--btt-font-medium);
+}
+
+.forest-duo-theme .activity-compact {
+  min-height: 100px;
+}
+
+.forest-duo-theme .activity-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--btt-space-3);
+  background: var(--btt-glass-white);
+  border-radius: var(--btt-radius-md);
+  margin-bottom: var(--btt-space-2);
+  transition: var(--btt-transition-all);
+}
+
+.forest-duo-theme .activity-item:hover {
+  background: var(--btt-glass-light);
+  transform: translateX(4px);
+}
+
+.forest-duo-theme .activity-item-title {
+  font-weight: var(--btt-font-medium);
+  color: var(--btt-text-primary);
+  margin-bottom: var(--btt-space-1);
+}
+
+.forest-duo-theme .activity-item-meta {
+  font-size: var(--btt-text-xs);
+  color: var(--btt-text-muted);
+}
+
+/* Empty State */
+.forest-duo-theme .empty-state {
+  text-align: center;
+  padding: var(--btt-space-6);
+  color: var(--btt-text-muted);
+}
+
+.forest-duo-theme .empty-state-icon {
+  font-size: var(--btt-text-3xl);
+  margin-bottom: var(--btt-space-2);
+  opacity: 0.6;
+}
+
+/* Error State */
+.forest-duo-theme .error-state {
+  text-align: center;
+  padding: var(--btt-space-4);
+  color: var(--btt-error);
+  background: rgba(196, 103, 90, 0.1);
+  border-radius: var(--btt-radius-md);
+  border: 1px solid rgba(196, 103, 90, 0.2);
+}
+
+/* Secondary Row Layout */
+.forest-duo-theme .secondary-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--btt-space-4);
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
+  .forest-duo-theme .stats-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .forest-duo-theme .stats-horizontal {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .forest-duo-theme .secondary-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .forest-duo-theme .stats-row {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Full width utility */
+.forest-duo-theme .w-full {
+  width: 100%;
+}

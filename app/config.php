@@ -12,7 +12,7 @@ define('BTT_DEBUG', BTT_ENV === 'development');
 
 // Base URLs
 define('BTT_BASE_URL', 'http://localhost/BTT');
-define('BTT_API_URL', BTT_BASE_URL . '/api/index.php');
+define('BTT_API_URL', BTT_BASE_URL . '/api');
 define('BTT_ASSETS_URL', BTT_BASE_URL . '/assets');
 define('BTT_PUBLIC_URL', BTT_BASE_URL); // Now points to root
 define('BTT_VENDOR_URL', BTT_BASE_URL . '/vendor'); // Vendor assets URL
@@ -29,6 +29,9 @@ define('BTT_UPLOAD_PATH', BTT_ROOT . '/assets/img/trips');
 // Storage Engine (sqlite or json)
 // Will fallback to json if SQLite is not available
 define('STORAGE_ENGINE', extension_loaded('pdo_sqlite') ? 'sqlite' : 'json');
+
+// Database path alias for compatibility
+define('DB_PATH', BTT_SQLITE_PATH);
 
 // Upload Settings
 define('BTT_UPLOAD_MAX_SIZE', 4 * 1024 * 1024); // 4MB

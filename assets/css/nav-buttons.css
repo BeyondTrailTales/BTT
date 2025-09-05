@@ -1,0 +1,315 @@
+/* Clean Navigation Button Styles for BeyondTrailTales */
+/* Removes excessive underlining and creates proper CSS3 button styling */
+
+/* Header Container Improvements */
+.header {
+  padding: 1rem 0;
+  background: rgba(10, 40, 24, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(74, 222, 128, 0.1);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 0 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Main Navigation Container */
+.nav-main {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: nowrap;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+/* Remove all underlines from navigation links */
+.nav-link,
+.nav-link:hover,
+.nav-link:focus,
+.nav-link:active,
+.nav-link.active,
+.nav-link-primary,
+.nav-link-primary:hover,
+.nav-link-primary:focus {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  outline: none;
+}
+
+/* Base button styling for all navigation links */
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: rgba(224, 224, 224, 0.9);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  min-width: fit-content;
+}
+
+/* Hover effect for navigation buttons */
+.nav-link:hover {
+  color: #ffffff;
+  background: rgba(76, 175, 80, 0.15);
+  border-color: rgba(76, 175, 80, 0.3);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.15);
+}
+
+/* Active state for current page */
+.nav-link.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.25), rgba(92, 184, 92, 0.2));
+  border-color: rgba(76, 175, 80, 0.4);
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+}
+
+/* Focus state for accessibility */
+.nav-link:focus-visible {
+  outline: 2px solid #4caf50;
+  outline-offset: 2px;
+  border-color: #4caf50;
+}
+
+/* Primary CTA button (Sign Up) */
+.nav-link-primary {
+  background: linear-gradient(135deg, #4caf50, #43a047);
+  color: white !important;
+  font-weight: 600;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  box-shadow: 0 2px 6px rgba(76, 175, 80, 0.2);
+  padding: 0.5rem 1.25rem;
+}
+
+.nav-link-primary:hover {
+  background: linear-gradient(135deg, #5cbf60, #43a047);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+  border-color: transparent;
+}
+
+.nav-link-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+/* Subtle animation on page load */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.nav-link {
+  animation: fadeInUp 0.5s ease backwards;
+}
+
+.nav-link:nth-child(1) { animation-delay: 0.1s; }
+.nav-link:nth-child(2) { animation-delay: 0.15s; }
+.nav-link:nth-child(3) { animation-delay: 0.2s; }
+.nav-link:nth-child(4) { animation-delay: 0.25s; }
+
+/* Logo styling - no underline */
+.logo {
+  text-decoration: none !important;
+  font-size: 1.25rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #4caf50, #66bb6a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: all 0.3s ease;
+  padding: 0.25rem 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* User menu button - clean button style */
+.nav-user-button {
+  text-decoration: none !important;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  color: rgba(224, 224, 224, 0.95);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+/* User menu container */
+.nav-user-menu {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.nav-user-button:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(76, 175, 80, 0.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+}
+
+/* Dropdown links - no underlines */
+.dropdown-link,
+.dropdown-link:hover,
+.dropdown-link:focus {
+  text-decoration: none !important;
+}
+
+/* Authentication links container */
+.nav-auth-links {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .nav-main {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+  
+  .nav-link {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+  
+  .nav-auth-links,
+  .nav-user-menu {
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .nav-link {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+}
+
+/* Remove any inherited underlines from parent elements */
+.header a,
+.header button,
+.nav-main a,
+.nav-main button {
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
+
+/* Ensure focus outlines are visible for accessibility */
+*:focus-visible {
+  outline-offset: 2px;
+}
+
+/* Smooth hover transitions for all interactive elements */
+a, button {
+  transition: all 0.3s ease;
+}
+
+/* Additional fix for any lingering underlines in navigation area */
+header a,
+header a:visited,
+header a:active,
+nav a,
+nav a:visited,
+nav a:active {
+  text-decoration: none !important;
+  border-bottom: none !important;
+}
+
+/* Icon support in navigation */
+.nav-link::before {
+  content: '';
+  display: inline-block;
+  margin-right: 0.4rem;
+  font-size: 1rem;
+  vertical-align: middle;
+}
+
+/* Remove default emoji spacing if present */
+.nav-link > * {
+  vertical-align: middle;
+}
+
+/* Ensure proper alignment for all nav items */
+.header * {
+  box-sizing: border-box;
+}
+
+/* Clean dropdown positioning */
+.nav-dropdown {
+  top: calc(100% + 0.5rem);
+}
+
+/* Improved container constraints */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Fix header vertical rhythm */
+.header .logo,
+.header .nav-link,
+.header .nav-user-button {
+  line-height: 1.5;
+}
+
+/* Ensure consistent heights */
+.nav-link,
+.nav-user-button,
+.nav-link-primary {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Header sticky behavior improvement */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}

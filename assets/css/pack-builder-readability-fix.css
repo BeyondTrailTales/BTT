@@ -1,0 +1,266 @@
+/**
+ * Pack Builder Readability Fixes
+ * Improves text contrast and readability throughout the pack builder
+ */
+
+/* High contrast text for gear library */
+.gear-item-name {
+    color: #ffffff !important;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.gear-item-meta,
+.gear-weight,
+.gear-brand {
+    color: #e5e7eb !important;
+    font-weight: 500;
+}
+
+/* Section headers with better contrast */
+.pack-section .section-header {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.section-name {
+    color: #ffffff !important;
+    font-weight: 600;
+    background: transparent !important;
+    border: none !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.section-weight {
+    color: #fbbf24 !important;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Pack stats with better visibility */
+.pack-quick-stats .stat-item {
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.pack-quick-stats strong {
+    color: #10b981 !important;
+    font-weight: 700;
+}
+
+/* Pack name display */
+.pack-name-display {
+    color: #ffffff !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+/* Card titles and headers */
+.card-title {
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.card-header {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Form labels and inputs */
+.form-group label {
+    color: #ffffff !important;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    color: #1f2937 !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #6b7280 !important;
+}
+
+/* Drop zone text */
+.drop-hint {
+    color: #d1d5db !important;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Category filter buttons */
+.category-filter {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.category-filter:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+}
+
+.category-filter.active {
+    background: #10b981 !important;
+    color: #ffffff !important;
+    border-color: #10b981 !important;
+    text-shadow: none;
+}
+
+/* Search input */
+.gear-search-input {
+    color: #1f2937 !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.gear-search-input::placeholder {
+    color: #6b7280 !important;
+}
+
+/* Pack section items */
+.pack-item {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.pack-item-name {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.pack-item-weight,
+.pack-item-quantity {
+    color: #e5e7eb !important;
+}
+
+/* Button improvements */
+.btn {
+    font-weight: 600;
+    text-shadow: none;
+}
+
+.btn-primary {
+    background: #10b981 !important;
+    border-color: #10b981 !important;
+    color: #ffffff !important;
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    color: #ffffff !important;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+}
+
+/* Toggle arrows */
+.section-toggle {
+    color: #ffffff !important;
+    background: transparent !important;
+    border: none !important;
+    font-size: 1.2em !important;
+    padding: 0 8px !important;
+    cursor: pointer;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.section-toggle:hover {
+    color: #10b981 !important;
+}
+
+/* Section icons */
+.section-icon {
+    font-size: 1.2em;
+    margin: 0 8px;
+}
+
+/* Loading and empty states */
+.gear-loading,
+.empty-gear-library {
+    color: #d1d5db !important;
+    text-align: center;
+    padding: 2rem;
+}
+
+.empty-gear-library .empty-text {
+    color: #ffffff !important;
+    font-weight: 600;
+    margin-top: 1rem;
+}
+
+/* Improve contrast for pack view tabs */
+.pack-tab,
+.view-tab {
+    color: #d1d5db !important;
+    font-weight: 600;
+}
+
+.pack-tab.active,
+.view-tab.active {
+    color: #1f2937 !important;
+    background: #ffffff !important;
+}
+
+.pack-tab:hover,
+.view-tab:hover {
+    color: #ffffff !important;
+}
+
+/* Ensure all text in cards is readable */
+.card-body {
+    color: #e5e7eb;
+}
+
+/* Fix any remaining low contrast text */
+h1, h2, h3, h4, h5, h6 {
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+p {
+    color: #e5e7eb;
+}
+
+/* Fix Add Section button and similar dark text */
+#add-section,
+.section-header-controls h4,
+.section-header-controls button {
+    color: #ffffff !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.section-header-controls {
+    color: #ffffff !important;
+}
+
+.section-header-controls h4 {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+/* Make sure buttons are clearly visible */
+.btn:focus,
+.btn:active {
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3) !important;
+}
+
+/* Fix any remaining black text issues */
+.pack-sections-container,
+.pack-sections-container * {
+    color: #ffffff;
+}
+
+.pack-sections-container h4 {
+    color: #ffffff !important;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}

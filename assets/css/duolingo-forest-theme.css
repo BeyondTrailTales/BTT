@@ -1,0 +1,39 @@
+/**
+ * BeyondTrailTales - Duolingo Forest Theme Master File
+ * 
+ * Complete theme system import for easy integration
+ * Just include this single file to get the full theme
+ */
+
+/* Import all theme components in correct order */
+@import url('theme/variables.css');
+@import url('theme/components.css');
+@import url('theme/navigation.css');
+@import url('theme/pages.css');
+@import url('theme/animations.css');
+
+/* 
+ * Theme Integration Complete!
+ * 
+ * This file provides:
+ * ✅ Complete Duolingo Forest color system
+ * ✅ Gamified navigation with level/XP display
+ * ✅ Comprehensive component library
+ * ✅ Multi-colored section themes
+ * ✅ Interactive animations and micro-interactions
+ * ✅ Mobile-responsive design
+ * ✅ Accessibility compliance
+ * ✅ Dark mode forest background
+ * ✅ Glass morphism effects
+ * ✅ Consistent spacing and typography
+ * 
+ * Usage:
+ * <link rel="stylesheet" href="assets/css/duolingo-forest-theme.css">
+ * 
+ * OR use individual files for better performance:
+ * <link rel="stylesheet" href="assets/css/theme/variables.css">
+ * <link rel="stylesheet" href="assets/css/theme/components.css">
+ * <link rel="stylesheet" href="assets/css/theme/navigation.css">
+ * <link rel="stylesheet" href="assets/css/theme/pages.css">
+ * <link rel="stylesheet" href="assets/css/theme/animations.css">
+ */

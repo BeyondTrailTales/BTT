@@ -14,7 +14,9 @@ define('API_VERSION', 'v1');
 define('API_PREFIX', '/api');
 
 // Database Settings (SQLite)
-define('DB_PATH', BTT_SQLITE_PATH);
+if (!defined('DB_PATH')) {
+    define('DB_PATH', BTT_SQLITE_PATH);
+}
 define('DB_TIMEOUT', 5000); // 5 seconds
 
 // JSON Response Headers

@@ -5,660 +5,516 @@ require_once __DIR__ . '/app/bootstrap.php';
 // Require authentication
 require_auth();
 
-// Include component files
-if (file_exists(__DIR__ . '/includes/components/pack-card.php')) {
-    require_once __DIR__ . '/includes/components/pack-card.php';
-} else if (file_exists(__DIR__ . '/public/includes/components/pack-card.php')) {
-    require_once __DIR__ . '/public/includes/components/pack-card.php';
-}
+// Include Database class
+require_once __DIR__ . '/api/classes/Database.php';
 
 // Set page metadata
-$pageId = 'backpacks-inline';
-$pageTitle = 'Pack & Gear';
-$pageDescription = 'Build your perfect pack and manage your gear for any adventure';
+$pageId = 'backpacks';
+$pageTitle = 'My Backpacks';
+$pageDescription = 'Manage your backpacking gear lists';
 
-// Include jQuery and Bootstrap in page styles
-$pageStyles = [
-    'css/pack-builder.css', 
-    'css/pack-builder-enhanced.css',
-    'css/pack-builder-dnd.css',  // Enhanced drag-and-drop styles
-    'css/gear-library.css',  // Base gear library styles
-    'css/gear-library-enhanced.css',  // Enhanced gear library filters
-    'css/form-inputs.css',  // Form input styles
-    'css/gear-search.css'  // Gear search and filtering styles
-];
-
-// Add page scripts - only load what we need, avoid conflicts
+// Add essential page scripts - List view + isolated builder
 $pageScripts = $pageScripts ?? [];
-$pageScripts[] = 'js/btt-utils.js';  // Utilities - must load first
-$pageScripts[] = 'js/api.js';  // API client
-$pageScripts[] = 'js/pack-builder-crud.js';  // CRUD operations
-$pageScripts[] = 'js/pack-builder.js';  // Main pack builder
-// Temporarily disable conflicting scripts until we fix them
-// $pageScripts[] = 'js/pack-builder-enhanced.js';  // Has conflicts
-// $pageScripts[] = 'js/pack-builder-gear.js';  // Has conflicts
-$pageScripts[] = 'js/gear-library.js';  // Re-enabled for Gear Library view
-$pageScripts[] = 'js/form-validation.js';  // Form validation
-$pageScripts[] = 'js/gear-search.js';  // Gear search
+// Core pack list functionality
+$pageScripts[] = 'js/pack-builder-crud.js'; // Keep for pack list management
+// Add minimal builder scripts for isolated builder tab
+$pageScripts[] = 'js/pack-builder.js'; // Needed for gear library
+$pageScripts[] = 'js/gear-library-fix.js'; // For isolated drag and drop
+
+$pageStyles = $pageStyles ?? [];
+// Force cache refresh with timestamp
+$cacheTime = time();
+$pageStyles[] = 'css/backpacks-clean.css?v=' . $cacheTime;
+$pageStyles[] = 'css/pack-toast.css?v=' . $cacheTime;
+// Add minimal builder styles for isolated builder tab
+$pageStyles[] = 'css/forest-drag-zones.css?v=' . $cacheTime;
+$pageStyles[] = 'css/gear-color-system.css?v=' . $cacheTime; // Color coordination system
+
+// Add backpacks page body class
+$bodyClasses = $bodyClasses ?? [];
+$bodyClasses[] = 'backpacks-forest-page';
+
+// Get database connection and check user
+$db = Database::getInstance();
+
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    redirect_to_login();
+}
+$user_id = $_SESSION['user_id'];
+
+// Fetch pack statistics from database
+try {
+    $total_packs = $db->fetchOne("SELECT COUNT(*) as count FROM backpacks WHERE user_id = ?", [$user_id]);
+    $avg_weight_query = $db->fetchOne("
+        SELECT AVG(base_weight) as avg_weight 
+        FROM backpacks 
+        WHERE user_id = ? AND base_weight > 0
+    ", [$user_id]);
+    
+    $packStats = [
+        'total_count' => $total_packs ? $total_packs['count'] : 0,
+        'avg_weight' => ($avg_weight_query && $avg_weight_query['avg_weight'] !== null) ? round($avg_weight_query['avg_weight']) : 0
+    ];
+} catch (Exception $e) {
+    error_log("Pack stats fetch error: " . $e->getMessage());
+    $packStats = ['total_count' => 0, 'avg_weight' => 0];
+}
 
 // Include the unified template header
 require_once __DIR__ . '/includes/template-header.php';
 ?>
 
-<!-- Pack Builder Main Container -->
-<div class="pack-builder-container">
+<!-- Duolingo Forest Pack Builder Interface -->
+<div class="forest-duo-theme pack-builder-page">
+  
+  <!-- Clean Forest Hero Header -->
+  <div class="hero-forest pack-hero">
+    <div class="hero-particles"></div>
+    <div class="hero-content">
+      <div class="hero-badges">
+        <div class="user-badge">
+          <span class="badge-icon">🏔️</span>
+          <span class="badge-text">Pack Builder</span>
+        </div>
+      </div>
+      <h1 class="hero-title">My Backpacks</h1>
+      <p class="hero-subtitle">Organize your gear, plan your adventures, and optimize your loadout</p>
+    </div>
+    <div class="hero-glow"></div>
+  </div>
+
+  <!-- Clean Main Container -->
+  <div class="dashboard" id="main-content">
     
-    <!-- Top Action Bar -->
-    <div class="pack-action-bar">
-        <div class="pack-tabs">
-            <button class="pack-tab active" data-view="my-packs">
-                <i class="icon">🎒</i> My Packs
+    <!-- Clean Header Section -->
+    <div class="card" style="grid-column: 1 / -1; margin-bottom: var(--space-lg);">
+      <div class="card-header">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: var(--space-lg);">
+          <div>
+            <h1 class="card-title">🎒 My Backpacks</h1>
+            <p class="card-subtitle">Organize your gear and optimize your loadout</p>
+          </div>
+          <div class="stats-grid" style="min-width: 200px;">
+            <div class="stat" style="padding: var(--space-md);">
+              <span class="stat-number"><?= $packStats['total_count'] ?></span>
+              <span class="stat-label">Packs</span>
+            </div>
+            <div class="stat" style="padding: var(--space-md);">
+              <span class="stat-number"><?= $packStats['avg_weight'] > 0 ? number_format($packStats['avg_weight'] / 1000, 1) . 'kg' : '0kg' ?></span>
+              <span class="stat-label">Avg Weight</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <!-- Clean Navigation Tabs -->
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-md);">
+          <div class="view-switcher" style="display: flex; gap: var(--space-sm); background: var(--glass-subtle); padding: var(--space-xs); border-radius: var(--radius-lg);">
+            <button class="btn btn-sm pack-tab active" data-view="my-packs">
+              🎒 My Packs
             </button>
-            <button class="pack-tab" data-view="builder">
-                <i class="icon">🔧</i> Build Pack
+            <button class="btn btn-sm btn-ghost pack-tab" data-view="templates">
+              📚 Templates
             </button>
-            <button class="pack-tab" data-view="templates">
-                <i class="icon">📋</i> Quick Packs
+            <button class="btn btn-sm btn-ghost pack-tab" data-view="builder">
+              ⚡ Builder
             </button>
-            <a href="gear.php" class="pack-tab">
-                <i class="icon">📦</i> My Gear
+          </div>
+          
+          <div style="display: flex; gap: var(--space-md); align-items: center;">
+            <!-- Clean Search -->
+            <div style="position: relative; min-width: 200px;">
+              <input type="search" placeholder="Search packs..." id="pack-search-main" 
+                     style="width: 100%; padding: var(--space-sm) var(--space-md) var(--space-sm) var(--space-xl); 
+                            border: 1px solid var(--glass-border); border-radius: var(--radius-lg); 
+                            background: var(--glass-subtle); color: var(--text-primary); font-size: var(--text-sm);">
+              <span style="position: absolute; left: var(--space-md); top: 50%; transform: translateY(-50%); opacity: 0.5;">🔍</span>
+              <div class="search-suggestions" id="pack-search-suggestions"></div>
+            </div>
+            
+            <a href="/BTT/pack-builder.php" class="btn btn-primary">
+              ➕ Create Pack
             </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clean Views Container -->
+    <div id="pack-views-container" style="grid-column: 1 / -1;">
+      
+      <!-- My Packs View -->
+      <div class="pack-view active" id="view-my-packs" data-view="my-packs">
+        <!-- Clean Packs Grid -->
+        <div id="packs-grid">
+          <!-- Loading State -->
+          <div class="card" id="packs-loading">
+            <div class="card-body" style="text-align: center; padding: var(--space-3xl);">
+              <div style="width: 40px; height: 40px; margin: 0 auto var(--space-lg); border: 3px solid var(--glass-border); border-top: 3px solid var(--pack-primary); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+              <p>Loading your packs...</p>
+            </div>
+          </div>
+          
+          <!-- Empty State -->
+          <div class="empty-state card" id="packs-empty" style="display: none;">
+            <div class="card-body">
+              <div class="empty-state-icon">🎒</div>
+              <h3 class="empty-state-title">No packs created yet</h3>
+              <p class="empty-state-description">Start building your first pack to organize your gear and optimize your loadout</p>
+              <div class="empty-state-actions">
+                <a href="/BTT/pack-builder.php" class="btn btn-primary">
+                  ➕ Create Your First Pack
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Packs Grid -->
+          <div class="dashboard" id="packs-grid-items" style="display: none; margin-top: 0;"></div>
+        </div>
+      </div>
+      
+      <!-- Templates View -->
+      <div class="pack-view" id="view-templates" data-view="templates" style="display: none;">
+        <div class="templates-section">
+          <h3 class="section-title">🏔️ Trail-Ready Templates</h3>
+          <div class="templates-grid">
+            <div class="template-card forest-card">
+              <div class="template-header">
+                <span class="template-icon">🥾</span>
+                <h4>Day Hike Essentials</h4>
+              </div>
+              <div class="template-stats">
+                <span class="template-weight">~2.5kg base weight</span>
+                <span class="template-items">12 essential items</span>
+              </div>
+              <div class="template-description">Perfect for day adventures with safety essentials</div>
+              <button class="btn-secondary template-use-btn" data-template="day-hike">Use Template</button>
+            </div>
+            
+            <div class="template-card forest-card">
+              <div class="template-header">
+                <span class="template-icon">🏕️</span>
+                <h4>Weekend Backpacking</h4>
+              </div>
+              <div class="template-stats">
+                <span class="template-weight">~4.5kg base weight</span>
+                <span class="template-items">25 items</span>
+              </div>
+              <div class="template-description">2-3 day trips with shelter and cooking gear</div>
+              <button class="btn-secondary template-use-btn" data-template="weekend">Use Template</button>
+            </div>
+            
+            <div class="template-card forest-card">
+              <div class="template-header">
+                <span class="template-icon">🪶</span>
+                <h4>Ultralight Thru-hiking</h4>
+              </div>
+              <div class="template-stats">
+                <span class="template-weight">~3.2kg base weight</span>
+                <span class="template-items">18 optimized items</span>
+              </div>
+              <div class="template-description">Long distance minimalist setup for maximum efficiency</div>
+              <button class="btn-secondary template-use-btn" data-template="ultralight">Use Template</button>
+            </div>
+            
+            <div class="template-card forest-card">
+              <div class="template-header">
+                <span class="template-icon">❄️</span>
+                <h4>Winter/Alpine</h4>
+              </div>
+              <div class="template-stats">
+                <span class="template-weight">~6.8kg base weight</span>
+                <span class="template-items">35 items</span>
+              </div>
+              <div class="template-description">Cold weather and technical terrain gear</div>
+              <button class="btn-secondary template-use-btn" data-template="winter">Use Template</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Pack Builder View - Isolated -->
+      <div class="pack-view" id="view-builder" data-view="builder" style="display: none;">
+        <div class="builder-notice" style="background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+          <p><strong>💡 Pro Tip:</strong> For a full-screen builder experience, <a href="/BTT/pack-builder.php" class="text-blue-600">try our dedicated Pack Builder</a></p>
         </div>
         
+        <div class="simple-builder">
+          <div class="builder-header">
+            <h3>Quick Pack Builder</h3>
+            <button class="btn btn-primary" id="btn-create-new-pack">Start New Pack</button>
+          </div>
+          
+          <div class="builder-content" id="builder-workspace" style="display: none;">
+            <div class="pack-form">
+              <div class="form-group">
+                <label for="quick-pack-name">Pack Name *</label>
+                <input type="text" id="quick-pack-name" placeholder="Weekend Hike" required>
+              </div>
+              <div class="form-group">
+                <label for="quick-pack-type">Pack Type</label>
+                <select id="quick-pack-type">
+                  <option value="day-hike">Day Hike</option>
+                  <option value="weekend">Weekend</option>
+                  <option value="extended">Extended</option>
+                </select>
+              </div>
+              <button class="btn btn-primary" id="btn-save-quick-pack">Create & Edit Pack</button>
+            </div>
+            
+            <!-- Optional: Gear preview for quick builder -->
+            <div class="gear-preview" style="margin-top: 2rem;">
+              <h4>Preview: Your Gear Library</h4>
+              <div id="gear-library" style="max-height: 300px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem;">
+                <div class="gear-loading">Loading gear library...</div>
+              </div>
+              <p style="font-size: 0.875rem; color: #6b7280; margin-top: 0.5rem;">
+                💡 Use the full builder to drag and drop gear items
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- New Pack Modal -->
+<div class="modal hidden" id="pack-modal">
+  <div class="modal-backdrop" onclick="closePackModal()"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="modal-title">Create New Pack</h2>
+      <button class="modal-close" onclick="closePackModal()">×</button>
+    </div>
+    <form class="modal-body" id="pack-form">
+      <input type="hidden" id="pack-id" name="id">
+      
+      <div class="form-group">
+        <label for="pack-name">Pack Name</label>
+        <input type="text" id="pack-name" name="name" placeholder="e.g., Weekend in the Mountains" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="pack-description">Description</label>
+        <textarea id="pack-description" name="description" placeholder="Brief description of this pack's purpose"></textarea>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="pack-type">Type</label>
+          <select id="pack-type" name="type">
+            <option value="day-hike">Day Hike</option>
+            <option value="overnight">Overnight</option>
+            <option value="weekend">Weekend</option>
+            <option value="extended">Extended</option>
+            <option value="thru-hike">Thru-hike</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="pack-capacity">Capacity (L)</label>
+          <input type="number" id="pack-capacity" name="capacity_l" min="1" max="150" value="65">
+        </div>
+      </div>
+    </form>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closePackModal()">Cancel</button>
+      <button class="btn-primary" onclick="savePack()">Create Pack</button>
+    </div>
+  </div>
+</div>
+
+<!-- Pack Builder Modal -->
+<div class="modal hidden" id="pack-builder-modal">
+  <div class="modal-backdrop" onclick="PackManager.closePackBuilder()"></div>
+  <div class="modal-content pack-builder-content">
+    <div class="modal-header">
+      <h2 id="builder-title">Pack Builder</h2>
+      <button class="modal-close" onclick="PackManager.closePackBuilder()">×</button>
+    </div>
+    <div class="pack-builder-body">
+      <!-- Pack Info -->
+      <div class="pack-info-bar">
+        <div class="pack-details">
+          <h3 id="builder-pack-name">Pack Name</h3>
+          <div class="pack-weight-summary">
+            <span class="weight-label">Total Weight:</span>
+            <span class="weight-value" id="builder-total-weight">0g</span>
+          </div>
+        </div>
         <div class="pack-actions">
-            <div class="search-bar">
-                <i class="search-icon">🔍</i>
-                <input type="search" placeholder="Search packs or gear..." id="global-search">
-            </div>
-            <button class="btn-action btn-new-pack" id="btn-new-pack">
-                <i class="icon">➕</i> Create Pack
-            </button>
+          <button class="btn-secondary" onclick="PackManager.addGearToPackModal()">+ Add Gear</button>
+          <button class="btn-primary" onclick="PackManager.savePackContents()">Save Pack</button>
         </div>
+      </div>
+      
+      <!-- Pack Sections -->
+      <div class="pack-sections" id="pack-sections">
+        <div class="section" data-section="main">
+          <h4 class="section-header">
+            <span class="section-name">Main Pack</span>
+            <span class="section-stats">
+              <span class="section-weight">0g</span>
+              <span class="section-items">0 items</span>
+            </span>
+          </h4>
+          <div class="section-items" id="section-main">
+            <div class="empty-section">
+              <p>No items added yet</p>
+              <button class="btn-text" onclick="PackManager.addGearToPackModal()">Add first item</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    
-    <!-- Main Content Area -->
-    <div class="pack-content">
-        
-        <!-- My Packs View -->
-        <div class="pack-view active" id="view-my-packs">
-            <div class="packs-header">
-                <h2 class="view-title">Your Trail Packs</h2>
-                <div class="view-controls">
-                    <div class="sort-control">
-                        <label>Sort by:</label>
-                        <select id="sort-packs">
-                            <option value="recent">Recently Modified</option>
-                            <option value="name">Name</option>
-                            <option value="weight">Weight</option>
-                            <option value="items">Item Count</option>
-                        </select>
-                    </div>
-                    <div class="view-mode-toggle">
-                        <button class="view-mode active" data-mode="grid" title="Grid View">
-                            <i>⊞</i>
-                        </button>
-                        <button class="view-mode" data-mode="list" title="List View">
-                            <i>☰</i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Pack Cards Grid -->
-            <div class="packs-grid" id="packs-grid">
-                <!-- Packs will be loaded here -->
-                <div class="loading-spinner">
-                    <div class="spinner"></div>
-                    <p>Getting your packs ready...</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Pack Builder View -->
-        <div class="pack-view" id="view-builder">
-            <!-- Sticky Action Bar at Top -->
-            <div class="builder-action-bar" style="position: sticky; top: 0; z-index: 100; background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(240,248,255,0.95) 100%); backdrop-filter: blur(15px) saturate(1.5); border: 1px solid rgba(255,255,255,0.3); border-radius: 1rem; padding: 1rem 1.5rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 8px 24px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.05);">
-                <div style="display: flex; align-items: center; gap: 1rem;">
-                    <h3 style="margin: 0; background: linear-gradient(135deg, #2dd4bf, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 600;">🏎️ Pack Builder</h3>
-                    <span id="save-status" style="color: #6b7280; font-size: 0.875rem; font-weight: 500;"></span>
-                </div>
-                <div style="display: flex; gap: 0.75rem; align-items: center;">
-                    <button class="btn btn-info" id="btn-test-add-item" style="padding: 0.625rem 1.25rem; font-weight: 500; border-radius: 0.625rem; background: rgba(59,130,246,0.8); border: 1px solid rgba(59,130,246,0.5); color: white; transition: all 0.2s ease;" onclick="
-                        if (window.PackBuilderCRUD) {
-                            // Add test item to first section
-                            const testItem = {
-                                id: 'test-' + Date.now(),
-                                name: 'Test Item',
-                                weight_g: 500,
-                                weight: 500,
-                                category: 'other',
-                                icon: '🎯'
-                            };
-                            
-                            const firstSection = $('.dropzone').first();
-                            if (firstSection.length) {
-                                firstSection.find('.dropzone-placeholder').remove();
-                                const itemHtml = $(`
-                                    <div class='pack-item' data-item-id='\${testItem.id}'>
-                                        <span class='item-handle'>≡</span>
-                                        <span class='item-icon'>\${testItem.icon}</span>
-                                        <span class='item-name'>\${testItem.name}</span>
-                                        <input type='number' class='item-qty' value='1' min='1' max='99'>
-                                        <span class='item-weight'>\${testItem.weight}g</span>
-                                        <button class='btn-remove-item' title='Remove'>×</button>
-                                    </div>
-                                `);
-                                itemHtml.data('item', testItem);
-                                firstSection.append(itemHtml);
-                                console.log('Test item added to pack');
-                                window.PackBuilderCRUD.state.isDirty = true;
-                            }
-                        }
-                    ">
-                        <span>🎯</span> Add Test Item
-                    </button>
-                    <button class="btn btn-secondary" id="btn-cancel-edit" style="padding: 0.625rem 1.25rem; font-weight: 500; border-radius: 0.625rem; background: rgba(255,255,255,0.8); border: 1px solid rgba(209,213,219,0.5); color: #6b7280; transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-                        <span style="margin-right: 0.375rem;">❌</span> Cancel
-                    </button>
-                    <button class="btn btn-primary btn-lg" id="btn-save-pack" style="padding: 0.75rem 1.75rem; font-weight: 600; border-radius: 0.75rem; background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; box-shadow: 0 4px 12px rgba(16,185,129,0.3); transition: all 0.2s ease; font-size: 1rem;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(16,185,129,0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(16,185,129,0.3)';">
-                        <span style="margin-right: 0.5rem; font-size: 1.125rem;">💾</span> Save Pack
-                    </button>
-                </div>
-            </div>
-            
-            <div class="builder-layout">
-                
-                <!-- Left Panel: Pack Sections & Weight Summary -->
-                <div class="builder-left">
-                    <!-- Pack Sections (Moved to top) -->
-                    <div class="pack-sections-card">
-                        <div class="sections-header">
-                            <h3>Pack Sections</h3>
-                            <button class="btn-add-section" id="add-section">
-                                <i>➕</i> Add
-                            </button>
-                        </div>
-                        <div class="sections-list" id="sections-list">
-                            <!-- Default sections -->
-                            <div class="pack-section" data-section-id="main">
-                                <div class="section-header">
-                                    <span class="section-handle">≡</span>
-                                    <input type="text" class="section-name" value="Main Compartment">
-                                    <span class="section-weight">0g</span>
-                                    <button class="btn-section-toggle">▼</button>
-                                </div>
-                                <div class="section-items dropzone" data-section="main">
-                                    <div class="dropzone-placeholder">Drop gear here</div>
-                                </div>
-                            </div>
-                            
-                            <div class="pack-section" data-section-id="lid">
-                                <div class="section-header">
-                                    <span class="section-handle">≡</span>
-                                    <input type="text" class="section-name" value="Top Lid">
-                                    <span class="section-weight">0g</span>
-                                    <button class="btn-section-toggle">▼</button>
-                                </div>
-                                <div class="section-items dropzone" data-section="lid">
-                                    <div class="dropzone-placeholder">Drop gear here</div>
-                                </div>
-                            </div>
-                            
-                            <div class="pack-section" data-section-id="pockets">
-                                <div class="section-header">
-                                    <span class="section-handle">≡</span>
-                                    <input type="text" class="section-name" value="Side Pockets">
-                                    <span class="section-weight">0g</span>
-                                    <button class="btn-section-toggle">▼</button>
-                                </div>
-                                <div class="section-items dropzone" data-section="pockets">
-                                    <div class="dropzone-placeholder">Drop gear here</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Weight Summary -->
-                    <div class="weight-summary-card">
-                        <h3>Weight Summary</h3>
-                        <div class="weight-stats">
-                            <div class="weight-stat">
-                                <span class="stat-label">Total Weight</span>
-                                <span class="stat-value" id="total-weight">0g</span>
-                            </div>
-                            <div class="weight-stat">
-                                <span class="stat-label">Base Weight</span>
-                                <span class="stat-value" id="base-weight">0g</span>
-                            </div>
-                            <div class="weight-stat">
-                                <span class="stat-label">Worn Weight</span>
-                                <span class="stat-value" id="worn-weight">0g</span>
-                            </div>
-                            <div class="weight-stat">
-                                <span class="stat-label">Consumables</span>
-                                <span class="stat-value" id="consumable-weight">0g</span>
-                            </div>
-                        </div>
-                        <div class="weight-chart" id="weight-chart">
-                            <!-- Mini chart visualization -->
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Right Panel: Gear Library & Pack Details -->
-                <div class="builder-right">
-                    <!-- Gear Library (At top for easy drag & drop) -->
-                    <div class="gear-library-card" id="builder-gear-library">
-                        <div class="library-header">
-                            <h3>Gear Library</h3>
-                            <div class="library-controls">
-                                <input type="search" placeholder="Search gear..." id="gear-search" class="gear-search">
-                                <button class="btn-add-custom" id="add-custom-gear">
-                                    <i>➕</i> Custom
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <!-- Category Filters -->
-                        <div class="category-filters">
-                            <button class="cat-filter active" data-category="all">All</button>
-                            <button class="cat-filter" data-category="shelter">Shelter</button>
-                            <button class="cat-filter" data-category="sleep">Sleep</button>
-                            <button class="cat-filter" data-category="cooking">Cooking</button>
-                            <button class="cat-filter" data-category="clothing">Clothing</button>
-                            <button class="cat-filter" data-category="navigation">Navigation</button>
-                            <button class="cat-filter" data-category="hygiene">Hygiene</button>
-                            <button class="cat-filter" data-category="first-aid">First Aid</button>
-                            <button class="cat-filter" data-category="electronics">Electronics</button>
-                            <button class="cat-filter" data-category="other">Other</button>
-                        </div>
-                        
-                        <!-- Gear Items Grid -->
-                        <div class="gear-items" id="gear-items">
-                            <!-- Gear items will be loaded dynamically from API -->
-                            <div class="loading-spinner">
-                                <div class="spinner"></div>
-                                <p>Loading gear...</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Pack Details (Below gear library for better workflow) -->
-                    <div class="pack-info-card">
-                        <h3>Pack Details</h3>
-                        <div class="form-group">
-                            <label>Pack Name</label>
-                            <input type="text" id="pack-name" class="form-control" placeholder="e.g., Weekend Adventure Pack">
-                        </div>
-                        <div class="form-group">
-                            <label>Trail Notes</label>
-                            <textarea id="pack-description" class="form-control" rows="2" placeholder="What kind of adventures is this pack for?"></textarea>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Capacity (L)</label>
-                                <input type="number" id="pack-capacity" class="form-control" value="65">
-                            </div>
-                            <div class="form-group">
-                                <label>Base Weight (g)</label>
-                                <input type="number" id="pack-base-weight" class="form-control" value="0">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Templates View -->
-        <div class="pack-view" id="view-templates">
-            <div class="templates-header">
-                <h2 class="view-title">Pack Templates</h2>
-                <p class="view-subtitle">Start with a pre-configured pack for your adventure type</p>
-            </div>
-            
-            <div class="templates-grid">
-                <!-- Template cards -->
-                <div class="template-card">
-                    <div class="template-icon">🏕️</div>
-                    <h3>Weekend Warrior</h3>
-                    <p>2-3 day trips, 3-season conditions</p>
-                    <div class="template-stats">
-                        <span>Base Weight: ~4.5kg</span>
-                        <span>35 items</span>
-                    </div>
-                    <button class="btn-use-template">Use Template</button>
-                </div>
-                
-                <div class="template-card">
-                    <div class="template-icon">🏔️</div>
-                    <h3>Thru-Hiker</h3>
-                    <p>Long-distance trails, ultralight focus</p>
-                    <div class="template-stats">
-                        <span>Base Weight: ~3kg</span>
-                        <span>28 items</span>
-                    </div>
-                    <button class="btn-use-template">Use Template</button>
-                </div>
-                
-                <div class="template-card">
-                    <div class="template-icon">❄️</div>
-                    <h3>Winter Explorer</h3>
-                    <p>Cold weather, snow camping</p>
-                    <div class="template-stats">
-                        <span>Base Weight: ~6kg</span>
-                        <span>42 items</span>
-                    </div>
-                    <button class="btn-use-template">Use Template</button>
-                </div>
-                
-                <div class="template-card">
-                    <div class="template-icon">🌄</div>
-                    <h3>Day Hiker</h3>
-                    <p>Single day adventures</p>
-                    <div class="template-stats">
-                        <span>Base Weight: ~2kg</span>
-                        <span>18 items</span>
-                    </div>
-                    <button class="btn-use-template">Use Template</button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Enhanced Gear Library View -->
-        <div class="pack-view" id="view-gear-library">
-            <div class="gear-library-container">
-                <!-- Header with View Controls -->
-                <div class="gear-library-header">
-                    <h2 class="view-title">Gear Library</h2>
-                    
-                    <!-- View Mode Toggle -->
-                    <div class="view-mode-controls">
-                        <label class="radio-group" title="Show all available gear items">
-                            <input type="radio" name="gear-view-mode" value="both" checked>
-                            <span>🌐 All Gear</span>
-                        </label>
-                        <label class="radio-group" title="Show only default system gear">
-                            <input type="radio" name="gear-view-mode" value="default">
-                            <span>📦 System Gear</span>
-                        </label>
-                        <label class="radio-group" title="Show only your custom gear">
-                            <input type="radio" name="gear-view-mode" value="custom">
-                            <span>✨ My Custom</span>
-                        </label>
-                        <label class="radio-group" title="Show items you've hidden">
-                            <input type="radio" name="gear-view-mode" value="hidden">
-                            <span>👁️‍🗨️ Hidden</span>
-                        </label>
-                    </div>
-                </div>
-                
-                <!-- Search and Filter Bar -->
-                <div class="gear-controls-bar">
-                    <div class="gear-search-box">
-                        <i class="search-icon">🔍</i>
-                        <input type="text" id="gear-library-search" placeholder="Search gear..." class="gear-search-input">
-                    </div>
-                    
-                    <div class="gear-filters">
-                        <select id="gear-category-filter" class="gear-filter-select">
-                            <option value="">All Categories</option>
-                            <option value="shelter">Shelter</option>
-                            <option value="sleep">Sleep System</option>
-                            <option value="cooking">Cooking</option>
-                            <option value="clothing">Clothing</option>
-                            <option value="navigation">Navigation</option>
-                            <option value="hygiene">Hygiene</option>
-                            <option value="first-aid">First Aid</option>
-                            <option value="electronics">Electronics</option>
-                            <option value="water">Water</option>
-                            <option value="food-storage">Food Storage</option>
-                            <option value="repair">Repair</option>
-                            <option value="other">Other</option>
-                        </select>
-                        
-                        <select id="gear-sort-select" class="gear-filter-select">
-                            <option value="name">Sort by Name</option>
-                            <option value="weight">Sort by Weight</option>
-                            <option value="category">Sort by Category</option>
-                        </select>
-                    </div>
-                    
-                    <div class="gear-actions">
-                        <button class="btn-primary" id="btn-add-custom-gear">
-                            <i class="icon">➕</i> Add Custom Gear
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Category Quick Filters -->
-                <div id="category-quick-filters" class="category-quick-filters">
-                    <!-- Category pills will be added dynamically by JavaScript -->
-                </div>
-                
-                <!-- Gear Stats Bar -->
-                <div class="gear-stats-bar">
-                    <div class="stat-item">
-                        <span class="stat-label">Total Items:</span>
-                        <span class="stat-value" id="gear-total-count">0</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Total Weight:</span>
-                        <span class="stat-value" id="gear-total-weight">0g</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">View:</span>
-                        <span class="stat-value" id="gear-view-indicator">All Gear</span>
-                    </div>
-                    <div class="stat-item">
-                        <button class="btn-link" id="btn-toggle-view">
-                            <i class="icon">⊞</i> <span id="view-toggle-text">Card View</span>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Gear Items Grid/List -->
-                <div class="gear-library-content" id="gear-library-content">
-                    <div class="gear-items-grid" id="gear-items-container">
-                        <!-- Items will be loaded here dynamically -->
-                        <div class="loading-spinner">
-                            <div class="spinner"></div>
-                            <p>Loading gear library...</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-    </div>
+  </div>
 </div>
 
-<!-- Custom Gear Modal (simplified, non-intrusive) -->
-<div class="custom-gear-panel" id="custom-gear-panel" style="display: none;">
-    <div class="panel-header">
-        <h3>Add Custom Gear</h3>
-        <button class="btn-close-panel" id="close-custom-gear">×</button>
+<!-- Gear Selection Modal -->
+<div class="modal hidden" id="gear-selection-modal">
+  <div class="modal-backdrop" onclick="PackManager.closeGearSelection()"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Add Gear to Pack</h2>
+      <button class="modal-close" onclick="PackManager.closeGearSelection()">×</button>
     </div>
-    <div class="panel-body">
-        <form id="custom-gear-form" data-validate>
-            <div class="form-group">
-                <label class="form-label">
-                    Item Name <span class="required">*</span>
-                </label>
-                <input type="text" 
-                       id="custom-name" 
-                       name="custom-name" 
-                       class="form-control" 
-                       placeholder="e.g., Ultralight Tent"
-                       required 
-                       minlength="2" 
-                       maxlength="100">
-                <small class="form-text">Enter a descriptive name for the gear item</small>
-            </div>
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="form-label">
-                        Weight (g) <span class="required">*</span>
-                    </label>
-                    <input type="number" 
-                           id="custom-weight" 
-                           name="custom-weight" 
-                           class="form-control" 
-                           placeholder="0"
-                           required 
-                           min="0" 
-                           max="50000" 
-                           step="1">
-                    <small class="form-text">Weight in grams</small>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">
-                        Category <span class="required">*</span>
-                    </label>
-                    <select id="custom-category" 
-                            name="custom-category" 
-                            class="form-control" 
-                            required>
-                        <option value="">Select category...</option>
-                        <option value="shelter">Shelter</option>
-                        <option value="sleep">Sleep</option>
-                        <option value="cooking">Cooking</option>
-                        <option value="clothing">Clothing</option>
-                        <option value="navigation">Navigation</option>
-                        <option value="hygiene">Hygiene</option>
-                        <option value="first-aid">First Aid</option>
-                        <option value="electronics">Electronics</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Notes</label>
-                <textarea id="custom-notes" 
-                          name="custom-notes" 
-                          class="form-control" 
-                          rows="2" 
-                          placeholder="Brand, model, features, etc."
-                          maxlength="500"></textarea>
-            </div>
-            <div class="panel-actions">
-                <button type="button" class="btn-secondary" id="cancel-custom">Cancel</button>
-                <button type="submit" class="btn-primary" id="save-custom">Add to Library</button>
-            </div>
-        </form>
+    <div class="modal-body">
+      <div class="gear-search-bar">
+        <input type="search" placeholder="Search gear..." id="gear-search-modal">
+      </div>
+      <div class="gear-categories">
+        <button class="category-filter active" data-category="all">All</button>
+        <button class="category-filter" data-category="shelter">Shelter</button>
+        <button class="category-filter" data-category="sleep">Sleep</button>
+        <button class="category-filter" data-category="cooking">Cooking</button>
+        <button class="category-filter" data-category="water">Water</button>
+        <button class="category-filter" data-category="clothing">Clothing</button>
+      </div>
+      <div class="gear-list" id="modal-gear-list">
+        <div class="gear-loading">Loading gear...</div>
+      </div>
     </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="PackManager.closeGearSelection()">Cancel</button>
+    </div>
+  </div>
 </div>
 
-<!-- jQuery and Sortable.js are already included in template-footer.php -->
-<!-- Pack builder scripts are loaded via $pageScripts in the footer -->
 
-<!-- Initialize Pack Builder after all scripts are loaded -->
+<?php
+// Include the unified template footer
+require_once __DIR__ . '/includes/template-footer.php';
+?>
+
 <script>
-// Wait for window load event to ensure all scripts are loaded
-window.addEventListener('load', function() {
-    console.log('🎒 Initializing Pack Builder UI...');
+// Initialize Achievement Manager
+document.addEventListener('DOMContentLoaded', function() {
+    // Set user ID for Achievement Manager
+    window.BTT_USER_ID = <?php echo json_encode($user_id); ?>;
     
-    // Ensure jQuery is loaded
-    if (typeof $ === 'undefined') {
-        console.error('❌ jQuery not loaded!');
-        return;
+    if (window.achievementManager) {
+        // Check for any unshown achievements on page load
+        window.achievementManager.checkForAchievements();
     }
     
-    // Now we can safely use jQuery
-    $(document).ready(function() {
-        // Ensure PackBuilder is available
-        if (typeof window.PackBuilder !== 'undefined') {
-            console.log('✅ PackBuilder loaded');
-            
-            // Load initial packs
-            if (typeof window.PackBuilder.loadPacks === 'function') {
-                window.PackBuilder.loadPacks();
-                console.log('✅ Packs loaded');
-            }
-            
-            // Show the my-packs view by default
-            if (typeof window.PackBuilder.switchView === 'function') {
-                window.PackBuilder.switchView('my-packs');
-            }
-            
-            console.log('✅ Pack Builder UI Ready!');
-        } else {
-            console.error('❌ PackBuilder not loaded! Using fallback...');
-            
-            // Simple fallback to load backpacks
-            loadBackpacksFallback();
-        }
-        
-        // Add click handler for New Pack button if not already bound
-        $('#btn-new-pack').off('click').on('click', function() {
-            console.log('New Pack button clicked');
-            if (window.PackBuilder && window.PackBuilder.createNewPack) {
-                window.PackBuilder.createNewPack();
-            } else if (window.PackBuilderCRUD && window.PackBuilderCRUD.createNewPack) {
-                window.PackBuilderCRUD.createNewPack();
-            }
-        });
+    // Listen for backpack saved events
+    document.addEventListener('backpack:saved', function(e) {
+        console.log('Backpack saved:', e.detail);
     });
     
-    // Fallback function to load backpacks without PackBuilder
-    window.loadBackpacksFallback = function() {
-        console.log('Loading backpacks with fallback...');
-        const $grid = $('#packs-grid');
+    // Tab switching functionality
+    $('.pack-tab').on('click', function() {
+        const view = $(this).data('view');
         
-        if ($grid.length === 0) {
-            console.error('Grid element not found');
+        // Update tabs
+        $('.pack-tab').removeClass('active').addClass('btn-ghost');
+        $(this).removeClass('btn-ghost').addClass('active');
+        
+        // Update views
+        $('.pack-view').removeClass('active').hide();
+        $(`#view-${view}`).addClass('active').show();
+        
+        // Initialize view-specific functionality
+        if (view === 'builder' && $('#gear-library').length > 0) {
+            // Load gear library for builder tab
+            setTimeout(function() {
+                if (window.loadAndDisplayGear && typeof window.loadAndDisplayGear === 'function') {
+                    window.loadAndDisplayGear();
+                }
+            }, 100);
+        }
+    });
+    
+    // Initialize pack list on page load
+    setTimeout(function() {
+        if (window.PackBuilderCRUD) {
+            console.log('📋 Initializing PackBuilderCRUD...');
+            // Force initialization for pack list
+            if (typeof window.PackBuilderCRUD.init === 'function') {
+                window.PackBuilderCRUD.init();
+            }
+            // Then load packs
+            if (typeof window.PackBuilderCRUD.loadExistingPacks === 'function') {
+                console.log('📋 Loading existing packs...');
+                window.PackBuilderCRUD.loadExistingPacks();
+            }
+        } else {
+            console.warn('PackBuilderCRUD not available yet, retrying...');
+            // Retry in case scripts are still loading
+            setTimeout(function() {
+                if (window.PackBuilderCRUD && typeof window.PackBuilderCRUD.init === 'function') {
+                    window.PackBuilderCRUD.init();
+                    window.PackBuilderCRUD.loadExistingPacks();
+                }
+            }, 1000);
+        }
+    }, 500);
+    
+    // Simple builder functionality
+    $('#btn-create-new-pack').on('click', function() {
+        $('#builder-workspace').slideDown();
+        $('#quick-pack-name').focus();
+    });
+    
+    // Quick pack creation
+    $('#btn-save-quick-pack').on('click', function() {
+        const packName = $('#quick-pack-name').val().trim();
+        const packType = $('#quick-pack-type').val();
+        
+        if (!packName) {
+            alert('Please enter a pack name');
             return;
         }
         
-        // Show loading spinner
-        $grid.html('<div class="loading-spinner"><div class="spinner"></div><p>Loading backpacks...</p></div>');
+        // Create pack and redirect to full builder
+        const packData = {
+            name: packName,
+            type: packType,
+            capacity_l: 65,
+            description: 'Created with Quick Builder'
+        };
         
-        // Load backpacks using jQuery AJAX
+        // Send to backend
         $.ajax({
-            url: '/BTT/api/index.php',
-            method: 'GET',
-            data: { route: 'backpacks' },
-            dataType: 'json',
+            url: '/BTT/ajax-handler.php?route=backpacks',
+            method: 'POST',
+            data: JSON.stringify(packData),
+            contentType: 'application/json',
             success: function(response) {
-                console.log('Backpacks loaded:', response);
-                
-                // The API now auto-unwraps, so response should be the array
-                const backpacks = Array.isArray(response) ? response : (response.data || []);
-                
-                if (backpacks.length === 0) {
-                    $grid.html('<div class="packs-empty-state"><div class="packs-empty-icon">🎒</div><div class="packs-empty-text">No backpacks yet</div><div class="packs-empty-subtext">Click the New Pack button to create your first backpack.</div></div>');
+                if (response.success && response.data) {
+                    // Redirect to full builder with the new pack
+                    window.location.href = `/BTT/pack-builder.php?id=${response.data.id}`;
                 } else {
-                    let html = '';
-                    backpacks.forEach(function(pack) {
-                        const weight = pack.total_weight_g ? (pack.total_weight_g / 1000).toFixed(1) + 'kg' : '0kg';
-                        html += `
-                            <article class="pack-card" data-id="${pack.id}">
-                                <div class="pack-card-header">
-                                    <h3>${pack.name || 'Unnamed Pack'}</h3>
-                                </div>
-                                <div class="pack-card-stats">
-                                    <div class="pack-stat">
-                                        <span class="pack-stat-value">${pack.total_items || 0}</span>
-                                        <span class="pack-stat-label">Items</span>
-                                    </div>
-                                    <div class="pack-stat">
-                                        <span class="pack-stat-value">${weight}</span>
-                                        <span class="pack-stat-label">Weight</span>
-                                    </div>
-                                </div>
-                            </article>
-                        `;
-                    });
-                    $grid.html(html);
+                    alert('Failed to create pack: ' + (response.message || 'Unknown error'));
                 }
             },
             error: function(xhr, status, error) {
-                console.error('Failed to load backpacks:', error);
-                $grid.html('<div class="alert alert-error">Failed to load backpacks. Please refresh the page.</div>');
+                alert('Error creating pack: ' + error);
             }
         });
-    };
+    });
 });
 </script>
-<!-- Additional scripts would go here if needed -->
-
-<?php require_once __DIR__ . '/includes/template-footer.php'; ?>

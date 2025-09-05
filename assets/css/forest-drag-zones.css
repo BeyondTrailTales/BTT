@@ -1,0 +1,278 @@
+/* Forest-themed drag zones matching Duolingo style */
+
+.gear-drop-zone {
+    min-height: 120px;
+    border: 2px dashed #10b981;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.20) 100%);
+    padding: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.gear-drop-zone::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 70%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.gear-drop-zone:hover::before {
+    opacity: 1;
+}
+
+/* Drop hint styling */
+.drop-hint {
+    text-align: center;
+    color: #064e3b;
+    font-weight: 600;
+    font-size: 1rem;
+    margin: 0;
+    padding: 2rem 1rem;
+    border-radius: 8px;
+    background: rgba(209, 250, 229, 0.85);
+    backdrop-filter: blur(5px);
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.drop-hint::before {
+    content: '🌲';
+    display: block;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.7;
+}
+
+/* Active drag states */
+.gear-drop-zone.drag-active {
+    border-color: #3b82f6 !important;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.15) 100%);
+    transform: scale(1.02);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.2);
+}
+
+.gear-drop-zone.drag-active::before {
+    opacity: 1;
+    background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
+}
+
+.gear-drop-zone.drag-active .drop-hint {
+    color: #1e3a8a;
+    background: rgba(219, 234, 254, 0.95);
+    transform: translateY(-2px);
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);
+    font-weight: 700;
+}
+
+.gear-drop-zone.drag-active .drop-hint::before {
+    content: '✨';
+    animation: sparkle 0.6s ease-in-out infinite alternate;
+}
+
+.gear-drop-zone.drag-over {
+    border-color: #10b981 !important;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.2) 100%);
+    transform: scale(1.05);
+    box-shadow: 0 12px 35px rgba(16, 185, 129, 0.3);
+}
+
+.gear-drop-zone.drag-over .drop-hint {
+    color: #064e3b;
+    background: rgba(167, 243, 208, 0.95);
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9);
+    font-weight: 700;
+}
+
+.gear-drop-zone.drag-over .drop-hint::before {
+    content: '🎯';
+    animation: bounce-gentle 0.5s ease-in-out infinite alternate;
+}
+
+/* Section headers with forest theme */
+.pack-section {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #d1fae5;
+    border-radius: 16px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.pack-section:hover {
+    border-color: #10b981;
+    box-shadow: 0 4px 20px rgba(16, 185, 129, 0.1);
+}
+
+.section-header {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.section-header:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    transform: translateY(-1px);
+}
+
+.section-toggle {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.section-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.section-icon {
+    font-size: 1.25rem;
+}
+
+.section-name {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    padding: 0.5rem;
+    color: white;
+    font-weight: 500;
+}
+
+.section-name::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.section-name:focus {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.6);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+.section-weight {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-delete-section {
+    background: rgba(239, 68, 68, 0.8);
+    border: 1px solid rgba(239, 68, 68, 0.6);
+    color: white;
+    border-radius: 50%;
+    width: 1.75rem;
+    height: 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-left: 0.5rem;
+}
+
+.btn-delete-section:hover {
+    background: rgba(220, 38, 38, 0.9);
+    border-color: rgba(220, 38, 38, 0.8);
+    transform: scale(1.1);
+}
+
+.btn-delete-section:active {
+    transform: scale(0.95);
+}
+
+.section-content {
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Animations */
+@keyframes sparkle {
+    0% { transform: scale(1) rotate(0deg); }
+    100% { transform: scale(1.1) rotate(5deg); }
+}
+
+@keyframes bounce-gentle {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-3px); }
+}
+
+/* When section is collapsed */
+.pack-section.collapsed .section-content {
+    display: none;
+}
+
+.pack-section.collapsed .section-toggle {
+    transform: rotate(-90deg);
+}
+
+/* Gear items in sections */
+.pack-item {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #d1fae5;
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(5px);
+}
+
+.pack-item:hover {
+    border-color: #10b981;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
+    transform: translateY(-1px);
+}
+
+.pack-item.dragging {
+    opacity: 0.7;
+    transform: rotate(2deg) scale(0.98);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Success animation when item is dropped */
+.gear-drop-zone.drop-success {
+    animation: success-pulse 0.6s ease;
+}
+
+@keyframes success-pulse {
+    0% { transform: scale(1); }
+    50% { 
+        transform: scale(1.03);
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.25) 100%);
+        box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
+    }
+    100% { transform: scale(1); }
+}

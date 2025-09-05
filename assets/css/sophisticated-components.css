@@ -1,0 +1,431 @@
+/**
+ * Sophisticated Forest Components
+ * Styles for all existing components using the sophisticated forest theme
+ */
+
+/* ===========================================
+   PACK BUILDER & TRIPS COMPONENTS
+   =========================================== */
+
+/* Pack Builder Container */
+.sophisticated-forest-theme .pack-builder-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background: transparent;
+}
+
+/* Action Bar */
+.sophisticated-forest-theme .pack-action-bar {
+  background: var(--glass-light);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Tabs */
+.sophisticated-forest-theme .pack-tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.sophisticated-forest-theme .pack-tab {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sophisticated-forest-theme .pack-tab:hover {
+  background: var(--glass-subtle);
+  color: var(--text-secondary);
+}
+
+.sophisticated-forest-theme .pack-tab.active {
+  background: var(--accent-sage);
+  color: var(--text-primary);
+}
+
+/* Search and Actions */
+.sophisticated-forest-theme .pack-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sophisticated-forest-theme .search-bar input {
+  background: var(--glass-subtle);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: var(--text-primary);
+  font-size: 14px;
+  width: 200px;
+  transition: all 0.2s ease;
+}
+
+.sophisticated-forest-theme .search-bar input:focus {
+  outline: none;
+  border-color: var(--accent-sage);
+  background: var(--glass-light);
+}
+
+.sophisticated-forest-theme .search-bar input::placeholder {
+  color: var(--text-muted);
+}
+
+/* ===========================================
+   CONTENT PANELS
+   =========================================== */
+
+.sophisticated-forest-theme .pack-content-grid,
+.sophisticated-forest-theme .trip-content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.sophisticated-forest-theme .pack-panel,
+.sophisticated-forest-theme .trip-panel {
+  background: var(--glass-light);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 20px;
+  height: fit-content;
+}
+
+.sophisticated-forest-theme .panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.sophisticated-forest-theme .panel-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* ===========================================
+   FORMS AND INPUTS
+   =========================================== */
+
+.sophisticated-forest-theme .form-group {
+  margin-bottom: 16px;
+}
+
+.sophisticated-forest-theme .form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.sophisticated-forest-theme .form-input,
+.sophisticated-forest-theme .form-select,
+.sophisticated-forest-theme .form-textarea {
+  width: 100%;
+  background: var(--glass-subtle);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--text-primary);
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.sophisticated-forest-theme .form-input:focus,
+.sophisticated-forest-theme .form-select:focus,
+.sophisticated-forest-theme .form-textarea:focus {
+  outline: none;
+  border-color: var(--accent-sage);
+  background: var(--glass-light);
+  box-shadow: 0 0 0 3px rgba(122, 132, 113, 0.1);
+}
+
+.sophisticated-forest-theme .form-input::placeholder,
+.sophisticated-forest-theme .form-textarea::placeholder {
+  color: var(--text-muted);
+}
+
+/* ===========================================
+   BUTTONS
+   =========================================== */
+
+.sophisticated-forest-theme .btn {
+  background: var(--accent-sage);
+  color: var(--text-primary);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.sophisticated-forest-theme .btn:hover {
+  background: var(--accent-pine);
+  transform: translateY(-1px);
+}
+
+.sophisticated-forest-theme .btn-secondary {
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  color: var(--text-muted);
+}
+
+.sophisticated-forest-theme .btn-secondary:hover {
+  background: var(--glass-subtle);
+  border-color: var(--accent-sage);
+  color: var(--text-secondary);
+}
+
+.sophisticated-forest-theme .btn-danger {
+  background: var(--error);
+  color: var(--text-primary);
+}
+
+.sophisticated-forest-theme .btn-danger:hover {
+  background: #8b4a3a;
+}
+
+.sophisticated-forest-theme .btn-sm {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.sophisticated-forest-theme .btn-lg {
+  padding: 14px 20px;
+  font-size: 16px;
+}
+
+/* ===========================================
+   CARDS AND LISTS
+   =========================================== */
+
+.sophisticated-forest-theme .item-card,
+.sophisticated-forest-theme .pack-item,
+.sophisticated-forest-theme .trip-item {
+  background: var(--glass-subtle);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+  transition: all 0.2s ease;
+}
+
+.sophisticated-forest-theme .item-card:hover,
+.sophisticated-forest-theme .pack-item:hover,
+.sophisticated-forest-theme .trip-item:hover {
+  background: var(--glass-light);
+  transform: translateY(-1px);
+}
+
+.sophisticated-forest-theme .item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.sophisticated-forest-theme .item-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.sophisticated-forest-theme .item-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 4px 0;
+}
+
+.sophisticated-forest-theme .item-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+/* ===========================================
+   MODALS AND OVERLAYS
+   =========================================== */
+
+.sophisticated-forest-theme .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 26, 18, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.sophisticated-forest-theme .modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sophisticated-forest-theme .modal-content {
+  background: var(--surface-medium);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 600px;
+  width: 90vw;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.sophisticated-forest-theme .modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.sophisticated-forest-theme .modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.sophisticated-forest-theme .modal-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 20px;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.sophisticated-forest-theme .modal-close:hover {
+  background: var(--glass-subtle);
+  color: var(--text-primary);
+}
+
+/* ===========================================
+   NAVIGATION OVERRIDES
+   =========================================== */
+
+.sophisticated-forest-theme .unified-nav {
+  background: var(--surface-dark);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.sophisticated-forest-theme .nav-brand {
+  color: var(--text-primary) !important;
+  font-weight: 600;
+}
+
+.sophisticated-forest-theme .nav-link {
+  color: var(--text-muted) !important;
+  transition: color 0.2s ease;
+}
+
+.sophisticated-forest-theme .nav-link:hover,
+.sophisticated-forest-theme .nav-link.active {
+  color: var(--text-primary) !important;
+  background: var(--glass-subtle) !important;
+}
+
+/* ===========================================
+   UTILITIES
+   =========================================== */
+
+.sophisticated-forest-theme .text-center { text-align: center; }
+.sophisticated-forest-theme .text-left { text-align: left; }
+.sophisticated-forest-theme .text-right { text-align: right; }
+
+.sophisticated-forest-theme .mt-1 { margin-top: 4px; }
+.sophisticated-forest-theme .mt-2 { margin-top: 8px; }
+.sophisticated-forest-theme .mt-3 { margin-top: 12px; }
+.sophisticated-forest-theme .mt-4 { margin-top: 16px; }
+.sophisticated-forest-theme .mt-5 { margin-top: 20px; }
+
+.sophisticated-forest-theme .mb-1 { margin-bottom: 4px; }
+.sophisticated-forest-theme .mb-2 { margin-bottom: 8px; }
+.sophisticated-forest-theme .mb-3 { margin-bottom: 12px; }
+.sophisticated-forest-theme .mb-4 { margin-bottom: 16px; }
+.sophisticated-forest-theme .mb-5 { margin-bottom: 20px; }
+
+.sophisticated-forest-theme .p-1 { padding: 4px; }
+.sophisticated-forest-theme .p-2 { padding: 8px; }
+.sophisticated-forest-theme .p-3 { padding: 12px; }
+.sophisticated-forest-theme .p-4 { padding: 16px; }
+.sophisticated-forest-theme .p-5 { padding: 20px; }
+
+.sophisticated-forest-theme .d-flex { display: flex; }
+.sophisticated-forest-theme .d-block { display: block; }
+.sophisticated-forest-theme .d-none { display: none; }
+
+.sophisticated-forest-theme .w-100 { width: 100%; }
+.sophisticated-forest-theme .h-100 { height: 100%; }
+
+/* ===========================================
+   RESPONSIVE DESIGN
+   =========================================== */
+
+@media (max-width: 768px) {
+  .sophisticated-forest-theme .pack-content-grid,
+  .sophisticated-forest-theme .trip-content-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .sophisticated-forest-theme .pack-action-bar {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+  
+  .sophisticated-forest-theme .pack-tabs {
+    overflow-x: auto;
+    padding: 4px 0;
+  }
+  
+  .sophisticated-forest-theme .search-bar input {
+    width: 100%;
+  }
+}

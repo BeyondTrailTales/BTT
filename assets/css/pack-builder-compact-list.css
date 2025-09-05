@@ -1,0 +1,292 @@
+/**
+ * Pack Builder Gear Library - Compact Single Line View
+ * Maximizes visible items with efficient single-line layout
+ */
+
+/* ===================================
+   COMPACT SINGLE-LINE GEAR ITEMS
+   =================================== */
+
+.gear-list-item {
+    /* Single line flex layout */
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    
+    /* Minimal height for maximum density */
+    width: 100% !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+    padding: 4px 8px !important;
+    margin-bottom: 2px !important;
+    box-sizing: border-box !important;
+    
+    /* Subtle visual design */
+    background: rgba(15, 23, 42, 0.85) !important;
+    border: 1px solid rgba(88, 204, 2, 0.15) !important;
+    border-radius: 6px !important;
+    
+    /* Transitions */
+    transition: all 0.15s ease !important;
+    cursor: grab !important;
+    
+    /* Ensure single line */
+    overflow: hidden !important;
+    white-space: nowrap !important;
+    position: relative !important;
+}
+
+.gear-list-item:hover {
+    background: rgba(30, 41, 59, 0.95) !important;
+    border-color: rgba(88, 204, 2, 0.4) !important;
+    box-shadow: 0 1px 3px rgba(88, 204, 2, 0.2) !important;
+}
+
+/* Category color accent - subtle 2px line */
+.gear-list-item::before {
+    content: '' !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 2px !important;
+    background: #58cc02 !important;
+    border-radius: 6px 0 0 6px !important;
+}
+
+/* ===================================
+   ICON - SMALLER AND INLINE
+   =================================== */
+
+.gear-list-item .list-item-media {
+    flex: 0 0 24px !important;
+    width: 24px !important;
+    height: 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.gear-list-item .gear-icon {
+    width: 24px !important;
+    height: 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(88, 204, 2, 0.1) !important;
+    border-radius: 4px !important;
+    font-size: 14px !important;
+    color: #fff !important;
+}
+
+/* ===================================
+   CONTENT - SINGLE LINE LAYOUT
+   =================================== */
+
+.gear-list-item .list-item-content {
+    flex: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    min-width: 0 !important;
+    height: 24px !important;
+    overflow: hidden !important;
+}
+
+/* Name and details on same line */
+.gear-list-item .gear-name,
+.gear-list-item .list-item-title {
+    /* Remove block display - make inline */
+    display: inline !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    line-height: 24px !important;
+    color: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 40% !important;
+}
+
+/* Details inline with name */
+.gear-list-item .gear-details,
+.gear-list-item .list-item-subtitle {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    font-size: 12px !important;
+    line-height: 24px !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex: 1 !important;
+    overflow: hidden !important;
+}
+
+.gear-list-item .gear-weight {
+    color: #58cc02 !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+}
+
+.gear-list-item .gear-category {
+    color: rgba(255, 255, 255, 0.5) !important;
+    font-size: 11px !important;
+    text-transform: lowercase !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+/* ===================================
+   ADD BUTTON - MINIMAL SIZE
+   =================================== */
+
+.gear-list-item .list-item-actions {
+    flex: 0 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    margin-left: 4px !important;
+}
+
+.gear-list-item .gear-add-btn {
+    width: 24px !important;
+    height: 24px !important;
+    min-width: 24px !important;
+    min-height: 24px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #58cc02 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 4px !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+}
+
+.gear-list-item .gear-add-btn:hover {
+    background: #46a000 !important;
+    transform: scale(1.1) !important;
+}
+
+/* ===================================
+   CONTAINER - MORE ITEMS VISIBLE
+   =================================== */
+
+#gear-items,
+#modal-gear-list,
+.gear-list {
+    max-height: 500px !important; /* Increased height */
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding: 4px !important;
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 6px !important;
+}
+
+/* Thin scrollbar */
+#gear-items::-webkit-scrollbar,
+#modal-gear-list::-webkit-scrollbar,
+.gear-list::-webkit-scrollbar {
+    width: 6px !important;
+}
+
+#gear-items::-webkit-scrollbar-track,
+#modal-gear-list::-webkit-scrollbar-track,
+.gear-list::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+#gear-items::-webkit-scrollbar-thumb,
+#modal-gear-list::-webkit-scrollbar-thumb,
+.gear-list::-webkit-scrollbar-thumb {
+    background: rgba(88, 204, 2, 0.3) !important;
+    border-radius: 3px !important;
+}
+
+/* ===================================
+   ALTERNATE STRIPING FOR READABILITY
+   =================================== */
+
+.gear-list-item:nth-child(even) {
+    background: rgba(15, 23, 42, 0.65) !important;
+}
+
+.gear-list-item:nth-child(odd) {
+    background: rgba(15, 23, 42, 0.85) !important;
+}
+
+/* ===================================
+   CATEGORY COLORS - SUBTLE
+   =================================== */
+
+.gear-list-item[data-item*="shelter"]::before { background: #10b981 !important; }
+.gear-list-item[data-item*="sleep"]::before { background: #8b5cf6 !important; }
+.gear-list-item[data-item*="cooking"]::before { background: #f59e0b !important; }
+.gear-list-item[data-item*="water"]::before { background: #06b6d4 !important; }
+.gear-list-item[data-item*="clothing"]::before { background: #3b82f6 !important; }
+.gear-list-item[data-item*="navigation"]::before { background: #ef4444 !important; }
+.gear-list-item[data-item*="hygiene"]::before { background: #ec4899 !important; }
+.gear-list-item[data-item*="first-aid"]::before { background: #dc2626 !important; }
+.gear-list-item[data-item*="electronics"]::before { background: #6366f1 !important; }
+.gear-list-item[data-item*="food"]::before { background: #a78bfa !important; }
+.gear-list-item[data-item*="repair"]::before { background: #78716c !important; }
+.gear-list-item[data-item*="other"]::before { background: #6b7280 !important; }
+
+/* ===================================
+   FORCE SINGLE LINE DISPLAY
+   =================================== */
+
+/* Override any multi-line styles */
+.gear-list-item * {
+    display: inline !important;
+    vertical-align: middle !important;
+}
+
+.gear-list-item .list-item-media,
+.gear-list-item .list-item-actions {
+    display: inline-flex !important;
+}
+
+.gear-list-item .list-item-content {
+    display: inline-flex !important;
+}
+
+/* ===================================
+   RESPONSIVE - MAINTAIN DENSITY
+   =================================== */
+
+@media (max-width: 640px) {
+    .gear-list-item {
+        height: 28px !important;
+        min-height: 28px !important;
+        max-height: 28px !important;
+        padding: 2px 6px !important;
+    }
+    
+    .gear-list-item .gear-icon,
+    .gear-list-item .gear-add-btn {
+        width: 20px !important;
+        height: 20px !important;
+        font-size: 11px !important;
+    }
+    
+    .gear-list-item .gear-name {
+        font-size: 12px !important;
+    }
+    
+    .gear-list-item .gear-weight {
+        font-size: 11px !important;
+    }
+}

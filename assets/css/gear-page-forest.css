@@ -1,0 +1,736 @@
+/**
+ * Gear Page - Complete Duolingo Forest Theme
+ * Transform all UI elements to match the forest aesthetic
+ * @version 2.0.0
+ */
+
+/* ==================== Base Layout ==================== */
+.gear-page {
+    background: linear-gradient(135deg, #0a2818 0%, #0f3823 100%);
+    min-height: 100vh;
+    position: relative;
+    padding: 1rem;
+}
+
+.gear-page::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 20% 50%, rgba(88, 204, 2, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(137, 226, 25, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(46, 125, 50, 0.06) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.gear-page .pack-builder-container {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* ==================== Enhanced Header Section ==================== */
+.gear-header-section {
+    background: 
+        linear-gradient(135deg, rgba(88, 204, 2, 0.15) 0%, rgba(68, 162, 2, 0.08) 100%),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.3) 0%, transparent 100%);
+    border: 2px solid rgba(88, 204, 2, 0.25);
+    border-radius: 20px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Animated forest decoration */
+.gear-header-section::before {
+    content: "🌲";
+    position: absolute;
+    left: -20px;
+    bottom: -10px;
+    font-size: 4rem;
+    opacity: 0.1;
+    transform: rotate(-15deg);
+    animation: sway 6s ease-in-out infinite;
+}
+
+.gear-header-section::after {
+    content: "🍃";
+    position: absolute;
+    right: 30px;
+    top: 20px;
+    font-size: 2.5rem;
+    opacity: 0.15;
+    animation: float-leaf 8s ease-in-out infinite;
+}
+
+@keyframes sway {
+    0%, 100% { transform: rotate(-15deg) translateX(0); }
+    50% { transform: rotate(-10deg) translateX(10px); }
+}
+
+.gear-page-title {
+    background: linear-gradient(135deg, #58cc02, #89e219);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+    text-shadow: 0 2px 20px rgba(88, 204, 2, 0.3);
+}
+
+.gear-page-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1rem;
+}
+
+/* ==================== Stats Bar - Duolingo Style ==================== */
+.gear-stats-bar {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 20, 0, 0.3));
+    backdrop-filter: blur(20px);
+    border: 1.5px solid rgba(88, 204, 2, 0.2);
+    border-radius: 16px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.gear-stats-bar::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(88, 204, 2, 0.1), transparent);
+    animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+.gear-stats-bar > div {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+}
+
+.gear-stats-bar > div span:first-child {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.gear-stats-bar > div div {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-top: 0.25rem;
+}
+
+#total-items-count { 
+    color: #58cc02;
+    text-shadow: 0 0 20px rgba(88, 204, 2, 0.5);
+}
+
+#custom-items-count { 
+    color: #60a5fa;
+    text-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
+}
+
+#total-weight { 
+    color: #fbbf24;
+    text-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
+}
+
+/* ==================== Duolingo-style Buttons ==================== */
+.btn-secondary {
+    background: linear-gradient(135deg, rgba(88, 204, 2, 0.2), rgba(88, 204, 2, 0.1));
+    border: 2px solid #58cc02;
+    color: #58cc02;
+    padding: 0.75rem 1.25rem;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 0 rgba(68, 162, 2, 0.3);
+    text-transform: none;
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, rgba(88, 204, 2, 0.3), rgba(88, 204, 2, 0.2));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 rgba(68, 162, 2, 0.3);
+}
+
+.btn-secondary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 0 rgba(68, 162, 2, 0.3);
+}
+
+/* Primary action buttons */
+.btn-action,
+.btn-primary,
+button[type="submit"] {
+    background: linear-gradient(135deg, #58cc02, #68d612);
+    border: none;
+    color: white;
+    padding: 0.875rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 
+        0 6px 0 #46a302,
+        0 8px 20px rgba(88, 204, 2, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-action:hover,
+.btn-primary:hover,
+button[type="submit"]:hover {
+    background: linear-gradient(135deg, #68d612, #78e622);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 8px 0 #46a302,
+        0 12px 25px rgba(88, 204, 2, 0.4);
+}
+
+.btn-action:active,
+.btn-primary:active,
+button[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: 
+        0 3px 0 #46a302,
+        0 4px 10px rgba(88, 204, 2, 0.3);
+}
+
+/* ==================== Search & Filter Bar ==================== */
+.gear-toolbar {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 20, 0, 0.4));
+    backdrop-filter: blur(15px);
+    border: 1.5px solid rgba(88, 204, 2, 0.15);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Search Input - Duolingo Style */
+.search-bar {
+    position: relative;
+    flex: 1;
+    min-width: 300px;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 0.875rem 1rem 0.875rem 3rem;
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(88, 204, 2, 0.25);
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.search-bar input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 500;
+}
+
+.search-bar input:focus {
+    outline: none;
+    border-color: #58cc02;
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: 
+        0 0 0 3px rgba(88, 204, 2, 0.15),
+        0 4px 20px rgba(88, 204, 2, 0.2);
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    pointer-events: none;
+}
+
+/* Filter Dropdowns - Duolingo Style */
+.filter-group select {
+    padding: 0.875rem 2.5rem 0.875rem 1rem;
+    background: rgba(0, 0, 0, 0.4);
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2358cc02' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1.2rem;
+    border: 2px solid rgba(88, 204, 2, 0.25);
+    border-radius: 12px;
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none;
+}
+
+.filter-group select:hover {
+    background-color: rgba(88, 204, 2, 0.1);
+    border-color: rgba(88, 204, 2, 0.4);
+}
+
+.filter-group select:focus {
+    outline: none;
+    border-color: #58cc02;
+    box-shadow: 
+        0 0 0 3px rgba(88, 204, 2, 0.15),
+        0 4px 20px rgba(88, 204, 2, 0.2);
+}
+
+.filter-group label {
+    font-size: 0.8rem;
+    color: #58cc02;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* Result Count Badge */
+.toolbar-status {
+    background: linear-gradient(135deg, rgba(88, 204, 2, 0.2), rgba(88, 204, 2, 0.1));
+    border: 2px solid #58cc02;
+    border-radius: 999px;
+    padding: 0.625rem 1.25rem;
+    color: #58cc02;
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: inline-block;
+    box-shadow: 0 4px 15px rgba(88, 204, 2, 0.3);
+}
+
+/* ==================== Form Section - Duolingo Style ==================== */
+.gear-form-column {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 20, 0, 0.4));
+    backdrop-filter: blur(20px);
+    border: 2px solid rgba(88, 204, 2, 0.2);
+    border-radius: 20px;
+    padding: 2rem !important;
+    height: fit-content;
+    position: sticky;
+    top: 1rem;
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+#form-title {
+    color: #58cc02 !important;
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem !important;
+    text-align: center;
+    text-shadow: 0 2px 10px rgba(88, 204, 2, 0.3);
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-label span {
+    color: #f87171;
+}
+
+/* Text Inputs - Duolingo Style */
+.form-control,
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid rgba(88, 204, 2, 0.25);
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus,
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: #58cc02;
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: 
+        0 0 0 3px rgba(88, 204, 2, 0.15),
+        0 4px 20px rgba(88, 204, 2, 0.2);
+}
+
+.form-control::placeholder,
+input::placeholder,
+textarea::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+    font-weight: 500;
+}
+
+/* Textarea specific */
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+    font-family: inherit;
+}
+
+/* Select dropdown arrow */
+select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2358cc02' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1.2rem;
+    padding-right: 2.5rem;
+}
+
+/* Form Row */
+.form-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1rem;
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    justify-content: center;
+}
+
+.form-actions button {
+    flex: 1;
+}
+
+/* Cancel/Clear buttons */
+#btn-cancel-edit,
+#btn-clear-form {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1));
+    border: 2px solid #ef4444;
+    color: #ef4444;
+    box-shadow: 0 4px 0 rgba(185, 28, 28, 0.3);
+}
+
+#btn-cancel-edit:hover,
+#btn-clear-form:hover {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(239, 68, 68, 0.2));
+}
+
+/* Form Errors */
+.form-error {
+    color: #f87171;
+    font-size: 0.875rem;
+    margin-top: 0.375rem;
+    font-weight: 600;
+    display: none;
+}
+
+.form-error:not(:empty) {
+    display: block;
+    animation: shake 0.3s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* ==================== Gear Grid Cards - Enhanced Forest Theme ==================== */
+.gear-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem 0;
+    animation: fadeInGrid 0.5s ease;
+}
+
+@keyframes fadeInGrid {
+    from { 
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.gear-card {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 20, 0, 0.4));
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(88, 204, 2, 0.15);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+.gear-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(88, 204, 2, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.gear-card:hover::before {
+    left: 100%;
+}
+
+.gear-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    border-color: #58cc02;
+    box-shadow: 
+        0 20px 40px rgba(88, 204, 2, 0.3),
+        0 0 60px rgba(88, 204, 2, 0.1);
+}
+
+.gear-card.editing {
+    border-color: #fbbf24;
+    box-shadow: 0 0 30px rgba(251, 191, 36, 0.3);
+    animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { box-shadow: 0 0 30px rgba(251, 191, 36, 0.3); }
+    50% { box-shadow: 0 0 50px rgba(251, 191, 36, 0.5); }
+}
+
+/* Card Actions */
+.gear-card-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(88, 204, 2, 0.1);
+}
+
+.btn-icon {
+    padding: 0.625rem;
+    background: linear-gradient(135deg, rgba(88, 204, 2, 0.1), rgba(88, 204, 2, 0.05));
+    border: 2px solid rgba(88, 204, 2, 0.25);
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.125rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-icon:hover {
+    background: linear-gradient(135deg, rgba(88, 204, 2, 0.2), rgba(88, 204, 2, 0.1));
+    transform: translateY(-2px);
+    border-color: #58cc02;
+    color: white;
+    box-shadow: 0 4px 15px rgba(88, 204, 2, 0.3);
+}
+
+.btn-icon.btn-edit:hover {
+    border-color: #fbbf24;
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.2), rgba(251, 191, 36, 0.1));
+    box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+}
+
+.btn-icon.btn-delete:hover {
+    border-color: #ef4444;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1));
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+/* ==================== Loading & Empty States ==================== */
+#gear-loading,
+#gear-empty,
+#gear-no-results {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, rgba(88, 204, 2, 0.05), rgba(88, 204, 2, 0.02));
+    border: 2px dashed rgba(88, 204, 2, 0.3);
+    border-radius: 20px;
+    margin: 2rem 0;
+}
+
+.loading-spinner {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(88, 204, 2, 0.1);
+    border-top-color: #58cc02;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ==================== Modals - Duolingo Style ==================== */
+.modal {
+    backdrop-filter: blur(8px);
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #0a2818, #0f3823);
+    border: 2px solid rgba(88, 204, 2, 0.3);
+    border-radius: 20px;
+    box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.5),
+        0 0 100px rgba(88, 204, 2, 0.1);
+    animation: modalSlideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    background: linear-gradient(135deg, rgba(88, 204, 2, 0.1), transparent);
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(88, 204, 2, 0.2);
+}
+
+.modal-header h2 {
+    color: #58cc02;
+    font-size: 1.75rem;
+    font-weight: 800;
+}
+
+/* ==================== Responsive Design ==================== */
+@media (max-width: 768px) {
+    .gear-stats-bar {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .gear-stats-bar > div {
+        text-align: center;
+        padding: 0.5rem;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+    }
+    
+    .toolbar-row {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .search-bar {
+        width: 100%;
+        min-width: unset;
+    }
+    
+    .gear-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .pack-content {
+        flex-direction: column !important;
+    }
+    
+    .gear-form-column {
+        position: static !important;
+        width: 100%;
+    }
+}
+
+/* ==================== Achievement Animations ==================== */
+@keyframes achievementPop {
+    0% { transform: scale(0) rotate(0deg); }
+    50% { transform: scale(1.2) rotate(10deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+
+.achievement-unlocked {
+    animation: achievementPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ==================== Forest Sparkles Effect ==================== */
+@keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1); }
+}
+
+.sparkle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #58cc02;
+    border-radius: 50%;
+    animation: sparkle 2s ease-in-out infinite;
+}
+
+/* Add subtle sparkles to important elements */
+.btn-primary::after,
+button[type="submit"]::after {
+    content: "✨";
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 1.5rem;
+    animation: sparkle 3s ease-in-out infinite;
+    pointer-events: none;
+}

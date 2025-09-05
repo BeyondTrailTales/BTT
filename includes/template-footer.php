@@ -161,9 +161,13 @@ $uxRefreshEnabled = $_SESSION['ux_refresh'] ?? $_COOKIE['ux_refresh'] ?? true;
     <?php if ($uxRefreshEnabled): ?>
     <script src="<?php echo asset_url('js/ux-ui.js'); ?>"></script>
     <?php endif; ?>
-    <!-- Navigation handlers (dropdowns, logout, etc.) -->
-    <script src="<?php echo asset_url('js/navigation.js'); ?>"></script>
+    <!-- Navigation handlers now handled by duolingo-forest-nav.js in header -->
+    <!-- Duolingo-style notifications and popups -->
+    <script src="<?php echo asset_url('js/duo-notifications.js'); ?>"></script>
     <script src="<?php echo asset_url('js/gamification.js'); ?>"></script>
+    <!-- Achievement System -->
+    <script src="<?php echo asset_url('js/confetti.js'); ?>"></script>
+    <script src="<?php echo asset_url('js/achievement-manager.js'); ?>"></script>
     <!-- Loading Animations and Transitions -->
     <script src="<?php echo asset_url('js/loading-transitions.js'); ?>"></script>
     <!-- Toast Notifications System -->
@@ -178,6 +182,10 @@ $uxRefreshEnabled = $_SESSION['ux_refresh'] ?? $_COOKIE['ux_refresh'] ?? true;
     <!-- Accessibility Enhancements -->
     <script src="<?php echo asset_url('js/accessibility-enhancements.js'); ?>" defer></script>
     
+    <!-- Modern Unified JavaScript - Global Application -->
+    <script src="<?php echo asset_url('js/btt-state-manager.js'); ?>"></script>
+    <script src="<?php echo asset_url('js/btt-compatibility-layer.js'); ?>"></script>
+    
     <!-- Page-specific scripts with aggressive cache busting -->
     <?php if (isset($pageScripts)): ?>
         <?php foreach ($pageScripts as $script): ?>
@@ -185,148 +193,5 @@ $uxRefreshEnabled = $_SESSION['ux_refresh'] ?? $_COOKIE['ux_refresh'] ?? true;
         <?php endforeach; ?>
     <?php endif; ?>
     
-    <style>
-        /* Footer Styles */
-        .site-footer {
-            background: var(--forest-canopy, #1a3d2e);
-            border-top: 1px solid var(--glass-border, rgba(255,255,255,0.1));
-            padding: 3rem 0 1.5rem;
-            margin-top: auto;
-        }
-        
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            gap: 3rem;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-        }
-        
-        .footer-brand {
-            flex: 0 0 300px;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-        
-        .footer-logo {
-            font-size: 2rem;
-            line-height: 1;
-        }
-        
-        .footer-brand h3 {
-            color: var(--forest-mint, #52ffb8);
-            font-size: 1.5rem;
-            margin: 0;
-        }
-        
-        .footer-brand p {
-            color: var(--text-secondary, rgba(255,255,255,0.7));
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-        
-        .footer-links {
-            flex: 1;
-            display: flex;
-            justify-content: space-between;
-            gap: 2rem;
-            min-width: 0;
-        }
-        
-        .footer-column {
-            flex: 1;
-            min-width: 150px;
-        }
-        
-        .footer-column h4 {
-            color: var(--forest-leaf, #8fff6d);
-            font-size: 1rem;
-            margin: 0 0 1rem 0;
-            font-weight: 600;
-        }
-        
-        .footer-column ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        
-        .footer-column li {
-            margin-bottom: 0.5rem;
-        }
-        
-        .footer-column a {
-            color: var(--text-secondary, rgba(255,255,255,0.7));
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-            display: inline-block;
-        }
-        
-        .footer-column a:hover {
-            color: var(--forest-mint, #52ffb8);
-            transform: translateX(2px);
-        }
-        
-        .footer-bottom {
-            text-align: center;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--glass-border, rgba(255,255,255,0.1));
-            color: var(--text-muted, rgba(255,255,255,0.5));
-            font-size: 0.875rem;
-        }
-        
-        .footer-bottom p {
-            margin: 0.5rem 0;
-        }
-        
-        .footer-credits {
-            margin-top: 0.5rem;
-            opacity: 0.8;
-        }
-        
-        /* Toast Notifications */
-        .toast-container {
-            position: fixed;
-            top: 80px;
-            right: var(--space-4);
-            z-index: var(--z-notification, 1000);
-            display: flex;
-            flex-direction: column;
-            gap: var(--space-2);
-            pointer-events: none;
-        }
-        
-        .toast {
-            pointer-events: auto;
-            min-width: 300px;
-            max-width: 400px;
-        }
-        
-        /* Responsive Footer */
-        @media (max-width: 768px) {
-            .footer-content {
-                flex-direction: column;
-                gap: 2rem;
-            }
-            
-            .footer-brand {
-                flex: 1 1 auto;
-                text-align: center;
-                margin-bottom: 1rem;
-            }
-            
-            .footer-links {
-                flex-direction: column;
-                gap: 1.5rem;
-                text-align: center;
-            }
-            
-            .footer-column {
-                margin-bottom: 1rem;
-            }
-        }
-    </style>
 </body>
 </html>

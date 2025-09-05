@@ -1,0 +1,316 @@
+/**
+ * Pack Builder Gear Library Complete Fix
+ * Completely redesigns the gear list for better visibility and usability
+ */
+
+/* ===================================
+   RESET PROBLEMATIC STYLES
+   =================================== */
+
+/* Remove all the problematic overrides */
+.gear-list-item.forest-gear-item {
+    all: revert !important;
+    /* Now rebuild with proper styles */
+}
+
+/* ===================================
+   GEAR LIST ITEM - COMPLETE REDESIGN
+   =================================== */
+
+.gear-list-item {
+    /* Layout */
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    
+    /* Sizing */
+    width: 100% !important;
+    min-height: 56px !important;
+    height: auto !important;
+    padding: 12px 16px !important;
+    margin-bottom: 6px !important;
+    box-sizing: border-box !important;
+    
+    /* Visual Design */
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%) !important;
+    border: 1px solid rgba(88, 204, 2, 0.3) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    
+    /* Transitions */
+    transition: all 0.2s ease !important;
+    cursor: grab !important;
+    
+    /* Ensure visibility */
+    overflow: visible !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+.gear-list-item:hover {
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%) !important;
+    border-color: #58cc02 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 
+        0 4px 12px rgba(88, 204, 2, 0.2),
+        0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.gear-list-item.dragging {
+    opacity: 0.5 !important;
+    cursor: grabbing !important;
+}
+
+/* ===================================
+   ICON SECTION
+   =================================== */
+
+.gear-list-item .list-item-media {
+    /* Layout */
+    flex: 0 0 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+    /* Reset any weird styles */
+    width: 40px !important;
+    height: 40px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+}
+
+.gear-list-item .gear-icon {
+    /* Sizing */
+    width: 40px !important;
+    height: 40px !important;
+    
+    /* Flexbox for centering */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+    /* Visual */
+    background: rgba(88, 204, 2, 0.15) !important;
+    border-radius: 8px !important;
+    font-size: 20px !important;
+    color: #fff !important;
+    
+    /* Ensure visibility */
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* ===================================
+   CONTENT SECTION - MOST IMPORTANT
+   =================================== */
+
+.gear-list-item .list-item-content {
+    /* Take remaining space */
+    flex: 1 !important;
+    
+    /* Layout */
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 2px !important;
+    
+    /* Size constraints */
+    min-width: 0 !important; /* Allow text truncation */
+    height: auto !important;
+    
+    /* Reset */
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+}
+
+/* Gear Name - Primary Text */
+.gear-list-item .gear-name,
+.gear-list-item .list-item-title {
+    /* Display */
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    
+    /* Typography */
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    line-height: 20px !important;
+    color: #ffffff !important;
+    letter-spacing: 0.01em !important;
+    
+    /* Layout */
+    margin: 0 !important;
+    padding: 0 !important;
+    
+    /* Text handling */
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+}
+
+/* Gear Details - Secondary Text */
+.gear-list-item .gear-details,
+.gear-list-item .list-item-subtitle {
+    /* Display */
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    
+    /* Typography */
+    font-size: 13px !important;
+    line-height: 18px !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+    
+    /* Layout */
+    margin: 0 !important;
+    padding: 0 !important;
+    
+    /* Text handling */
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.gear-list-item .gear-weight {
+    color: #58cc02 !important;
+    font-weight: 600 !important;
+}
+
+.gear-list-item .gear-category {
+    color: rgba(255, 255, 255, 0.6) !important;
+    text-transform: capitalize !important;
+}
+
+/* ===================================
+   ACTION BUTTON SECTION
+   =================================== */
+
+.gear-list-item .list-item-actions {
+    /* Layout */
+    flex: 0 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    
+    /* Spacing */
+    margin-left: 12px !important;
+    padding: 0 !important;
+}
+
+.gear-list-item .gear-add-btn {
+    /* Exact sizing */
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    
+    /* Layout */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+    /* Reset padding/margin */
+    padding: 0 !important;
+    margin: 0 !important;
+    
+    /* Visual */
+    background: #58cc02 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-size: 16px !important;
+    font-weight: bold !important;
+    
+    /* Interaction */
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.gear-list-item .gear-add-btn:hover {
+    background: #46a000 !important;
+    transform: scale(1.1) !important;
+    box-shadow: 0 2px 8px rgba(88, 204, 2, 0.4) !important;
+}
+
+/* ===================================
+   CONTAINER FIXES
+   =================================== */
+
+#gear-items,
+#modal-gear-list,
+.gear-list {
+    /* Scrolling */
+    max-height: 400px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    
+    /* Spacing */
+    padding: 8px !important;
+    
+    /* Visual */
+    background: rgba(0, 0, 0, 0.3) !important;
+    border-radius: 8px !important;
+}
+
+/* ===================================
+   MOBILE RESPONSIVE
+   =================================== */
+
+@media (max-width: 640px) {
+    .gear-list-item {
+        min-height: 48px !important;
+        padding: 8px 12px !important;
+    }
+    
+    .gear-list-item .gear-icon {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 18px !important;
+    }
+    
+    .gear-list-item .gear-name {
+        font-size: 14px !important;
+    }
+    
+    .gear-list-item .gear-details {
+        font-size: 12px !important;
+    }
+    
+    .gear-list-item .gear-add-btn {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 14px !important;
+    }
+}
+
+/* ===================================
+   DEBUG HELPERS
+   =================================== */
+
+/* Force visibility on everything */
+.gear-list-item,
+.gear-list-item * {
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Prevent any parent from hiding content */
+.gear-list-item:not(:empty) {
+    display: flex !important;
+}
+
+/* Category-specific accent colors */
+.gear-list-item::before {
+    content: '' !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 3px !important;
+    background: #58cc02 !important;
+    border-radius: 10px 0 0 10px !important;
+}

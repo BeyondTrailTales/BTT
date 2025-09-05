@@ -1,0 +1,376 @@
+/* Pack Builder Duolingo Theme Colors - No White Backgrounds! */
+
+/* Remove all white backgrounds and fix text visibility */
+.pack-section {
+    background: linear-gradient(135deg, rgba(88, 204, 2, 0.1) 0%, rgba(88, 204, 2, 0.15) 100%);
+    border: 2px solid rgba(88, 204, 2, 0.3);
+}
+
+/* Section Headers with Soft Forest Colors */
+.section-header {
+    background: linear-gradient(135deg, rgba(52, 73, 58, 0.8) 0%, rgba(44, 62, 49, 0.8) 100%);
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.section-header:hover {
+    background: linear-gradient(135deg, rgba(44, 62, 49, 0.9) 0%, rgba(36, 52, 41, 0.9) 100%);
+}
+
+/* Section name input - dark background */
+.section-name-input {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: white !important;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+}
+
+.section-name-input:focus {
+    background: rgba(0, 0, 0, 0.5) !important;
+    border-color: #58cc02 !important;
+    outline: none !important;
+}
+
+/* Section weight badge */
+.section-weight {
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+/* Section delete button */
+.section-delete {
+    background: rgba(255, 45, 85, 0.3);
+    border: none;
+    color: white;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.2s ease;
+}
+
+.section-delete:hover {
+    background: rgba(255, 45, 85, 0.5);
+    transform: scale(1.1);
+}
+
+/* Section content area - dark */
+.section-content {
+    background: rgba(0, 0, 0, 0.2);
+    border-top: 1px solid rgba(88, 204, 2, 0.3);
+}
+
+/* Section items drop zone */
+.section-items {
+    background: rgba(0, 0, 0, 0.1);
+    border: 2px dashed rgba(88, 204, 2, 0.3);
+    min-height: 80px;
+    padding: 0.75rem;
+    border-radius: 8px;
+}
+
+.section-items.drag-over {
+    background: rgba(88, 204, 2, 0.2);
+    border-color: #58cc02;
+    box-shadow: inset 0 0 20px rgba(88, 204, 2, 0.3);
+}
+
+.section-items.drag-ready {
+    border-color: rgba(88, 204, 2, 0.5);
+    background: rgba(88, 204, 2, 0.1);
+}
+
+/* Empty section text */
+.section-empty {
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+}
+
+/* Pack items - Duolingo style cards */
+.pack-item {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border: 1px solid rgba(88, 204, 2, 0.4);
+    color: white;
+}
+
+.pack-item:hover {
+    background: linear-gradient(135deg, rgba(88, 204, 2, 0.2) 0%, rgba(88, 204, 2, 0.1) 100%);
+    border-color: #58cc02;
+}
+
+.pack-item-name {
+    color: white;
+    font-weight: 600;
+}
+
+.pack-item-details {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Gear items in library */
+.gear-item {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.gear-item:hover {
+    background: linear-gradient(135deg, rgba(88, 204, 2, 0.2) 0%, rgba(88, 204, 2, 0.1) 100%);
+    border-color: #58cc02;
+}
+
+.gear-item-name {
+    color: white !important;
+}
+
+.gear-item-weight {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Add section button - Duolingo style */
+.add-section-btn {
+    background: linear-gradient(135deg, #1cb0f6 0%, #008dd5 100%);
+    border: 2px solid transparent;
+    color: white;
+    font-weight: 700;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.add-section-btn:hover {
+    background: linear-gradient(135deg, #008dd5 0%, #0074b8 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(28, 176, 246, 0.3);
+}
+
+/* Category badges with Duolingo colors */
+.gear-category-badge {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.gear-category-badge.shelter { background: #ff4b4b; color: white; }
+.gear-category-badge.sleep { background: #ff9600; color: white; }
+.gear-category-badge.clothing { background: #ffc800; color: #1a1a1a; }
+.gear-category-badge.cooking { background: #58cc02; color: white; }
+.gear-category-badge.water { background: #1cb0f6; color: white; }
+.gear-category-badge.food { background: #ce82ff; color: white; }
+.gear-category-badge.navigation { background: #777777; color: white; }
+.gear-category-badge.safety { background: #ff4b4b; color: white; }
+.gear-category-badge.tools { background: #ff9600; color: white; }
+.gear-category-badge.electronics { background: #1cb0f6; color: white; }
+.gear-category-badge.personal { background: #ce82ff; color: white; }
+.gear-category-badge.other { background: #777777; color: white; }
+
+/* Pack header - dark theme */
+.pack-header {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.2) 100%);
+    border: 1px solid rgba(88, 204, 2, 0.3);
+}
+
+.pack-name {
+    color: white !important;
+    cursor: pointer;
+}
+
+.pack-name-input {
+    background: rgba(0, 0, 0, 0.5) !important;
+    border: 2px solid #58cc02 !important;
+    color: white !important;
+    font-size: 1.8rem;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* Weight summary - Duolingo style */
+.weight-summary {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.3) 100%);
+    border: 1px solid rgba(88, 204, 2, 0.3);
+}
+
+.weight-stat {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.weight-stat:hover {
+    background: rgba(88, 204, 2, 0.1);
+    border-color: rgba(88, 204, 2, 0.3);
+}
+
+.weight-stat-label {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.weight-stat-value {
+    color: #58cc02 !important;
+    font-weight: 700;
+}
+
+.weight-stat.total {
+    background: linear-gradient(135deg, rgba(88, 204, 2, 0.2) 0%, rgba(88, 204, 2, 0.1) 100%);
+    border-color: #58cc02;
+}
+
+/* Remove button styling */
+.remove-btn {
+    background: rgba(255, 45, 85, 0.3);
+    border: none;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.remove-btn:hover {
+    background: rgba(255, 45, 85, 0.5);
+}
+
+/* Fix any remaining white text on white background */
+input[type="text"],
+input[type="number"],
+select {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: white !important;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+    background: rgba(0, 0, 0, 0.5) !important;
+    border-color: #58cc02 !important;
+    outline: none !important;
+}
+
+/* Gear browser panel */
+.gear-browser {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.3) 100%);
+    border: 1px solid rgba(88, 204, 2, 0.3);
+}
+
+.gear-browser h2 {
+    color: white;
+}
+
+/* Search input */
+#gear-search {
+    background: rgba(0, 0, 0, 0.5) !important;
+    border: 2px solid rgba(88, 204, 2, 0.3) !important;
+    color: white !important;
+}
+
+#gear-search:focus {
+    border-color: #58cc02 !important;
+    background: rgba(0, 0, 0, 0.7) !important;
+}
+
+#gear-search::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Category filter buttons */
+.category-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.category-btn:hover {
+    background: rgba(88, 204, 2, 0.2);
+    border-color: #58cc02;
+    color: white;
+}
+
+.category-btn.active {
+    background: linear-gradient(135deg, #58cc02 0%, #4caf00 100%);
+    border-color: #58cc02;
+    color: white;
+}
+
+/* Gear list scrollbar */
+.gear-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.gear-list::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+.gear-list::-webkit-scrollbar-thumb {
+    background: rgba(88, 204, 2, 0.5);
+    border-radius: 4px;
+}
+
+.gear-list::-webkit-scrollbar-thumb:hover {
+    background: #58cc02;
+}
+
+/* Add button in gear items */
+.add-btn {
+    background: linear-gradient(135deg, #58cc02 0%, #4caf00 100%);
+    border: none;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.add-btn:hover {
+    background: linear-gradient(135deg, #4caf00 0%, #3d8b00 100%);
+    transform: scale(1.05);
+}
+
+/* Save button states */
+#save-pack-btn {
+    background: linear-gradient(135deg, #58cc02 0%, #4caf00 100%);
+    border: none;
+    color: white;
+    font-weight: 700;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+#save-pack-btn:hover {
+    background: linear-gradient(135deg, #4caf00 0%, #3d8b00 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(88, 204, 2, 0.3);
+}
+
+#save-pack-btn.has-changes {
+    background: linear-gradient(135deg, #ff9600 0%, #ff7700 100%);
+    animation: pulse 2s infinite;
+}
+
+#save-pack-btn:disabled {
+    background: rgba(255, 255, 255, 0.1);
+    cursor: not-allowed;
+    opacity: 0.5;
+}

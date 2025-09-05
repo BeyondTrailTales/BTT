@@ -167,6 +167,12 @@ class Database {
                 throw new InvalidArgumentException('Invalid table name');
             }
             
+            error_log("\n=== DATABASE UPDATE DEBUG ===");
+            error_log("Table: $table");
+            error_log("Where: $where");
+            error_log("Where params: " . print_r($whereParams, true));
+            error_log("Update data: " . print_r($data, true));
+            
             $set = [];
             foreach ($data as $column => $value) {
                 // Validate column names
@@ -177,15 +183,22 @@ class Database {
             }
             
             $sql = "UPDATE `$table` SET " . implode(', ', $set) . " WHERE $where";
+            error_log("SQL: $sql");
             
             $params = [];
             foreach ($data as $column => $value) {
                 $params['set_' . $column] = $value;
+                error_log("Param set_$column = " . (is_null($value) ? 'NULL' : $value));
             }
             
             $params = array_merge($params, $whereParams);
+            error_log("All params: " . print_r($params, true));
             
-            return $this->query($sql, $params);
+            $result = $this->query($sql, $params);
+            error_log("Update result: " . ($result ? 'SUCCESS' : 'FAILED'));
+            error_log("=== DATABASE UPDATE DEBUG END ===\n");
+            
+            return $result;
         } else {
             return $this->updateJSON($table, $data, $where, $whereParams);
         }

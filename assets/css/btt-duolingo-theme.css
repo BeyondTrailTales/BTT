@@ -1,0 +1,419 @@
+/**
+ * BeyondTrailTales Duolingo Forest Theme
+ * Playful, gamified interface inspired by Duolingo
+ * Supports both light and dark modes
+ * Version: 1.0.0
+ */
+
+/* ===========================================
+   DUOLINGO THEME VARIABLES
+   =========================================== */
+
+:root {
+  /* Softer Forest Green Palette */
+  --duo-green: #6B9B7E;
+  --duo-green-light: #8FB299;
+  --duo-green-dark: #527A61;
+  --duo-green-shadow: rgba(107, 155, 126, 0.15);
+  
+  /* Light Mode Soft Colors */
+  --duo-bg-gradient: linear-gradient(135deg, #FAFBFA 0%, #F5F7F5 100%);
+  --duo-card-bg: #FFFFFF;
+  --duo-card-border: #D4E4DA;
+  --duo-text-primary: #2C3E2F;
+  --duo-text-secondary: #5A6B5E;
+  --duo-nav-bg: linear-gradient(135deg, #5A7A65, #6B8B76);
+  
+  /* Animations */
+  --duo-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --duo-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] {
+  /* Dark Mode Soft Colors */
+  --duo-bg-gradient: linear-gradient(135deg, #1A1F1B 0%, #232A24 100%);
+  --duo-card-bg: #2B3A2E;
+  --duo-card-border: #4A5F4F;
+  --duo-text-primary: #E8ECE9;
+  --duo-text-secondary: #B8C2BA;
+  --duo-nav-bg: linear-gradient(135deg, #2C3E31, #374A3C);
+  --duo-green-shadow: rgba(107, 155, 126, 0.2);
+}
+
+/* ===========================================
+   BODY & BACKGROUND
+   =========================================== */
+
+.duo-theme {
+  background: #F8FAFA;
+  min-height: 100vh;
+  position: relative;
+}
+
+[data-theme="dark"] .duo-theme {
+  background: #1A1E1B;
+}
+
+/* ===========================================
+   NAVIGATION DUOLINGO STYLE
+   =========================================== */
+
+.duo-nav {
+  background: var(--duo-nav-bg) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 100;
+}
+
+.duo-nav-logo {
+  color: white !important;
+  font-weight: 800 !important;
+  font-size: 1.4rem !important;
+  display: flex !important;
+  align-items: center !important;
+  text-decoration: none !important;
+  transition: transform 0.3s var(--duo-smooth) !important;
+}
+
+.duo-nav-logo:hover {
+  transform: scale(1.05);
+}
+
+.duo-nav-logo::before {
+  content: '';
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z'/%3E%3C/svg%3E");
+  background-size: contain;
+}
+
+.duo-nav-item {
+  margin: 0 4px;
+}
+
+.duo-nav-link {
+  color: white !important;
+  font-weight: 600 !important;
+  padding: 10px 20px !important;
+  border-radius: 30px !important;
+  transition: all 0.3s var(--duo-smooth) !important;
+  display: flex !important;
+  align-items: center !important;
+  text-decoration: none !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.duo-nav-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: left 0.3s var(--duo-smooth);
+}
+
+.duo-nav-link:hover::before {
+  left: 0;
+}
+
+.duo-nav-link:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  transform: translateY(-2px);
+}
+
+/* ===========================================
+   CARDS DUOLINGO STYLE
+   =========================================== */
+
+.duo-card {
+  background: var(--duo-card-bg) !important;
+  border: 1px solid var(--duo-card-border) !important;
+  border-radius: 16px !important;
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.06),
+    0 0 0 1px var(--duo-green-shadow) !important;
+  overflow: hidden !important;
+  transition: all 0.3s var(--duo-smooth) !important;
+  position: relative;
+  animation: card-appear 0.5s var(--duo-bounce);
+}
+
+@keyframes card-appear {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.duo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    0 15px 50px rgba(0, 0, 0, 0.15),
+    0 0 0 2px var(--duo-green-shadow) !important;
+}
+
+.duo-card-header {
+  background: linear-gradient(135deg, var(--duo-green), var(--duo-green-light)) !important;
+  border: none !important;
+  padding: 20px 24px !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.duo-card-header::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.duo-card-title {
+  color: white !important;
+  font-weight: 800 !important;
+  font-size: 1.5rem !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  position: relative;
+  z-index: 1;
+}
+
+/* Removed emoji for cleaner look */
+
+/* ===========================================
+   BUTTONS DUOLINGO STYLE
+   =========================================== */
+
+.duo-btn {
+  padding: 12px 24px !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  font-size: 15px !important;
+  text-transform: none !important;
+  letter-spacing: 0.3px !important;
+  transition: all 0.2s ease !important;
+  border: 1px solid transparent !important;
+  position: relative !important;
+  overflow: hidden !important;
+  cursor: pointer !important;
+}
+
+.duo-btn-primary {
+  background: var(--duo-green) !important;
+  color: white !important;
+  box-shadow: 
+    0 2px 6px var(--duo-green-shadow) !important;
+}
+
+.duo-btn-primary:hover {
+  transform: translateY(-1px) !important;
+  background: var(--duo-green-dark) !important;
+  box-shadow: 
+    0 4px 10px var(--duo-green-shadow) !important;
+}
+
+.duo-btn-primary:active {
+  transform: translateY(-1px) scale(1.02) !important;
+}
+
+.duo-btn-secondary {
+  background: transparent !important;
+  color: var(--duo-green) !important;
+  border-color: var(--duo-green) !important;
+}
+
+.duo-btn-secondary:hover {
+  background: var(--duo-green) !important;
+  color: white !important;
+  transform: translateY(-2px) !important;
+}
+
+.duo-btn-danger {
+  background: linear-gradient(135deg, #EF4444, #DC2626) !important;
+  color: white !important;
+  box-shadow: 
+    0 4px 15px rgba(239, 68, 68, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.duo-btn-danger:hover {
+  transform: translateY(-3px) scale(1.05) !important;
+  box-shadow: 
+    0 6px 20px rgba(239, 68, 68, 0.4),
+    0 4px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Button ripple effect */
+.duo-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.duo-btn:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* ===========================================
+   STATS CARDS DUOLINGO STYLE
+   =========================================== */
+
+.duo-stat-card {
+  border-radius: 16px !important;
+  padding: 16px 20px !important;
+  transition: all 0.3s var(--duo-smooth) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  border: 2px solid transparent !important;
+}
+
+.duo-stat-mint {
+  background: linear-gradient(135deg, #7FA688, #9AB8A2) !important;
+  box-shadow: 0 2px 8px rgba(127, 166, 136, 0.15) !important;
+}
+
+.duo-stat-sage {
+  background: linear-gradient(135deg, #8FA896, #A6BAAE) !important;
+  box-shadow: 0 2px 8px rgba(143, 168, 150, 0.15) !important;
+}
+
+.duo-stat-sand {
+  background: linear-gradient(135deg, #C4A274, #D4B896) !important;
+  box-shadow: 0 2px 8px rgba(196, 162, 116, 0.15) !important;
+}
+
+.duo-stat-bark {
+  background: linear-gradient(135deg, #8B7E74, #A39489) !important;
+  box-shadow: 0 2px 8px rgba(139, 126, 116, 0.15) !important;
+}
+
+.duo-stat-card:hover {
+  transform: translateY(-4px) scale(1.02) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.duo-stat-content {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  color: white !important;
+}
+
+.duo-stat-label {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  opacity: 0.95 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+.duo-stat-value {
+  font-size: 28px !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+}
+
+/* Animated background pattern */
+.duo-stat-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(255, 255, 255, 0.05) 10px,
+    rgba(255, 255, 255, 0.05) 20px
+  );
+  animation: slide 20s linear infinite;
+}
+
+@keyframes slide {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(50px, 50px); }
+}
+
+/* ===========================================
+   ALERT DUOLINGO STYLE
+   =========================================== */
+
+.duo-alert {
+  border-radius: 16px !important;
+  border: 2px solid var(--duo-green) !important;
+  background: linear-gradient(135deg, rgba(88, 204, 2, 0.1), rgba(143, 229, 55, 0.05)) !important;
+  padding: 16px 20px !important;
+  color: var(--duo-text-primary) !important;
+  font-weight: 500 !important;
+  display: flex !important;
+  align-items: center !important;
+  animation: alert-slide-in 0.5s var(--duo-bounce);
+}
+
+@keyframes alert-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.duo-alert-icon {
+  font-size: 24px !important;
+  margin-right: 12px !important;
+}
+
+/* ===========================================
+   RESPONSIVE ADJUSTMENTS
+   =========================================== */
+
+@media (max-width: 768px) {
+  .duo-nav-logo {
+    font-size: 1.2rem !important;
+  }
+  
+  .duo-nav-link {
+    padding: 8px 16px !important;
+    font-size: 14px !important;
+  }
+  
+  .duo-card {
+    border-radius: 16px !important;
+  }
+  
+  .duo-btn {
+    padding: 12px 24px !important;
+    font-size: 14px !important;
+  }
+}

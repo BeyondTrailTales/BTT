@@ -1,0 +1,361 @@
+/**
+ * BeyondTrailTales - Duolingo Forest Theme Master File
+ * Import all theme components for a complete multi-color forest experience
+ * Version: 2.0.0
+ * 
+ * Usage: Add class "duolingo-forest-theme" to <body> element
+ */
+
+/* ===========================================
+   THEME IMPORTS - Order matters!
+   =========================================== */
+
+/* 1. Variables first - defines all CSS custom properties */
+@import url('theme/variables.css');
+
+/* 2. Components second - uses variables for consistent styling */
+@import url('theme/components.css');
+
+/* 3. Navigation third - specialized navigation components */
+@import url('theme/navigation.css');
+
+/* 4. Pages fourth - page-specific layouts and structures */
+@import url('theme/pages.css');
+
+/* 5. Animations fifth - Duolingo-style animations and interactions */
+@import url('theme/animations.css');
+
+/* ===========================================
+   BASE THEME APPLICATION
+   =========================================== */
+
+/* Apply theme to any element with the theme class */
+.duolingo-forest-theme {
+  /* Ensure variables are inherited */
+  color-scheme: dark;
+  
+  /* Apply base background and text */
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-primary);
+  line-height: var(--leading-normal);
+  min-height: 100vh;
+  
+  /* Smooth scrolling for better UX */
+  scroll-behavior: smooth;
+  
+  /* Text selection styling */
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Custom text selection colors */
+.duolingo-forest-theme ::selection {
+  background: var(--selection-bg);
+  color: var(--text-inverse);
+}
+
+.duolingo-forest-theme ::-moz-selection {
+  background: var(--selection-bg);
+  color: var(--text-inverse);
+}
+
+/* ===========================================
+   GLOBAL RESETS FOR THEME
+   =========================================== */
+
+.duolingo-forest-theme * {
+  box-sizing: border-box;
+}
+
+.duolingo-forest-theme *:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Remove default margins and paddings */
+.duolingo-forest-theme h1,
+.duolingo-forest-theme h2,
+.duolingo-forest-theme h3,
+.duolingo-forest-theme h4,
+.duolingo-forest-theme h5,
+.duolingo-forest-theme h6,
+.duolingo-forest-theme p,
+.duolingo-forest-theme ul,
+.duolingo-forest-theme ol,
+.duolingo-forest-theme li {
+  margin: 0;
+  padding: 0;
+}
+
+/* Link styling */
+.duolingo-forest-theme a {
+  color: var(--text-accent);
+  text-decoration: none;
+  transition: var(--transition-colors);
+}
+
+.duolingo-forest-theme a:hover {
+  color: var(--hover-glow);
+}
+
+/* ===========================================
+   SECTION-SPECIFIC THEME UTILITIES
+   =========================================== */
+
+/* Dashboard Section Theme */
+.duolingo-forest-theme .section-dashboard {
+  --current-primary: var(--dashboard-primary);
+  --current-secondary: var(--forest-light);
+  --current-accent: var(--hover-glow);
+}
+
+/* Adventures Section Theme */
+.duolingo-forest-theme .section-adventures {
+  --current-primary: var(--adventure-primary);
+  --current-secondary: #357abd;
+  --current-accent: #60a5fa;
+}
+
+/* Backpacks Section Theme */
+.duolingo-forest-theme .section-packs {
+  --current-primary: var(--pack-primary);
+  --current-secondary: #6c5ce7;
+  --current-accent: #9c88ff;
+}
+
+/* Gear Section Theme */
+.duolingo-forest-theme .section-gear {
+  --current-primary: var(--gear-primary);
+  --current-secondary: #e67e22;
+  --current-accent: #fbbf24;
+}
+
+/* Progress Section Theme */
+.duolingo-forest-theme .section-progress {
+  --current-primary: var(--progress-primary);
+  --current-secondary: #e6c878;
+  --current-accent: #f4d03f;
+}
+
+/* ===========================================
+   TYPOGRAPHY ENHANCEMENTS
+   =========================================== */
+
+.duolingo-forest-theme h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  line-height: var(--leading-tight);
+  margin-bottom: var(--space-4);
+}
+
+.duolingo-forest-theme h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  line-height: var(--leading-snug);
+  margin-bottom: var(--space-3);
+}
+
+.duolingo-forest-theme h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+  line-height: var(--leading-snug);
+  margin-bottom: var(--space-2);
+}
+
+.duolingo-forest-theme h4 {
+  font-size: var(--text-lg);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.duolingo-forest-theme p {
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: var(--text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+/* ===========================================
+   LAYOUT UTILITIES
+   =========================================== */
+
+.duolingo-forest-theme .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+.duolingo-forest-theme .container-fluid {
+  width: 100%;
+  padding: 0 var(--space-4);
+}
+
+.duolingo-forest-theme .section {
+  padding: var(--space-8) 0;
+}
+
+.duolingo-forest-theme .section-sm {
+  padding: var(--space-6) 0;
+}
+
+.duolingo-forest-theme .section-lg {
+  padding: var(--space-12) 0;
+}
+
+/* ===========================================
+   PAGE LAYOUTS
+   =========================================== */
+
+/* Dashboard Layout */
+.duolingo-forest-theme .dashboard-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.duolingo-forest-theme .dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-5);
+}
+
+.duolingo-forest-theme .dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+/* Form Layouts */
+.duolingo-forest-theme .form-layout {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--space-8);
+}
+
+.duolingo-forest-theme .form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-4);
+}
+
+/* List Layouts */
+.duolingo-forest-theme .list-layout {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.duolingo-forest-theme .card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-5);
+}
+
+/* ===========================================
+   SCROLL STYLING
+   =========================================== */
+
+.duolingo-forest-theme ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.duolingo-forest-theme ::-webkit-scrollbar-track {
+  background: var(--glass-subtle);
+  border-radius: var(--radius-full);
+}
+
+.duolingo-forest-theme ::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: var(--radius-full);
+  transition: var(--transition-colors);
+}
+
+.duolingo-forest-theme ::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Firefox scrollbar */
+.duolingo-forest-theme {
+  scrollbar-width: thin;
+  scrollbar-color: var(--glass-border) var(--glass-subtle);
+}
+
+/* ===========================================
+   PRINT STYLES
+   =========================================== */
+
+@media print {
+  .duolingo-forest-theme {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .duolingo-forest-theme .card {
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+    background: white !important;
+  }
+  
+  .duolingo-forest-theme .btn {
+    border: 1px solid #333 !important;
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+  }
+}
+
+/* ===========================================
+   THEME CUSTOMIZATION HOOKS
+   =========================================== */
+
+/* Allow for easy theme customization */
+.duolingo-forest-theme[data-theme="custom"] {
+  /* Custom theme variables can be overridden here */
+}
+
+.duolingo-forest-theme[data-accent="dashboard"] {
+  --current-primary: var(--dashboard-primary);
+}
+
+.duolingo-forest-theme[data-accent="adventure"] {
+  --current-primary: var(--adventure-primary);
+}
+
+.duolingo-forest-theme[data-accent="pack"] {
+  --current-primary: var(--pack-primary);
+}
+
+.duolingo-forest-theme[data-accent="gear"] {
+  --current-primary: var(--gear-primary);
+}
+
+/* ===========================================
+   DEVELOPER UTILITIES (Remove in production)
+   =========================================== */
+
+/* Grid overlay for development */
+.duolingo-forest-theme[data-debug="grid"] {
+  background-image: 
+    linear-gradient(rgba(134, 239, 172, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(134, 239, 172, 0.1) 1px, transparent 1px);
+  background-size: var(--space-4) var(--space-4);
+}
+
+/* Spacing visualization */
+.duolingo-forest-theme[data-debug="spacing"] * {
+  outline: 1px solid rgba(134, 239, 172, 0.2);
+}

@@ -1,0 +1,689 @@
+/**
+ * Forest Gamified CSS - Compact Horizontal Layout
+ * Optimized for wider screens, less vertical scrolling
+ * Clean, dense layout without feeling cramped
+ */
+
+/* ==================== Compact Spacing Variables ==================== */
+:root {
+  /* Tighter spacing for compact layout */
+  --space-xs: 0.25rem;   /* 4px */
+  --space-sm: 0.5rem;    /* 8px */
+  --space-md: 0.75rem;   /* 12px */
+  --space-lg: 1rem;      /* 16px */
+  --space-xl: 1.5rem;    /* 24px */
+  --space-2xl: 2rem;     /* 32px */
+  
+  /* Compact gaps */
+  --gap-tight: 0.5rem;
+  --gap-normal: 0.75rem;
+  --gap-relaxed: 1rem;
+  --gap-loose: 1.5rem;
+}
+
+/* ==================== Base Layout ==================== */
+.gamified-dashboard {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a2818 0%, #0f3823 50%, #1a4d35 100%);
+  position: relative;
+  overflow-x: hidden;
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.dashboard-container {
+  max-width: 1600px; /* Wider container */
+  margin: 0 auto;
+  padding: 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* ==================== Compact Hero Section ==================== */
+.hero-forest {
+  position: relative;
+  padding: 1.5rem 1rem;
+  background: linear-gradient(135deg, #0f3823 0%, #1a4d35 50%, #0a2818 100%);
+  overflow: hidden;
+  min-height: 140px; /* Much shorter */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  border-radius: 0;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  border-bottom: 2px solid rgba(74, 222, 128, 0.3);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #ffffff;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.hero-title {
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+}
+
+.hero-subtitle {
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 400;
+  opacity: 0.9;
+  margin: 0 1rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.hero-badges {
+  display: inline-flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+}
+
+/* ==================== Compact Badge Styles ==================== */
+.xp-chip,
+.level-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(74, 222, 128, 0.5);
+  color: #4ade80;
+  font-weight: 700;
+  font-size: 0.813rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+}
+
+.level-badge {
+  border-color: rgba(134, 239, 172, 0.5);
+  color: #86efac;
+}
+
+.streak {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(251, 146, 60, 0.5);
+  color: #fb923c;
+  font-weight: 700;
+  font-size: 0.813rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+}
+
+/* ==================== Horizontal Quick Actions Bar ==================== */
+.action-tiles {
+  margin-bottom: 1.5rem;
+}
+
+.tiles-grid {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 0.5rem;
+}
+
+.action-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  transition: all 250ms ease;
+  cursor: pointer;
+  min-width: 90px;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.action-tile:hover {
+  transform: translateY(-2px);
+  background: rgba(74, 222, 128, 0.1);
+  border-color: rgba(74, 222, 128, 0.4);
+  box-shadow: 0 4px 12px rgba(74, 222, 128, 0.2);
+}
+
+.tile-icon {
+  font-size: 1.5rem;
+}
+
+.tile-label {
+  font-size: 0.688rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.1;
+}
+
+/* ==================== Wide Grid Layout ==================== */
+.dashboard-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 1rem;
+  align-items: start; /* Allow cards to expand as needed */
+}
+
+.dashboard-grid--secondary {
+  grid-template-columns: 1.5fr 1fr 1fr;
+  margin-bottom: 0;
+  align-items: start;
+}
+
+@media (max-width: 1200px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .dashboard-grid--secondary {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-grid,
+  .dashboard-grid--secondary {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==================== Compact Cards ==================== */
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 1rem;
+  transition: all 250ms ease;
+  display: flex;
+  flex-direction: column;
+  min-height: 250px;
+  overflow: visible; /* Show all content */
+}
+
+.card--xp {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(74, 222, 128, 0.2);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  border-color: rgba(74, 222, 128, 0.3);
+}
+
+.card__content {
+  padding: 0.5rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+}
+
+.card__content:first-child {
+  padding-top: 0;
+}
+
+.card__title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: rgba(255, 255, 255, 0.95);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card__meta {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 0.5rem;
+}
+
+.card__actions {
+  display: flex;
+  gap: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: auto;
+}
+
+.card__action {
+  flex: 1;
+  padding: 0.375rem 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.375rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: all 200ms ease;
+}
+
+.card__action:hover {
+  background: rgba(74, 222, 128, 0.1);
+  border-color: rgba(74, 222, 128, 0.4);
+  color: #4ade80;
+}
+
+/* ==================== Inline Stats Grid ==================== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.375rem;
+  padding: 0.5rem 0;
+}
+
+.stat-card {
+  text-align: center;
+  padding: 0.5rem 0.375rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 0.5rem;
+  transition: all 250ms ease;
+  min-height: 55px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.stat-icon {
+  font-size: 1rem;
+  margin-bottom: 0.125rem;
+}
+
+.stat-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #4ade80;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.625rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-top: 0.125rem;
+}
+
+/* ==================== Smaller Progress Rings ==================== */
+.progress-ring {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  margin: 0.5rem auto;
+  display: grid;
+  place-items: center;
+}
+
+.ring-center {
+  position: absolute;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.ring-value {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #4ade80;
+  display: block;
+}
+
+.ring-label {
+  font-size: 0.625rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 0.125rem;
+}
+
+.ring-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 6;
+}
+
+.ring-progress {
+  fill: none;
+  stroke: url(#ringGradient);
+  stroke-width: 6;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: center;
+  transition: stroke-dashoffset 800ms ease;
+}
+
+/* ==================== Horizontal Achievements ==================== */
+.achievements-grid {
+  display: flex;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+  padding: 0.375rem 0;
+  justify-content: flex-start;
+}
+
+.badge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.125rem;
+  padding: 0.375rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  text-align: center;
+  transition: all 250ms ease;
+  min-width: 60px;
+  height: 60px;
+  flex: 0 0 calc(33.333% - 0.25rem);
+}
+
+.badge--earned {
+  background: rgba(74, 222, 128, 0.1);
+  border-color: rgba(74, 222, 128, 0.3);
+}
+
+.badge--available {
+  background: rgba(251, 191, 36, 0.08);
+  border-color: rgba(251, 191, 36, 0.25);
+}
+
+.badge--locked {
+  opacity: 0.5;
+  filter: grayscale(50%);
+}
+
+.badge:hover:not(.badge--locked) {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.badge-icon {
+  font-size: 1.25rem;
+}
+
+.badge-label {
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1;
+}
+
+/* ==================== Horizontal Skill Tree ==================== */
+.skill-tree {
+  padding: 0.75rem 0;
+}
+
+.skill-level {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  position: relative;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.skill-level::after {
+  content: '';
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 50%;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    rgba(74, 222, 128, 0.3), 
+    rgba(251, 191, 36, 0.3));
+  z-index: 0;
+}
+
+.skill-node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.125rem;
+  padding: 0.375rem;
+  flex: 1;
+  min-width: 80px;
+  height: 65px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  transition: all 250ms ease;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.skill-node:hover:not(.is-locked) {
+  transform: translateY(-2px);
+  border-color: #4ade80;
+  box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3);
+}
+
+.skill-node.is-complete {
+  background: rgba(74, 222, 128, 0.1);
+  border-color: rgba(74, 222, 128, 0.4);
+}
+
+.skill-node.is-active {
+  border-color: #fbbf24;
+  box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.2);
+}
+
+.skill-node.is-locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.skill-icon {
+  font-size: 0.875rem;
+}
+
+.skill-title {
+  font-size: 0.563rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  line-height: 1;
+}
+
+/* ==================== Compact Meters ==================== */
+.meter {
+  height: 6px;
+  border-radius: 9999px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0.375rem 0;
+  width: 100%;
+}
+
+.meter--large {
+  height: 8px;
+}
+
+.meter > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #4ade80 0%, #fbbf24 100%);
+  transition: width 600ms ease;
+  border-radius: 9999px;
+}
+
+/* ==================== Activity List Compact ==================== */
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 0.375rem;
+  transition: background 250ms ease;
+  font-size: 0.75rem;
+}
+
+.activity-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.activity-icon {
+  font-size: 1rem;
+}
+
+.activity-details strong {
+  display: block;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+.activity-meta {
+  font-size: 0.625rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ==================== Tab Buttons Compact ==================== */
+.activity-tabs {
+  display: flex;
+  gap: 0.375rem;
+  margin-bottom: 0.5rem;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 0.25rem 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 250ms ease;
+  font-size: 0.688rem;
+  font-weight: 600;
+}
+
+.tab-button.active {
+  background: rgba(74, 222, 128, 0.1);
+  border-color: rgba(74, 222, 128, 0.4);
+  color: #4ade80;
+}
+
+/* ==================== Level Progress Compact ==================== */
+.level-progress {
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.level-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.375rem;
+}
+
+.level-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #4ade80;
+}
+
+.level-xp {
+  font-size: 0.688rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ==================== XP Display Compact ==================== */
+.xp-display {
+  display: inline-block;
+  padding: 0.25rem 0.625rem;
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  border-radius: 9999px;
+  color: #4ade80;
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+/* ==================== Text Gradients ==================== */
+.text-gradient-forest {
+  background: linear-gradient(135deg, #4ade80 0%, #86efac 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  display: inline-block;
+  font-weight: 700;
+}
+
+/* ==================== Remove Scrollbars ==================== */
+.card,
+.activity-list {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.card::-webkit-scrollbar,
+.activity-list::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* ==================== Focus States ==================== */
+*:focus-visible {
+  outline: 2px solid #4ade80;
+  outline-offset: 1px;
+  border-radius: 0.25rem;
+}
+
+/* ==================== Reduced Motion Support ==================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

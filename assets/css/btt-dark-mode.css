@@ -1,0 +1,414 @@
+/**
+ * BeyondTrailTales Dark Mode Theme
+ * Dark theme tokens and overrides
+ * Version: 2.0.0
+ */
+
+/* ===========================================
+   DARK MODE TOKENS
+   =========================================== */
+
+[data-theme="dark"] {
+  /* Background colors */
+  --btt-bg-primary: #0f1419;
+  --btt-bg-secondary: #1a1f2e;
+  --btt-bg-muted: #252d3d;
+  
+  /* Text colors */
+  --btt-text-primary: #e8eaed;
+  --btt-text-secondary: #9ca3af;
+  --btt-text-muted: #6b7280;
+  
+  /* Glass morphism dark */
+  --btt-glass-white: rgba(255, 255, 255, 0.05);
+  --btt-glass-white-heavy: rgba(255, 255, 255, 0.08);
+  --btt-glass-dark: rgba(0, 0, 0, 0.3);
+  --btt-glass-border: rgba(255, 255, 255, 0.1);
+  
+  /* Overlay colors */
+  --btt-overlay-dark: rgba(0, 0, 0, 0.8);
+  --btt-overlay-light: rgba(0, 0, 0, 0.6);
+  
+  /* Forest theme - adjusted for dark mode */
+  --btt-forest: #22c55e;
+  --btt-forest-light: #4ade80;
+  --btt-forest-bright: #86efac;
+  --btt-forest-dark: #15803d;
+  --btt-forest-deep: #14532d;
+  
+  /* Mint - brighter in dark mode */
+  --btt-mint: #86efac;
+  --btt-mint-light: #bbf7d0;
+  --btt-mint-bright: #d9f99d;
+  --btt-mint-dark: #4ade80;
+  
+  /* Status colors - adjusted for dark backgrounds */
+  --btt-success-light: rgba(34, 197, 94, 0.15);
+  --btt-warning-light: rgba(251, 191, 36, 0.15);
+  --btt-error-light: rgba(239, 68, 68, 0.15);
+  --btt-info-light: rgba(59, 130, 246, 0.15);
+  
+  /* Shadows - lighter for dark mode */
+  --btt-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --btt-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --btt-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --btt-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+  --btt-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  
+  /* Focus ring - more visible in dark mode */
+  --btt-focus-ring: rgba(134, 239, 172, 0.5);
+}
+
+/* ===========================================
+   BASE OVERRIDES
+   =========================================== */
+
+[data-theme="dark"] {
+  background: var(--btt-bg-primary);
+  color: var(--btt-text-primary);
+}
+
+[data-theme="dark"] body {
+  background: var(--btt-bg-primary);
+  color: var(--btt-text-primary);
+}
+
+/* ===========================================
+   COMPONENT OVERRIDES
+   =========================================== */
+
+/* Cards */
+[data-theme="dark"] .card {
+  background: var(--btt-bg-secondary);
+  border-color: var(--btt-glass-border);
+}
+
+[data-theme="dark"] .card-header {
+  background: var(--btt-bg-muted);
+  border-color: var(--btt-glass-border);
+}
+
+[data-theme="dark"] .card:hover {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Buttons */
+[data-theme="dark"] .btn {
+  border-color: var(--btt-glass-border);
+}
+
+[data-theme="dark"] .btn-secondary {
+  background: var(--btt-bg-muted);
+  color: var(--btt-text-primary);
+  border-color: var(--btt-glass-border);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  background: var(--btt-bg-secondary);
+  border-color: var(--btt-mint);
+}
+
+[data-theme="dark"] .btn-ghost {
+  color: var(--btt-text-primary);
+}
+
+[data-theme="dark"] .btn-ghost:hover {
+  background: var(--btt-glass-white);
+}
+
+/* Forms */
+[data-theme="dark"] .form-input {
+  background: var(--btt-bg-muted);
+  border-color: var(--btt-glass-border);
+  color: var(--btt-text-primary);
+}
+
+[data-theme="dark"] .form-input:focus {
+  background: var(--btt-bg-secondary);
+  border-color: var(--btt-mint);
+  box-shadow: 0 0 0 4px rgba(134, 239, 172, 0.1);
+}
+
+[data-theme="dark"] .form-input::placeholder {
+  color: var(--btt-text-muted);
+}
+
+/* Navigation */
+[data-theme="dark"] .nav {
+  background: var(--btt-bg-secondary);
+  border-color: var(--btt-glass-border);
+}
+
+[data-theme="dark"] .nav-link {
+  color: var(--btt-text-primary);
+}
+
+[data-theme="dark"] .nav-link:hover {
+  background: var(--btt-glass-white);
+  color: var(--btt-mint);
+}
+
+[data-theme="dark"] .nav-dropdown-menu {
+  background: var(--btt-bg-secondary);
+  border-color: var(--btt-glass-border);
+}
+
+/* Modals */
+[data-theme="dark"] .modal-dialog {
+  background: var(--btt-bg-secondary);
+}
+
+[data-theme="dark"] .modal-header,
+[data-theme="dark"] .modal-footer {
+  background: var(--btt-bg-muted);
+  border-color: var(--btt-glass-border);
+}
+
+/* Tables */
+[data-theme="dark"] .table {
+  background: var(--btt-bg-secondary);
+  color: var(--btt-text-primary);
+}
+
+[data-theme="dark"] .table thead {
+  background: var(--btt-bg-muted);
+}
+
+[data-theme="dark"] .table tbody tr:hover {
+  background: var(--btt-glass-white);
+}
+
+/* Badges */
+[data-theme="dark"] .badge-secondary {
+  background: var(--btt-bg-muted);
+  color: var(--btt-text-primary);
+}
+
+/* Alerts */
+[data-theme="dark"] .alert {
+  border-width: 1px;
+}
+
+[data-theme="dark"] .alert-success {
+  background: var(--btt-success-light);
+  color: var(--btt-success);
+}
+
+[data-theme="dark"] .alert-warning {
+  background: var(--btt-warning-light);
+  color: var(--btt-warning);
+}
+
+[data-theme="dark"] .alert-error {
+  background: var(--btt-error-light);
+  color: var(--btt-error);
+}
+
+[data-theme="dark"] .alert-info {
+  background: var(--btt-info-light);
+  color: var(--btt-info);
+}
+
+/* Accordions */
+[data-theme="dark"] .accordion {
+  background: var(--btt-bg-secondary);
+  border-color: var(--btt-glass-border);
+}
+
+[data-theme="dark"] .accordion-button {
+  color: var(--btt-text-primary);
+}
+
+[data-theme="dark"] .accordion-button:hover {
+  background: var(--btt-glass-white);
+}
+
+/* Charts */
+[data-theme="dark"] .chart-container {
+  background: var(--btt-bg-secondary);
+  border-color: var(--btt-glass-border);
+}
+
+[data-theme="dark"] .bar-chart-label,
+[data-theme="dark"] .chart-legend {
+  color: var(--btt-text-secondary);
+}
+
+/* Timeline */
+[data-theme="dark"] .timeline::before {
+  background: var(--btt-glass-border);
+}
+
+[data-theme="dark"] .timeline-content {
+  background: var(--btt-bg-muted);
+  border-color: var(--btt-glass-border);
+}
+
+/* Tooltips */
+[data-theme="dark"] .tooltip-content {
+  background: var(--btt-bg-muted);
+  color: var(--btt-text-primary);
+  border: 1px solid var(--btt-glass-border);
+}
+
+/* Code blocks */
+[data-theme="dark"] code {
+  background: var(--btt-bg-muted);
+  color: var(--btt-mint);
+}
+
+[data-theme="dark"] pre {
+  background: var(--btt-bg-muted);
+  border-color: var(--btt-glass-border);
+}
+
+/* ===========================================
+   DARK MODE TOGGLE SWITCH
+   =========================================== */
+
+.dark-mode-toggle {
+  position: fixed;
+  bottom: var(--btt-space-6);
+  left: var(--btt-space-6);
+  z-index: var(--btt-z-fixed);
+}
+
+.dark-mode-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--btt-space-3);
+  padding: var(--btt-space-2) var(--btt-space-3);
+  background: var(--btt-glass-dark);
+  backdrop-filter: var(--btt-blur-md);
+  border: 1px solid var(--btt-glass-border);
+  border-radius: var(--btt-radius-full);
+  cursor: pointer;
+  transition: var(--btt-transition-all);
+}
+
+.dark-mode-switch:hover {
+  background: var(--btt-glass-white);
+  transform: translateY(-2px);
+  box-shadow: var(--btt-shadow-lg);
+}
+
+.dark-mode-switch input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dark-mode-switch-track {
+  position: relative;
+  width: 48px;
+  height: 24px;
+  background: var(--btt-glass-border);
+  border-radius: var(--btt-radius-full);
+  transition: var(--btt-transition-all);
+}
+
+.dark-mode-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  transition: var(--btt-transition-all);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--btt-shadow-sm);
+}
+
+.dark-mode-switch-thumb::before {
+  content: '☀️';
+  font-size: 12px;
+}
+
+.dark-mode-switch input:checked + .dark-mode-switch-track {
+  background: var(--btt-gradient-mint);
+}
+
+.dark-mode-switch input:checked + .dark-mode-switch-track .dark-mode-switch-thumb {
+  transform: translateX(24px);
+}
+
+.dark-mode-switch input:checked + .dark-mode-switch-track .dark-mode-switch-thumb::before {
+  content: '🌙';
+}
+
+/* Icons */
+.dark-mode-icon-sun,
+.dark-mode-icon-moon {
+  font-size: var(--btt-text-lg);
+  transition: var(--btt-transition-all);
+}
+
+[data-theme="dark"] .dark-mode-icon-sun {
+  opacity: 0.5;
+}
+
+[data-theme="light"] .dark-mode-icon-moon {
+  opacity: 0.5;
+}
+
+/* ===========================================
+   SCROLLBAR DARK MODE
+   =========================================== */
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: var(--btt-bg-muted);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: var(--btt-glass-border);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--btt-mint-dark);
+}
+
+/* ===========================================
+   SPECIAL EFFECTS
+   =========================================== */
+
+/* Glow effects in dark mode */
+[data-theme="dark"] .btn-primary {
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
+}
+
+[data-theme="dark"] .btn-primary:hover {
+  box-shadow: 0 0 30px rgba(34, 197, 94, 0.3);
+}
+
+[data-theme="dark"] .btn-mint {
+  box-shadow: 0 0 20px rgba(134, 239, 172, 0.2);
+}
+
+[data-theme="dark"] .btn-mint:hover {
+  box-shadow: 0 0 30px rgba(134, 239, 172, 0.3);
+}
+
+/* Neon text effect */
+[data-theme="dark"] .text-glow {
+  text-shadow: 0 0 10px currentColor;
+}
+
+/* ===========================================
+   TRANSITIONS
+   =========================================== */
+
+/* Smooth theme transition */
+* {
+  transition: background-color 0.3s ease, 
+              border-color 0.3s ease,
+              color 0.3s ease;
+}
+
+/* Prevent transition on page load */
+.no-transition * {
+  transition: none !important;
+}

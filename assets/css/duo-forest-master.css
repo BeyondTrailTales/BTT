@@ -1,0 +1,716 @@
+/**
+ * BeyondTrailTales - Master Duolingo Forest Theme
+ * Complete design system inspired by Duolingo's playful, engaging interface
+ * with forest/outdoor theme adaptation for trail management
+ * 
+ * @version 2.0.0
+ * @author BTT Design System
+ */
+
+/* ===========================================
+   DUOLINGO FOREST COLOR PALETTE
+   =========================================== */
+
+:root {
+  /* Core Duolingo-inspired Forest Colors */
+  --duo-forest-primary: #58cc02;        /* Duolingo green */
+  --duo-forest-primary-dark: #4caf50;   /* Darker forest green */
+  --duo-forest-primary-light: #7dd55c;  /* Lighter forest green */
+  --duo-forest-accent: #ffc800;         /* Duolingo yellow/gold */
+  --duo-forest-accent-dark: #ff9500;    /* Orange accent */
+  --duo-forest-success: #00d084;        /* Success green */
+  --duo-forest-danger: #ff4b4b;         /* Error red */
+  --duo-forest-warning: #ffa000;        /* Warning orange */
+  --duo-forest-info: #2196f3;           /* Info blue */
+  
+  /* Forest Background System */
+  --duo-bg-primary: #f7f9f7;            /* Light sage background */
+  --duo-bg-secondary: #ffffff;          /* Pure white cards */
+  --duo-bg-tertiary: #f0f4f0;          /* Subtle green tint */
+  --duo-bg-dark: #1a1f1a;              /* Dark mode background */
+  --duo-bg-card-dark: #2d3a2d;         /* Dark mode cards */
+  
+  /* Duolingo Typography */
+  --duo-font-family: 'Nunito', 'Helvetica Neue', Arial, sans-serif;
+  --duo-font-weight-normal: 400;
+  --duo-font-weight-medium: 600;
+  --duo-font-weight-bold: 700;
+  --duo-font-weight-extra-bold: 800;
+  
+  /* Duolingo Shadows & Effects */
+  --duo-shadow-sm: 0 2px 4px rgba(88, 204, 2, 0.1);
+  --duo-shadow-md: 0 4px 12px rgba(88, 204, 2, 0.15);
+  --duo-shadow-lg: 0 8px 24px rgba(88, 204, 2, 0.2);
+  --duo-shadow-button: 0 4px 0 #4caf50;
+  --duo-shadow-button-hover: 0 6px 0 #4caf50;
+  --duo-shadow-button-active: 0 2px 0 #4caf50;
+  
+  /* Animation Timing */
+  --duo-transition-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --duo-transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --duo-transition-quick: 0.15s ease;
+  --duo-transition-standard: 0.3s ease;
+  
+  /* Border Radius System */
+  --duo-radius-sm: 8px;
+  --duo-radius-md: 12px;
+  --duo-radius-lg: 16px;
+  --duo-radius-xl: 20px;
+  --duo-radius-full: 50px;
+  
+  /* Spacing System (8px grid) */
+  --duo-space-1: 0.25rem;  /* 4px */
+  --duo-space-2: 0.5rem;   /* 8px */
+  --duo-space-3: 0.75rem;  /* 12px */
+  --duo-space-4: 1rem;     /* 16px */
+  --duo-space-5: 1.25rem;  /* 20px */
+  --duo-space-6: 1.5rem;   /* 24px */
+  --duo-space-8: 2rem;     /* 32px */
+  --duo-space-10: 2.5rem;  /* 40px */
+  --duo-space-12: 3rem;    /* 48px */
+  --duo-space-16: 4rem;    /* 64px */
+}
+
+/* Dark Mode Color Overrides */
+[data-theme="dark"] {
+  --duo-bg-primary: var(--duo-bg-dark);
+  --duo-bg-secondary: var(--duo-bg-card-dark);
+  --duo-bg-tertiary: #242a24;
+  --duo-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --duo-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --duo-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* ===========================================
+   GLOBAL DUOLINGO THEME APPLICATION
+   =========================================== */
+
+body.duo-theme {
+  font-family: var(--duo-font-family) !important;
+  background: var(--duo-bg-primary) !important;
+  color: #2c3e2f !important;
+  line-height: 1.6 !important;
+  font-weight: var(--duo-font-weight-normal) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[data-theme="dark"] body.duo-theme {
+  color: #e8ece9 !important;
+}
+
+/* ===========================================
+   DUOLINGO NAVIGATION SYSTEM
+   =========================================== */
+
+.duo-nav,
+.unified-nav.duo-nav {
+  background: linear-gradient(135deg, var(--duo-forest-primary) 0%, var(--duo-forest-primary-dark) 100%) !important;
+  box-shadow: var(--duo-shadow-lg) !important;
+  border-bottom: 3px solid var(--duo-forest-primary-dark) !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100 !important;
+  backdrop-filter: none !important;
+}
+
+.duo-nav .nav-brand,
+.unified-nav.duo-nav .nav-brand {
+  color: white !important;
+  font-weight: var(--duo-font-weight-extra-bold) !important;
+  font-size: 1.5rem !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  transition: all var(--duo-transition-standard) var(--duo-transition-bounce) !important;
+}
+
+.duo-nav .nav-brand:hover,
+.unified-nav.duo-nav .nav-brand:hover {
+  color: var(--duo-forest-accent) !important;
+  transform: scale(1.05) !important;
+}
+
+.duo-nav .nav-link,
+.unified-nav.duo-nav .nav-link {
+  color: white !important;
+  font-weight: var(--duo-font-weight-medium) !important;
+  padding: var(--duo-space-3) var(--duo-space-4) !important;
+  border-radius: var(--duo-radius-full) !important;
+  transition: all var(--duo-transition-standard) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  margin: 0 var(--duo-space-1) !important;
+}
+
+.duo-nav .nav-link::before,
+.unified-nav.duo-nav .nav-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: left var(--duo-transition-standard) var(--duo-transition-smooth);
+  z-index: 0;
+}
+
+.duo-nav .nav-link:hover::before,
+.unified-nav.duo-nav .nav-link:hover::before {
+  left: 0;
+}
+
+.duo-nav .nav-link:hover,
+.unified-nav.duo-nav .nav-link:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  transform: translateY(-2px) !important;
+  color: var(--duo-forest-accent) !important;
+}
+
+.duo-nav .nav-link.active,
+.unified-nav.duo-nav .nav-link.active {
+  background: var(--duo-forest-accent) !important;
+  color: var(--duo-forest-primary) !important;
+  font-weight: var(--duo-font-weight-bold) !important;
+  box-shadow: var(--duo-shadow-button) !important;
+}
+
+.duo-nav .nav-icon,
+.unified-nav.duo-nav .nav-icon {
+  font-size: 1.25rem !important;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+/* ===========================================
+   DUOLINGO BUTTON SYSTEM
+   =========================================== */
+
+.duo-btn,
+.btn.duo-btn,
+button.duo-btn,
+input[type="submit"].duo-btn {
+  font-family: var(--duo-font-family) !important;
+  font-weight: var(--duo-font-weight-bold) !important;
+  font-size: 1rem !important;
+  padding: var(--duo-space-4) var(--duo-space-6) !important;
+  border-radius: var(--duo-radius-md) !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: all var(--duo-transition-standard) var(--duo-transition-bounce) !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: var(--duo-space-2) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  min-height: 48px !important;
+  text-transform: none !important;
+  letter-spacing: 0.025em !important;
+}
+
+/* Primary Duolingo Button */
+.duo-btn-primary,
+.btn-primary.duo-btn {
+  background: linear-gradient(180deg, var(--duo-forest-primary) 0%, var(--duo-forest-primary-dark) 100%) !important;
+  color: white !important;
+  box-shadow: var(--duo-shadow-button) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+.duo-btn-primary:hover,
+.btn-primary.duo-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: var(--duo-shadow-button-hover) !important;
+  background: linear-gradient(180deg, var(--duo-forest-primary-light) 0%, var(--duo-forest-primary) 100%) !important;
+}
+
+.duo-btn-primary:active,
+.btn-primary.duo-btn:active {
+  transform: translateY(2px) !important;
+  box-shadow: var(--duo-shadow-button-active) !important;
+}
+
+/* Secondary Duolingo Button */
+.duo-btn-secondary,
+.btn-secondary.duo-btn {
+  background: var(--duo-bg-secondary) !important;
+  color: var(--duo-forest-primary) !important;
+  border: 2px solid var(--duo-forest-primary) !important;
+  box-shadow: var(--duo-shadow-md) !important;
+}
+
+.duo-btn-secondary:hover,
+.btn-secondary.duo-btn:hover {
+  background: var(--duo-forest-primary) !important;
+  color: white !important;
+  transform: translateY(-2px) scale(1.02) !important;
+}
+
+/* Accent Button (Gold/Yellow) */
+.duo-btn-accent {
+  background: linear-gradient(180deg, var(--duo-forest-accent) 0%, #e6b800 100%) !important;
+  color: var(--duo-forest-primary) !important;
+  box-shadow: 0 4px 0 #e6b800 !important;
+  font-weight: var(--duo-font-weight-extra-bold) !important;
+}
+
+.duo-btn-accent:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 0 #e6b800 !important;
+  background: linear-gradient(180deg, #ffd700 0%, var(--duo-forest-accent) 100%) !important;
+}
+
+.duo-btn-accent:active {
+  transform: translateY(2px) !important;
+  box-shadow: 0 2px 0 #e6b800 !important;
+}
+
+/* Danger Button */
+.duo-btn-danger,
+.btn-danger.duo-btn {
+  background: linear-gradient(180deg, var(--duo-forest-danger) 0%, #e53e3e 100%) !important;
+  color: white !important;
+  box-shadow: 0 4px 0 #e53e3e !important;
+}
+
+.duo-btn-danger:hover,
+.btn-danger.duo-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 0 #e53e3e !important;
+}
+
+.duo-btn-danger:active,
+.btn-danger.duo-btn:active {
+  transform: translateY(2px) !important;
+  box-shadow: 0 2px 0 #e53e3e !important;
+}
+
+/* Success Button */
+.duo-btn-success {
+  background: linear-gradient(180deg, var(--duo-forest-success) 0%, #00a86b 100%) !important;
+  color: white !important;
+  box-shadow: 0 4px 0 #00a86b !important;
+}
+
+.duo-btn-success:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 0 #00a86b !important;
+}
+
+/* Small Button Size */
+.duo-btn-sm {
+  padding: var(--duo-space-2) var(--duo-space-4) !important;
+  font-size: 0.875rem !important;
+  min-height: 36px !important;
+}
+
+/* Large Button Size */
+.duo-btn-lg {
+  padding: var(--duo-space-5) var(--duo-space-8) !important;
+  font-size: 1.125rem !important;
+  min-height: 56px !important;
+}
+
+/* Button Ripple Effect */
+.duo-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+  z-index: 0;
+}
+
+.duo-btn:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+.duo-btn > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===========================================
+   DUOLINGO CARD SYSTEM
+   =========================================== */
+
+.duo-card {
+  background: var(--duo-bg-secondary) !important;
+  border: 2px solid rgba(88, 204, 2, 0.1) !important;
+  border-radius: var(--duo-radius-lg) !important;
+  box-shadow: var(--duo-shadow-md) !important;
+  overflow: hidden !important;
+  transition: all var(--duo-transition-standard) var(--duo-transition-bounce) !important;
+  position: relative !important;
+}
+
+.duo-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--duo-forest-primary) 0%, var(--duo-forest-accent) 100%);
+  opacity: 0;
+  transition: opacity var(--duo-transition-standard);
+}
+
+.duo-card:hover {
+  transform: translateY(-4px) scale(1.02) !important;
+  box-shadow: var(--duo-shadow-lg) !important;
+  border-color: rgba(88, 204, 2, 0.3) !important;
+}
+
+.duo-card:hover::before {
+  opacity: 1;
+}
+
+.duo-card-header {
+  background: linear-gradient(135deg, var(--duo-forest-primary) 0%, var(--duo-forest-primary-dark) 100%) !important;
+  color: white !important;
+  padding: var(--duo-space-6) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.duo-card-header::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  animation: duo-shimmer 4s linear infinite;
+}
+
+@keyframes duo-shimmer {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.duo-card-title {
+  font-size: 1.5rem !important;
+  font-weight: var(--duo-font-weight-extra-bold) !important;
+  margin: 0 !important;
+  color: white !important;
+  position: relative !important;
+  z-index: 1 !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+.duo-card-body {
+  padding: var(--duo-space-6) !important;
+}
+
+.duo-card-footer {
+  padding: var(--duo-space-4) var(--duo-space-6) !important;
+  background: var(--duo-bg-tertiary) !important;
+  border-top: 1px solid rgba(88, 204, 2, 0.1) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+/* ===========================================
+   DUOLINGO FORM ELEMENTS
+   =========================================== */
+
+.duo-form-group {
+  margin-bottom: var(--duo-space-5) !important;
+}
+
+.duo-form-label {
+  display: block !important;
+  margin-bottom: var(--duo-space-2) !important;
+  font-weight: var(--duo-font-weight-bold) !important;
+  color: var(--duo-forest-primary) !important;
+  font-size: 1rem !important;
+}
+
+.duo-form-input,
+.duo-input,
+input.duo-input,
+textarea.duo-input,
+select.duo-input {
+  width: 100% !important;
+  padding: var(--duo-space-4) !important;
+  border: 2px solid #e0e7e0 !important;
+  border-radius: var(--duo-radius-md) !important;
+  font-family: var(--duo-font-family) !important;
+  font-size: 1rem !important;
+  font-weight: var(--duo-font-weight-medium) !important;
+  background: var(--duo-bg-secondary) !important;
+  color: #2c3e2f !important;
+  transition: all var(--duo-transition-standard) !important;
+  box-shadow: var(--duo-shadow-sm) !important;
+}
+
+.duo-form-input:focus,
+.duo-input:focus,
+input.duo-input:focus,
+textarea.duo-input:focus,
+select.duo-input:focus {
+  outline: none !important;
+  border-color: var(--duo-forest-primary) !important;
+  box-shadow: 0 0 0 3px rgba(88, 204, 2, 0.2) !important;
+  transform: translateY(-1px) !important;
+}
+
+.duo-form-input:hover,
+.duo-input:hover {
+  border-color: var(--duo-forest-primary-light) !important;
+}
+
+/* ===========================================
+   DUOLINGO NOTIFICATION SYSTEM
+   =========================================== */
+
+.duo-notification,
+.duo-alert {
+  padding: var(--duo-space-4) var(--duo-space-5) !important;
+  border-radius: var(--duo-radius-md) !important;
+  margin-bottom: var(--duo-space-4) !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: var(--duo-space-3) !important;
+  font-weight: var(--duo-font-weight-medium) !important;
+  border: 2px solid transparent !important;
+  position: relative !important;
+  overflow: hidden !important;
+  animation: duo-slide-in 0.5s var(--duo-transition-bounce);
+}
+
+@keyframes duo-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.duo-notification-success,
+.duo-alert-success {
+  background: linear-gradient(135deg, rgba(0, 208, 132, 0.1) 0%, rgba(88, 204, 2, 0.05) 100%) !important;
+  border-color: var(--duo-forest-success) !important;
+  color: #00663d !important;
+}
+
+.duo-notification-warning,
+.duo-alert-warning {
+  background: linear-gradient(135deg, rgba(255, 160, 0, 0.1) 0%, rgba(255, 200, 0, 0.05) 100%) !important;
+  border-color: var(--duo-forest-warning) !important;
+  color: #cc5500 !important;
+}
+
+.duo-notification-error,
+.duo-alert-error,
+.duo-alert-danger {
+  background: linear-gradient(135deg, rgba(255, 75, 75, 0.1) 0%, rgba(255, 75, 75, 0.05) 100%) !important;
+  border-color: var(--duo-forest-danger) !important;
+  color: #cc1f1f !important;
+}
+
+.duo-notification-info,
+.duo-alert-info {
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.1) 0%, rgba(33, 150, 243, 0.05) 100%) !important;
+  border-color: var(--duo-forest-info) !important;
+  color: #1565c0 !important;
+}
+
+.duo-notification-icon,
+.duo-alert-icon {
+  font-size: 1.5rem !important;
+  flex-shrink: 0 !important;
+  margin-top: var(--duo-space-1) !important;
+}
+
+/* ===========================================
+   DUOLINGO PROGRESS & STATS
+   =========================================== */
+
+.duo-progress {
+  background: #e0e7e0 !important;
+  border-radius: var(--duo-radius-full) !important;
+  height: 12px !important;
+  overflow: hidden !important;
+  position: relative !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.duo-progress-bar {
+  background: linear-gradient(90deg, var(--duo-forest-primary) 0%, var(--duo-forest-success) 100%) !important;
+  height: 100% !important;
+  border-radius: inherit !important;
+  transition: width 1s var(--duo-transition-bounce) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.duo-progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: duo-progress-shine 2s infinite;
+}
+
+@keyframes duo-progress-shine {
+  0% { left: -100%; }
+  50% { left: 100%; }
+  100% { left: 100%; }
+}
+
+.duo-stat-card {
+  background: var(--duo-bg-secondary) !important;
+  padding: var(--duo-space-5) !important;
+  border-radius: var(--duo-radius-lg) !important;
+  text-align: center !important;
+  box-shadow: var(--duo-shadow-md) !important;
+  border: 2px solid rgba(88, 204, 2, 0.1) !important;
+  transition: all var(--duo-transition-standard) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.duo-stat-card:hover {
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: var(--duo-shadow-lg) !important;
+  border-color: rgba(88, 204, 2, 0.3) !important;
+}
+
+.duo-stat-value {
+  font-size: 2.5rem !important;
+  font-weight: var(--duo-font-weight-extra-bold) !important;
+  color: var(--duo-forest-primary) !important;
+  line-height: 1 !important;
+  margin-bottom: var(--duo-space-2) !important;
+  text-shadow: 0 2px 4px rgba(88, 204, 2, 0.2) !important;
+}
+
+.duo-stat-label {
+  font-size: 1rem !important;
+  font-weight: var(--duo-font-weight-medium) !important;
+  color: #5a6b5e !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* ===========================================
+   DUOLINGO RESPONSIVE ADJUSTMENTS
+   =========================================== */
+
+@media (max-width: 768px) {
+  .duo-btn {
+    padding: var(--duo-space-3) var(--duo-space-5) !important;
+    font-size: 0.9rem !important;
+    min-height: 44px !important;
+  }
+  
+  .duo-card-header,
+  .duo-card-body {
+    padding: var(--duo-space-4) !important;
+  }
+  
+  .duo-card-title {
+    font-size: 1.25rem !important;
+  }
+  
+  .duo-stat-value {
+    font-size: 2rem !important;
+  }
+}
+
+/* ===========================================
+   DUOLINGO ANIMATION LIBRARY
+   =========================================== */
+
+@keyframes duo-bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes duo-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes duo-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Animation Classes */
+.duo-animate-bounce-in {
+  animation: duo-bounce-in 0.6s var(--duo-transition-bounce);
+}
+
+.duo-animate-slide-up {
+  animation: duo-slide-up 0.5s var(--duo-transition-smooth);
+}
+
+.duo-animate-fade-in {
+  animation: duo-fade-in 0.3s var(--duo-transition-smooth);
+}
+
+/* ===========================================
+   UTILITY CLASSES
+   =========================================== */
+
+.duo-text-primary { color: var(--duo-forest-primary) !important; }
+.duo-text-accent { color: var(--duo-forest-accent) !important; }
+.duo-text-success { color: var(--duo-forest-success) !important; }
+.duo-text-danger { color: var(--duo-forest-danger) !important; }
+.duo-text-white { color: white !important; }
+
+.duo-bg-primary { background: var(--duo-forest-primary) !important; }
+.duo-bg-accent { background: var(--duo-forest-accent) !important; }
+.duo-bg-white { background: var(--duo-bg-secondary) !important; }
+
+.duo-shadow-none { box-shadow: none !important; }
+.duo-shadow-sm { box-shadow: var(--duo-shadow-sm) !important; }
+.duo-shadow-md { box-shadow: var(--duo-shadow-md) !important; }
+.duo-shadow-lg { box-shadow: var(--duo-shadow-lg) !important; }
+
+.duo-rounded { border-radius: var(--duo-radius-md) !important; }
+.duo-rounded-lg { border-radius: var(--duo-radius-lg) !important; }
+.duo-rounded-full { border-radius: var(--duo-radius-full) !important; }
+
+.duo-font-bold { font-weight: var(--duo-font-weight-bold) !important; }
+.duo-font-extra-bold { font-weight: var(--duo-font-weight-extra-bold) !important; }

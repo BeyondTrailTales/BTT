@@ -1,0 +1,605 @@
+/**
+ * BeyondTrailTales - Forest Duolingo Master Theme
+ * Complete forest-themed redesign inspired by Duolingo's UX patterns
+ * Version: 1.0.0
+ * Author: BTT Design System
+ * 
+ * Features:
+ * - Sophisticated forest color palette (no bright greens)
+ * - Duolingo-inspired gamification elements
+ * - Complete component library
+ * - Responsive and accessible
+ * - ADA compliant
+ * - Performance optimized
+ */
+
+/* Import core tokens first */
+@import url('btt-tokens.css');
+
+/* ===========================================
+   GLOBAL FOREST THEME ACTIVATION
+   =========================================== */
+
+.forest-duo-theme {
+  /* Override global colors with forest palette */
+  color: var(--btt-text-primary);
+  background: linear-gradient(135deg, var(--btt-forest-midnight) 0%, var(--btt-forest-deep) 100%);
+  font-family: var(--btt-font-sans);
+  line-height: var(--btt-leading-normal);
+}
+
+.forest-duo-theme * {
+  box-sizing: border-box;
+}
+
+/* ===========================================
+   DUOLINGO-STYLE TYPOGRAPHY
+   =========================================== */
+
+.forest-duo-theme h1,
+.forest-duo-theme .title-xl {
+  font-family: var(--btt-font-display);
+  font-size: var(--btt-text-4xl);
+  font-weight: var(--btt-font-bold);
+  color: var(--btt-text-primary);
+  margin: 0 0 var(--btt-space-4);
+  line-height: var(--btt-leading-tight);
+}
+
+.forest-duo-theme h2,
+.forest-duo-theme .title-lg {
+  font-family: var(--btt-font-display);
+  font-size: var(--btt-text-2xl);
+  font-weight: var(--btt-font-semibold);
+  color: var(--btt-text-primary);
+  margin: 0 0 var(--btt-space-3);
+}
+
+.forest-duo-theme h3,
+.forest-duo-theme .title-md {
+  font-family: var(--btt-font-display);
+  font-size: var(--btt-text-xl);
+  font-weight: var(--btt-font-medium);
+  color: var(--btt-text-secondary);
+  margin: 0 0 var(--btt-space-2);
+}
+
+/* ===========================================
+   DUOLINGO-INSPIRED BUTTONS
+   =========================================== */
+
+.forest-duo-theme .btn-duo-primary {
+  background: var(--btt-gradient-forest);
+  color: var(--btt-text-primary);
+  border: 3px solid var(--btt-forest-canopy);
+  border-radius: var(--btt-radius-lg);
+  padding: var(--btt-space-3) var(--btt-space-6);
+  font-family: var(--btt-font-accent);
+  font-weight: var(--btt-font-bold);
+  font-size: var(--btt-text-base);
+  text-transform: uppercase;
+  letter-spacing: var(--btt-tracking-wide);
+  box-shadow: 0 4px 0 var(--btt-forest-shadow), var(--btt-shadow-md);
+  transition: all var(--btt-duration-fast) var(--btt-ease-out);
+  cursor: pointer;
+  min-height: var(--btt-btn-min-height);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--btt-space-2);
+}
+
+.forest-duo-theme .btn-duo-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 var(--btt-forest-shadow), var(--btt-shadow-lg);
+  background: var(--btt-gradient-moss);
+}
+
+.forest-duo-theme .btn-duo-primary:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 0 var(--btt-forest-shadow), var(--btt-shadow-sm);
+}
+
+.forest-duo-theme .btn-duo-secondary {
+  background: transparent;
+  color: var(--btt-forest-mist);
+  border: 2px solid var(--btt-forest-sage);
+  border-radius: var(--btt-radius-lg);
+  padding: var(--btt-space-3) var(--btt-space-5);
+  font-weight: var(--btt-font-medium);
+  transition: var(--btt-transition-all);
+}
+
+.forest-duo-theme .btn-duo-secondary:hover {
+  background: var(--btt-glass-white);
+  border-color: var(--btt-forest-mist);
+  color: var(--btt-text-primary);
+}
+
+/* ===========================================
+   GAMIFICATION ELEMENTS
+   =========================================== */
+
+.forest-duo-theme .progress-ring {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.forest-duo-theme .progress-ring svg {
+  transform: rotate(-90deg);
+}
+
+.forest-duo-theme .progress-ring-bg {
+  fill: none;
+  stroke: var(--btt-forest-shadow);
+  stroke-width: 4;
+}
+
+.forest-duo-theme .progress-ring-fill {
+  fill: none;
+  stroke: var(--btt-forest-canopy);
+  stroke-width: 4;
+  stroke-linecap: round;
+  transition: stroke-dashoffset var(--btt-duration-slow) var(--btt-ease-out);
+}
+
+.forest-duo-theme .achievement-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--btt-radius-full);
+  font-size: var(--btt-text-xl);
+  position: relative;
+  transition: var(--btt-transition-transform);
+}
+
+.forest-duo-theme .achievement-badge.earned {
+  background: var(--btt-gradient-forest);
+  box-shadow: 0 4px 12px rgba(125, 155, 126, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  animation: achievement-glow 2s ease-in-out infinite alternate;
+}
+
+.forest-duo-theme .achievement-badge.available {
+  background: var(--btt-glass-medium);
+  border: 2px solid var(--btt-forest-sage);
+  opacity: 0.7;
+}
+
+.forest-duo-theme .achievement-badge.locked {
+  background: var(--btt-glass-dark);
+  border: 2px solid var(--btt-forest-shadow);
+  opacity: 0.4;
+  filter: grayscale(100%);
+}
+
+@keyframes achievement-glow {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.05); }
+}
+
+/* Streak Counter */
+.forest-duo-theme .streak-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--btt-space-1);
+  background: var(--btt-gradient-cedar);
+  border-radius: var(--btt-radius-full);
+  padding: var(--btt-space-2) var(--btt-space-4);
+  color: var(--btt-text-primary);
+  font-weight: var(--btt-font-bold);
+  box-shadow: var(--btt-shadow-md);
+}
+
+.forest-duo-theme .streak-flame {
+  font-size: var(--btt-text-lg);
+  animation: flame-flicker 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes flame-flicker {
+  0% { transform: scale(1) rotate(-2deg); }
+  100% { transform: scale(1.1) rotate(2deg); }
+}
+
+/* ===========================================
+   CARD COMPONENTS - FOREST GLASSMORPHISM
+   =========================================== */
+
+.forest-duo-theme .card-forest {
+  background: linear-gradient(135deg, var(--btt-glass-white), var(--btt-glass-light));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--btt-glass-border);
+  border-radius: var(--btt-radius-xl);
+  padding: var(--btt-space-6);
+  box-shadow: var(--btt-shadow-lg);
+  transition: var(--btt-transition-all);
+}
+
+.forest-duo-theme .card-forest:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--btt-shadow-xl);
+  border-color: var(--btt-glass-border-hover);
+}
+
+.forest-duo-theme .card-forest .card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--btt-space-4);
+}
+
+.forest-duo-theme .card-forest .card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--btt-radius-md);
+  background: var(--btt-gradient-forest);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--btt-text-xl);
+  margin-right: var(--btt-space-3);
+}
+
+/* ===========================================
+   NAVIGATION - FOREST THEME
+   =========================================== */
+
+.forest-duo-theme .nav-forest {
+  background: linear-gradient(135deg, var(--btt-glass-medium), var(--btt-glass-light));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--btt-glass-border);
+  padding: var(--btt-space-4) var(--btt-space-6);
+}
+
+.forest-duo-theme .nav-forest .nav-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--btt-space-3);
+  color: var(--btt-text-primary);
+  font-family: var(--btt-font-display);
+  font-weight: var(--btt-font-bold);
+  font-size: var(--btt-text-lg);
+  text-decoration: none;
+}
+
+.forest-duo-theme .nav-forest .nav-brand .brand-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--btt-gradient-forest);
+  border-radius: var(--btt-radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--btt-text-lg);
+}
+
+.forest-duo-theme .nav-forest .nav-links {
+  display: flex;
+  gap: var(--btt-space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.forest-duo-theme .nav-forest .nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--btt-space-2);
+  padding: var(--btt-space-2) var(--btt-space-4);
+  color: var(--btt-text-secondary);
+  text-decoration: none;
+  border-radius: var(--btt-radius-md);
+  transition: var(--btt-transition-all);
+  font-weight: var(--btt-font-medium);
+}
+
+.forest-duo-theme .nav-forest .nav-link:hover,
+.forest-duo-theme .nav-forest .nav-link.active {
+  background: var(--btt-glass-white);
+  color: var(--btt-text-primary);
+  transform: translateY(-1px);
+}
+
+/* ===========================================
+   DASHBOARD COMPONENTS
+   =========================================== */
+
+.forest-duo-theme .welcome-section {
+  background: var(--btt-gradient-dark);
+  border-radius: var(--btt-radius-2xl);
+  padding: var(--btt-space-8);
+  margin-bottom: var(--btt-space-6);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.forest-duo-theme .welcome-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 20%, rgba(125, 155, 126, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.forest-duo-theme .welcome-title {
+  font-size: var(--btt-text-3xl);
+  font-weight: var(--btt-font-bold);
+  margin-bottom: var(--btt-space-2);
+  background: linear-gradient(135deg, var(--btt-text-primary) 0%, var(--btt-forest-mist) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.forest-duo-theme .quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--btt-space-4);
+  margin-bottom: var(--btt-space-6);
+}
+
+.forest-duo-theme .quick-action-card {
+  background: var(--btt-glass-white);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--btt-glass-border);
+  border-radius: var(--btt-radius-lg);
+  padding: var(--btt-space-5);
+  text-align: center;
+  transition: var(--btt-transition-all);
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--btt-text-primary);
+}
+
+.forest-duo-theme .quick-action-card:hover {
+  transform: translateY(-2px) scale(1.02);
+  background: var(--btt-glass-light);
+  border-color: var(--btt-glass-border-hover);
+  box-shadow: var(--btt-shadow-lg);
+}
+
+.forest-duo-theme .quick-action-icon {
+  font-size: var(--btt-text-3xl);
+  margin-bottom: var(--btt-space-2);
+  display: block;
+}
+
+/* ===========================================
+   FORM ELEMENTS - FOREST STYLE
+   =========================================== */
+
+.forest-duo-theme .form-group {
+  margin-bottom: var(--btt-space-5);
+}
+
+.forest-duo-theme .form-label {
+  display: block;
+  color: var(--btt-text-secondary);
+  font-weight: var(--btt-font-medium);
+  margin-bottom: var(--btt-space-2);
+  font-size: var(--btt-text-sm);
+}
+
+.forest-duo-theme .form-input {
+  width: 100%;
+  background: var(--btt-glass-white);
+  border: 2px solid var(--btt-forest-sage);
+  border-radius: var(--btt-radius-md);
+  padding: var(--btt-space-3) var(--btt-space-4);
+  color: var(--btt-text-primary);
+  font-size: var(--btt-text-base);
+  transition: var(--btt-transition-all);
+  min-height: var(--btt-input-min-height);
+}
+
+.forest-duo-theme .form-input:focus {
+  outline: none;
+  border-color: var(--btt-forest-canopy);
+  box-shadow: 0 0 0 3px rgba(125, 155, 126, 0.2);
+  background: var(--btt-glass-light);
+}
+
+.forest-duo-theme .form-input::placeholder {
+  color: var(--btt-text-muted);
+}
+
+/* ===========================================
+   MODALS AND OVERLAYS
+   =========================================== */
+
+.forest-duo-theme .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(10, 27, 15, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--btt-z-modal);
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--btt-duration-normal) var(--btt-ease-out);
+}
+
+.forest-duo-theme .modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.forest-duo-theme .modal-content {
+  background: linear-gradient(135deg, var(--btt-forest-deep) 0%, var(--btt-forest-midnight) 100%);
+  border: 1px solid var(--btt-glass-border);
+  border-radius: var(--btt-radius-2xl);
+  padding: var(--btt-space-6);
+  max-width: var(--btt-modal-max-width);
+  width: 90vw;
+  box-shadow: var(--btt-shadow-2xl);
+  transform: scale(0.9) translateY(20px);
+  transition: transform var(--btt-duration-normal) var(--btt-ease-spring);
+}
+
+.forest-duo-theme .modal-overlay.active .modal-content {
+  transform: scale(1) translateY(0);
+}
+
+/* ===========================================
+   NOTIFICATIONS - DUOLINGO STYLE
+   =========================================== */
+
+.forest-duo-theme .notification {
+  background: var(--btt-glass-white);
+  backdrop-filter: blur(12px);
+  border-left: 4px solid var(--btt-forest-canopy);
+  border-radius: var(--btt-radius-md);
+  padding: var(--btt-space-4);
+  margin-bottom: var(--btt-space-3);
+  box-shadow: var(--btt-shadow-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--btt-space-3);
+  animation: notification-slide-in var(--btt-duration-normal) var(--btt-ease-spring);
+}
+
+.forest-duo-theme .notification.success {
+  border-left-color: var(--btt-success);
+}
+
+.forest-duo-theme .notification.warning {
+  border-left-color: var(--btt-warning);
+}
+
+.forest-duo-theme .notification.error {
+  border-left-color: var(--btt-error);
+}
+
+@keyframes notification-slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ===========================================
+   RESPONSIVE DESIGN
+   =========================================== */
+
+@media (max-width: 768px) {
+  .forest-duo-theme .nav-forest {
+    padding: var(--btt-space-3) var(--btt-space-4);
+  }
+  
+  .forest-duo-theme .quick-actions-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--btt-space-3);
+  }
+  
+  .forest-duo-theme .welcome-section {
+    padding: var(--btt-space-6);
+  }
+  
+  .forest-duo-theme .card-forest {
+    padding: var(--btt-space-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .forest-duo-theme .quick-actions-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .forest-duo-theme .welcome-title {
+    font-size: var(--btt-text-2xl);
+  }
+}
+
+/* ===========================================
+   ACCESSIBILITY ENHANCEMENTS
+   =========================================== */
+
+.forest-duo-theme .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.forest-duo-theme .focus-visible:focus {
+  outline: 2px solid var(--btt-forest-canopy);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .forest-duo-theme {
+    --btt-glass-border: rgba(255, 255, 255, 0.6);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .forest-duo-theme *,
+  .forest-duo-theme *::before,
+  .forest-duo-theme *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===========================================
+   UTILITY CLASSES
+   =========================================== */
+
+.forest-duo-theme .text-center { text-align: center; }
+.forest-duo-theme .text-left { text-align: left; }
+.forest-duo-theme .text-right { text-align: right; }
+
+.forest-duo-theme .flex { display: flex; }
+.forest-duo-theme .flex-col { flex-direction: column; }
+.forest-duo-theme .items-center { align-items: center; }
+.forest-duo-theme .justify-center { justify-content: center; }
+.forest-duo-theme .justify-between { justify-content: space-between; }
+
+.forest-duo-theme .w-full { width: 100%; }
+.forest-duo-theme .h-full { height: 100%; }
+
+.forest-duo-theme .hidden { display: none; }
+.forest-duo-theme .visible { visibility: visible; }
+
+/* Spacing utilities */
+.forest-duo-theme .m-0 { margin: 0; }
+.forest-duo-theme .m-1 { margin: var(--btt-space-1); }
+.forest-duo-theme .m-2 { margin: var(--btt-space-2); }
+.forest-duo-theme .m-3 { margin: var(--btt-space-3); }
+.forest-duo-theme .m-4 { margin: var(--btt-space-4); }
+.forest-duo-theme .m-5 { margin: var(--btt-space-5); }
+.forest-duo-theme .m-6 { margin: var(--btt-space-6); }
+
+.forest-duo-theme .p-0 { padding: 0; }
+.forest-duo-theme .p-1 { padding: var(--btt-space-1); }
+.forest-duo-theme .p-2 { padding: var(--btt-space-2); }
+.forest-duo-theme .p-3 { padding: var(--btt-space-3); }
+.forest-duo-theme .p-4 { padding: var(--btt-space-4); }
+.forest-duo-theme .p-5 { padding: var(--btt-space-5); }
+.forest-duo-theme .p-6 { padding: var(--btt-space-6); }

@@ -167,13 +167,14 @@
             const el = $(`
                 <div class="gear-item draggable ${isDefault ? 'default-item' : 'custom-item'}" 
                      draggable="true" 
-                     data-gear-id="${item.id}">
+                     data-gear-id="${item.id}"
+                     data-category="${item.category || 'other'}">
                     <div class="gear-icon">${item.icon || this.getCategoryIcon(item.category)}</div>
                     <div class="gear-info">
                         <div class="gear-name">${item.name}</div>
                         <div class="gear-meta">
                             <span class="gear-weight">${this.formatWeight(item.weight_g)}</span>
-                            <span class="gear-category">${this.formatCategory(item.category)}</span>
+                            <span class="gear-category gear-category-badge ${item.category || 'other'}">${this.formatCategory(item.category)}</span>
                         </div>
                     </div>
                     <button class="btn-quick-add" title="Quick Add">+</button>

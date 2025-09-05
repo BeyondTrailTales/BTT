@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Drag Drop Between Sections</title>
+    <script src="/BTT/vendor/jquery-3.7.1.min.js"></script>
+    <script src="/BTT/assets/js/pack-builder-fixed.js?v=<?php echo time(); ?>"></script>
+    <link rel="stylesheet" href="/BTT/assets/css/pack-builder-simple.css?v=<?php echo time(); ?>">
+    <style>
+        .test-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            color: white;
+        }
+        .test-info h3 { color: #10b981; }
+        .test-info li { margin: 10px 0; }
+    </style>
+</head>
+<body class="pack-builder-page">
+    <div class="pack-builder-container">
+        <div class="test-info">
+            <h3>Drag & Drop Test Instructions:</h3>
+            <ol>
+                <li>✅ Saving works - confirmed</li>
+                <li>🎯 Testing drag from gear library to sections</li>
+                <li>🔄 Testing drag items between sections</li>
+                <li>➕ Testing create new sections</li>
+                <li>✏️ Testing edit section names</li>
+                <li>🗑️ Testing delete sections</li>
+            </ol>
+            <p>Console logs will show drag events. Check browser console (F12).</p>
+        </div>
+        
+        <div class="main-content">
+            <!-- Gear Library -->
+            <div class="gear-browser">
+                <h2>Test Gear Items</h2>
+                <div id="gear-list">
+                    <div class="gear-item" data-gear-id="test-1" draggable="true">
+                        <div class="gear-item-icon">🏕️</div>
+                        <div class="gear-item-info">
+                            <div class="gear-item-name">Test Tent</div>
+                            <div class="gear-item-weight">1.5kg</div>
+                        </div>
+                        <button class="add-btn">+ Add</button>
+                    </div>
+                    <div class="gear-item" data-gear-id="test-2" draggable="true">
+                        <div class="gear-item-icon">🛏️</div>
+                        <div class="gear-item-info">
+                            <div class="gear-item-name">Test Sleeping Bag</div>
+                            <div class="gear-item-weight">800g</div>
+                        </div>
+                        <button class="add-btn">+ Add</button>
+                    </div>
+                    <div class="gear-item" data-gear-id="test-3" draggable="true">
+                        <div class="gear-item-icon">🍳</div>
+                        <div class="gear-item-info">
+                            <div class="gear-item-name">Test Stove</div>
+                            <div class="gear-item-weight">250g</div>
+                        </div>
+                        <button class="add-btn">+ Add</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pack View -->
+            <div class="pack-view">
+                <div class="pack-header">
+                    <h2 class="pack-name">Test Pack</h2>
+                </div>
+                
+                <div id="pack-sections">
+                    <!-- Sections will be rendered here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Test with hardcoded data
+        $(document).ready(() => {
+            console.log('🧪 Test page ready');
+            
+            // Monitor drag events
+            $(document).on('dragstart', '*[draggable="true"]', function(e) {
+                console.log('📍 DRAGSTART:', this.className, $(this).data());
+            });
+            
+            $(document).on('drop', '.section-items', function(e) {
+                console.log('📍 DROP on section:', $(this).closest('.pack-section').data('section-id'));
+            });
+            
+            // Create test pack builder with test data
+            if (window.packBuilder) {
+                window.packBuilder.gearLibrary = [
+                    { id: 'test-1', name: 'Test Tent', weight_g: 1500, category: 'shelter' },
+                    { id: 'test-2', name: 'Test Sleeping Bag', weight_g: 800, category: 'sleep' },
+                    { id: 'test-3', name: 'Test Stove', weight_g: 250, category: 'cooking' }
+                ];
+                
+                // Render sections
+                window.packBuilder.render();
+            }
+        });
+    </script>
+</body>
+</html>

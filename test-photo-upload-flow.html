@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Upload Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .test-section {
+            border: 2px solid #ddd;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .log {
+            background: #f5f5f5;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success { color: green; }
+        .error { color: red; }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        input[type="file"] {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Photo Upload Flow Test</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: Direct API Photo Upload</h2>
+        <p>Trip ID: <input type="number" id="tripId" value="1" style="width: 60px;"></p>
+        <p>Photo: <input type="file" id="photoFile" accept="image/*"></p>
+        <p>Alt Text: <input type="text" id="altText" value="Test photo description" style="width: 300px;"></p>
+        <button onclick="testDirectAPI()">Test Direct API</button>
+        <div id="directLog" class="log"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 2: FormData Inspection</h2>
+        <button onclick="inspectFormData()">Inspect FormData</button>
+        <div id="formDataLog" class="log"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 3: Check Current Trip Data</h2>
+        <button onclick="checkTripData()">Check Trip Data</button>
+        <div id="tripDataLog" class="log"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 4: Full Save Flow</h2>
+        <button onclick="testFullFlow()">Test Full Save Flow</button>
+        <div id="fullFlowLog" class="log"></div>
+    </div>
+
+    <script>
+        function log(elementId, message, isError = false) {
+            const logEl = document.getElementById(elementId);
+            const timestamp = new Date().toISOString();
+            const className = isError ? 'error' : '';
+            logEl.innerHTML += `<span class="${className}">[${timestamp}] ${message}</span>\n`;
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+        
+        async function testDirectAPI() {
+            const logId = 'directLog';
+            document.getElementById(logId).innerHTML = '';
+            
+            try {
+                const tripId = document.getElementById('tripId').value;
+                const photoFile = document.getElementById('photoFile').files[0];
+                const altText = document.getElementById('altText').value;
+                
+                if (!photoFile) {
+                    log(logId, 'Please select a photo file', true);
+                    return;
+                }
+                
+                log(logId, 'Starting photo upload test...');
+                log(logId, `Trip ID: ${tripId}`);
+                log(logId, `Photo: ${photoFile.name} (${photoFile.size} bytes)`);
+                log(logId, `Alt text: ${altText}`);
+                
+                // Create FormData
+                const formData = new FormData();
+                formData.append('_method', 'PUT');
+                formData.append('photo', photoFile);
+                formData.append('photo_alt_text', altText);
+                formData.append('title', 'Test Trip Update');
+                
+                // Log FormData contents
+                log(logId, '\nFormData contents:');
+                for (let [key, value] of formData.entries()) {
+                    if (value instanceof File) {
+                        log(logId, `  ${key}: [File: ${value.name}]`);
+                    } else {
+                        log(logId, `  ${key}: ${value}`);
+                    }
+                }
+                
+                const url = `api/index.php?route=trips&id=${tripId}`;
+                log(logId, `\nSending request to: ${url}`);
+                
+                const response = await fetch(url, {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include'
+                });
+                
+                log(logId, `Response status: ${response.status}`);
+                log(logId, `Response headers: ${JSON.stringify(Object.fromEntries(response.headers))}`);
+                
+                const result = await response.json();
+                log(logId, `\nResponse data:\n${JSON.stringify(result, null, 2)}`);
+                
+                if (result.success && result.data) {
+                    log(logId, '\n✅ SUCCESS! Checking photo_path...');
+                    log(logId, `photo_path: ${result.data.photo_path || 'NOT FOUND'}`);
+                    log(logId, `photo_alt_text: ${result.data.photo_alt_text || 'NOT FOUND'}`);
+                } else {
+                    log(logId, '❌ Upload failed', true);
+                }
+                
+            } catch (error) {
+                log(logId, `ERROR: ${error.message}`, true);
+                console.error(error);
+            }
+        }
+        
+        function inspectFormData() {
+            const logId = 'formDataLog';
+            document.getElementById(logId).innerHTML = '';
+            
+            const photoFile = document.getElementById('photoFile').files[0];
+            if (!photoFile) {
+                log(logId, 'Please select a photo file first', true);
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('photo', photoFile);
+            formData.append('photo_alt_text', 'Test alt text');
+            formData.append('title', 'Test title');
+            formData.append('_method', 'PUT');
+            
+            log(logId, 'FormData entries:');
+            for (let [key, value] of formData.entries()) {
+                if (value instanceof File) {
+                    log(logId, `${key}: File object`);
+                    log(logId, `  - name: ${value.name}`);
+                    log(logId, `  - size: ${value.size} bytes`);
+                    log(logId, `  - type: ${value.type}`);
+                    log(logId, `  - lastModified: ${new Date(value.lastModified).toISOString()}`);
+                } else {
+                    log(logId, `${key}: "${value}"`);
+                }
+            }
+        }
+        
+        async function checkTripData() {
+            const logId = 'tripDataLog';
+            document.getElementById(logId).innerHTML = '';
+            
+            try {
+                const tripId = document.getElementById('tripId').value;
+                log(logId, `Fetching trip ${tripId}...`);
+                
+                const response = await fetch(`api/index.php?route=trips&id=${tripId}`, {
+                    credentials: 'include'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success && result.data) {
+                    log(logId, 'Trip data:');
+                    log(logId, JSON.stringify(result.data, null, 2));
+                    
+                    log(logId, '\n📷 Photo fields:');
+                    log(logId, `photo_path: ${result.data.photo_path || 'NULL'}`);
+                    log(logId, `photo_alt_text: ${result.data.photo_alt_text || 'NULL'}`);
+                    log(logId, `image_url: ${result.data.image_url || 'NULL'}`);
+                    log(logId, `image_alt: ${result.data.image_alt || 'NULL'}`);
+                } else {
+                    log(logId, 'Failed to fetch trip data', true);
+                    log(logId, JSON.stringify(result, null, 2));
+                }
+                
+            } catch (error) {
+                log(logId, `ERROR: ${error.message}`, true);
+            }
+        }
+        
+        async function testFullFlow() {
+            const logId = 'fullFlowLog';
+            document.getElementById(logId).innerHTML = '';
+            
+            try {
+                const tripId = document.getElementById('tripId').value;
+                const photoFile = document.getElementById('photoFile').files[0];
+                
+                if (!photoFile) {
+                    log(logId, 'Please select a photo file', true);
+                    return;
+                }
+                
+                // Step 1: Get current trip data
+                log(logId, '1️⃣ Fetching current trip data...');
+                let response = await fetch(`api/index.php?route=trips&id=${tripId}`, {
+                    credentials: 'include'
+                });
+                let result = await response.json();
+                
+                if (!result.success) {
+                    log(logId, 'Failed to fetch trip', true);
+                    return;
+                }
+                
+                const tripData = result.data;
+                log(logId, `Current photo_path: ${tripData.photo_path || 'NULL'}`);
+                
+                // Step 2: Upload new photo
+                log(logId, '\n2️⃣ Uploading new photo...');
+                const formData = new FormData();
+                formData.append('_method', 'PUT');
+                formData.append('photo', photoFile);
+                formData.append('photo_alt_text', 'Test photo ' + Date.now());
+                formData.append('title', tripData.title); // Keep existing title
+                
+                response = await fetch(`api/index.php?route=trips&id=${tripId}`, {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include'
+                });
+                
+                result = await response.json();
+                log(logId, `Upload response: ${JSON.stringify(result, null, 2)}`);
+                
+                // Step 3: Verify update
+                log(logId, '\n3️⃣ Verifying update...');
+                response = await fetch(`api/index.php?route=trips&id=${tripId}`, {
+                    credentials: 'include'
+                });
+                result = await response.json();
+                
+                if (result.success && result.data) {
+                    log(logId, `New photo_path: ${result.data.photo_path || 'NULL'}`);
+                    log(logId, `New photo_alt_text: ${result.data.photo_alt_text || 'NULL'}`);
+                    
+                    if (result.data.photo_path && result.data.photo_path !== tripData.photo_path) {
+                        log(logId, '\n✅ Photo successfully updated!', false);
+                    } else {
+                        log(logId, '\n❌ Photo was not updated!', true);
+                    }
+                }
+                
+            } catch (error) {
+                log(logId, `ERROR: ${error.message}`, true);
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>

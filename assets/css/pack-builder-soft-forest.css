@@ -1,0 +1,786 @@
+/* Pack Builder Soft Forest Theme - Easy on the Eyes */
+
+/* Base colors - muted forest palette */
+:root {
+    --forest-primary: #5a7a65;      /* Soft sage green */
+    --forest-secondary: #6b8e7f;    /* Muted mint */
+    --forest-accent: #7fa392;       /* Soft teal */
+    --forest-dark: #3a4a42;         /* Deep forest */
+    --forest-darker: #2c3a34;       /* Darker forest */
+    --warm-accent: #a8896c;         /* Warm brown */
+    --soft-blue: #728fa3;           /* Muted blue */
+    --soft-orange: #c4946a;         /* Soft terracotta */
+    --soft-red: #a67b7b;            /* Muted rose */
+}
+
+/* Section color differentiation - subtle background tints */
+.pack-section {
+    background: linear-gradient(135deg, rgba(90, 122, 101, 0.08) 0%, rgba(90, 122, 101, 0.12) 100%);
+    border: 1px solid rgba(90, 122, 101, 0.25);
+}
+
+.pack-section[data-section-id="main"] {
+    background: linear-gradient(135deg, rgba(90, 122, 101, 0.08) 0%, rgba(90, 122, 101, 0.12) 100%);
+    border: 1px solid rgba(90, 122, 101, 0.3);
+}
+
+.pack-section[data-section-id="worn"] {
+    background: linear-gradient(135deg, rgba(168, 137, 108, 0.08) 0%, rgba(168, 137, 108, 0.12) 100%);
+    border: 1px solid rgba(168, 137, 108, 0.3);
+}
+
+.pack-section[data-section-id="consumables"] {
+    background: linear-gradient(135deg, rgba(142, 120, 142, 0.08) 0%, rgba(142, 120, 142, 0.12) 100%);
+    border: 1px solid rgba(142, 120, 142, 0.3);
+}
+
+.pack-section:nth-of-type(4) {
+    background: linear-gradient(135deg, rgba(114, 143, 163, 0.08) 0%, rgba(114, 143, 163, 0.12) 100%);
+    border: 1px solid rgba(114, 143, 163, 0.3);
+}
+
+.pack-section:nth-of-type(5) {
+    background: linear-gradient(135deg, rgba(196, 148, 106, 0.08) 0%, rgba(196, 148, 106, 0.12) 100%);
+    border: 1px solid rgba(196, 148, 106, 0.3);
+}
+
+.pack-section:nth-of-type(6) {
+    background: linear-gradient(135deg, rgba(166, 123, 123, 0.08) 0%, rgba(166, 123, 123, 0.12) 100%);
+    border: 1px solid rgba(166, 123, 123, 0.3);
+}
+
+.pack-section:nth-of-type(7) {
+    background: linear-gradient(135deg, rgba(127, 163, 146, 0.08) 0%, rgba(127, 163, 146, 0.12) 100%);
+    border: 1px solid rgba(127, 163, 146, 0.3);
+}
+
+.pack-section:nth-of-type(8) {
+    background: linear-gradient(135deg, rgba(140, 140, 120, 0.08) 0%, rgba(140, 140, 120, 0.12) 100%);
+    border: 1px solid rgba(140, 140, 120, 0.3);
+}
+
+/* Section Headers - Soft gradient */
+.section-header {
+    background: linear-gradient(135deg, rgba(90, 122, 101, 0.3) 0%, rgba(90, 122, 101, 0.25) 100%);
+    color: rgba(255, 255, 255, 0.95);
+    border-bottom: 1px solid rgba(90, 122, 101, 0.3);
+}
+
+.section-header:hover {
+    background: linear-gradient(135deg, rgba(90, 122, 101, 0.35) 0%, rgba(90, 122, 101, 0.3) 100%);
+}
+
+/* Section inputs - subtle dark */
+.section-name-input {
+    background: rgba(0, 0, 0, 0.2) !important;
+    border: 1px solid transparent !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.section-name-input:focus {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border-color: rgba(90, 122, 101, 0.5) !important;
+}
+
+/* Section weight - muted */
+.section-weight {
+    background: rgba(0, 0, 0, 0.2);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.8125rem;
+}
+
+/* Section delete - subtle */
+.section-delete {
+    background: rgba(166, 123, 123, 0.2);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.section-delete:hover {
+    background: rgba(166, 123, 123, 0.3);
+}
+
+/* Section color differentiation - subtle muted colors */
+.pack-section[data-section-id="main"] .section-header {
+    background: linear-gradient(135deg, rgba(90, 122, 101, 0.3) 0%, rgba(90, 122, 101, 0.25) 100%);
+}
+
+.pack-section[data-section-id="worn"] .section-header {
+    background: linear-gradient(135deg, rgba(168, 137, 108, 0.3) 0%, rgba(168, 137, 108, 0.25) 100%);
+}
+
+.pack-section[data-section-id="consumables"] .section-header {
+    background: linear-gradient(135deg, rgba(142, 120, 142, 0.3) 0%, rgba(142, 120, 142, 0.25) 100%);
+}
+
+/* Custom sections get rotating colors */
+.pack-section:nth-of-type(4) .section-header {
+    background: linear-gradient(135deg, rgba(114, 143, 163, 0.3) 0%, rgba(114, 143, 163, 0.25) 100%);
+}
+
+.pack-section:nth-of-type(5) .section-header {
+    background: linear-gradient(135deg, rgba(196, 148, 106, 0.3) 0%, rgba(196, 148, 106, 0.25) 100%);
+}
+
+.pack-section:nth-of-type(6) .section-header {
+    background: linear-gradient(135deg, rgba(166, 123, 123, 0.3) 0%, rgba(166, 123, 123, 0.25) 100%);
+}
+
+.pack-section:nth-of-type(7) .section-header {
+    background: linear-gradient(135deg, rgba(127, 163, 146, 0.3) 0%, rgba(127, 163, 146, 0.25) 100%);
+}
+
+.pack-section:nth-of-type(8) .section-header {
+    background: linear-gradient(135deg, rgba(140, 140, 120, 0.3) 0%, rgba(140, 140, 120, 0.25) 100%);
+}
+
+/* Drop zones - match section colors with subtle backgrounds */
+.pack-section[data-section-id="main"] .section-items {
+    background: rgba(90, 122, 101, 0.05);
+    border: 2px dashed rgba(90, 122, 101, 0.2);
+}
+
+.pack-section[data-section-id="worn"] .section-items {
+    background: rgba(168, 137, 108, 0.05);
+    border: 2px dashed rgba(168, 137, 108, 0.2);
+}
+
+.pack-section[data-section-id="consumables"] .section-items {
+    background: rgba(142, 120, 142, 0.05);
+    border: 2px dashed rgba(142, 120, 142, 0.2);
+}
+
+.pack-section:nth-of-type(4) .section-items {
+    background: rgba(114, 143, 163, 0.05);
+    border: 2px dashed rgba(114, 143, 163, 0.2);
+}
+
+.pack-section:nth-of-type(5) .section-items {
+    background: rgba(196, 148, 106, 0.05);
+    border: 2px dashed rgba(196, 148, 106, 0.2);
+}
+
+.pack-section:nth-of-type(6) .section-items {
+    background: rgba(166, 123, 123, 0.05);
+    border: 2px dashed rgba(166, 123, 123, 0.2);
+}
+
+.pack-section:nth-of-type(7) .section-items {
+    background: rgba(127, 163, 146, 0.05);
+    border: 2px dashed rgba(127, 163, 146, 0.2);
+}
+
+.pack-section:nth-of-type(8) .section-items {
+    background: rgba(140, 140, 120, 0.05);
+    border: 2px dashed rgba(140, 140, 120, 0.2);
+}
+
+.section-items.drag-over {
+    border-color: rgba(90, 122, 101, 0.4);
+    box-shadow: inset 0 0 10px rgba(90, 122, 101, 0.1);
+}
+
+/* Pack items - alternating colors for better readability */
+.pack-item {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.pack-item:nth-child(even) {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.04) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.pack-item:hover {
+    background: linear-gradient(135deg, rgba(90, 122, 101, 0.15) 0%, rgba(90, 122, 101, 0.1) 100%) !important;
+    border-color: rgba(90, 122, 101, 0.4) !important;
+}
+
+.pack-item:nth-child(even):hover {
+    background: linear-gradient(135deg, rgba(90, 122, 101, 0.2) 0%, rgba(90, 122, 101, 0.15) 100%) !important;
+    border-color: rgba(90, 122, 101, 0.4) !important;
+}
+
+/* Pack items that will be saved to library */
+.pack-item.pending-library-save {
+    background: linear-gradient(135deg, rgba(114, 143, 163, 0.2) 0%, rgba(114, 143, 163, 0.15) 100%) !important;
+    border: 1px solid rgba(114, 143, 163, 0.4) !important;
+}
+
+/* Fix footer overlap issue - allow content to expand */
+.pack-builder-page .main-wrapper {
+    min-height: auto !important;
+}
+
+.pack-builder-container {
+    height: auto !important;
+    min-height: calc(100vh - 140px);
+    padding-bottom: 2rem; /* Add space for any footer */
+}
+
+.pack-view {
+    min-height: auto !important;
+    height: auto !important;
+}
+
+/* Ensure sections can expand without height constraints */
+.pack-sections {
+    height: auto !important;
+    max-height: none !important;
+    overflow-y: visible !important;
+}
+
+/* Hide footer and mobile nav on pack builder page */
+.pack-builder-page .site-footer,
+.pack-builder-page .mobile-bottom-nav,
+.pack-builder-page footer {
+    display: none !important;
+}
+
+/* Ensure pack builder page uses full height */
+.pack-builder-page {
+    min-height: 100vh !important;
+    padding-bottom: 0 !important;
+}
+
+.pack-builder-page main {
+    padding-bottom: 2rem !important;
+}
+
+/* Override pack-item-icon background */
+.pack-item-icon {
+    background: rgba(0, 0, 0, 0.2) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Gear items - cleaner card layout */
+.gear-item {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.2s ease;
+}
+
+.gear-item:hover {
+    background: rgba(90, 122, 101, 0.12);
+    border-color: rgba(90, 122, 101, 0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Gear item layout improvements */
+.gear-item-icon {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+    background: rgba(90, 122, 101, 0.2) !important;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.gear-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.gear-item-name {
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+    margin-bottom: 0.5rem !important;
+    line-height: 1.2;
+}
+
+.gear-item-meta {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    flex-wrap: wrap;
+}
+
+.gear-item-weight {
+    font-size: 0.9rem !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-weight: 500;
+}
+
+/* Custom gear items in library */
+.gear-item.custom-gear {
+    background: linear-gradient(135deg, rgba(114, 143, 163, 0.05) 0%, rgba(114, 143, 163, 0.03) 100%);
+    border: 1px solid rgba(114, 143, 163, 0.2);
+}
+
+.gear-item.custom-gear:hover {
+    background: linear-gradient(135deg, rgba(114, 143, 163, 0.1) 0%, rgba(114, 143, 163, 0.08) 100%);
+    border-color: rgba(114, 143, 163, 0.4);
+}
+
+.custom-badge {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    margin-left: 0.25rem;
+}
+
+/* Add section button - soft blue */
+.add-section-btn {
+    background: linear-gradient(135deg, rgba(114, 143, 163, 0.25) 0%, rgba(114, 143, 163, 0.2) 100%);
+    border: 1px solid rgba(114, 143, 163, 0.3);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.add-section-btn:hover {
+    background: linear-gradient(135deg, rgba(114, 143, 163, 0.3) 0%, rgba(114, 143, 163, 0.25) 100%);
+    border-color: rgba(114, 143, 163, 0.4);
+    transform: translateY(-1px);
+}
+
+/* Add custom item button */
+.add-custom-item-btn {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px dashed rgba(90, 122, 101, 0.4);
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.5rem 1rem;
+    margin-top: 0.75rem;
+    width: 100%;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.add-custom-item-btn:hover {
+    background: rgba(90, 122, 101, 0.15);
+    border-color: rgba(90, 122, 101, 0.6);
+    color: white;
+}
+
+/* Category badges - muted colors */
+.gear-category-badge {
+    padding: 0.125rem 0.4rem;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+.gear-category-badge.shelter { background: rgba(166, 123, 123, 0.7); color: white; }
+.gear-category-badge.sleep { background: rgba(196, 148, 106, 0.7); color: white; }
+.gear-category-badge.clothing { background: rgba(168, 137, 108, 0.7); color: white; }
+.gear-category-badge.cooking { background: rgba(107, 142, 127, 0.7); color: white; }
+.gear-category-badge.water { background: rgba(114, 143, 163, 0.7); color: white; }
+.gear-category-badge.food { background: rgba(142, 120, 142, 0.7); color: white; }
+.gear-category-badge.navigation { background: rgba(100, 100, 100, 0.7); color: white; }
+.gear-category-badge.safety { background: rgba(166, 123, 123, 0.7); color: white; }
+.gear-category-badge.tools { background: rgba(168, 137, 108, 0.7); color: white; }
+.gear-category-badge.electronics { background: rgba(114, 143, 163, 0.7); color: white; }
+.gear-category-badge.personal { background: rgba(142, 120, 142, 0.7); color: white; }
+.gear-category-badge.other { background: rgba(100, 100, 100, 0.7); color: white; }
+
+/* Weight stats - subtle */
+.weight-stat {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.weight-stat:hover {
+    background: rgba(90, 122, 101, 0.05);
+    border-color: rgba(90, 122, 101, 0.2);
+}
+
+.weight-stat-value {
+    color: rgba(127, 163, 146, 0.9) !important;
+}
+
+.weight-stat.total {
+    background: rgba(90, 122, 101, 0.1);
+    border-color: rgba(90, 122, 101, 0.2);
+}
+
+/* Gear item add buttons - improved visibility and interaction */
+.add-btn {
+    background: linear-gradient(135deg, rgba(90, 122, 101, 0.8) 0%, rgba(90, 122, 101, 0.7) 100%) !important;
+    border: 1px solid rgba(90, 122, 101, 0.4) !important;
+    color: white !important;
+    font-weight: 600 !important;
+    padding: 0.5rem 0.75rem !important;
+    border-radius: 6px !important;
+    font-size: 0.8125rem !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+}
+
+.add-btn:hover {
+    background: linear-gradient(135deg, rgba(90, 122, 101, 0.9) 0%, rgba(90, 122, 101, 0.8) 100%) !important;
+    border-color: rgba(90, 122, 101, 0.6) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 2px 8px rgba(90, 122, 101, 0.3) !important;
+}
+
+.add-btn:active {
+    transform: translateY(0) !important;
+}
+
+#save-pack-btn {
+    background: linear-gradient(135deg, rgba(90, 122, 101, 0.8) 0%, rgba(90, 122, 101, 0.7) 100%);
+    border: 1px solid rgba(90, 122, 101, 0.3);
+    color: white;
+}
+
+#save-pack-btn:hover {
+    background: linear-gradient(135deg, rgba(90, 122, 101, 0.9) 0%, rgba(90, 122, 101, 0.8) 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(90, 122, 101, 0.2);
+}
+
+#save-pack-btn.has-changes {
+    background: linear-gradient(135deg, rgba(196, 148, 106, 0.8) 0%, rgba(196, 148, 106, 0.7) 100%);
+    animation: subtle-pulse 3s infinite;
+}
+
+@keyframes subtle-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.85; }
+}
+
+/* Category filter buttons - improved visibility and spacing */
+.gear-categories {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+    margin-bottom: 1rem !important;
+    padding: 0.75rem !important;
+    background: rgba(0, 0, 0, 0.1) !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.category-btn {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-size: 0.8125rem !important;
+    font-weight: 500 !important;
+    padding: 0.5rem 0.75rem !important;
+    border-radius: 6px !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+}
+
+.category-btn:hover {
+    background: rgba(90, 122, 101, 0.2) !important;
+    border-color: rgba(90, 122, 101, 0.4) !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+    transform: translateY(-1px) !important;
+}
+
+.category-btn.active {
+    background: linear-gradient(135deg, rgba(90, 122, 101, 0.4) 0%, rgba(90, 122, 101, 0.3) 100%) !important;
+    border-color: rgba(90, 122, 101, 0.6) !important;
+    color: white !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 4px rgba(90, 122, 101, 0.2) !important;
+}
+
+/* Search input - enhanced visibility and interaction */
+.gear-search {
+    position: relative !important;
+    margin-bottom: 1rem !important;
+}
+
+#gear-search {
+    background: rgba(0, 0, 0, 0.15) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+    padding: 0.75rem 1rem !important;
+    border-radius: 8px !important;
+    font-size: 0.9375rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    transition: all 0.2s ease !important;
+}
+
+#gear-search::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+#gear-search:focus {
+    background: rgba(0, 0, 0, 0.25) !important;
+    border-color: rgba(90, 122, 101, 0.6) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(90, 122, 101, 0.1) !important;
+}
+
+.search-icon {
+    position: absolute !important;
+    right: 0.75rem !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    color: rgba(255, 255, 255, 0.4) !important;
+    font-size: 1rem !important;
+    pointer-events: none !important;
+}
+
+/* Gear browser - enhanced container styling */
+.gear-browser {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.2) 100%) !important;
+    border: 1px solid rgba(90, 122, 101, 0.25) !important;
+    border-radius: 12px !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+.gear-browser h2 {
+    color: rgba(255, 255, 255, 0.95) !important;
+    font-size: 1.125rem !important;
+    font-weight: 600 !important;
+    margin: 0 0 1rem 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Gear list container - better scrolling and spacing */
+.gear-list {
+    background: rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 8px !important;
+    max-height: calc(100vh - 320px) !important;
+    overflow-y: auto !important;
+    padding: 0.5rem !important;
+    margin: 0 !important;
+}
+
+.gear-list::-webkit-scrollbar {
+    width: 6px !important;
+}
+
+.gear-list::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1) !important;
+    border-radius: 3px !important;
+}
+
+.gear-list::-webkit-scrollbar-thumb {
+    background: rgba(90, 122, 101, 0.4) !important;
+    border-radius: 3px !important;
+}
+
+.gear-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(90, 122, 101, 0.6) !important;
+}
+
+/* Pack header */
+.pack-header {
+    background: rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(90, 122, 101, 0.2);
+}
+
+/* Remove button - more visible */
+.remove-btn {
+    background: rgba(166, 123, 123, 0.4);
+    color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(166, 123, 123, 0.5);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.remove-btn:hover {
+    background: rgba(166, 123, 123, 0.6);
+    border-color: rgba(166, 123, 123, 0.7);
+    color: white;
+}
+
+/* Empty state styling for gear list */
+.gear-list .empty-state {
+    text-align: center !important;
+    color: rgba(255, 255, 255, 0.4) !important;
+    padding: 2rem 1rem !important;
+    font-style: italic !important;
+    font-size: 0.9375rem !important;
+}
+
+.gear-list .loading {
+    text-align: center !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    padding: 2rem 1rem !important;
+    font-style: italic !important;
+    font-size: 0.9375rem !important;
+}
+
+/* Text readability - better contrast */
+.gear-item-name,
+.section-name-input,
+.pack-name {
+    color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Pack item name - white and bold for visibility - override gear-color-system */
+.pack-builder-page .pack-item .pack-item-name,
+.pack-section .pack-item .pack-item-name,
+.section-items .pack-item .pack-item-name {
+    color: white !important;
+    font-weight: 700 !important;
+    font-size: 0.9375rem !important;
+}
+
+.gear-item-weight,
+.pack-item-details,
+.gear-item-meta {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.pack-item:hover .pack-item-name {
+    color: white !important;
+}
+
+.pack-item:hover .pack-item-details {
+    color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Ensure pack-item details spans are visible */
+.pack-item-details span {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.section-empty {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* Inline quantity editing */
+.pack-item-quantity {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(90, 122, 101, 0.3);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    min-width: 60px;
+    text-align: center;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pack-item-quantity:hover {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(90, 122, 101, 0.5);
+}
+
+.pack-item-quantity-input {
+    background: rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid rgba(90, 122, 101, 0.5) !important;
+    color: white !important;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    width: 60px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.pack-item-quantity-input:focus {
+    background: rgba(0, 0, 0, 0.5) !important;
+    border-color: rgba(127, 163, 146, 0.8) !important;
+    outline: none !important;
+}
+
+/* Inline name editing for custom items */
+.pack-item-name.editable {
+    cursor: pointer;
+    position: relative;
+}
+
+.pack-item-name.editable:hover::after {
+    content: ' ✏️';
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+.pack-item-name-input {
+    background: rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid rgba(90, 122, 101, 0.5) !important;
+    color: white !important;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 0.9375rem;
+    width: 100%;
+    max-width: 200px;
+}
+
+.pack-item-name-input:focus {
+    background: rgba(0, 0, 0, 0.5) !important;
+    border-color: rgba(127, 163, 146, 0.8) !important;
+    outline: none !important;
+}
+
+/* Inline weight editing */
+.pack-item-weight.editable {
+    cursor: pointer;
+}
+
+.pack-item-weight.editable:hover {
+    text-decoration: underline;
+    text-decoration-style: dotted;
+}
+
+.pack-item-weight-input {
+    background: rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid rgba(90, 122, 101, 0.5) !important;
+    color: white !important;
+    padding: 0.15rem 0.3rem;
+    border-radius: 4px;
+    width: 80px;
+    text-align: center;
+    font-size: 0.8125rem;
+}
+
+.pack-item-weight-input:focus {
+    background: rgba(0, 0, 0, 0.5) !important;
+    border-color: rgba(127, 163, 146, 0.8) !important;
+    outline: none !important;
+}
+
+/* Inline category editing */
+.gear-category-badge.editable {
+    cursor: pointer;
+}
+
+.gear-category-badge.editable:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+}
+
+.pack-item-category-select {
+    background: rgba(0, 0, 0, 0.6) !important;
+    border: 1px solid rgba(90, 122, 101, 0.5) !important;
+    color: white !important;
+    padding: 0.125rem 0.4rem;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.pack-item-category-select:focus {
+    background: rgba(0, 0, 0, 0.7) !important;
+    border-color: rgba(127, 163, 146, 0.8) !important;
+    outline: none !important;
+}
+
+.pack-item-category-select option {
+    background: rgba(44, 62, 49, 0.95);
+    color: white;
+}

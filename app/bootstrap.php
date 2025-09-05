@@ -38,7 +38,7 @@ if (session_status() === PHP_SESSION_NONE) {
     // Set session cookie parameters
     $cookieParams = [
         'lifetime' => 0, // Session cookie
-        'path' => '/BTT/', // Use BTT path for proper cookie scope
+        'path' => '/', // Use root path for broader cookie scope
         'domain' => '', // Empty for default domain
         'secure' => isset($_SERVER['HTTPS']), // True if HTTPS
         'httponly' => true,
@@ -46,24 +46,7 @@ if (session_status() === PHP_SESSION_NONE) {
     ];
     session_set_cookie_params($cookieParams);
     
-    // Initialize database connection for session handler
-    $dbPath = BASE_PATH . '/storage/sqlite/btt.db';
-    $db = null;
-    
-    try {
-        $db = new PDO('sqlite:' . $dbPath);
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $db->exec('PRAGMA foreign_keys = ON');
-    } catch (PDOException $e) {
-        error_log("Failed to connect to database for sessions: " . $e->getMessage());
-    }
-    
-    // Set up custom session handler
-    require_once BASE_PATH . '/app/Services/DbSessionHandler.php';
-    $sessionHandler = new App\Services\DbSessionHandler($db);
-    session_set_save_handler($sessionHandler, true);
-    
-    // Start the session
+    // Start the session with default handler (temporarily disable custom handler)
     session_start();
 } else {
     // Session already active - just load the handler class
