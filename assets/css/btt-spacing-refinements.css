@@ -1,0 +1,502 @@
+/**
+ * BTT Spacing Refinements
+ * Fine-tuned spacing adjustments for better visual hierarchy and readability
+ * @version 1.0.0
+ * @date 2025-09-06
+ */
+
+/* ===========================================
+   GLOBAL SPACING REFINEMENTS
+   =========================================== */
+
+/* Tighten up body line height for better density */
+body {
+  line-height: 1.5 !important;
+}
+
+/* Consistent section spacing */
+section {
+  padding-top: 2rem !important;
+  padding-bottom: 2rem !important;
+}
+
+/* ===========================================
+   NAVIGATION SPACING FIXES
+   =========================================== */
+
+.forest-nav {
+  padding: 0.75rem 0 !important;
+  min-height: 60px !important;
+}
+
+.nav-container {
+  min-height: 60px !important;
+  padding: 0 1rem !important;
+}
+
+/* Tighter nav link spacing */
+.nav-link,
+.nav-section-link {
+  padding: 0.5rem 0.75rem !important;
+  margin: 0 0.25rem !important;
+}
+
+/* Brand spacing */
+.nav-brand {
+  padding: 0.5rem 0 !important;
+}
+
+.nav-brand-icon {
+  font-size: 1.5rem !important;
+  margin-right: 0.5rem !important;
+}
+
+.nav-brand-text {
+  font-size: 1.125rem !important;
+}
+
+/* ===========================================
+   HEADER SPACING REFINEMENTS
+   =========================================== */
+
+/* Reduce hero padding for more content above fold */
+.page-hero,
+.modern-dashboard-hero {
+  padding: 1.5rem 0 !important;
+  margin-bottom: 1.5rem !important;
+}
+
+/* Tighter hero content */
+.hero-content {
+  padding: 0 1rem !important;
+}
+
+/* Hero title spacing */
+.hero-title,
+.modern-dashboard-hero-title {
+  margin-bottom: 0.5rem !important;
+  line-height: 1.2 !important;
+}
+
+.hero-subtitle,
+.modern-dashboard-hero-subtitle {
+  margin-bottom: 1rem !important;
+  line-height: 1.4 !important;
+}
+
+/* Hero controls spacing */
+.hero-controls {
+  gap: 0.75rem !important;
+}
+
+.hero-actions {
+  gap: 0.5rem !important;
+}
+
+/* ===========================================
+   CARD SPACING REFINEMENTS
+   =========================================== */
+
+/* Tighter card spacing */
+.card,
+.dashboard-card {
+  margin-bottom: 1.25rem !important;
+}
+
+/* Card header */
+.card-header {
+  padding: 1rem 1.25rem !important;
+}
+
+.card-title {
+  font-size: 1.125rem !important;
+  margin-bottom: 0.25rem !important;
+  line-height: 1.3 !important;
+}
+
+.card-subtitle {
+  font-size: 0.875rem !important;
+  line-height: 1.4 !important;
+}
+
+/* Card body */
+.card-body {
+  padding: 1rem 1.25rem !important;
+}
+
+/* Card footer */
+.card-footer {
+  padding: 0.75rem 1.25rem !important;
+}
+
+/* ===========================================
+   GRID SPACING REFINEMENTS
+   =========================================== */
+
+/* Tighter grid gaps */
+.dashboard-primary-grid,
+.adventures-grid,
+.pack-grid,
+.gear-grid {
+  gap: 1.25rem !important;
+  margin-bottom: 2rem !important;
+}
+
+.stats-grid {
+  gap: 1rem !important;
+  margin: 1.5rem auto 2rem !important;
+}
+
+/* ===========================================
+   BUTTON SPACING REFINEMENTS
+   =========================================== */
+
+/* Tighter button padding */
+.btn {
+  padding: 0.625rem 1.25rem !important;
+  min-height: 40px !important;
+  font-size: 0.9375rem !important;
+  line-height: 1.2 !important;
+}
+
+.btn-sm {
+  padding: 0.375rem 0.75rem !important;
+  min-height: 32px !important;
+  font-size: 0.875rem !important;
+}
+
+.btn-lg {
+  padding: 0.75rem 1.5rem !important;
+  min-height: 48px !important;
+  font-size: 1rem !important;
+}
+
+/* Button groups */
+.btn-group {
+  gap: 0.5rem !important;
+}
+
+/* ===========================================
+   FORM SPACING REFINEMENTS
+   =========================================== */
+
+/* Tighter form groups */
+.form-group {
+  margin-bottom: 1.25rem !important;
+}
+
+/* Form labels */
+.form-label {
+  margin-bottom: 0.375rem !important;
+  font-size: 0.875rem !important;
+}
+
+/* Form inputs */
+.form-input,
+.form-select,
+.form-textarea,
+input,
+select,
+textarea {
+  padding: 0.625rem 0.875rem !important;
+  min-height: 40px !important;
+  font-size: 0.9375rem !important;
+}
+
+/* Form help text */
+.form-text,
+.help-text {
+  margin-top: 0.25rem !important;
+  font-size: 0.8125rem !important;
+  line-height: 1.3 !important;
+}
+
+/* Form grids */
+.form-grid {
+  gap: 1rem !important;
+}
+
+/* ===========================================
+   LIST ITEM SPACING
+   =========================================== */
+
+/* Trip items */
+.trip-item {
+  padding: 0.75rem !important;
+  margin-bottom: 0.625rem !important;
+}
+
+.trip-item:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Pack items */
+.pack-preview {
+  padding: 0.75rem !important;
+  margin-bottom: 0.625rem !important;
+}
+
+.pack-preview:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Gear items */
+.gear-item-row {
+  padding: 0.5rem 0.75rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.gear-item-row:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* ===========================================
+   STAT CARD REFINEMENTS
+   =========================================== */
+
+.stat-card {
+  padding: 1rem !important;
+}
+
+.stat-number {
+  font-size: 1.75rem !important;
+  margin-bottom: 0.125rem !important;
+  line-height: 1 !important;
+}
+
+.stat-label {
+  font-size: 0.75rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  line-height: 1.2 !important;
+}
+
+/* ===========================================
+   MODAL SPACING REFINEMENTS
+   =========================================== */
+
+.modal-header {
+  padding: 1rem 1.25rem !important;
+}
+
+.modal-body {
+  padding: 1.25rem !important;
+}
+
+.modal-footer {
+  padding: 0.875rem 1.25rem !important;
+  gap: 0.5rem !important;
+}
+
+/* ===========================================
+   TABLE SPACING REFINEMENTS
+   =========================================== */
+
+table {
+  margin-bottom: 1.5rem !important;
+}
+
+th,
+td {
+  padding: 0.75rem 1rem !important;
+}
+
+th {
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+td {
+  font-size: 0.9375rem !important;
+  line-height: 1.4 !important;
+}
+
+/* ===========================================
+   PARAGRAPH & TEXT SPACING
+   =========================================== */
+
+p {
+  margin-bottom: 1rem !important;
+  line-height: 1.6 !important;
+}
+
+p:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0 !important;
+  margin-bottom: 0.75rem !important;
+  line-height: 1.3 !important;
+}
+
+h1 { margin-bottom: 1rem !important; }
+h2 { margin-bottom: 0.875rem !important; }
+h3 { margin-bottom: 0.75rem !important; }
+
+/* Lists */
+ul, ol {
+  margin-bottom: 1rem !important;
+  padding-left: 1.5rem !important;
+}
+
+li {
+  margin-bottom: 0.25rem !important;
+  line-height: 1.6 !important;
+}
+
+li:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* ===========================================
+   BADGE & TAG SPACING
+   =========================================== */
+
+.badge {
+  padding: 0.25rem 0.5rem !important;
+  font-size: 0.75rem !important;
+  line-height: 1 !important;
+}
+
+/* ===========================================
+   RESPONSIVE SPACING ADJUSTMENTS
+   =========================================== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  /* Reduce section padding */
+  section {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+  
+  /* Reduce grid gaps */
+  .dashboard-primary-grid,
+  .stats-grid {
+    gap: 1rem !important;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  /* Further reduce padding */
+  body[data-page] {
+    padding-top: 60px !important;
+  }
+  
+  .container,
+  main {
+    padding: 0.75rem !important;
+  }
+  
+  section {
+    padding-top: 1.25rem !important;
+    padding-bottom: 1.25rem !important;
+  }
+  
+  /* Compact headers */
+  .page-hero,
+  .modern-dashboard-hero {
+    padding: 1rem 0 !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .hero-title {
+    font-size: 1.5rem !important;
+    margin-bottom: 0.375rem !important;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.875rem !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  /* Compact cards */
+  .card-header,
+  .card-body,
+  .card-footer {
+    padding: 0.875rem !important;
+  }
+  
+  /* Smaller gaps */
+  .dashboard-primary-grid,
+  .stats-grid {
+    gap: 0.75rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+  
+  /* Compact buttons */
+  .btn {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.875rem !important;
+  }
+  
+  /* Compact forms */
+  .form-group {
+    margin-bottom: 1rem !important;
+  }
+  
+  .form-input,
+  .form-select,
+  .form-textarea {
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.9375rem !important;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .container,
+  main {
+    padding: 0.5rem !important;
+  }
+  
+  /* Very compact spacing */
+  .card {
+    margin-bottom: 1rem !important;
+  }
+  
+  .card-header,
+  .card-body,
+  .card-footer {
+    padding: 0.75rem !important;
+  }
+  
+  /* Minimal gaps */
+  .dashboard-primary-grid,
+  .stats-grid {
+    gap: 0.625rem !important;
+  }
+}
+
+/* ===========================================
+   UTILITY SPACING CLASSES
+   =========================================== */
+
+/* Margin utilities */
+.m-0 { margin: 0 !important; }
+.m-1 { margin: 0.25rem !important; }
+.m-2 { margin: 0.5rem !important; }
+.m-3 { margin: 0.75rem !important; }
+.m-4 { margin: 1rem !important; }
+.m-5 { margin: 1.5rem !important; }
+
+/* Padding utilities */
+.p-0 { padding: 0 !important; }
+.p-1 { padding: 0.25rem !important; }
+.p-2 { padding: 0.5rem !important; }
+.p-3 { padding: 0.75rem !important; }
+.p-4 { padding: 1rem !important; }
+.p-5 { padding: 1.5rem !important; }
+
+/* Gap utilities */
+.gap-0 { gap: 0 !important; }
+.gap-1 { gap: 0.25rem !important; }
+.gap-2 { gap: 0.5rem !important; }
+.gap-3 { gap: 0.75rem !important; }
+.gap-4 { gap: 1rem !important; }
+.gap-5 { gap: 1.5rem !important; }

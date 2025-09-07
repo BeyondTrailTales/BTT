@@ -137,6 +137,15 @@
         savePack: async function() {
             console.log('SavePack called');
             
+            // Show save animation
+            if (window.SaveAnimation) {
+                window.SaveAnimation.showSaving('Saving your backpack...');
+                const saveBtn = $('#btn-save-pack');
+                if (saveBtn.length) {
+                    window.SaveAnimation.setButtonLoading(saveBtn[0], true);
+                }
+            }
+            
             try {
                 // Collect pack data
                 const packData = this.collectPackData();
@@ -151,6 +160,9 @@
                 
                 // Validate
                 if (!packData.name || packData.name.trim() === '') {
+                    if (window.SaveAnimation) {
+                        window.SaveAnimation.showError('Missing pack name', 'Please enter a name for your pack');
+                    }
                     this.showError('Please enter a pack name');
                     $('#pack-name').focus();
                     return;
@@ -230,8 +242,17 @@
                     this.state.isDirty = false;
                     
                     // Update current pack ID if it was a create
-                    if (!this.state.currentPackId && savedPack.id) {
+                    const isNewPack = !this.state.currentPackId;
+                    if (isNewPack && savedPack.id) {
                         this.state.currentPackId = savedPack.id;
+                    }
+                    
+                    // Show success animation
+                    if (window.SaveAnimation) {
+                        const packName = savedPack.name || packData.name || 'Backpack';
+                        const message = isNewPack ? 'Backpack created!' : 'Backpack updated!';
+                        const details = `"${packName}" saved to database (ID: ${savedPack.id})`;
+                        window.SaveAnimation.showSuccess(message, details);
                     }
                     
                     // Check for achievements
@@ -287,6 +308,17 @@
                     error: error
                 });
                 
+                // Show error animation
+                if (window.SaveAnimation) {
+                    let errorDetails = error.message;
+                    if (error.message && error.message.includes('timeout')) {
+                        errorDetails = 'Request timed out - please try again';
+                    } else if (error.statusText) {
+                        errorDetails = error.statusText;
+                    }
+                    window.SaveAnimation.showError('Failed to save backpack', errorDetails);
+                }
+                
                 // More detailed error message
                 let errorMsg = 'Failed to save pack: ';
                 if (error.message) {
@@ -300,6 +332,14 @@
                 }
                 
                 this.showError(errorMsg);
+            } finally {
+                // Reset button state
+                if (window.SaveAnimation) {
+                    const saveBtn = $('#btn-save-pack');
+                    if (saveBtn.length) {
+                        window.SaveAnimation.setButtonLoading(saveBtn[0], false);
+                    }
+                }
             }
         },
 
@@ -699,16 +739,17 @@
 
         // Render packs list
         renderPacksList: function(packs) {
-            // Hide loading state
+            console.log('Rendering packs list with', packs.length, 'packs');
+            
+            // Hide ALL loading and empty states first
             $('#packs-loading').hide();
             $('#packs-empty').hide();
             
             // Use the correct container
             const container = $('#packs-grid-items');
-            container.empty().show();
-
-            if (packs.length === 0) {
-                // Show the existing empty state
+            
+            if (!packs || packs.length === 0) {
+                // Show empty state, hide packs grid
                 container.hide();
                 $('#packs-empty').show();
                 
@@ -716,6 +757,13 @@
                 $('#create-first-pack').off('click').on('click', () => this.createNewPack());
                 return;
             }
+            
+            // We have packs - make sure container is visible
+            container.empty().show();
+            
+            // Also ensure the parent container is visible
+            $('#packs-grid').show();
+            $('#view-my-packs').show();
 
             packs.forEach(pack => {
                 const totalWeight = pack.total_weight_g || 0;

@@ -1,0 +1,270 @@
+/**
+ * Backpack Card Component
+ * Card layout for backpack items
+ */
+
+/* Backpack Card Base */
+.c-backpack-card {
+  position: relative;
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--radius-lg, 0.5rem);
+  overflow: hidden;
+  transition: all var(--duration-base, 200ms) var(--ease-out);
+}
+
+.c-backpack-card:hover {
+  background: var(--color-surface-hover, rgba(255, 255, 255, 0.08));
+  border-color: var(--color-primary-alpha, rgba(75, 166, 103, 0.3));
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Backpack Card Header */
+.c-backpack-card__header {
+  padding: var(--spacing-4, 1rem);
+  background: linear-gradient(135deg, 
+    var(--color-primary-alpha, rgba(75, 166, 103, 0.1)) 0%,
+    transparent 100%
+  );
+  border-bottom: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+}
+
+.c-backpack-card__title {
+  font-size: clamp(1.125rem, 3vw, 1.25rem);
+  font-weight: var(--font-semibold, 600);
+  line-height: var(--leading-tight, 1.25);
+  margin: 0 0 var(--spacing-2, 0.5rem) 0;
+}
+
+.c-backpack-card__subtitle {
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+}
+
+/* Backpack Card Body */
+.c-backpack-card__body {
+  padding: var(--spacing-4, 1rem);
+}
+
+/* Backpack Stats */
+.c-backpack-card__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-4, 1rem);
+  margin-bottom: var(--spacing-4, 1rem);
+}
+
+.c-backpack-card__stat {
+  text-align: center;
+}
+
+.c-backpack-card__stat-value {
+  display: block;
+  font-size: var(--text-xl, 1.25rem);
+  font-weight: var(--font-semibold, 600);
+  color: var(--color-primary, #4ba667);
+  margin-bottom: var(--spacing-1, 0.25rem);
+}
+
+.c-backpack-card__stat-label {
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Weight Progress Bar */
+.c-backpack-card__weight {
+  margin-bottom: var(--spacing-4, 1rem);
+}
+
+.c-backpack-card__weight-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: var(--spacing-2, 0.5rem);
+}
+
+.c-backpack-card__weight-label {
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+}
+
+.c-backpack-card__weight-value {
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: var(--font-medium, 500);
+}
+
+.c-backpack-card__weight-bar {
+  height: 8px;
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border-radius: var(--radius-full, 9999px);
+  overflow: hidden;
+}
+
+.c-backpack-card__weight-fill {
+  height: 100%;
+  background: var(--color-primary, #4ba667);
+  border-radius: var(--radius-full, 9999px);
+  transition: width var(--duration-base, 200ms) var(--ease-out);
+}
+
+.c-backpack-card__weight-fill--warning {
+  background: var(--color-warning, #f59e0b);
+}
+
+.c-backpack-card__weight-fill--danger {
+  background: var(--color-danger, #ef4444);
+}
+
+/* Categories Preview */
+.c-backpack-card__categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2, 0.5rem);
+  margin-bottom: var(--spacing-4, 1rem);
+}
+
+.c-backpack-card__category {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1, 0.25rem);
+  padding: var(--spacing-1, 0.25rem) var(--spacing-2, 0.5rem);
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--radius-sm, 0.25rem);
+  font-size: var(--text-xs, 0.75rem);
+}
+
+.c-backpack-card__category-count {
+  font-weight: var(--font-medium, 500);
+  color: var(--color-primary, #4ba667);
+}
+
+/* Backpack Card Footer */
+.c-backpack-card__footer {
+  display: flex;
+  gap: var(--spacing-3, 0.75rem);
+  padding: var(--spacing-4, 1rem);
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border-top: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+}
+
+.c-backpack-card__action {
+  flex: 1;
+}
+
+/* Backpack Card Badges */
+.c-backpack-card__badges {
+  position: absolute;
+  top: var(--spacing-3, 0.75rem);
+  right: var(--spacing-3, 0.75rem);
+  display: flex;
+  gap: var(--spacing-2, 0.5rem);
+}
+
+.c-backpack-card__badge {
+  padding: var(--spacing-1, 0.25rem) var(--spacing-2, 0.5rem);
+  background: var(--color-surface, rgba(0, 0, 0, 0.8));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--radius-full, 9999px);
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: var(--font-medium, 500);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.c-backpack-card__badge--shared {
+  color: var(--color-info, #3b82f6);
+  border-color: var(--color-info, #3b82f6);
+}
+
+.c-backpack-card__badge--template {
+  color: var(--color-warning, #f59e0b);
+  border-color: var(--color-warning, #f59e0b);
+}
+
+/* Backpack Card Grid */
+.c-backpack-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-4, 1rem);
+}
+
+@media (min-width: 768px) {
+  .c-backpack-grid {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  }
+}
+
+/* Backpack Card Compact Variant */
+.c-backpack-card--compact {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-3, 0.75rem);
+}
+
+.c-backpack-card--compact .c-backpack-card__header {
+  padding: 0;
+  border-bottom: none;
+  background: none;
+  flex: 1;
+}
+
+.c-backpack-card--compact .c-backpack-card__body {
+  padding: 0;
+  display: none;
+}
+
+.c-backpack-card--compact .c-backpack-card__footer {
+  padding: 0;
+  background: none;
+  border-top: none;
+  flex: 0 0 auto;
+}
+
+/* Active/Selected State */
+.c-backpack-card--active {
+  border-color: var(--color-primary, #4ba667);
+  background: var(--color-primary-alpha, rgba(75, 166, 103, 0.1));
+}
+
+/* Loading State */
+.c-backpack-card--loading {
+  pointer-events: none;
+}
+
+.c-backpack-card--loading .c-backpack-card__title,
+.c-backpack-card--loading .c-backpack-card__stat-value,
+.c-backpack-card--loading .c-backpack-card__category {
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  color: transparent;
+  min-height: 1em;
+  border-radius: var(--radius-sm, 0.25rem);
+}
+
+/* Responsive */
+@media (max-width: 639px) {
+  .c-backpack-card__stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .c-backpack-card__footer {
+    flex-direction: column;
+  }
+  
+  .c-backpack-card__action {
+    width: 100%;
+  }
+}

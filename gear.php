@@ -20,16 +20,25 @@ $pageDescription = 'Manage your ultralight gear inventory with smart categorizat
 
 // Add page-specific scripts and CSS
 $pageScripts = $pageScripts ?? [];
+$pageScripts[] = 'js/save-animation.js'; // Save animation module
 $pageScripts[] = 'js/gear-page.js';
 $pageScripts[] = 'js/gear-library-enhanced.js';
 $pageScripts[] = 'js/gear-forest-enhancements.js';
 
 $pageStyles = $pageStyles ?? [];
+$pageStyles[] = 'css/unified-page-headers.css'; // Unified header styles
 $pageStyles[] = 'css/forest-duo-master.css';
 $pageStyles[] = 'css/duolingo-forest-master.css';
 $pageStyles[] = 'css/gear-ux-refined.css';
 $pageStyles[] = 'css/gear-spacing-fixes.css'; // Fix spacing issues
 $pageStyles[] = 'css/gear-color-system.css'; // Color coordination system
+$pageStyles[] = 'css/save-animation.css'; // Save animation styles
+$pageStyles[] = 'css/gear-title-fix.css'; // Title readability fixes
+$pageStyles[] = 'css/gear-complete-cleanup.css'; // Complete UI cleanup
+$pageStyles[] = 'css/gear-final-refinements.css'; // Final UI refinements
+$pageStyles[] = 'css/gear-grid-fix.css'; // Grid display fixes
+$pageStyles[] = 'css/gear-mobile-nav-fix.css'; // Fix mobile nav on desktop
+$pageStyles[] = 'css/gear-page-input-fixes.css'; // Fix search inputs and text readability
 
 // Include Database class
 require_once __DIR__ . '/api/classes/Database.php';
@@ -65,26 +74,61 @@ require_once __DIR__ . '/includes/template-header.php';
 ?>
 
 <!-- Forest Duo Gear Library Page -->
-<div class="forest-duo-theme gear-forest-page">
+<div class="forest-duo-theme gear-forest-page gear-page">
   
-  <!-- Enhanced Forest Hero Header -->
-  <div class="hero-forest gear-hero">
-    <div class="hero-particles"></div>
+  <!-- Unified Page Header -->
+  <div class="page-hero">
     <div class="hero-content">
-      <div class="hero-badges">
-        <div class="xp-chip">
-          <span class="xp-icon">⚖️</span>
-          <span class="xp-value">Ultralight Pro</span>
+      <div class="hero-main-row">
+        <div class="hero-header">
+          <div class="hero-title-section">
+            <h1 class="hero-title">
+              <span class="hero-title-icon">🎒</span>
+              Trail Gear Library
+            </h1>
+            <p class="hero-subtitle">Manage your ultralight gear • Track every gram</p>
+          </div>
+          
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <span class="hero-stat-value"><?= number_format($gearStats['total_count']) ?></span>
+              <span class="hero-stat-label">Items</span>
+            </div>
+            <div class="hero-stat">
+              <span class="hero-stat-value"><?= number_format($gearStats['total_weight']) ?>g</span>
+              <span class="hero-stat-label">Weight</span>
+            </div>
+            <div class="hero-stat">
+              <span class="hero-stat-value"><?= number_format($gearStats['categories_count']) ?></span>
+              <span class="hero-stat-label">Categories</span>
+            </div>
+          </div>
         </div>
-        <div class="level-badge">
-          <span class="level-icon">🎯</span>
-          <span class="level-text">Gear Master</span>
+        
+        <div class="hero-controls">
+          <div class="hero-search">
+            <input type="search" class="search-input" placeholder="Search gear..." id="gear-search-hero" aria-label="Search gear">
+          </div>
+          
+          <select class="sort-select" id="sort-hero" aria-label="Sort gear">
+            <option value="name">Name</option>
+            <option value="weight-asc">Light→Heavy</option>
+            <option value="weight-desc">Heavy→Light</option>
+            <option value="recent">Recent</option>
+          </select>
+          
+          <div class="view-toggle">
+            <button class="view-toggle-btn active" data-view="grid" aria-label="Grid view">⊞</button>
+            <button class="view-toggle-btn" data-view="list" aria-label="List view">☰</button>
+          </div>
+          
+          <button id="btn-add-gear-hero" class="btn btn-add-gear" onclick="GearManager.showAddModal()" aria-label="Add new gear item">
+            <span class="btn-icon">➕</span>
+            <span class="btn-text">Add Gear</span>
+          </button>
         </div>
       </div>
-      <h1 class="hero-title">⚡ Trail Gear Arsenal</h1>
-      <p class="hero-subtitle">Curate your ultralight setup • Track every gram • Optimize for the trail</p>
     </div>
-    <div class="hero-glow"></div>
   </div>
 
   <!-- Two-Column Layout Container -->
@@ -505,6 +549,41 @@ require_once __DIR__ . '/includes/template-header.php';
       // Update API configuration for AJAX handler
       GearManager.config.apiUrl = '<?php echo route_url(""); ?>/ajax-handler.php';
       GearManager.init();
+      
+      // Connect hero controls to existing functionality
+      const heroSearch = document.getElementById('gear-search-hero');
+      const mainSearch = document.getElementById('gear-search-main');
+      if (heroSearch && mainSearch) {
+        heroSearch.addEventListener('input', function() {
+          mainSearch.value = this.value;
+          mainSearch.dispatchEvent(new Event('input'));
+        });
+      }
+      
+      const heroSort = document.getElementById('sort-hero');
+      const mainSort = document.getElementById('sort-gear');
+      if (heroSort && mainSort) {
+        heroSort.addEventListener('change', function() {
+          mainSort.value = this.value;
+          mainSort.dispatchEvent(new Event('change'));
+        });
+      }
+      
+      // Connect view toggle buttons
+      document.querySelectorAll('.view-toggle-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const view = this.dataset.view;
+          document.querySelectorAll('.view-mode-btn').forEach(modeBtn => {
+            if (modeBtn.dataset.view === view) {
+              modeBtn.click();
+            }
+          });
+          document.querySelectorAll('.view-toggle-btn').forEach(toggleBtn => {
+            toggleBtn.classList.remove('active');
+          });
+          this.classList.add('active');
+        });
+      });
     } else {
       console.error('GearManager not found - check that gear-page.js is loaded');
     }

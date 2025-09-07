@@ -1,0 +1,294 @@
+/**
+ * Gear Title Readability Fix
+ * Ensures gear item titles are always fully visible and readable
+ * @version 1.0.0
+ */
+
+/* ===========================================
+   GEAR CARD TITLE FIXES
+   =========================================== */
+
+/* Base gear card adjustments for better title visibility */
+.gear-card {
+    padding: 1.25rem !important;
+    min-height: 220px !important;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Gear card header - ensure title has enough space */
+.gear-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    min-height: 3rem; /* Ensure minimum height for title */
+}
+
+/* Icon positioning - keep it aligned to top */
+.gear-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    margin-top: 0.125rem; /* Slight offset to align with first line of text */
+}
+
+/* Gear name/title - ensure full visibility */
+.gear-name {
+    flex: 1;
+    font-size: 1rem !important;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0;
+    line-height: 1.4 !important;
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+    display: block; /* Remove webkit box clamp */
+    overflow: visible; /* Show full text */
+    text-overflow: initial;
+    min-height: 1.4rem;
+    letter-spacing: -0.01em;
+}
+
+/* Remove truncation in all views */
+.gear-grid .gear-name,
+.gear-grid.grid-view .gear-name,
+.gear-grid.list-view .gear-name,
+.gear-grid.compact-view .gear-name {
+    display: block !important;
+    -webkit-line-clamp: unset !important;
+    -webkit-box-orient: unset !important;
+    overflow: visible !important;
+    max-height: none !important;
+}
+
+/* Adjust card body spacing to accommodate longer titles */
+.gear-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+/* Grid view specific adjustments */
+.gear-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+    gap: 1.25rem;
+}
+
+/* List view title adjustments */
+.gear-grid.list-view .gear-card {
+    padding: 1rem 1.25rem;
+    min-height: auto !important;
+    height: auto !important;
+    max-height: none !important;
+}
+
+.gear-grid.list-view .gear-card-header {
+    flex: 0 0 auto;
+    min-width: 200px;
+    margin-right: 1.5rem;
+}
+
+.gear-grid.list-view .gear-name {
+    font-size: 0.9375rem !important;
+}
+
+/* Compact view adjustments */
+.gear-grid.compact-view {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+}
+
+.gear-grid.compact-view .gear-card {
+    min-height: 200px !important;
+}
+
+.gear-grid.compact-view .gear-name {
+    font-size: 0.9375rem !important;
+}
+
+/* Ultra-compact density adjustments */
+.density-ultra-compact .gear-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) !important;
+}
+
+.density-ultra-compact .gear-card {
+    min-height: 180px !important;
+}
+
+.density-ultra-compact .gear-name {
+    font-size: 0.875rem !important;
+}
+
+/* Ensure meta information doesn't overflow */
+.gear-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap; /* Allow wrapping if needed */
+}
+
+.gear-category-badge {
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+.gear-weight {
+    font-size: 0.875rem;
+    white-space: nowrap;
+}
+
+/* Notes section - can be truncated */
+.gear-notes {
+    margin-top: 0.5rem;
+}
+
+.gear-notes-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+}
+
+/* Card actions positioning */
+.gear-card-actions {
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(88, 204, 2, 0.1);
+}
+
+/* ===========================================
+   HIGH CONTRAST TITLE STYLING
+   =========================================== */
+
+/* Improve title contrast */
+.gear-name {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Hover state for better readability */
+.gear-card:hover .gear-name {
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* ===========================================
+   RESPONSIVE TITLE ADJUSTMENTS
+   =========================================== */
+
+@media (max-width: 1400px) {
+    .gear-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+    }
+}
+
+@media (max-width: 1200px) {
+    .gear-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+    }
+    
+    .gear-name {
+        font-size: 0.9375rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .gear-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)) !important;
+        gap: 1rem;
+    }
+    
+    .gear-card {
+        padding: 1rem !important;
+    }
+    
+    .gear-name {
+        font-size: 0.875rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .gear-grid {
+        grid-template-columns: 1fr !important;
+        gap: 0.75rem;
+    }
+    
+    .gear-card {
+        padding: 1rem !important;
+        min-height: auto !important;
+    }
+    
+    .gear-name {
+        font-size: 0.9375rem !important;
+    }
+    
+    /* Mobile list view */
+    .gear-grid.list-view .gear-card-header {
+        min-width: auto;
+        flex: 1;
+    }
+}
+
+/* ===========================================
+   SPECIAL CASES FOR LONG TITLES
+   =========================================== */
+
+/* Very long single words */
+.gear-name {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+/* Ensure icon doesn't shrink with long titles */
+.gear-card-header .gear-icon {
+    flex-shrink: 0;
+    align-self: flex-start;
+}
+
+/* Adjust card height dynamically based on content */
+.gear-card {
+    height: auto !important;
+    min-height: 220px;
+    max-height: none !important;
+}
+
+/* List view specific height adjustment */
+.gear-grid.list-view .gear-card {
+    align-items: flex-start;
+    padding: 1rem 1.25rem;
+}
+
+/* ===========================================
+   ACCESSIBILITY IMPROVEMENTS
+   =========================================== */
+
+/* Better focus indication for titles */
+.gear-card:focus-within .gear-name {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.125rem;
+}
+
+/* Screen reader text for truncated content */
+.gear-name::after {
+    content: attr(title);
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .gear-name {
+        font-weight: 700;
+        letter-spacing: 0.02em;
+    }
+}

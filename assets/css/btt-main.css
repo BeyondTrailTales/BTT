@@ -1,314 +1,163 @@
 /**
- * BeyondTrailTales Main CSS
- * Orchestrates the complete design system with CSS cascade layers
- * Version: 2.0.0
- * Last Updated: 2025-09-04
+ * BeyondTrailTales - Main CSS Entry Point
+ * Imports all CSS in the correct cascade order
  * 
- * This file imports all CSS modules in the correct order using
- * CSS cascade layers for predictable specificity management.
- * 
- * ADA Compliant | Mobile-First | Performance-Optimized
- */
-
-/**
- * BeyondTrailTales Main CSS
- * Orchestrates the complete design system
- * Version: 2.0.0
- * Last Updated: 2025-09-04
- * 
- * ADA Compliant | Mobile-First | Performance-Optimized
+ * Load Order:
+ * 1. Reset - Browser normalization
+ * 2. Variables - Design tokens
+ * 3. Base - HTML element styles
+ * 4. Typography - Text utilities
+ * 5. Layouts - Container, grid, spacing
+ * 6. Components - UI components
+ * 7. Utilities - Helper classes
+ * 8. Pages - Page-specific styles
  */
 
 /* ===========================================
-   CSS IMPORTS
-   All imports must be at the top of the file
+   1. RESET
    =========================================== */
-
-/* Core foundation */
-@import url('btt-reset.css');
-@import url('btt-tokens.css');
-@import url('btt-base.css');
-
-/* Components */
-@import url('components/btt-navigation.css');
-@import url('components/btt-buttons.css');
-@import url('components/btt-forms.css');
-@import url('components/btt-cards.css');
-@import url('components/btt-modals.css');
-@import url('components/btt-extras.css');
-@import url('components/btt-advanced.css');
-
-/* Theme variations */
-@import url('btt-dark-mode.css');
-
-/* Utilities */
-@import url('btt-utilities.css');
+@import url('core/reset.css');
 
 /* ===========================================
-   LAYER DEFINITIONS
-   Define cascade layers in order of precedence
+   2. VARIABLES
    =========================================== */
-
-@layer reset, tokens, base, components, utilities, overrides;
+@import url('core/variables.css');
 
 /* ===========================================
-   LAYER ASSIGNMENTS
-   Assign imported styles to appropriate layers
+   3. BASE
    =========================================== */
-
-/* Reset layer */
-@layer reset {
-  /* CSS reset rules are defined in btt-reset.css */
-}
-
-/* Tokens layer */
-@layer tokens {
-  /* Design tokens are defined in btt-tokens.css */
-}
-
-/* Base layer */
-@layer base {
-  /* Base typography and element styles in btt-base.css */
-}
-
-/* Components layer */
-@layer components {
-  /* All component styles from imported files */
-}
-
-/* Utilities layer */
-@layer utilities {
-  /* Utility classes from btt-utilities.css */
-}
+@import url('core/base.css');
 
 /* ===========================================
-   LAYER: OVERRIDES
-   High-specificity overrides and exceptions
+   4. TYPOGRAPHY
    =========================================== */
-
-@layer overrides {
-  /* Critical overrides that need maximum specificity */
-  
-  /* Force visible focus for accessibility */
-  *:focus-visible {
-    outline: 3px solid var(--btt-forest-bright) !important;
-    outline-offset: 2px !important;
-  }
-  
-  /* Emergency text readability fix */
-  .force-readable {
-    color: var(--btt-white) !important;
-    background: var(--btt-forest-deep) !important;
-    padding: var(--btt-space-2) !important;
-  }
-  
-  /* Print overrides */
-  @media print {
-    .no-print {
-      display: none !important;
-    }
-  }
-}
+@import url('core/typography.css');
 
 /* ===========================================
-   PERFORMANCE OPTIMIZATIONS
+   5. LAYOUTS
    =========================================== */
-
-/* Prefer GPU acceleration for transforms */
-.will-change-transform {
-  will-change: transform;
-}
-
-/* Optimize for animations */
-.will-change-opacity {
-  will-change: opacity;
-}
-
-/* Clean up after animations */
-.animation-done {
-  will-change: auto;
-}
+@import url('layouts/container.css');
+@import url('layouts/grid.css');
+@import url('layouts/spacing.css');
 
 /* ===========================================
-   CRITICAL INLINE STYLES
-   These should eventually be inlined in HTML
+   6. COMPONENTS
+   =========================================== */
+@import url('components/navigation.css');
+@import url('components/buttons.css');
+@import url('components/cards.css');
+@import url('components/forms.css');
+
+/* ===========================================
+   7. UTILITIES (To be implemented)
+   =========================================== */
+/* @import url('utilities/spacing.css'); */
+/* @import url('utilities/flex.css'); */
+/* @import url('utilities/animations.css'); */
+
+/* ===========================================
+   8. PAGES (To be implemented)
+   =========================================== */
+/* @import url('pages/dashboard.css'); */
+/* @import url('pages/trips.css'); */
+/* @import url('pages/gear.css'); */
+
+/* ===========================================
+   TEMPORARY - Legacy Support
+   Keep existing functionality during migration
    =========================================== */
 
-/* Prevent FOUC (Flash of Unstyled Content) */
-.no-js .requires-js {
-  display: none;
+/* Critical styles to maintain functionality */
+.page-content {
+  padding-top: var(--nav-height);
+  min-height: 100vh;
 }
 
-/* Loading state while CSS loads */
-.css-loading {
-  visibility: hidden;
-}
-
-.css-loading::after {
-  content: '';
-  visibility: visible;
+/* Navigation placeholder styles */
+.forest-nav {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 40px;
-  height: 40px;
-  margin: -20px 0 0 -20px;
-  border: 3px solid var(--btt-forest-bright);
-  border-radius: 50%;
-  border-top-color: transparent;
-  animation: spin 1s linear infinite;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--nav-height);
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--nav-border);
+  z-index: var(--z-sticky);
+  backdrop-filter: blur(10px);
 }
 
-/* ===========================================
-   BROWSER-SPECIFIC FIXES
-   =========================================== */
+/* Footer styles */
+.site-footer {
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  margin-top: var(--space-12);
+  padding: var(--space-8) 0;
+}
 
-/* Safari fixes */
-@supports (-webkit-backdrop-filter: none) {
-  .backdrop-blur {
-    -webkit-backdrop-filter: var(--btt-blur-sm);
+.footer-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+  margin-bottom: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr 3fr;
   }
 }
 
-/* Firefox fixes */
-@-moz-document url-prefix() {
-  /* Firefox-specific rules if needed */
+.footer-brand h3 {
+  color: var(--color-text);
+  margin-bottom: var(--space-2);
 }
 
-/* Edge fixes */
-@supports (-ms-ime-align: auto) {
-  /* Edge-specific rules if needed */
+.footer-brand p {
+  color: var(--color-text-muted);
 }
 
-/* ===========================================
-   PROGRESSIVE ENHANCEMENT
-   =========================================== */
-
-/* If backdrop-filter is not supported */
-@supports not (backdrop-filter: blur(10px)) {
-  .glass {
-    background: rgba(10, 40, 24, 0.95);
-  }
+.footer-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-6);
 }
 
-/* If CSS Grid is not supported */
-@supports not (display: grid) {
-  .grid {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  
-  .grid > * {
-    flex: 1 1 300px;
-    margin: var(--btt-space-2);
-  }
+.footer-column h4 {
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  margin-bottom: var(--space-3);
 }
 
-/* If clamp() is not supported */
-@supports not (font-size: clamp(1rem, 2vw, 1.5rem)) {
-  h1 { font-size: 2.5rem; }
-  h2 { font-size: 2rem; }
-  h3 { font-size: 1.5rem; }
-  
-  @media (max-width: 768px) {
-    h1 { font-size: 2rem; }
-    h2 { font-size: 1.5rem; }
-    h3 { font-size: 1.25rem; }
-  }
+.footer-column ul {
+  list-style: none;
+  padding: 0;
 }
 
-/* ===========================================
-   CUSTOM SCROLLBARS (Progressive Enhancement)
-   =========================================== */
-
-@supports (scrollbar-width: thin) {
-  * {
-    scrollbar-width: thin;
-    scrollbar-color: var(--btt-forest-medium) var(--btt-glass-dark);
-  }
+.footer-column li {
+  margin-bottom: var(--space-2);
 }
 
-@supports selector(::-webkit-scrollbar) {
-  ::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
-  }
-  
-  ::-webkit-scrollbar-track {
-    background: var(--btt-glass-dark);
-    border-radius: var(--btt-radius-full);
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background: var(--btt-forest-medium);
-    border-radius: var(--btt-radius-full);
-    border: 2px solid var(--btt-glass-dark);
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--btt-forest-light);
-  }
+.footer-column a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color var(--transition-fast);
 }
 
-/* ===========================================
-   FUTURE CSS FEATURES (with fallbacks)
-   =========================================== */
-
-/* Container queries (when widely supported) */
-@supports (container-type: inline-size) {
-  .container-query {
-    container-type: inline-size;
-  }
-  
-  @container (min-width: 400px) {
-    .container-responsive {
-      /* Container query styles */
-    }
-  }
+.footer-column a:hover {
+  color: var(--color-text);
 }
 
-/* Subgrid (when widely supported) */
-@supports (grid-template-columns: subgrid) {
-  .subgrid {
-    display: grid;
-    grid-template-columns: subgrid;
-  }
+.footer-bottom {
+  text-align: center;
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-dim);
 }
 
-/* ===========================================
-   DEVELOPMENT/DEBUG HELPERS
-   Remove in production
-   =========================================== */
-
-.debug-grid {
-  background-image: 
-    repeating-linear-gradient(0deg, 
-      rgba(255, 0, 0, 0.1) 0, 
-      transparent 1px, 
-      transparent var(--btt-space-4), 
-      rgba(255, 0, 0, 0.1) calc(var(--btt-space-4) + 1px));
+.footer-credits {
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
 }
-
-.debug-spacing * {
-  outline: 1px dashed rgba(255, 0, 255, 0.3);
-}
-
-.debug-components [class*="card"],
-.debug-components [class*="btn"],
-.debug-components [class*="form"] {
-  outline: 2px solid rgba(0, 255, 0, 0.3);
-}
-
-/* ===========================================
-   VENDOR-SPECIFIC IMPORTS
-   Third-party CSS that needs to be included
-   =========================================== */
-
-/* jQuery UI (if still needed) */
-/* @import url('../jquery-ui.min.css'); */
-
-/* ===========================================
-   END OF MAIN CSS
-   Total size target: < 75KB minified & gzipped
-   Current: ~40KB unminified
-   =========================================== */

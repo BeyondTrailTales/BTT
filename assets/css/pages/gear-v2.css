@@ -1,0 +1,399 @@
+/**
+ * Gear Library Page Styles
+ * Mobile-first responsive design
+ * BEM architecture without !important
+ */
+
+/* ==============================================
+   Page Layout
+   ============================================== */
+[data-page="gear"] {
+  min-height: 100vh;
+  background-color: var(--color-background, #0a1a0f);
+}
+
+/* Gear Page Container */
+.gear-page-container {
+  max-width: var(--container-xl, 1200px);
+  margin: 0 auto;
+  padding: var(--spacing-4, 1rem);
+}
+
+@media (min-width: 768px) {
+  .gear-page-container {
+    padding: var(--spacing-6, 1.5rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .gear-page-container {
+    padding: var(--spacing-8, 2rem);
+  }
+}
+
+/* ==============================================
+   Page Header
+   ============================================== */
+.gear-page-header {
+  text-align: center;
+  margin-bottom: var(--spacing-8, 2rem);
+}
+
+@media (min-width: 768px) {
+  .gear-page-header {
+    text-align: left;
+  }
+}
+
+.gear-page-title {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: var(--font-bold, 700);
+  margin-bottom: var(--spacing-2, 0.5rem);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3, 0.75rem);
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .gear-page-title {
+    justify-content: flex-start;
+  }
+}
+
+.gear-page-subtitle {
+  font-size: clamp(0.875rem, 2vw, 1.125rem);
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+}
+
+/* ==============================================
+   Gear Controls Section
+   ============================================== */
+.gear-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4, 1rem);
+  margin-bottom: var(--spacing-8, 2rem);
+  padding: var(--spacing-6, 1.5rem);
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border-radius: var(--radius-lg, 0.5rem);
+}
+
+@media (min-width: 768px) {
+  .gear-controls {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+/* Search Group */
+.gear-search-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3, 0.75rem);
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .gear-search-group {
+    flex-direction: row;
+    width: auto;
+    flex: 1;
+    max-width: 600px;
+  }
+}
+
+.gear-search-input {
+  width: 100%;
+  padding: var(--spacing-3, 0.75rem) var(--spacing-4, 1rem);
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--radius-md, 0.375rem);
+  color: var(--color-text, #ffffff);
+  font-size: var(--text-base, 1rem);
+}
+
+/* Category Dropdown */
+.gear-category-select {
+  width: 100%;
+  padding: var(--spacing-3, 0.75rem) var(--spacing-4, 1rem);
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--radius-md, 0.375rem);
+  color: var(--color-text, #ffffff);
+  font-size: var(--text-base, 1rem);
+}
+
+@media (min-width: 768px) {
+  .gear-category-select {
+    width: auto;
+    min-width: 200px;
+  }
+}
+
+/* Action Buttons */
+.gear-actions {
+  display: flex;
+  gap: var(--spacing-3, 0.75rem);
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .gear-actions {
+    width: auto;
+  }
+}
+
+/* ==============================================
+   Gear Stats Bar
+   ============================================== */
+.gear-stats-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--spacing-4, 1rem);
+  margin-bottom: var(--spacing-6, 1.5rem);
+}
+
+.gear-stat {
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border-radius: var(--radius-md, 0.375rem);
+  padding: var(--spacing-4, 1rem);
+  text-align: center;
+}
+
+.gear-stat-number {
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-weight: var(--font-bold, 700);
+  color: var(--color-primary, #4ba667);
+  display: block;
+}
+
+.gear-stat-label {
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+}
+
+/* ==============================================
+   Category Filter Pills
+   ============================================== */
+.category-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2, 0.5rem);
+  margin-bottom: var(--spacing-6, 1.5rem);
+  padding-bottom: var(--spacing-4, 1rem);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.category-pill {
+  flex-shrink: 0;
+  padding: var(--spacing-2, 0.5rem) var(--spacing-4, 1rem);
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--radius-full, 9999px);
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+  font-size: var(--text-sm, 0.875rem);
+  cursor: pointer;
+  transition: all var(--duration-base, 200ms) var(--ease-out);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2, 0.5rem);
+}
+
+.category-pill:hover {
+  background: var(--color-surface-hover, rgba(255, 255, 255, 0.08));
+  color: var(--color-text, #ffffff);
+}
+
+.category-pill.active {
+  background: var(--color-primary, #4ba667);
+  border-color: var(--color-primary, #4ba667);
+  color: white;
+}
+
+.category-pill-count {
+  font-size: var(--text-xs, 0.75rem);
+  opacity: 0.8;
+}
+
+/* ==============================================
+   Gear Grid
+   ============================================== */
+.gear-grid {
+  display: grid;
+  gap: var(--spacing-4, 1rem);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+  margin-bottom: var(--spacing-8, 2rem);
+}
+
+@media (min-width: 640px) {
+  .gear-grid {
+    gap: var(--spacing-6, 1.5rem);
+  }
+}
+
+/* Gear Item Card */
+.gear-item {
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--radius-lg, 0.5rem);
+  padding: var(--spacing-4, 1rem);
+  transition: all var(--duration-base, 200ms) var(--ease-out);
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3, 0.75rem);
+}
+
+.gear-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  background: var(--color-surface-hover, rgba(255, 255, 255, 0.08));
+}
+
+.gear-item-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-3, 0.75rem);
+}
+
+.gear-item-icon {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  flex-shrink: 0;
+}
+
+.gear-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.gear-item-name {
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  font-weight: var(--font-medium, 500);
+  margin-bottom: var(--spacing-1, 0.25rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gear-item-category {
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.gear-item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--spacing-3, 0.75rem);
+  border-top: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+}
+
+.gear-item-weight {
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: var(--font-medium, 500);
+}
+
+.gear-item-actions {
+  display: flex;
+  gap: var(--spacing-2, 0.5rem);
+}
+
+/* ==============================================
+   Gear Modal/Editor
+   ============================================== */
+.gear-editor {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: 500px;
+  background: var(--color-background, #0a1a0f);
+  box-shadow: var(--shadow-xl);
+  z-index: var(--z-modal, 1050);
+  transform: translateX(100%);
+  transition: transform var(--duration-base, 200ms) var(--ease-out);
+  overflow-y: auto;
+}
+
+.gear-editor.is-open {
+  transform: translateX(0);
+}
+
+@media (max-width: 639px) {
+  .gear-editor {
+    max-width: 100%;
+  }
+}
+
+.gear-editor-content {
+  padding: var(--spacing-6, 1.5rem);
+}
+
+/* ==============================================
+   Empty State
+   ============================================== */
+.gear-empty-state {
+  text-align: center;
+  padding: var(--spacing-12, 3rem) var(--spacing-4, 1rem);
+}
+
+.gear-empty-icon {
+  font-size: clamp(3rem, 8vw, 4rem);
+  margin-bottom: var(--spacing-4, 1rem);
+}
+
+.gear-empty-title {
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  margin-bottom: var(--spacing-2, 0.5rem);
+}
+
+.gear-empty-description {
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+  max-width: 40ch;
+  margin: 0 auto var(--spacing-6, 1.5rem);
+}
+
+/* ==============================================
+   Loading States
+   ============================================== */
+.gear-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-12, 3rem);
+  gap: var(--spacing-4, 1rem);
+}
+
+.gear-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--color-border, rgba(255, 255, 255, 0.1));
+  border-top-color: var(--color-primary, #4ba667);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* ==============================================
+   Responsive Adjustments
+   ============================================== */
+
+/* Ultra-wide screens */
+@media (min-width: 1600px) {
+  .gear-page-container {
+    max-width: var(--container-2xl, 1400px);
+  }
+  
+  .gear-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}

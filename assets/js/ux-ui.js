@@ -376,85 +376,6 @@
         };
     })();
     
-    /**
-     * Quick Add Menu
-     * Creates a floating action button with quick actions
-     */
-    UX.quickAdd = (function() {
-        let menu = null;
-        let isOpen = false;
-        
-        function init() {
-            if (menu) return;
-            
-            menu = $(`
-                <div class="quick-add-container">
-                    <button class="btn-quick-add" aria-label="Quick actions menu" aria-expanded="false">
-                        <span class="quick-add-icon">➕</span>
-                    </button>
-                    <div class="quick-add-menu" hidden>
-                        <a href="/BTT/trips?action=new" class="quick-add-item">
-                            <span class="quick-add-item-icon">🗺️</span>
-                            <span>Start Trip</span>
-                        </a>
-                        <a href="/BTT/backpacks?action=quick-pack" class="quick-add-item">
-                            <span class="quick-add-item-icon">⚡</span>
-                            <span>Quick Pack</span>
-                        </a>
-                        <a href="/BTT/backpacks?view=gear-library&action=add" class="quick-add-item">
-                            <span class="quick-add-item-icon">📦</span>
-                            <span>Add Gear</span>
-                        </a>
-                    </div>
-                </div>
-            `);
-            
-            $('body').append(menu);
-            
-            const $button = menu.find('.btn-quick-add');
-            const $menu = menu.find('.quick-add-menu');
-            
-            // Toggle menu
-            $button.on('click', function() {
-                isOpen = !isOpen;
-                
-                if (isOpen) {
-                    $button.attr('aria-expanded', 'true');
-                    $menu.removeAttr('hidden').fadeIn(200);
-                    $button.find('.quick-add-icon').text('✕');
-                } else {
-                    $button.attr('aria-expanded', 'false');
-                    $menu.attr('hidden', true).fadeOut(200);
-                    $button.find('.quick-add-icon').text('➕');
-                }
-            });
-            
-            // Close on outside click
-            $(document).on('click', function(e) {
-                if (isOpen && !$(e.target).closest('.quick-add-container').length) {
-                    $button.click();
-                }
-            });
-            
-            // Close on escape
-            $(document).on('keydown', function(e) {
-                if (isOpen && e.key === 'Escape') {
-                    $button.click();
-                    $button.focus();
-                }
-            });
-        }
-        
-        function toggle() {
-            if (!menu) init();
-            menu.find('.btn-quick-add').click();
-        }
-        
-        return {
-            init: init,
-            toggle: toggle
-        };
-    })();
     
     /**
      * Initialize all components on DOM ready
@@ -464,9 +385,6 @@
         if ($('body').hasClass('ux-refresh')) {
             // Initialize accordions
             UX.accordion.init();
-            
-            // Initialize quick add menu
-            UX.quickAdd.init();
             
             // Initialize any wizards
             $('.wizard').each(function() {

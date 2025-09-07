@@ -1,0 +1,137 @@
+/**
+ * Navigation Dropdown Overlay & Scrollbar Fix
+ * Fixes:
+ * 1. Dropdown menu going behind body content
+ * 2. Dropdown causing horizontal scrollbar
+ * 3. Proper overlay behavior
+ */
+
+/* Ensure navigation has highest z-index */
+.forest-nav,
+.duo-forest-nav {
+  position: relative !important;
+  z-index: 9999 !important;
+  overflow: visible !important;
+}
+
+/* Fix dropdown container positioning */
+.nav-user-gamified {
+  position: static !important; /* Changed from relative to avoid overflow issues */
+}
+
+/* Dropdown and quick actions positioning */
+.dropdown,
+.nav-quick-actions {
+  position: static !important; /* Changed to static to avoid overflow */
+}
+
+/* Fix dropdown menus to overlay properly */
+.dropdown-menu,
+.quick-actions-menu {
+  position: fixed !important; /* Changed to fixed for proper overlay */
+  z-index: 99999 !important; /* Extremely high z-index */
+  top: auto !important;
+  right: 1rem !important;
+  left: auto !important;
+  margin-top: 0.5rem !important;
+  max-width: min(280px, calc(100vw - 2rem)) !important;
+  background: rgba(26, 26, 26, 0.98) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+/* Ensure dropdowns appear when active */
+.dropdown-menu.show,
+.quick-actions-menu.show,
+.dropdown-menu[data-show="true"],
+.quick-actions-menu[data-show="true"] {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: all !important;
+}
+
+/* Quick actions specific positioning */
+.quick-actions-menu {
+  width: 320px !important;
+  max-width: calc(100vw - 2rem) !important;
+}
+
+/* User dropdown specific */
+.dropdown-menu {
+  min-width: 200px !important;
+}
+
+/* Ensure body content stays below navigation */
+main,
+.page-content,
+.page-container {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+/* Prevent horizontal scroll on body */
+html {
+  overflow-x: hidden !important;
+}
+
+body {
+  overflow-x: hidden !important;
+  position: relative !important;
+}
+
+/* Remove dashboard-specific overrides to match other pages */
+/* Dashboard should use same layout as other pages */
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .dropdown-menu,
+  .quick-actions-menu {
+    position: fixed !important;
+    top: 60px !important; /* Below nav height */
+    right: 0 !important;
+    left: 0 !important;
+    margin: 1rem !important;
+    width: auto !important;
+    max-width: calc(100vw - 2rem) !important;
+  }
+}
+
+/* Ensure dropdown trigger buttons work properly */
+.dropdown-trigger,
+.quick-actions-trigger {
+  position: relative !important;
+  cursor: pointer !important;
+}
+
+/* Animation for dropdown appearance */
+.dropdown-menu,
+.quick-actions-menu {
+  transition: opacity 0.2s ease, visibility 0.2s ease !important;
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Override any conflicting styles */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}

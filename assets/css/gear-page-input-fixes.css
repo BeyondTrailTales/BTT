@@ -1,0 +1,247 @@
+/**
+ * Gear Page Input and Text Fixes
+ * Clean up search inputs, ensure icons are properly positioned, and improve readability
+ */
+
+/* ===========================================
+   SEARCH INPUT FIXES
+   =========================================== */
+
+/* Hero Search - Top search bar */
+.gear-page .hero-search,
+.gear-page .search-input-wrapper {
+  position: relative !important;
+  width: 100% !important;
+}
+
+.gear-page .search-input,
+.gear-page input[type="search"] {
+  width: 100% !important;
+  padding: 0.75rem 1rem 0.75rem 2.75rem !important;
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(0, 0, 0, 0.2) !important;
+  border-radius: 0.5rem !important;
+  color: #1f2937 !important;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  height: 48px !important;
+  line-height: 1.5 !important;
+  box-sizing: border-box !important;
+}
+
+.gear-page .search-input::placeholder,
+.gear-page input[type="search"]::placeholder {
+  color: #6b7280 !important;
+}
+
+/* Search Icons - Consistent positioning */
+.gear-page .hero-search::before,
+.gear-page .search-input-wrapper::before,
+.gear-page .search-bar::before {
+  content: '🔍' !important;
+  position: absolute !important;
+  left: 0.875rem !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  font-size: 1.125rem !important;
+  opacity: 0.7 !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+}
+
+/* Forest Search - Main search */
+.gear-page .forest-search,
+.gear-page .search-bar {
+  position: relative !important;
+  margin-bottom: 1rem !important;
+}
+
+.gear-page .forest-search input,
+.gear-page .search-bar input {
+  width: 100% !important;
+  padding: 0.75rem 1rem 0.75rem 2.75rem !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 0.5rem !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+  font-size: 1rem !important;
+  font-weight: 500 !important;
+  height: 48px !important;
+  line-height: 1.5 !important;
+  box-sizing: border-box !important;
+  outline: none !important;
+}
+
+.gear-page .forest-search input::placeholder,
+.gear-page .search-bar input::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Hide existing search icon spans to avoid duplicates */
+.gear-page .search-icon {
+  display: none !important;
+}
+
+/* Focus states */
+.gear-page .search-input:focus,
+.gear-page input[type="search"]:focus,
+.gear-page .forest-search input:focus,
+.gear-page .search-bar input:focus {
+  border-color: var(--color-primary, #4ba667) !important;
+  box-shadow: 0 0 0 3px rgba(75, 166, 103, 0.2) !important;
+}
+
+/* ===========================================
+   TEXT READABILITY IMPROVEMENTS
+   =========================================== */
+
+/* Main title and headers */
+.gear-page .hero-title,
+.gear-page .gear-view-title,
+.gear-page h1, .gear-page h2, .gear-page h3 {
+  color: rgba(255, 255, 255, 0.95) !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+  font-weight: 600 !important;
+}
+
+/* Subtitles and descriptions */
+.gear-page .hero-subtitle,
+.gear-page .gear-stats-summary,
+.gear-page p {
+  color: rgba(255, 255, 255, 0.85) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Stat chips and labels */
+.gear-page .stat-chip,
+.gear-page .stat-value,
+.gear-page .stat-label {
+  color: rgba(255, 255, 255, 0.9) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Tabs and filters */
+.gear-page .gear-tab,
+.gear-page .filter-chip {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  text-shadow: none !important;
+}
+
+.gear-page .gear-tab.active,
+.gear-page .filter-chip.active {
+  background: var(--color-primary, #4ba667) !important;
+  color: white !important;
+  border-color: var(--color-primary, #4ba667) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Tab and chip text */
+.gear-page .tab-text,
+.gear-page .chip-text,
+.gear-page .tab-count,
+.gear-page .chip-count {
+  color: inherit !important;
+}
+
+/* Buttons */
+.gear-page .btn-action,
+.gear-page .forest-btn-primary {
+  background: var(--color-primary, #4ba667) !important;
+  color: white !important;
+  border: none !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+.gear-page .btn-text {
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+/* ===========================================
+   GEAR GRID AND CARDS TEXT
+   =========================================== */
+
+/* Gear cards */
+.gear-page .gear-card,
+.gear-page .gear-item {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.gear-page .gear-card .gear-name,
+.gear-page .gear-item .item-name {
+  color: rgba(255, 255, 255, 0.95) !important;
+  font-weight: 600 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+.gear-page .gear-card .gear-weight,
+.gear-page .gear-card .gear-category,
+.gear-page .gear-item .item-weight,
+.gear-page .gear-item .item-category {
+  color: rgba(255, 255, 255, 0.8) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Empty states */
+.gear-page .empty-state h3,
+.gear-page .no-results h3 {
+  color: rgba(255, 255, 255, 0.9) !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+.gear-page .empty-state p,
+.gear-page .no-results p {
+  color: rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* ===========================================
+   RESPONSIVE FIXES
+   =========================================== */
+
+@media (max-width: 768px) {
+  .gear-page .search-input,
+  .gear-page input[type="search"],
+  .gear-page .forest-search input,
+  .gear-page .search-bar input {
+    font-size: 16px !important; /* Prevent zoom on iOS */
+    padding: 0.75rem 1rem 0.75rem 2.5rem !important;
+  }
+  
+  .gear-page .hero-search::before,
+  .gear-page .search-input-wrapper::before,
+  .gear-page .search-bar::before {
+    left: 0.75rem !important;
+    font-size: 1rem !important;
+  }
+}
+
+/* ===========================================
+   OVERRIDE CONFLICTING STYLES
+   =========================================== */
+
+/* Remove any transform animations that might interfere */
+.gear-page .search-input,
+.gear-page input[type="search"],
+.gear-page .forest-search input,
+.gear-page .search-bar input {
+  transform: none !important;
+  animation: none !important;
+}
+
+/* Ensure consistent box model */
+.gear-page * {
+  box-sizing: border-box;
+}
+
+/* Remove any problematic inline styles */
+.gear-page [style*="animation"],
+.gear-page [style*="transform"],
+.gear-page [style*="box-shadow"] {
+  animation: none !important;
+  transform: none !important;
+  box-shadow: none !important;
+}

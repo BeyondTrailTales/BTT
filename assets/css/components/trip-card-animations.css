@@ -1,0 +1,341 @@
+/**
+ * Trip Card Animations & Micro-interactions
+ * Duolingo-inspired gamified animations
+ */
+
+/* Staggered entrance animations */
+.cards-grid .trip-card:nth-child(1) { animation-delay: 0.1s; }
+.cards-grid .trip-card:nth-child(2) { animation-delay: 0.2s; }
+.cards-grid .trip-card:nth-child(3) { animation-delay: 0.3s; }
+.cards-grid .trip-card:nth-child(4) { animation-delay: 0.4s; }
+.cards-grid .trip-card:nth-child(5) { animation-delay: 0.5s; }
+.cards-grid .trip-card:nth-child(6) { animation-delay: 0.6s; }
+.cards-grid .trip-card:nth-child(n+7) { animation-delay: 0.7s; }
+
+/* Hover magnification effect */
+@keyframes cardPulse {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-2px) scale(1.02); }
+}
+
+.trip-card.card:hover {
+  animation: cardPulse 0.6s ease-in-out;
+}
+
+/* Badge bounce animation */
+@keyframes badgeBounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.trip-card .card__badge {
+  animation: badgeBounce 2s ease-in-out infinite;
+}
+
+.trip-card .card__badge:nth-child(2) { 
+  animation-delay: 0.3s; 
+}
+
+.trip-card .card__badge:nth-child(3) { 
+  animation-delay: 0.6s; 
+}
+
+/* Progress bar fill animation */
+@keyframes progressFill {
+  0% { width: 0%; }
+  100% { width: var(--progress-width, 0%); }
+}
+
+.trip-card .trip-progress-fill {
+  animation: progressFill 1s ease-out 0.5s backwards;
+}
+
+/* Floating elements animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.trip-card .card__meta-icon {
+  animation: float 3s ease-in-out infinite;
+}
+
+.trip-card .card__meta-item:nth-child(odd) .card__meta-icon {
+  animation-delay: 0.5s;
+}
+
+.trip-card .card__meta-item:nth-child(even) .card__meta-icon {
+  animation-delay: 1s;
+}
+
+/* Action button animations */
+@keyframes buttonGlow {
+  0%, 100% { box-shadow: 0 2px 8px rgba(34, 197, 94, 0.2); }
+  50% { box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4), 0 0 20px rgba(34, 197, 94, 0.1); }
+}
+
+.trip-card .card__action--primary {
+  animation: buttonGlow 2s ease-in-out infinite;
+}
+
+/* Loading skeleton animation */
+@keyframes skeleton {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
+}
+
+.trip-card.card--loading .card__image,
+.trip-card.card--loading .card__title,
+.trip-card.card--loading .card__description {
+  background: linear-gradient(90deg, 
+    var(--forest-light) 0%, 
+    var(--forest-medium) 50%, 
+    var(--forest-light) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton 1.5s ease-in-out infinite;
+}
+
+/* Click animation */
+@keyframes clickPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.98); }
+  100% { transform: scale(1); }
+}
+
+.trip-card.card:active {
+  animation: clickPulse 0.2s ease-in-out;
+}
+
+/* Favorite star animation */
+@keyframes starTwinkle {
+  0%, 100% { 
+    transform: scale(1) rotate(0deg);
+    filter: brightness(1);
+  }
+  25% { 
+    transform: scale(1.1) rotate(5deg);
+    filter: brightness(1.2);
+  }
+  50% { 
+    transform: scale(1.2) rotate(-5deg);
+    filter: brightness(1.4);
+  }
+  75% { 
+    transform: scale(1.1) rotate(5deg);
+    filter: brightness(1.2);
+  }
+}
+
+.trip-card .card__badge--warning:contains("⭐"),
+.trip-card .card__badge:contains("Favorite") {
+  animation: starTwinkle 2s ease-in-out infinite;
+}
+
+/* Completed checkmark animation */
+@keyframes checkBounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+.trip-card .card__badge--success:contains("✅"),
+.trip-card .card__badge:contains("Completed") {
+  animation: checkBounce 1.5s ease-in-out infinite;
+}
+
+/* Image parallax effect on scroll */
+@keyframes parallax {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-10px); }
+}
+
+.trip-card:hover .card__image img {
+  animation: parallax 0.6s ease-out;
+}
+
+/* Hover state transitions */
+.trip-card .card__title,
+.trip-card .card__subtitle,
+.trip-card .card__meta-item,
+.trip-card .card__action {
+  transition: all var(--transition-smooth);
+}
+
+.trip-card:hover .card__subtitle {
+  color: var(--adventure-bright);
+  transform: translateX(2px);
+}
+
+.trip-card:hover .card__meta-item {
+  border-color: var(--adventure-primary);
+  background: rgba(34, 197, 94, 0.1);
+}
+
+/* Success feedback animation */
+@keyframes successPulse {
+  0% { 
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+    transform: scale(1);
+  }
+  70% { 
+    box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+    transform: scale(1.05);
+  }
+  100% { 
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+    transform: scale(1);
+  }
+}
+
+.trip-card.card--success {
+  animation: successPulse 0.6s ease-out;
+}
+
+/* Error state animation */
+@keyframes errorShake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+  20%, 40%, 60%, 80% { transform: translateX(3px); }
+}
+
+.trip-card.card--error {
+  animation: errorShake 0.5s ease-in-out;
+  border-color: var(--error-500);
+}
+
+/* Focus states for accessibility */
+.trip-card.card:focus-within {
+  outline: 2px solid var(--adventure-primary);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.2);
+}
+
+.trip-card .card__action:focus {
+  outline: 2px solid var(--adventure-primary);
+  outline-offset: 2px;
+  box-shadow: inset 0 0 0 2px rgba(34, 197, 94, 0.2);
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .trip-card.card,
+  .trip-card .card__badge,
+  .trip-card .card__meta-icon,
+  .trip-card .card__action--primary {
+    animation: none !important;
+  }
+  
+  .trip-card.card:hover {
+    transform: none !important;
+  }
+  
+  .trip-card:hover .card__image img {
+    transform: none !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .trip-card.card {
+    border-width: 2px;
+  }
+  
+  .trip-card .card__action--primary {
+    box-shadow: none;
+  }
+  
+  .trip-card.card:focus-within {
+    outline-width: 3px;
+  }
+}
+
+/* Dark mode optimizations */
+@media (prefers-color-scheme: dark) {
+  .trip-card.card {
+    background: linear-gradient(135deg, 
+      rgba(0, 0, 0, 0.4) 0%, 
+      rgba(0, 0, 0, 0.2) 100%
+    );
+  }
+  
+  .trip-card:hover {
+    background: linear-gradient(135deg, 
+      rgba(0, 0, 0, 0.5) 0%, 
+      rgba(0, 0, 0, 0.3) 100%
+    );
+  }
+}
+
+/* Mobile touch interactions */
+@media (max-width: 768px) {
+  .trip-card.card:hover {
+    transform: none;
+  }
+  
+  .trip-card.card:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+  
+  /* Increase touch targets */
+  .trip-card .card__action {
+    min-height: 48px;
+    font-size: var(--text-base);
+  }
+}
+
+/* Loading state improvements */
+.trip-card.card--loading {
+  cursor: wait;
+}
+
+.trip-card.card--loading * {
+  pointer-events: none;
+}
+
+/* Grid layout animations */
+@keyframes gridFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cards-grid {
+  animation: gridFadeIn 0.8s ease-out;
+}
+
+/* Smooth transitions between view modes */
+.cards-grid,
+.cards-list {
+  transition: all 0.3s ease-in-out;
+}
+
+.view-transition .trip-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover group effects */
+.cards-grid:hover .trip-card:not(:hover) {
+  opacity: 0.7;
+  transform: scale(0.98);
+}
+
+.cards-grid .trip-card:hover ~ .trip-card {
+  transform: translateX(3px);
+}
+
+/* Performance optimizations */
+.trip-card.card {
+  will-change: transform, opacity;
+  contain: layout style paint;
+}
+
+.trip-card .card__image img {
+  will-change: transform;
+}

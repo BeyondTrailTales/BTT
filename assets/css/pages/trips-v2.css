@@ -1,0 +1,450 @@
+/**
+ * Trips/Adventures Page Styles
+ * Mobile-first responsive design
+ * BEM architecture without !important
+ */
+
+/* ==============================================
+   Page Layout
+   ============================================== */
+[data-page="trips"] {
+  min-height: 100vh;
+  background-color: var(--color-background, #0a1a0f);
+}
+
+/* ==============================================
+   Page Hero Section
+   ============================================== */
+.page-hero {
+  width: 100%;
+  padding: var(--spacing-6, 1.5rem) 0;
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border-bottom: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+  margin-bottom: var(--spacing-8, 2rem);
+}
+
+.hero-content {
+  max-width: var(--container-xl, 1200px);
+  margin: 0 auto;
+  padding: 0 var(--container-padding-sm, 1rem);
+}
+
+@media (min-width: 768px) {
+  .hero-content {
+    padding: 0 var(--container-padding-lg, 2rem);
+  }
+}
+
+.hero-main-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6, 1.5rem);
+}
+
+@media (min-width: 768px) {
+  .hero-main-row {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+/* Hero Title Section */
+.hero-title-section {
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .hero-title-section {
+    text-align: left;
+  }
+}
+
+.hero-title {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: var(--font-bold, 700);
+  margin-bottom: var(--spacing-2, 0.5rem);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3, 0.75rem);
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .hero-title {
+    justify-content: flex-start;
+  }
+}
+
+.hero-subtitle {
+  font-size: clamp(0.875rem, 2vw, 1.125rem);
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+}
+
+/* Hero Controls */
+.hero-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-3, 0.75rem);
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .hero-controls {
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+  }
+}
+
+.hero-search {
+  width: 100%;
+  max-width: 300px;
+}
+
+@media (min-width: 480px) {
+  .hero-search {
+    width: auto;
+    min-width: 200px;
+  }
+}
+
+.search-input {
+  width: 100%;
+  padding: var(--spacing-2, 0.5rem) var(--spacing-4, 1rem);
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--radius-md, 0.375rem);
+  color: var(--color-text, #ffffff);
+  font-size: var(--text-sm, 0.875rem);
+}
+
+/* ==============================================
+   Adventures Layout Container
+   ============================================== */
+.adventures-layout {
+  max-width: var(--container-xl, 1200px);
+  margin: 0 auto;
+  padding: 0 var(--container-padding-sm, 1rem);
+}
+
+@media (min-width: 768px) {
+  .adventures-layout {
+    padding: 0 var(--container-padding-lg, 2rem);
+  }
+}
+
+/* ==============================================
+   Trip Grid
+   ============================================== */
+#trip-grid {
+  display: grid;
+  gap: var(--spacing-4, 1rem);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+}
+
+@media (min-width: 640px) {
+  #trip-grid {
+    gap: var(--spacing-6, 1.5rem);
+  }
+}
+
+/* List View */
+.list-view #trip-grid {
+  grid-template-columns: 1fr;
+  gap: var(--spacing-3, 0.75rem);
+}
+
+/* ==============================================
+   Trip Editor
+   ============================================== */
+.adventures-editor {
+  max-width: var(--container-2xl, 1400px);
+  margin: 0 auto;
+  padding: var(--spacing-4, 1rem);
+}
+
+@media (min-width: 768px) {
+  .adventures-editor {
+    padding: var(--spacing-6, 1.5rem);
+  }
+}
+
+.editor-layout {
+  display: grid;
+  gap: var(--spacing-6, 1.5rem);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 1024px) {
+  .editor-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    grid-template-areas: 
+      "header header"
+      "content sidebar";
+    gap: var(--spacing-6, 1.5rem);
+  }
+}
+
+/* Adventure Visual Header */
+.adventure-visual-header {
+  width: 100%;
+  margin-bottom: var(--spacing-6, 1.5rem);
+  grid-area: header;
+}
+
+/* Editor Content */
+.editor-content {
+  grid-area: content;
+}
+
+.adventure-image-container {
+  width: 100%;
+  height: 250px;
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border-radius: var(--radius-lg, 0.5rem);
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 640px) {
+  .adventure-image-container {
+    height: 350px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .adventure-image-container {
+    height: 400px;
+  }
+}
+
+/* Trip Form */
+.form-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6, 1.5rem);
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4, 1rem);
+}
+
+.form-grid {
+  display: grid;
+  gap: var(--spacing-4, 1rem);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Form Controls */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2, 0.5rem);
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-label {
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: var(--font-medium, 500);
+  color: var(--color-text, #ffffff);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: var(--spacing-3, 0.75rem);
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--radius-md, 0.375rem);
+  color: var(--color-text, #ffffff);
+  font-size: var(--text-base, 1rem);
+  transition: border-color var(--duration-base, 200ms) var(--ease-out);
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary, #4ba667);
+}
+
+/* Progress Navigation */
+.adventure-progress-nav {
+  display: flex;
+  gap: var(--spacing-2, 0.5rem);
+  margin-bottom: var(--spacing-6, 1.5rem);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.progress-step {
+  flex-shrink: 0;
+}
+
+.step-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-1, 0.25rem);
+  padding: var(--spacing-2, 0.5rem);
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+  cursor: pointer;
+  transition: color var(--duration-base, 200ms) var(--ease-out);
+  font-size: var(--text-sm, 0.875rem);
+}
+
+@media (min-width: 640px) {
+  .step-btn {
+    flex-direction: row;
+    gap: var(--spacing-2, 0.5rem);
+    padding: var(--spacing-2, 0.5rem) var(--spacing-3, 0.75rem);
+  }
+}
+
+.progress-step.active .step-btn {
+  color: var(--color-primary, #4ba667);
+  background: var(--color-surface-hover, rgba(255, 255, 255, 0.08));
+  border-radius: var(--radius-md, 0.375rem);
+}
+
+.step-btn:hover {
+  background: var(--color-surface-hover, rgba(255, 255, 255, 0.08));
+}
+
+.step-btn:focus {
+  outline: 2px solid var(--color-primary, #4ba667);
+  outline-offset: 2px;
+}
+
+/* Hide inactive tab panels */
+.form-section[hidden] {
+  display: none !important;
+}
+
+/* Adventure Sidebar */
+.adventure-sidebar {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .adventure-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-6, 1.5rem);
+    width: 320px;
+    grid-area: sidebar;
+  }
+}
+
+/* Planning Cards */
+.planning-card,
+.quick-stats-card,
+.backpack-selector-card {
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border-radius: var(--radius-lg, 0.5rem);
+  padding: var(--spacing-6, 1.5rem);
+}
+
+/* Packing List Section */
+.packing-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4, 1rem);
+}
+
+.packing-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2, 0.5rem);
+  margin-bottom: var(--spacing-4, 1rem);
+}
+
+.filter-chip {
+  padding: var(--spacing-1, 0.25rem) var(--spacing-3, 0.75rem);
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--radius-full, 9999px);
+  font-size: var(--text-sm, 0.875rem);
+  cursor: pointer;
+  transition: all var(--duration-base, 200ms) var(--ease-out);
+}
+
+.filter-chip.active {
+  background: var(--color-primary, #4ba667);
+  border-color: var(--color-primary, #4ba667);
+}
+
+/* View Toggle */
+.view-toggle {
+  display: flex;
+  gap: 0;
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border-radius: var(--radius-md, 0.375rem);
+  padding: 2px;
+}
+
+.view-toggle-btn {
+  padding: var(--spacing-2, 0.5rem);
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+  cursor: pointer;
+  transition: all var(--duration-base, 200ms) var(--ease-out);
+}
+
+.view-toggle-btn.active {
+  background: var(--color-primary, #4ba667);
+  color: white;
+  border-radius: calc(var(--radius-md, 0.375rem) - 2px);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-12, 3rem) var(--spacing-4, 1rem);
+}
+
+.empty-state-icon {
+  font-size: clamp(3rem, 8vw, 4rem);
+  margin-bottom: var(--spacing-4, 1rem);
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-3, 0.75rem);
+  margin-top: var(--spacing-6, 1.5rem);
+  padding-top: var(--spacing-6, 1.5rem);
+  border-top: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+}
+
+@media (max-width: 639px) {
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .form-actions .c-button {
+    width: 100%;
+  }
+}

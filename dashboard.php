@@ -17,11 +17,9 @@ $pageTitle = 'Trailhead';
 $pageDescription = 'Your adventure command center - plan trips, manage gear, and track your progress';
 $pageId = 'dashboard';
 
-// Add modern unified CSS for enhanced UI/UX
-$pageStyles = $pageStyles ?? [];
-$pageStyles[] = 'css/btt-unified-modern.css';
-$pageStyles[] = 'css/dashboard-clean.css?v=' . time(); // Clean dashboard design with cache bust
-$pageStyles[] = 'css/nav-scrollbar-fix.css?v=' . time(); // Fix navigation scrollbar
+// Page-specific styles will be handled by AssetLoader
+// The AssetLoader will automatically look for css/pages/dashboard.css
+// Legacy styles are loaded through the template header
 
 // Force no-cache headers to ensure fresh data
 header("Cache-Control: no-cache, no-store, must-revalidate");
@@ -175,7 +173,7 @@ require_once __DIR__ . '/includes/template-header.php';
 <!-- Modern Dashboard Hero -->
 <div class="modern-dashboard-hero modern-animate-slide-in">
     <div class="modern-dashboard-hero-content">
-        <h1 class="modern-dashboard-hero-title">Welcome back to your Trailhead! 🏔️</h1>
+            <h1 class="modern-dashboard-hero-title">Welcome back to your Trailhead! 🏔️</h1>
         <p class="modern-dashboard-hero-subtitle">Ready for your next adventure? Let's explore what's waiting for you on the trails.</p>
         
         <!-- Modern Quick Actions -->
@@ -192,6 +190,8 @@ require_once __DIR__ . '/includes/template-header.php';
         </div>
     </div>
 </div>
+
+<!-- Dashboard Content Container -->
 
 <!-- Dashboard Stats Grid -->
 <div class="stats-grid animate-fade-in-up animate-delay-300">

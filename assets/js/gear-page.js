@@ -724,6 +724,15 @@
             const self = this;
             const isEdit = !!this.state.currentEditItem;
             
+            // Show save animation
+            if (window.SaveAnimation) {
+                window.SaveAnimation.showSaving('Saving gear item...');
+                const saveBtn = $('#gear-modal .btn-primary');
+                if (saveBtn.length) {
+                    window.SaveAnimation.setButtonLoading(saveBtn[0], true);
+                }
+            }
+            
             // Collect form data
             const weightUnit = $('#gear-weight-unit').val();
             const weightValue = parseFloat($('#gear-weight').val());
@@ -754,17 +763,50 @@
                 contentType: 'application/json',
                 success: function(response) {
                     if (response.success) {
+                        // Show success animation
+                        if (window.SaveAnimation) {
+                            const gearName = formData.name || 'Gear item';
+                            const message = isEdit ? 'Gear updated!' : 'Gear added!';
+                            const details = `"${gearName}" saved to database (${weightGrams}g)`;
+                            window.SaveAnimation.showSuccess(message, details);
+                        }
+                        
                         self.closeModal();
                         self.showSuccess(isEdit ? 'Item updated successfully' : 'Item added successfully');
                         self.loadGear(); // Reload items
                     } else {
+                        // Show error animation
+                        if (window.SaveAnimation) {
+                            window.SaveAnimation.showError('Failed to save gear', response.message || 'Unknown error');
+                        }
                         self.showError(response.message || 'Failed to save item');
                     }
                 },
                 error: function(xhr) {
                     console.error('Save error:', xhr);
                     const message = xhr.responseJSON?.message || 'Failed to save item';
+                    
+                    // Show error animation
+                    if (window.SaveAnimation) {
+                        let errorDetails = message;
+                        if (xhr.status === 401) {
+                            errorDetails = 'Session expired - please refresh the page';
+                        } else if (xhr.status === 500) {
+                            errorDetails = 'Server error - please try again';
+                        }
+                        window.SaveAnimation.showError('Failed to save gear', errorDetails);
+                    }
+                    
                     self.showError(message);
+                },
+                complete: function() {
+                    // Reset button state
+                    if (window.SaveAnimation) {
+                        const saveBtn = $('#gear-modal .btn-primary');
+                        if (saveBtn.length) {
+                            window.SaveAnimation.setButtonLoading(saveBtn[0], false);
+                        }
+                    }
                 }
             });
         },
@@ -816,15 +858,29 @@
             const self = this;
             if (!this.deleteItemId) return;
 
+            // Show delete animation
+            if (window.SaveAnimation) {
+                window.SaveAnimation.showSaving('Deleting gear item...');
+            }
+
             $.ajax({
                 url: self.config.apiUrl + '?route=gear&id=' + this.deleteItemId,
                 method: 'DELETE',
                 success: function(response) {
                     if (response.success) {
+                        // Show success animation
+                        if (window.SaveAnimation) {
+                            window.SaveAnimation.showSuccess('Gear deleted!', 'Item removed from database');
+                        }
+                        
                         self.closeDeleteModal();
                         self.showSuccess('Item deleted successfully');
                         self.loadGear();
                     } else {
+                        // Show error animation
+                        if (window.SaveAnimation) {
+                            window.SaveAnimation.showError('Failed to delete gear', response.message || 'Unknown error');
+                        }
                         self.showError(response.message || 'Failed to delete item');
                     }
                 },

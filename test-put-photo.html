@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test PUT Photo Upload</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 2rem; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
+        input { padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; width: 100%; }
+        .btn { padding: 0.75rem 1.5rem; background: #4ade80; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .status { margin-top: 1rem; font-weight: bold; }
+        .success { color: #22c55e; }
+        .error { color: #ef4444; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test PUT Photo Upload</h1>
+        <p>Testing PUT request with photo upload to existing trip ID 29</p>
+        
+        <form id="test-form">
+            <div class="form-group">
+                <label for="photo">Photo:</label>
+                <input type="file" id="photo" name="photo" accept="image/*">
+            </div>
+            
+            <div class="form-group">
+                <label for="photo_alt_text">Photo Alt Text:</label>
+                <input type="text" id="photo_alt_text" name="photo_alt_text" value="Test photo upload">
+            </div>
+            
+            <div class="form-group">
+                <label for="title">Title (optional update):</label>
+                <input type="text" id="title" name="title" value="Updated Trip Title">
+            </div>
+            
+            <button type="button" class="btn" onclick="testPutUpload()">Test PUT Upload</button>
+        </form>
+        
+        <div id="status" class="status"></div>
+        <div id="debug"></div>
+    </div>
+
+    <script>
+        async function testPutUpload() {
+            const form = document.getElementById('test-form');
+            const formData = new FormData(form);
+            const status = document.getElementById('status');
+            const debug = document.getElementById('debug');
+            
+            status.innerHTML = '⏳ Testing PUT upload...';
+            
+            try {
+                console.log('Sending PUT request to api/trips/29');
+                console.log('FormData contents:');
+                for (let pair of formData.entries()) {
+                    console.log(`${pair[0]}: ${pair[1]}`);
+                }
+                
+                const response = await fetch('api/trips/29', {
+                    method: 'PUT',
+                    body: formData
+                });
+                
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers.get('content-type'));
+                
+                const responseText = await response.text();
+                console.log('Response body:', responseText);
+                
+                debug.innerHTML = `
+                    <h3>Debug Info:</h3>
+                    <p><strong>Status:</strong> ${response.status}</p>
+                    <p><strong>Response:</strong></p>
+                    <pre>${responseText}</pre>
+                `;
+                
+                if (response.ok) {
+                    try {
+                        const result = JSON.parse(responseText);
+                        if (result.success) {
+                            status.innerHTML = '<span class="success">✅ PUT photo upload successful!</span>';
+                        } else {
+                            status.innerHTML = `<span class="error">❌ API Error: ${result.message}</span>`;
+                        }
+                    } catch (e) {
+                        status.innerHTML = '<span class="error">❌ Invalid JSON response</span>';
+                    }
+                } else {
+                    status.innerHTML = `<span class="error">❌ HTTP Error: ${response.status}</span>`;
+                }
+                
+            } catch (error) {
+                status.innerHTML = `<span class="error">❌ Network Error: ${error.message}</span>`;
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

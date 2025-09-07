@@ -1,6 +1,6 @@
 /**
- * Date Range Picker for Trip Form
- * Lightweight date range picker with calendar UI
+ * TripAdvisor-style Date Range Picker
+ * Simple single calendar with clear start/end highlighting
  */
 
 class DateRangePicker {
@@ -9,6 +9,7 @@ class DateRangePicker {
     this.popup = document.getElementById('date-picker-popup');
     this.startDateInput = document.getElementById('start_date');
     this.endDateInput = document.getElementById('end_date');
+    this.statusElement = document.getElementById('selection-status');
     
     this.options = {
       format: 'YYYY-MM-DD',
@@ -19,48 +20,41 @@ class DateRangePicker {
     this.selectedStartDate = null;
     this.selectedEndDate = null;
     this.currentMonth = new Date();
+    this.selectionStep = 'start'; // 'start' or 'end'
     
     this.init();
   }
   
   init() {
-    this.createCalendars();
+    this.createCalendar();
     this.attachEventListeners();
     this.loadExistingDates();
   }
   
-  createCalendars() {
-    const startCalendarContainer = document.getElementById('start-calendar');
-    const endCalendarContainer = document.getElementById('end-calendar');
+  createCalendar() {
+    const calendarContainer = document.getElementById('main-calendar');
+    if (!calendarContainer) return;
     
-    if (!startCalendarContainer || !endCalendarContainer) return;
+    // Create calendar header with navigation
+    calendarContainer.innerHTML = this.createCalendarHeader();
     
-    // Create calendar headers
-    startCalendarContainer.innerHTML = this.createCalendarHeader('Start Date');
-    endCalendarContainer.innerHTML = this.createCalendarHeader('End Date');
-    
-    // Create calendar grids
-    startCalendarContainer.appendChild(this.createCalendarGrid('start'));
-    endCalendarContainer.appendChild(this.createCalendarGrid('end'));
+    // Create calendar grid
+    calendarContainer.appendChild(this.createCalendarGrid());
   }
   
-  createCalendarHeader(title) {
+  createCalendarHeader() {
     return `
       <div class="calendar-header">
-        <h4 class="calendar-title">${title}</h4>
-        <div class="calendar-nav">
-          <button type="button" class="nav-btn prev-month" data-calendar="start">‹</button>
-          <span class="current-month">${this.formatMonth(this.currentMonth)}</span>
-          <button type="button" class="nav-btn next-month" data-calendar="start">›</button>
-        </div>
+        <button type="button" class="nav-btn prev-month">‹</button>
+        <span class="current-month">${this.formatMonth(this.currentMonth)}</span>
+        <button type="button" class="nav-btn next-month">›</button>
       </div>
     `;
   }
   
-  createCalendarGrid(type) {
+  createCalendarGrid() {
     const grid = document.createElement('div');
     grid.className = 'date-picker-calendar';
-    grid.setAttribute('data-calendar', type);
     
     // Add day headers
     const dayHeaders = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
@@ -105,8 +99,12 @@ class DateRangePicker {
         dayElement.classList.add('today');
       }
       
-      if (this.isSelected(date)) {
-        dayElement.classList.add('selected');
+      if (this.isStartDate(date)) {
+        dayElement.classList.add('start-date');
+      }
+      
+      if (this.isEndDate(date)) {
+        dayElement.classList.add('end-date');
       }
       
       if (this.isInRange(date)) {
@@ -167,20 +165,66 @@ class DateRangePicker {
   
   hidePopup() {
     this.popup.classList.remove('active');
+    this.clearSelectionHint();
+  }
+  
+  showSelectionHint(message) {
+    // Create or update hint element
+    let hint = this.popup.querySelector('.selection-hint');
+    if (!hint) {
+      hint = document.createElement('div');
+      hint.className = 'selection-hint';
+      this.popup.querySelector('.date-picker-header').appendChild(hint);
+    }
+    
+    hint.textContent = message;
+    hint.classList.add('active');
+    
+    // Auto-clear hint after 3 seconds
+    setTimeout(() => {
+      this.clearSelectionHint();
+    }, 3000);
+  }
+  
+  clearSelectionHint() {
+    const hint = this.popup.querySelector('.selection-hint');
+    if (hint) {
+      hint.classList.remove('active');
+    }
+  }
+  
+  updateStatus(message) {
+    if (this.statusElement) {
+      this.statusElement.textContent = message;
+    }
   }
   
   selectDate(date) {
-    if (!this.selectedStartDate || (this.selectedStartDate && this.selectedEndDate)) {
-      // Start new selection
+    if (this.selectionStep === 'start' || (this.selectedStartDate && this.selectedEndDate)) {
+      // Start fresh selection
       this.selectedStartDate = new Date(date);
       this.selectedEndDate = null;
-    } else if (date >= this.selectedStartDate) {
-      // Select end date
-      this.selectedEndDate = new Date(date);
-    } else {
-      // Selected date is before start date, make it the new start date
-      this.selectedEndDate = this.selectedStartDate;
-      this.selectedStartDate = new Date(date);
+      this.selectionStep = 'end';
+      this.updateStatus('Select check-out date');
+      
+    } else if (this.selectionStep === 'end') {
+      // Complete the selection
+      if (date >= this.selectedStartDate) {
+        this.selectedEndDate = new Date(date);
+      } else {
+        // Swap if end is before start
+        this.selectedEndDate = this.selectedStartDate;
+        this.selectedStartDate = new Date(date);
+      }
+      
+      this.selectionStep = 'complete';
+      this.updateStatus('Dates selected');
+      
+      // Auto-apply and close after brief delay
+      setTimeout(() => {
+        this.applyDates();
+        this.hidePopup();
+      }, 500);
     }
     
     this.updateCalendars();
@@ -203,9 +247,11 @@ class DateRangePicker {
   clearDates() {
     this.selectedStartDate = null;
     this.selectedEndDate = null;
+    this.selectionStep = 'start';
     this.startDateInput.value = '';
     this.endDateInput.value = '';
     this.input.value = '';
+    this.updateStatus('Select check-in date');
     this.updateCalendars();
   }
   
@@ -296,8 +342,22 @@ class DateRangePicker {
   }
   
   isInRange(date) {
-    if (!this.selectedStartDate || !this.selectedEndDate) return false;
-    return date >= this.selectedStartDate && date <= this.selectedEndDate;
+    if (!this.selectedStartDate) return false;
+    
+    if (this.selectedEndDate) {
+      return date > this.selectedStartDate && date < this.selectedEndDate;
+    }
+    
+    // If only start date selected, don't highlight range yet
+    return false;
+  }
+  
+  isStartDate(date) {
+    return this.selectedStartDate && date.toDateString() === this.selectedStartDate.toDateString();
+  }
+  
+  isEndDate(date) {
+    return this.selectedEndDate && date.toDateString() === this.selectedEndDate.toDateString();
   }
 }
 

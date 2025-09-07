@@ -1,0 +1,106 @@
+/**
+ * Navigation Clearance Fix
+ * Ensures all page content has proper top spacing to avoid overlap with sticky navigation
+ */
+
+/* Ensure consistent navigation height */
+:root {
+  --nav-height-actual: 72px; /* Based on observed navigation height */
+  --nav-clearance: 2rem; /* Generous clearance for navigation */
+}
+
+/* Main content containers should have top spacing */
+.page-hero,
+.page-content,
+.main-content,
+#main-content {
+  padding-top: var(--nav-clearance);
+  margin-top: var(--space-4);
+}
+
+/* Page-specific content containers */
+.gear-layout-two-column,
+.forest-duo-theme,
+.gear-forest-page {
+  margin-top: var(--space-6);
+  padding-top: var(--space-3);
+}
+
+/* Hero sections that might overlap */
+.hero-content,
+.page-hero .hero-content {
+  padding-top: var(--space-8);
+}
+
+/* Dashboard and other page layouts */
+.dashboard-layout,
+.trips-layout,
+.backpacks-layout {
+  padding-top: var(--nav-clearance);
+  margin-top: var(--space-3);
+}
+
+/* Ensure proper spacing for forest theme pages */
+.forest-duo-theme .gear-forest-page {
+  padding-top: var(--nav-clearance);
+}
+
+/* Fix for specific overlapping elements */
+.gear-action-bar,
+.forest-action-bar {
+  margin-top: var(--space-6);
+}
+
+/* Additional clearance for common page elements */
+.pack-builder-container,
+.trips-container,
+.backpacks-container {
+  padding-top: var(--nav-clearance);
+}
+
+/* Page headers that might be close to navigation */
+.builder-header,
+.page-header,
+h1:first-child {
+  margin-top: var(--space-4);
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  :root {
+    --nav-clearance: 1.5rem; /* Slightly less clearance on mobile */
+  }
+  
+  .page-hero,
+  .page-content,
+  .main-content,
+  #main-content {
+    padding-top: var(--nav-clearance);
+    margin-top: var(--space-2);
+  }
+  
+  .hero-content,
+  .page-hero .hero-content {
+    padding-top: var(--space-6);
+  }
+  
+  .gear-action-bar,
+  .forest-action-bar {
+    margin-top: var(--space-4);
+  }
+}
+
+/* Ultra-wide screen adjustments */
+@media (min-width: 1600px) {
+  :root {
+    --nav-clearance: 3rem; /* More clearance on very large screens */
+  }
+  
+  .page-hero,
+  .page-content,
+  .main-content,
+  #main-content {
+    padding-top: var(--nav-clearance);
+    margin-top: var(--space-6);
+  }
+}

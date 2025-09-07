@@ -1,0 +1,147 @@
+/**
+ * Dashboard Dropdown & Spacing Fix
+ * Fixes:
+ * 1. Left body spacing on dashboard
+ * 2. Dropdown causing horizontal scrollbar on other pages
+ * 3. Quick actions menu overflow
+ * 4. Navigation consistency between dashboard and other pages
+ */
+
+/* Fix dashboard body spacing without affecting navigation */
+body[data-page="dashboard"] main,
+body[data-page="dashboard"] .page-content {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+/* Ensure consistent page container spacing */
+.page-container {
+  padding: 0 1rem !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+}
+
+/* Remove any unintended left margin on dashboard content */
+body[data-page="dashboard"] .stats-grid:first-child,
+body[data-page="dashboard"] .modern-dashboard-hero {
+  margin-left: 0 !important;
+}
+
+/* Prevent dropdown from causing scrollbar */
+.dropdown,
+.nav-quick-actions {
+  position: relative !important;
+}
+
+.dropdown-menu,
+.quick-actions-menu {
+  position: absolute !important;
+  right: 0 !important;
+  left: auto !important;
+  transform: none !important;
+  max-width: 280px !important;
+  width: max-content !important;
+  overflow: hidden !important;
+}
+
+/* Ensure dropdown doesn't extend beyond viewport */
+.nav-user-gamified {
+  position: relative !important;
+}
+
+.nav-user-gamified .dropdown-menu,
+.nav-user-gamified .quick-actions-menu {
+  right: 0 !important;
+  left: auto !important;
+  margin-right: 0 !important;
+}
+
+/* Quick actions specific fixes */
+.quick-actions-menu {
+  right: 0 !important;
+  left: auto !important;
+  transform: translateX(0) !important;
+  max-width: min(320px, calc(100vw - 2rem)) !important;
+}
+
+/* User dropdown specific fixes */
+.dropdown-menu {
+  min-width: 180px !important;
+  max-width: min(240px, calc(100vw - 2rem)) !important;
+}
+
+/* Prevent body scroll when dropdown is open */
+body.dropdown-open {
+  overflow-x: hidden !important;
+}
+
+/* Ensure navigation stays consistent across all pages */
+body[data-page="dashboard"] .forest-nav {
+  /* Use same styling as other pages */
+  overflow: visible !important;
+}
+
+body[data-page="dashboard"] .nav-container {
+  /* Match the styling from other pages */
+  overflow: visible !important;
+}
+
+/* Dashboard specific hero spacing fix */
+body[data-page="dashboard"] .modern-dashboard-hero {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  width: 100% !important;
+}
+
+/* Dashboard grid spacing fix */
+body[data-page="dashboard"] .stats-grid,
+body[data-page="dashboard"] .dashboard-primary-grid,
+body[data-page="dashboard"] .dashboard-secondary-grid {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+  max-width: 100% !important;
+}
+
+/* Prevent horizontal scroll on entire page */
+html,
+body {
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
+}
+
+/* Fix container widths to prevent overflow */
+.container,
+.main-container {
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .dropdown-menu,
+  .quick-actions-menu {
+    right: -1rem !important;
+    max-width: calc(100vw - 1rem) !important;
+  }
+  
+  body[data-page="dashboard"] .stats-grid,
+  body[data-page="dashboard"] .dashboard-primary-grid,
+  body[data-page="dashboard"] .dashboard-secondary-grid {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+}
+
+/* Ensure dropdowns stay within viewport on small screens */
+@media (max-width: 480px) {
+  .dropdown-menu,
+  .quick-actions-menu {
+    position: fixed !important;
+    right: 1rem !important;
+    left: 1rem !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+}

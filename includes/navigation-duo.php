@@ -126,6 +126,7 @@ $user_initial = strtoupper(substr($user_name, 0, 1));
     top: 0;
     z-index: 1030;
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+    overflow: visible;
 }
 
 .nav-container {
@@ -136,6 +137,7 @@ $user_initial = strtoupper(substr($user_name, 0, 1));
     align-items: center;
     justify-content: space-between;
     height: 64px;
+    overflow: visible;
 }
 
 /* Logo */
@@ -344,6 +346,7 @@ $user_initial = strtoupper(substr($user_name, 0, 1));
     top: calc(100% + 0.5rem);
     right: 0;
     min-width: 220px;
+    max-width: calc(100vw - 2rem);
     background: rgba(15, 56, 35, 0.98);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(74, 222, 128, 0.2);
@@ -353,6 +356,7 @@ $user_initial = strtoupper(substr($user_name, 0, 1));
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.2s ease;
+    z-index: 9999;
 }
 
 .nav-profile:hover .dropdown-menu,

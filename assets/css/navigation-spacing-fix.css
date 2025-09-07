@@ -1,0 +1,92 @@
+/**
+ * Navigation Spacing Fix
+ * Fixes extra spacing at top of navigation and ensures consistent layout
+ */
+
+/* Remove any top margin/padding that might be causing extra space */
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.page-wrapper {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Ensure navigation sits at the very top */
+.forest-nav,
+.duo-forest-nav {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  margin: 0 !important;
+  z-index: 1000 !important;
+}
+
+/* Add padding to page content to account for fixed nav */
+.page-content,
+main {
+  padding-top: 80px !important; /* Adjust based on nav height */
+}
+
+/* Remove any floating elements that might push content down */
+.floating-leaves {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
+
+/* Skip navigation removed - no longer needed */
+
+/* Fix page container spacing */
+.page-container,
+.container {
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 0 1rem !important;
+}
+
+/* Ensure consistent hero spacing */
+.page-hero,
+.modern-dashboard-hero {
+  margin-top: 0 !important;
+  padding: 2rem 0 !important;
+}
+
+/* Dashboard specific adjustments to match other pages */
+body[data-page="dashboard"] .page-content {
+  padding-top: 80px !important; /* Same as other pages */
+}
+
+body[data-page="dashboard"] .modern-dashboard-hero {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 2rem 0 !important;
+}
+
+/* Ensure dashboard grids are contained like other pages */
+body[data-page="dashboard"] .stats-grid,
+body[data-page="dashboard"] .dashboard-primary-grid,
+body[data-page="dashboard"] .dashboard-secondary-grid {
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 0 1rem !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .page-content,
+  main {
+    padding-top: 70px !important; /* Slightly less for mobile */
+  }
+  
+  .page-container {
+    padding: 0 0.5rem !important;
+  }
+}

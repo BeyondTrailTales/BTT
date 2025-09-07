@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Edit Trip Photo</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 2rem; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .test-section { margin: 2rem 0; padding: 1rem; border: 1px solid #ccc; border-radius: 8px; }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
+        input, select { padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; width: 100%; max-width: 400px; }
+        .btn { padding: 0.75rem 1.5rem; background: #4ade80; color: white; border: none; border-radius: 4px; cursor: pointer; margin: 0.5rem; }
+        .status { margin-top: 1rem; font-weight: bold; }
+        .success { color: #22c55e; }
+        .error { color: #ef4444; }
+        .info { color: #3b82f6; }
+        pre { background: #f5f5f5; padding: 1rem; border-radius: 4px; font-size: 12px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test Edit Trip Photo Upload</h1>
+        
+        <div class="test-section">
+            <h2>Step 1: Load Existing Trip</h2>
+            <div class="form-group">
+                <label for="trip-id">Trip ID:</label>
+                <input type="number" id="trip-id" value="29">
+            </div>
+            <button type="button" class="btn" onclick="loadTrip()">Load Trip Data</button>
+            <div id="load-status" class="status"></div>
+            <pre id="load-response"></pre>
+        </div>
+
+        <div class="test-section">
+            <h2>Step 2: Upload New Photo</h2>
+            <form id="edit-form">
+                <div class="form-group">
+                    <label for="photo">New Photo:</label>
+                    <input type="file" id="photo" name="photo" accept="image/*">
+                </div>
+                
+                <div class="form-group">
+                    <label for="photo_alt_text">Photo Alt Text:</label>
+                    <input type="text" id="photo_alt_text" name="photo_alt_text" value="Updated photo">
+                </div>
+                
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" value="Test Updated Title">
+                </div>
+                
+                <button type="button" class="btn" onclick="updateTripWithPhoto()">Update Trip with Photo</button>
+            </form>
+            <div id="update-status" class="status"></div>
+            <pre id="update-response"></pre>
+        </div>
+
+        <div class="test-section">
+            <h2>Step 3: Verify Update</h2>
+            <button type="button" class="btn" onclick="verifyUpdate()">Reload Trip to Verify</button>
+            <div id="verify-status" class="status"></div>
+            <pre id="verify-response"></pre>
+        </div>
+    </div>
+
+    <script>
+        let tripData = null;
+        
+        async function loadTrip() {
+            const tripId = document.getElementById('trip-id').value;
+            const status = document.getElementById('load-status');
+            const response = document.getElementById('load-response');
+            
+            status.innerHTML = '⏳ Loading trip...';
+            status.className = 'status info';
+            
+            try {
+                // Test both endpoints
+                console.log('Testing ajax-handler endpoint...');
+                const ajaxResponse = await fetch(`ajax-handler.php?route=trips&id=${tripId}`, {
+                    credentials: 'include'
+                });
+                
+                const ajaxData = await ajaxResponse.text();
+                console.log('Ajax response:', ajaxData);
+                
+                console.log('Testing API endpoint...');
+                const apiResponse = await fetch(`api/trips/${tripId}`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                
+                const apiData = await apiResponse.text();
+                console.log('API response:', apiData);
+                
+                // Use ajax-handler data (what the trips page uses)
+                tripData = JSON.parse(ajaxData);
+                
+                status.innerHTML = '<span class="success">✅ Trip loaded successfully!</span>';
+                response.textContent = JSON.stringify(tripData, null, 2);
+                
+                // Pre-populate form
+                document.getElementById('title').value = tripData.title || '';
+                document.getElementById('photo_alt_text').value = tripData.photo_alt_text || 'Updated photo';
+                
+            } catch (error) {
+                status.innerHTML = `<span class="error">❌ Failed to load trip: ${error.message}</span>`;
+                console.error('Load error:', error);
+            }
+        }
+        
+        async function updateTripWithPhoto() {
+            const tripId = document.getElementById('trip-id').value;
+            const form = document.getElementById('edit-form');
+            const formData = new FormData(form);
+            const status = document.getElementById('update-status');
+            const response = document.getElementById('update-response');
+            
+            status.innerHTML = '⏳ Updating trip with photo...';
+            status.className = 'status info';
+            
+            // Add trip ID to form data
+            formData.append('id', tripId);
+            
+            try {
+                console.log('Sending PUT request with photo...');
+                console.log('FormData contents:');
+                for (let pair of formData.entries()) {
+                    if (pair[1] instanceof File) {
+                        console.log(`${pair[0]}: [File] ${pair[1].name} (${pair[1].size} bytes)`);
+                    } else {
+                        console.log(`${pair[0]}: ${pair[1]}`);
+                    }
+                }
+                
+                // Also test POST method to compare
+                console.log('Testing if POST works instead of PUT...');
+                try {
+                    const postFormData = new FormData();
+                    postFormData.append('_method', 'PUT'); // Method override
+                    for (let pair of formData.entries()) {
+                        postFormData.append(pair[0], pair[1]);
+                    }
+                    
+                    const postResponse = await fetch(`api/trips/${tripId}`, {
+                        method: 'POST',
+                        body: postFormData,
+                        credentials: 'include'
+                    });
+                    
+                    console.log('POST with method override status:', postResponse.status);
+                    const postData = await postResponse.text();
+                    console.log('POST response:', postData.substring(0, 200) + '...');
+                } catch (e) {
+                    console.log('POST test failed:', e.message);
+                }
+                
+                const updateResponse = await fetch(`api/trips/${tripId}`, {
+                    method: 'PUT',
+                    body: formData,
+                    credentials: 'include'
+                });
+                
+                console.log('Update response status:', updateResponse.status);
+                console.log('Update response headers:', updateResponse.headers.get('content-type'));
+                
+                const updateData = await updateResponse.text();
+                console.log('Update response body:', updateData);
+                
+                response.textContent = updateData;
+                
+                if (updateResponse.ok) {
+                    try {
+                        const result = JSON.parse(updateData);
+                        if (result.success) {
+                            status.innerHTML = '<span class="success">✅ Trip updated with photo successfully!</span>';
+                        } else {
+                            status.innerHTML = `<span class="error">❌ API Error: ${result.message}</span>`;
+                        }
+                    } catch (e) {
+                        status.innerHTML = '<span class="error">❌ Invalid JSON response</span>';
+                    }
+                } else {
+                    status.innerHTML = `<span class="error">❌ HTTP Error: ${updateResponse.status}</span>`;
+                }
+                
+            } catch (error) {
+                status.innerHTML = `<span class="error">❌ Network Error: ${error.message}</span>`;
+                console.error('Update error:', error);
+            }
+        }
+        
+        async function verifyUpdate() {
+            const tripId = document.getElementById('trip-id').value;
+            const status = document.getElementById('verify-status');
+            const response = document.getElementById('verify-response');
+            
+            status.innerHTML = '⏳ Verifying update...';
+            status.className = 'status info';
+            
+            try {
+                const verifyResponse = await fetch(`ajax-handler.php?route=trips&id=${tripId}`, {
+                    credentials: 'include'
+                });
+                
+                const verifyData = await verifyResponse.json();
+                
+                status.innerHTML = '<span class="success">✅ Trip data reloaded!</span>';
+                response.textContent = JSON.stringify(verifyData, null, 2);
+                
+                // Highlight changes
+                if (verifyData.photo_path) {
+                    status.innerHTML += `<br>📸 Photo path: ${verifyData.photo_path}`;
+                }
+                if (verifyData.photo_alt_text) {
+                    status.innerHTML += `<br>📝 Alt text: ${verifyData.photo_alt_text}`;
+                }
+                
+            } catch (error) {
+                status.innerHTML = `<span class="error">❌ Failed to verify: ${error.message}</span>`;
+                console.error('Verify error:', error);
+            }
+        }
+    </script>
+</body>
+</html>

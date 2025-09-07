@@ -1,0 +1,562 @@
+/**
+ * BTT Mobile Responsive Enhancements
+ * Mobile-first responsive fixes for better UX on small devices
+ * @version 1.0.0
+ * @date 2025-09-06
+ */
+
+/* ===========================================
+   MOBILE NAVIGATION IMPROVEMENTS
+   =========================================== */
+
+/* Mobile menu button */
+.nav-mobile-toggle {
+  display: none;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: transparent;
+  border: 2px solid var(--btt-glass-border);
+  border-radius: var(--btt-radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-mobile-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--btt-text-primary);
+  margin: 5px auto;
+  transition: all 0.3s ease;
+}
+
+.nav-mobile-toggle.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.nav-mobile-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-mobile-toggle.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Mobile navigation menu */
+@media (max-width: 768px) {
+  .nav-mobile-toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+  /* Hide desktop nav */
+  .nav-sections,
+  .nav-main {
+    position: fixed;
+    top: 72px;
+    left: 0;
+    right: 0;
+    background: var(--btt-forest-shadow);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--btt-glass-border);
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+    z-index: 999;
+    max-height: calc(100vh - 72px);
+    overflow-y: auto;
+    padding: var(--btt-space-4);
+  }
+  
+  .nav-sections.mobile-active,
+  .nav-main.mobile-active {
+    transform: translateY(0);
+  }
+  
+  .nav-sections {
+    display: flex !important;
+    flex-direction: column;
+    gap: var(--btt-space-2);
+  }
+  
+  .nav-section-item {
+    width: 100%;
+  }
+  
+  .nav-section-link {
+    display: block;
+    padding: var(--btt-space-3) var(--btt-space-4);
+    border-radius: var(--btt-radius-md);
+    text-align: left;
+    font-size: var(--btt-text-base);
+  }
+}
+
+/* ===========================================
+   MOBILE HEADER ADJUSTMENTS
+   =========================================== */
+
+@media (max-width: 768px) {
+  /* Reduce hero padding */
+  .page-hero,
+  .modern-dashboard-hero {
+    padding: var(--btt-space-4) 0 !important;
+    margin-bottom: var(--btt-space-4) !important;
+  }
+  
+  /* Stack hero content vertically */
+  .hero-header,
+  .hero-main-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: var(--btt-space-3) !important;
+  }
+  
+  /* Hero title adjustments */
+  .hero-title,
+  .modern-dashboard-hero-title {
+    font-size: 1.5rem !important;
+    text-align: center !important;
+  }
+  
+  .hero-subtitle,
+  .modern-dashboard-hero-subtitle {
+    font-size: 0.875rem !important;
+    text-align: center !important;
+  }
+  
+  /* Hero controls full width */
+  .hero-controls {
+    flex-direction: column !important;
+    gap: var(--btt-space-3) !important;
+  }
+  
+  .hero-search {
+    width: 100% !important;
+    max-width: none !important;
+  }
+  
+  .hero-filters {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+  
+  /* Action buttons */
+  .hero-actions {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+  
+  .hero-actions .btn {
+    flex: 1 !important;
+    min-width: 120px !important;
+  }
+}
+
+/* ===========================================
+   MOBILE CARD LAYOUTS
+   =========================================== */
+
+@media (max-width: 768px) {
+  /* Single column grids */
+  .dashboard-primary-grid,
+  .adventures-grid,
+  .pack-grid,
+  .gear-grid,
+  .stats-grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--btt-space-4) !important;
+  }
+  
+  /* Card adjustments */
+  .card,
+  .dashboard-card {
+    margin-bottom: var(--btt-space-4) !important;
+  }
+  
+  .card-header,
+  .card-body,
+  .card-footer {
+    padding: var(--btt-space-4) !important;
+  }
+  
+  /* Card content */
+  .card-title {
+    font-size: 1.125rem !important;
+  }
+  
+  .card-subtitle {
+    font-size: 0.8125rem !important;
+  }
+  
+  /* Trip items */
+  .trip-item {
+    flex-direction: row !important;
+    gap: var(--btt-space-3) !important;
+    padding: var(--btt-space-3) !important;
+  }
+  
+  .trip-icon,
+  .trip-photo {
+    width: 48px !important;
+    height: 48px !important;
+  }
+  
+  .trip-info h4 {
+    font-size: 0.875rem !important;
+  }
+  
+  .trip-info p {
+    font-size: 0.75rem !important;
+  }
+}
+
+/* ===========================================
+   MOBILE FORM IMPROVEMENTS
+   =========================================== */
+
+@media (max-width: 768px) {
+  /* Form grids to single column */
+  .form-grid,
+  #trip-form .form-grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--btt-space-4) !important;
+  }
+  
+  /* Full width form groups */
+  .form-group {
+    grid-column: 1 / -1 !important;
+  }
+  
+  /* Larger touch targets */
+  .form-input,
+  .form-select,
+  .form-textarea,
+  input,
+  select,
+  textarea {
+    min-height: 48px !important;
+    font-size: 16px !important; /* Prevents zoom on iOS */
+  }
+  
+  /* Button groups */
+  .form-actions,
+  .modal-footer {
+    flex-direction: column-reverse !important;
+    gap: var(--btt-space-2) !important;
+  }
+  
+  .form-actions .btn,
+  .modal-footer .btn {
+    width: 100% !important;
+  }
+}
+
+/* ===========================================
+   MOBILE MODAL ADJUSTMENTS
+   =========================================== */
+
+@media (max-width: 768px) {
+  /* Full screen modals on mobile */
+  .modal,
+  .modal-dialog {
+    margin: 0 !important;
+    max-width: 100% !important;
+    height: 100% !important;
+  }
+  
+  .modal-content {
+    height: 100% !important;
+    border-radius: 0 !important;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .modal-header {
+    padding: var(--btt-space-4) !important;
+    border-radius: 0 !important;
+  }
+  
+  .modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--btt-space-4) !important;
+  }
+  
+  .modal-footer {
+    padding: var(--btt-space-4) !important;
+    border-radius: 0 !important;
+    position: sticky;
+    bottom: 0;
+    background: var(--btt-forest-shadow);
+    border-top: 1px solid var(--btt-glass-border);
+  }
+}
+
+/* ===========================================
+   MOBILE TABLE IMPROVEMENTS
+   =========================================== */
+
+@media (max-width: 768px) {
+  /* Convert tables to cards on mobile */
+  table {
+    display: block !important;
+  }
+  
+  thead {
+    display: none !important;
+  }
+  
+  tbody {
+    display: block !important;
+  }
+  
+  tr {
+    display: block !important;
+    margin-bottom: var(--btt-space-4) !important;
+    background: var(--btt-glass-white) !important;
+    border: 1px solid var(--btt-glass-border) !important;
+    border-radius: var(--btt-radius-md) !important;
+    padding: var(--btt-space-3) !important;
+  }
+  
+  td {
+    display: flex !important;
+    justify-content: space-between !important;
+    padding: var(--btt-space-2) 0 !important;
+    border: none !important;
+  }
+  
+  td::before {
+    content: attr(data-label);
+    font-weight: var(--btt-font-semibold);
+    color: var(--btt-text-secondary);
+    flex: 0 0 40%;
+  }
+}
+
+/* ===========================================
+   MOBILE BUTTON IMPROVEMENTS
+   =========================================== */
+
+@media (max-width: 768px) {
+  /* Larger touch targets */
+  .btn {
+    min-height: 48px !important;
+    padding: var(--btt-space-3) var(--btt-space-5) !important;
+    font-size: var(--btt-text-base) !important;
+  }
+  
+  /* Icon buttons */
+  .btn-icon {
+    width: 48px !important;
+    height: 48px !important;
+  }
+  
+  /* Button groups */
+  .btn-group {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+  
+  .btn-group .btn {
+    width: 100% !important;
+    border-radius: var(--btt-radius-md) !important;
+    margin-bottom: var(--btt-space-2) !important;
+  }
+  
+  .btn-group .btn:last-child {
+    margin-bottom: 0 !important;
+  }
+}
+
+/* ===========================================
+   MOBILE UTILITY CLASSES
+   =========================================== */
+
+@media (max-width: 768px) {
+  /* Hide on mobile */
+  .d-mobile-none {
+    display: none !important;
+  }
+  
+  /* Show on mobile */
+  .d-mobile-block {
+    display: block !important;
+  }
+  
+  .d-mobile-flex {
+    display: flex !important;
+  }
+  
+  /* Mobile text alignment */
+  .text-mobile-center {
+    text-align: center !important;
+  }
+  
+  /* Mobile spacing */
+  .p-mobile-3 {
+    padding: var(--btt-space-3) !important;
+  }
+  
+  .m-mobile-0 {
+    margin: 0 !important;
+  }
+}
+
+/* ===========================================
+   SMALL MOBILE ADJUSTMENTS (<480px)
+   =========================================== */
+
+@media (max-width: 480px) {
+  /* Even smaller container padding */
+  .container,
+  main {
+    padding: var(--btt-space-2) !important;
+  }
+  
+  /* Compact headers */
+  .hero-title {
+    font-size: 1.25rem !important;
+  }
+  
+  .hero-subtitle {
+    font-size: 0.75rem !important;
+  }
+  
+  /* Compact cards */
+  .card-header,
+  .card-body,
+  .card-footer {
+    padding: var(--btt-space-3) !important;
+  }
+  
+  /* Stats grid - 2 columns even on very small screens */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: var(--btt-space-3) !important;
+  }
+  
+  .stat-card {
+    padding: var(--btt-space-3) !important;
+  }
+  
+  .stat-number {
+    font-size: 1.25rem !important;
+  }
+  
+  .stat-label {
+    font-size: 0.625rem !important;
+  }
+  
+  /* Smaller buttons */
+  .btn {
+    padding: var(--btt-space-2) var(--btt-space-4) !important;
+    font-size: 0.875rem !important;
+    min-height: 44px !important;
+  }
+  
+  /* View toggle adjustments */
+  .view-toggle {
+    padding: 0.125rem !important;
+  }
+  
+  .view-toggle-btn {
+    padding: 0.25rem 0.5rem !important;
+    font-size: 1rem !important;
+  }
+}
+
+/* ===========================================
+   LANDSCAPE MOBILE ADJUSTMENTS
+   =========================================== */
+
+@media (max-width: 768px) and (orientation: landscape) {
+  /* Reduce vertical spacing in landscape */
+  body[data-page] {
+    padding-top: 60px !important;
+  }
+  
+  .forest-nav {
+    min-height: 60px !important;
+  }
+  
+  .nav-container {
+    min-height: 60px !important;
+  }
+  
+  .page-hero {
+    padding: var(--btt-space-3) 0 !important;
+  }
+  
+  /* Two column grids in landscape */
+  .dashboard-primary-grid,
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ===========================================
+   TOUCH OPTIMIZATIONS
+   =========================================== */
+
+@media (hover: none) and (pointer: coarse) {
+  /* Remove hover effects on touch devices */
+  .card:hover,
+  .btn:hover,
+  .nav-link:hover {
+    transform: none !important;
+  }
+  
+  /* Increase tap target sizes */
+  a,
+  button,
+  .clickable {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+  
+  /* Add active states for better feedback */
+  .btn:active {
+    transform: scale(0.98) !important;
+    opacity: 0.9 !important;
+  }
+}
+
+/* ===========================================
+   PRINT STYLES
+   =========================================== */
+
+@media print {
+  /* Hide navigation and unnecessary elements */
+  .forest-nav,
+  .nav-mobile-toggle,
+  .floating-leaves,
+  .btn,
+  .hero-controls,
+  .view-toggle {
+    display: none !important;
+  }
+  
+  /* Reset backgrounds */
+  body,
+  .page-hero,
+  .card {
+    background: white !important;
+    color: black !important;
+  }
+  
+  /* Remove shadows and borders */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  
+  .card {
+    border: 1px solid #ddd !important;
+    page-break-inside: avoid;
+  }
+}

@@ -1,0 +1,305 @@
+/**
+ * Button Component - BEM Architecture
+ * No !important declarations needed
+ * Mobile-first responsive design
+ */
+
+/* ==============================================
+   Base Button Component
+   ============================================== */
+.c-button {
+  /* Reset & Display */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2, 0.5rem);
+  
+  /* Box Model */
+  padding: var(--spacing-2, 0.5rem) var(--spacing-4, 1rem);
+  border: 2px solid transparent;
+  border-radius: var(--radius-md, 0.375rem);
+  
+  /* Typography */
+  font-family: var(--font-sans, inherit);
+  font-size: var(--text-base, 1rem);
+  font-weight: var(--font-medium, 500);
+  line-height: var(--leading-tight, 1.25);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  
+  /* Colors */
+  background-color: var(--color-primary, #4ba667);
+  color: white;
+  
+  /* Behavior */
+  cursor: pointer;
+  user-select: none;
+  transition: all var(--duration-base, 200ms) var(--ease-out);
+  
+  /* Remove default button styles */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Button States */
+.c-button:hover:not(:disabled) {
+  background-color: var(--color-primary-hover, #3d8b54);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.c-button:focus {
+  outline: 2px solid var(--color-primary-light, #74c08d);
+  outline-offset: 2px;
+}
+
+.c-button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.c-button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.c-button:disabled,
+.c-button.is-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.c-button.is-loading {
+  color: transparent;
+  cursor: wait;
+}
+
+.c-button.is-loading::after {
+  content: "";
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+/* ==============================================
+   Button Variants
+   ============================================== */
+
+/* Secondary Button */
+.c-button--secondary {
+  background-color: transparent;
+  color: var(--color-primary, #4ba667);
+  border-color: currentColor;
+}
+
+.c-button--secondary:hover:not(:disabled) {
+  background-color: var(--color-primary, #4ba667);
+  color: white;
+}
+
+/* Ghost Button */
+.c-button--ghost {
+  background-color: transparent;
+  color: var(--color-text, #ffffff);
+  border-color: transparent;
+}
+
+.c-button--ghost:hover:not(:disabled) {
+  background-color: var(--color-surface-hover, rgba(255, 255, 255, 0.08));
+}
+
+/* Danger Button */
+.c-button--danger {
+  background-color: var(--color-danger, #ef4444);
+}
+
+.c-button--danger:hover:not(:disabled) {
+  background-color: var(--color-danger-hover, #dc2626);
+}
+
+/* Success Button */
+.c-button--success {
+  background-color: var(--color-success, #10b981);
+}
+
+.c-button--success:hover:not(:disabled) {
+  background-color: var(--color-success-hover, #059669);
+}
+
+/* ==============================================
+   Button Sizes
+   ============================================== */
+
+/* Small */
+.c-button--sm {
+  padding: var(--spacing-1, 0.25rem) var(--spacing-3, 0.75rem);
+  font-size: var(--text-sm, 0.875rem);
+}
+
+/* Large */
+.c-button--lg {
+  padding: var(--spacing-3, 0.75rem) var(--spacing-6, 1.5rem);
+  font-size: var(--text-lg, 1.125rem);
+}
+
+/* Extra Large */
+.c-button--xl {
+  padding: var(--spacing-4, 1rem) var(--spacing-8, 2rem);
+  font-size: var(--text-xl, 1.25rem);
+}
+
+/* ==============================================
+   Button Modifiers
+   ============================================== */
+
+/* Full Width */
+.c-button--full {
+  width: 100%;
+}
+
+/* Icon Only */
+.c-button--icon {
+  padding: var(--spacing-2, 0.5rem);
+  aspect-ratio: 1;
+}
+
+.c-button--icon.c-button--sm {
+  padding: var(--spacing-1, 0.25rem);
+}
+
+.c-button--icon.c-button--lg {
+  padding: var(--spacing-3, 0.75rem);
+}
+
+/* Rounded */
+.c-button--rounded {
+  border-radius: var(--radius-full, 9999px);
+}
+
+/* ==============================================
+   Button Group
+   ============================================== */
+.c-button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2, 0.5rem);
+}
+
+.c-button-group--vertical {
+  flex-direction: column;
+}
+
+.c-button-group--tight {
+  gap: 0;
+}
+
+.c-button-group--tight .c-button:not(:first-child) {
+  margin-left: -2px;
+}
+
+.c-button-group--tight .c-button:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.c-button-group--tight .c-button:not(:first-child) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* ==============================================
+   Responsive Button Styles
+   ============================================== */
+
+/* Stack buttons on mobile */
+@media (max-width: 639px) {
+  .c-button-group--responsive {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .c-button-group--responsive .c-button {
+    width: 100%;
+  }
+}
+
+/* Adjust button padding on mobile */
+@media (max-width: 479px) {
+  .c-button {
+    padding: var(--spacing-2, 0.5rem) var(--spacing-3, 0.75rem);
+    font-size: var(--text-sm, 0.875rem);
+  }
+  
+  .c-button--lg {
+    padding: var(--spacing-3, 0.75rem) var(--spacing-4, 1rem);
+    font-size: var(--text-base, 1rem);
+  }
+}
+
+/* ==============================================
+   Legacy Class Mapping (for migration)
+   ============================================== */
+.btn {
+  composes: c-button;
+}
+
+.btn-primary {
+  composes: c-button;
+}
+
+.btn-secondary {
+  composes: c-button c-button--secondary;
+}
+
+.btn-danger {
+  composes: c-button c-button--danger;
+}
+
+.btn-success {
+  composes: c-button c-button--success;
+}
+
+.btn-sm {
+  composes: c-button c-button--sm;
+}
+
+.btn-lg {
+  composes: c-button c-button--lg;
+}
+
+.btn-block {
+  composes: c-button c-button--full;
+}
+
+/* Theme-specific button variants */
+.btn-adventure,
+.btn-adventures {
+  composes: c-button;
+  background-color: var(--adventure-primary, var(--color-primary));
+}
+
+.btn-gear {
+  composes: c-button;
+  background-color: var(--gear-primary, var(--color-primary));
+}
+
+.btn-pack,
+.btn-backpack {
+  composes: c-button;
+  background-color: var(--pack-primary, var(--color-primary));
+}
+
+/* ==============================================
+   Animations
+   ============================================== */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

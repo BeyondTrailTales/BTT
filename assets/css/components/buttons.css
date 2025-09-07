@@ -1,0 +1,437 @@
+/**
+ * BeyondTrailTales - Button Component
+ * Consistent button styles throughout the application
+ */
+
+/* ===========================================
+   Base Button
+   =========================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  font-family: inherit;
+  font-size: var(--text-base);
+  font-weight: var(--btn-font-weight);
+  line-height: var(--leading-tight);
+  text-decoration: none;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid transparent;
+  border-radius: var(--btn-radius);
+  transition: var(--btn-transition);
+  cursor: pointer;
+  min-height: 44px; /* WCAG touch target */
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:hover {
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.btn:focus-visible {
+  box-shadow: 0 0 0 3px rgba(61, 139, 84, 0.2);
+}
+
+.btn:disabled,
+.btn.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Button Ripple Effect */
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* ===========================================
+   Button Variants
+   =========================================== */
+
+/* Primary Button */
+.btn-primary {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+  box-shadow: 0 4px 12px rgba(61, 139, 84, 0.25);
+}
+
+.btn-primary:active {
+  background: var(--color-primary-active);
+  border-color: var(--color-primary-active);
+}
+
+/* Secondary Button */
+.btn-secondary {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+.btn-secondary:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-border-hover);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary:active {
+  background: var(--color-surface-active);
+}
+
+/* Success Button */
+.btn-success {
+  background: var(--color-success);
+  border-color: var(--color-success);
+  color: white;
+}
+
+.btn-success:hover {
+  background: #46a316;
+  border-color: #46a316;
+  box-shadow: 0 4px 12px rgba(82, 196, 26, 0.25);
+}
+
+/* Warning Button */
+.btn-warning {
+  background: var(--color-warning);
+  border-color: var(--color-warning);
+  color: var(--color-text-inverse);
+}
+
+.btn-warning:hover {
+  background: #d89614;
+  border-color: #d89614;
+  box-shadow: 0 4px 12px rgba(250, 173, 20, 0.25);
+}
+
+/* Error/Danger Button */
+.btn-error,
+.btn-danger {
+  background: var(--color-error);
+  border-color: var(--color-error);
+  color: white;
+}
+
+.btn-error:hover,
+.btn-danger:hover {
+  background: #ff1a1a;
+  border-color: #ff1a1a;
+  box-shadow: 0 4px 12px rgba(255, 77, 79, 0.25);
+}
+
+/* Info Button */
+.btn-info {
+  background: var(--color-info);
+  border-color: var(--color-info);
+  color: white;
+}
+
+.btn-info:hover {
+  background: #0080ff;
+  border-color: #0080ff;
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.25);
+}
+
+/* Ghost Button */
+.btn-ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--color-text);
+}
+
+.btn-ghost:hover {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+}
+
+/* Outline Buttons */
+.btn-outline {
+  background: transparent;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.btn-outline:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-outline-secondary {
+  background: transparent;
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.btn-outline-secondary:hover {
+  background: var(--color-surface);
+  border-color: var(--color-border-hover);
+}
+
+/* ===========================================
+   Theme-specific Buttons
+   =========================================== */
+
+.btn-adventure,
+.btn-adventures {
+  background: linear-gradient(135deg, #4ba667 0%, #3d8b54 100%);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+.btn-adventure:hover,
+.btn-adventures:hover {
+  background: linear-gradient(135deg, #5ab677 0%, #4d9b64 100%);
+  box-shadow: 0 4px 12px rgba(61, 139, 84, 0.3);
+}
+
+.btn-backpacks {
+  background: linear-gradient(135deg, #6b8e23 0%, #556b2f 100%);
+  border-color: #556b2f;
+  color: white;
+}
+
+.btn-backpacks:hover {
+  background: linear-gradient(135deg, #7b9e33 0%, #657b3f 100%);
+  box-shadow: 0 4px 12px rgba(107, 142, 35, 0.3);
+}
+
+.btn-gear {
+  background: linear-gradient(135deg, #d2691e 0%, #a0522d 100%);
+  border-color: #a0522d;
+  color: white;
+}
+
+.btn-gear:hover {
+  background: linear-gradient(135deg, #e2792e 0%, #b0623d 100%);
+  box-shadow: 0 4px 12px rgba(210, 105, 30, 0.3);
+}
+
+.btn-progress {
+  background: linear-gradient(135deg, #9370db 0%, #7b68ee 100%);
+  border-color: #7b68ee;
+  color: white;
+}
+
+.btn-progress:hover {
+  background: linear-gradient(135deg, #a380eb 0%, #8b78fe 100%);
+  box-shadow: 0 4px 12px rgba(147, 112, 219, 0.3);
+}
+
+/* ===========================================
+   Button Sizes
+   =========================================== */
+
+.btn-sm {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-sm);
+  min-height: 36px;
+}
+
+.btn-lg {
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--text-lg);
+  min-height: 52px;
+}
+
+.btn-xl {
+  padding: var(--space-5) var(--space-8);
+  font-size: var(--text-xl);
+  min-height: 60px;
+}
+
+/* ===========================================
+   Button States
+   =========================================== */
+
+.btn-loading {
+  color: transparent;
+  pointer-events: none;
+}
+
+.btn-loading::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  margin-left: -10px;
+  margin-top: -10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: btn-loading-spinner 0.8s linear infinite;
+}
+
+@keyframes btn-loading-spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===========================================
+   Button Groups
+   =========================================== */
+
+.btn-group {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.btn-group > .btn {
+  position: relative;
+  flex: 0 1 auto;
+}
+
+.btn-group > .btn:not(:first-child) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  margin-left: -1px;
+}
+
+.btn-group > .btn:not(:last-child) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* ===========================================
+   Icon Buttons
+   =========================================== */
+
+.btn-icon {
+  padding: var(--space-3);
+  min-width: 44px;
+}
+
+.btn-icon-only {
+  padding: var(--space-3);
+  width: 44px;
+  height: 44px;
+}
+
+.btn-icon-only.btn-sm {
+  width: 36px;
+  height: 36px;
+  padding: var(--space-2);
+}
+
+.btn-icon-only.btn-lg {
+  width: 52px;
+  height: 52px;
+  padding: var(--space-4);
+}
+
+/* ===========================================
+   Button Utilities
+   =========================================== */
+
+.btn-block {
+  display: flex;
+  width: 100%;
+}
+
+.btn-rounded {
+  border-radius: var(--radius-full);
+}
+
+/* Floating Action Button */
+.btn-fab {
+  position: fixed;
+  bottom: var(--space-6);
+  right: var(--space-6);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  box-shadow: var(--shadow-lg);
+  z-index: var(--z-fixed);
+  font-size: var(--text-xl);
+  padding: 0;
+}
+
+.btn-fab:hover {
+  box-shadow: var(--shadow-xl);
+  transform: scale(1.05);
+}
+
+/* Modern Button Style (legacy support) */
+.modern-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  font-weight: var(--btn-font-weight);
+  text-decoration: none;
+  border-radius: var(--btn-radius);
+  transition: var(--btn-transition);
+  cursor: pointer;
+}
+
+.modern-btn-lg {
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--text-lg);
+}
+
+/* ===========================================
+   Responsive Buttons
+   =========================================== */
+
+@media (max-width: 640px) {
+  .btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .btn-group > .btn {
+    width: 100%;
+    margin-left: 0;
+    margin-top: -1px;
+    border-radius: var(--btn-radius);
+  }
+  
+  .btn-group > .btn:first-child {
+    margin-top: 0;
+  }
+  
+  .btn-fab {
+    bottom: var(--space-4);
+    right: var(--space-4);
+    width: 48px;
+    height: 48px;
+    font-size: var(--text-lg);
+  }
+}

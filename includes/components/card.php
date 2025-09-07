@@ -27,6 +27,7 @@ function render_card($options = []) {
         'image' => null,
         'image_alt' => '',
         'badges' => [],
+        'bottom_badges' => [],
         'meta' => [],
         'actions' => [],
         'class' => '',
@@ -108,7 +109,10 @@ function render_card($options = []) {
                     <?php if (isset($meta_item['icon'])): ?>
                     <span class="card__meta-icon"><?php echo $meta_item['icon']; ?></span>
                     <?php endif; ?>
-                    <span><?php echo e($meta_item['text'] ?? ''); ?></span>
+                    <?php if (isset($meta_item['label'])): ?>
+                    <div class="meta-label"><?php echo e($meta_item['label']); ?></div>
+                    <?php endif; ?>
+                    <div class="meta-value"><?php echo e($meta_item['text'] ?? ''); ?></div>
                 </div>
                 <?php endforeach; ?>
             </div>
@@ -116,6 +120,26 @@ function render_card($options = []) {
             
             <?php if ($card['description']): ?>
             <p class="card__description"><?php echo e($card['description']); ?></p>
+            <?php endif; ?>
+            
+            <?php if (!empty($card['bottom_badges'])): ?>
+            <div class="card__bottom-badges">
+                <?php foreach ($card['bottom_badges'] as $badge): ?>
+                    <?php
+                    $badge_class = 'card__bottom-badge';
+                    if (is_array($badge)) {
+                        $badge_text = $badge['text'] ?? '';
+                        $badge_type = $badge['type'] ?? '';
+                        if ($badge_type) {
+                            $badge_class .= ' card__bottom-badge--' . $badge_type;
+                        }
+                    } else {
+                        $badge_text = $badge;
+                    }
+                    ?>
+                    <span class="<?php echo $badge_class; ?>"><?php echo e($badge_text); ?></span>
+                <?php endforeach; ?>
+            </div>
             <?php endif; ?>
         </div>
         

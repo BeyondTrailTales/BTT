@@ -9,9 +9,10 @@ class FinalPackBuilder {
             name: 'My New Backpack',
             description: '',
             sections: [
-                { id: 'main', name: 'Main Pack', icon: '🎒', items: [], collapsed: false },
-                { id: 'worn', name: 'Worn Items', icon: '👕', items: [], collapsed: false },
-                { id: 'consumables', name: 'Consumables', icon: '🍎', items: [], collapsed: false }
+                { id: 'main', name: 'Main Compartment', icon: '🎒', items: [], collapsed: false },
+                { id: 'lid', name: 'Top Lid', icon: '🏔️', items: [], collapsed: false },
+                { id: 'pockets', name: 'Side Pockets', icon: '🎯', items: [], collapsed: false },
+                { id: 'external', name: 'External', icon: '🔗', items: [], collapsed: false }
             ]
         };
         
@@ -22,6 +23,12 @@ class FinalPackBuilder {
         this.hasUnsavedChanges = false;
         this.isSaving = false;
         this.draggedData = null; // Store drag data here instead of dataTransfer
+        
+        // Items panel state
+        this.itemsPanelOpen = false;
+        this.itemsPanelFilter = 'all';
+        this.itemsPanelSearch = '';
+        this.associatedTrips = [];
         
         this.init();
     }
@@ -275,7 +282,11 @@ class FinalPackBuilder {
     }
     
     loadGearLibrary() {
-        $.get('/BTT/ajax-handler.php?route=gear')
+        // Use the same API URL pattern as the gear page
+        const apiUrl = window.BTT?.apiUrl || window.location.origin + '/BTT/ajax-handler.php';
+        const gearEndpoint = `${apiUrl}?route=gear`;
+        
+        $.get(gearEndpoint)
             .done(data => {
                 console.log('Loaded gear library:', data);
                 
@@ -289,8 +300,13 @@ class FinalPackBuilder {
                 this.filteredGear = this.gearLibrary;
                 this.renderGearList();
             })
-            .fail(() => {
-                console.error('Failed to load gear');
+            .fail((xhr, status, error) => {
+                console.error('Failed to load gear:', {
+                    status: status,
+                    error: error,
+                    url: gearEndpoint,
+                    response: xhr.responseText
+                });
                 this.gearLibrary = [];
                 this.filteredGear = [];
                 this.renderGearList();
@@ -362,6 +378,11 @@ class FinalPackBuilder {
         
         this.render();
         this.markUnsaved();
+        
+        // Update panel if open
+        if (this.itemsPanelOpen) {
+            this.renderItemsPanel();
+        }
     }
     
     moveItemBetweenSections(itemId, sourceId, targetId) {
@@ -558,6 +579,15 @@ class FinalPackBuilder {
                 
                 this.hasUnsavedChanges = false;
                 $('#save-pack-btn').removeClass('has-changes').html('💾 Save Pack');
+                
+                // Update panel if open - in case section structure changed
+                if (this.itemsPanelOpen) {
+                    this.renderItemsPanel();
+                    // Reload associated trips if we now have a pack ID
+                    if (this.currentPack.id && (!this.associatedTrips || this.associatedTrips.length === 0)) {
+                        this.loadAssociatedTrips();
+                    }
+                }
             },
             error: (xhr, status, error) => {
                 console.error('Save failed:', {
@@ -856,10 +886,396 @@ class FinalPackBuilder {
             setTimeout(() => toast.remove(), 300);
         }, duration);
     }
+    
+    // Items Panel Methods
+    toggleItemsPanel() {
+        const panel = document.getElementById('packed-items-panel');
+        if (!panel) return;
+        
+        this.itemsPanelOpen = !this.itemsPanelOpen;
+        
+        if (this.itemsPanelOpen) {
+            panel.classList.add('open');
+            document.body.style.overflow = 'hidden';
+            this.initItemsPanelEvents();
+            this.renderItemsPanel();
+            // Load trips if we have a pack ID
+            if (this.currentPack.id) {
+                this.loadAssociatedTrips();
+            }
+        } else {
+            panel.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+    }
+    
+    refreshItemsPanel() {
+        const refreshBtn = document.querySelector('.btn-refresh');
+        if (refreshBtn) {
+            refreshBtn.classList.add('refreshing');
+            refreshBtn.disabled = true;
+        }
+        
+        // Show loading state briefly
+        const loadingState = document.getElementById('items-loading');
+        const itemsList = document.getElementById('items-list');
+        if (loadingState && itemsList) {
+            loadingState.style.display = 'flex';
+            itemsList.style.display = 'none';
+        }
+        
+        // Simulate loading delay for visual feedback
+        setTimeout(async () => {
+            // Reload associated trips if we have a pack ID
+            if (this.currentPack.id) {
+                await this.loadAssociatedTrips();
+            }
+            
+            // Re-render the panel
+            this.renderItemsPanel();
+            
+            // Remove loading state
+            if (refreshBtn) {
+                refreshBtn.classList.remove('refreshing');
+                refreshBtn.disabled = false;
+            }
+            
+            this.showToast('Items refreshed', 'success');
+        }, 300);
+    }
+    
+    initItemsPanelEvents() {
+        const self = this;
+        
+        // Only bind once
+        if (this.itemsPanelEventsInitialized) return;
+        this.itemsPanelEventsInitialized = true;
+        
+        // Search
+        $('#items-search').on('input', function() {
+            self.itemsPanelSearch = $(this).val();
+            self.renderItemsPanel();
+        });
+        
+        // Filter
+        $('#items-filter').on('change', function() {
+            self.itemsPanelFilter = $(this).val();
+            self.renderItemsPanel();
+        });
+        
+        // Close on backdrop click
+        $('#packed-items-panel').on('click', function(e) {
+            if (e.target === this) {
+                self.toggleItemsPanel();
+            }
+        });
+    }
+    
+    renderItemsPanel() {
+        const itemsList = document.getElementById('items-list');
+        const emptyState = document.getElementById('items-empty');
+        const loadingState = document.getElementById('items-loading');
+        
+        if (!itemsList) return;
+        
+        // Hide loading
+        loadingState.style.display = 'none';
+        
+        // Collect all items from sections
+        let allItems = [];
+        this.currentPack.sections.forEach(section => {
+            section.items.forEach(item => {
+                allItems.push({
+                    ...item,
+                    sectionId: section.id,
+                    sectionName: section.name
+                });
+            });
+        });
+        
+        // Apply filters
+        let filteredItems = allItems;
+        
+        // Section filter
+        if (this.itemsPanelFilter !== 'all') {
+            filteredItems = filteredItems.filter(item => item.sectionId === this.itemsPanelFilter);
+        }
+        
+        // Search filter
+        if (this.itemsPanelSearch) {
+            const searchLower = this.itemsPanelSearch.toLowerCase();
+            filteredItems = filteredItems.filter(item =>
+                item.name.toLowerCase().includes(searchLower) ||
+                (item.brand && item.brand.toLowerCase().includes(searchLower))
+            );
+        }
+        
+        // Clear and render
+        itemsList.innerHTML = '';
+        
+        if (filteredItems.length === 0) {
+            emptyState.style.display = 'block';
+            itemsList.style.display = 'none';
+            this.updateItemsPanelSummary(0, 0);
+            return;
+        }
+        
+        emptyState.style.display = 'none';
+        itemsList.style.display = 'block';
+        
+        // Group by section
+        const itemsBySection = {};
+        filteredItems.forEach(item => {
+            if (!itemsBySection[item.sectionName]) {
+                itemsBySection[item.sectionName] = [];
+            }
+            itemsBySection[item.sectionName].push(item);
+        });
+        
+        // Render sections
+        let totalItems = 0;
+        let totalWeight = 0;
+        
+        Object.entries(itemsBySection).forEach(([sectionName, items]) => {
+            const sectionDiv = document.createElement('div');
+            sectionDiv.className = 'section-group';
+            
+            const sectionWeight = items.reduce((sum, item) => 
+                sum + ((item.weight || 0) * (item.quantity || 1)), 0
+            );
+            
+            totalItems += items.length;
+            totalWeight += sectionWeight;
+            
+            sectionDiv.innerHTML = `
+                <div class="section-header">
+                    <span>${this.escapeHtml(sectionName)}</span>
+                    <span class="section-stats">${items.length} items • ${this.formatWeight(sectionWeight)}</span>
+                </div>
+            `;
+            
+            const itemsList = document.createElement('div');
+            itemsList.className = 'section-items';
+            
+            items.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'item-card';
+                const itemWeight = (item.weight || 0) * (item.quantity || 1);
+                const category = (item.category || 'other').toLowerCase();
+                
+                itemDiv.innerHTML = `
+                    <div class="item-info">
+                        <span class="item-category">${category}</span>
+                        <span class="item-name">${this.escapeHtml(item.name)}${item.quantity > 1 ? ` (${item.quantity}x)` : ''}</span>
+                    </div>
+                    <div class="item-weight">${this.formatWeight(itemWeight)}</div>
+                `;
+                
+                itemsList.appendChild(itemDiv);
+            });
+            
+            sectionDiv.appendChild(itemsList);
+            document.getElementById('items-list').appendChild(sectionDiv);
+        });
+        
+        this.updateItemsPanelSummary(totalItems, totalWeight);
+        
+        // Show associated trips if any
+        if (this.associatedTrips && this.associatedTrips.length > 0) {
+            const tripsDiv = document.createElement('div');
+            tripsDiv.className = 'associated-trips';
+            tripsDiv.innerHTML = `
+                <h4 style="margin: 1.5rem 0 1rem 0; color: var(--text-secondary);">
+                    Associated Trips (${this.associatedTrips.length})
+                </h4>
+            `;
+            
+            this.associatedTrips.forEach(trip => {
+                const tripElement = this.createTripElement(trip);
+                tripsDiv.appendChild(tripElement);
+            });
+            
+            itemsList.appendChild(tripsDiv);
+        }
+    }
+    
+    createTripElement(trip) {
+        const div = document.createElement('div');
+        div.className = 'trip-card';
+        
+        const hasPackingData = trip.packingData && trip.packingData.items;
+        const progress = hasPackingData ? trip.packingData.summary : { packed: 0, total: 0, percent: 0 };
+        
+        div.innerHTML = `
+            <div class="trip-header">
+                <div class="trip-info">
+                    <h5 class="trip-name">${this.escapeHtml(trip.title || trip.name || 'Unnamed Trip')}</h5>
+                    <div class="trip-dates">${this.formatTripDates(trip.start_date, trip.end_date)}</div>
+                </div>
+                <div class="trip-progress">
+                    <div class="progress-text">${progress.packed}/${progress.total} packed</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${progress.percent}%"></div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        if (hasPackingData) {
+            const checklistDiv = document.createElement('div');
+            checklistDiv.className = 'trip-checklist';
+            checklistDiv.style.marginTop = '1rem';
+            
+            // Show items with checkboxes
+            trip.packingData.items.forEach(item => {
+                if (item.gear_id || item.type === 'gear') {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'checklist-item';
+                    itemDiv.innerHTML = `
+                        <label class="checkbox-label">
+                            <input type="checkbox" 
+                                ${item.is_packed ? 'checked' : ''} 
+                                onchange="window.packBuilder.toggleTripItem(${trip.id}, ${item.gear_id || item.id}, this.checked)">
+                            <span class="item-name">${this.escapeHtml(item.name)}</span>
+                            <span class="item-qty">${item.quantity > 1 ? `x${item.quantity}` : ''}</span>
+                        </label>
+                    `;
+                    checklistDiv.appendChild(itemDiv);
+                }
+            });
+            
+            div.appendChild(checklistDiv);
+        } else {
+            div.innerHTML += '<div class="no-packing-data">Loading packing list...</div>';
+        }
+        
+        return div;
+    }
+    
+    formatTripDates(startDate, endDate) {
+        if (!startDate) return 'No date set';
+        
+        const start = new Date(startDate);
+        const end = endDate ? new Date(endDate) : start;
+        const options = { month: 'short', day: 'numeric', year: 'numeric' };
+        
+        if (isNaN(start.getTime())) {
+            return 'Invalid date';
+        }
+        
+        if (start.toDateString() === end.toDateString()) {
+            return start.toLocaleDateString('en-US', options);
+        } else {
+            return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString('en-US', options)}`;
+        }
+    }
+    
+    updateItemsPanelSummary(totalItems, totalWeight) {
+        document.getElementById('total-items').textContent = totalItems;
+        document.getElementById('total-weight').textContent = this.formatWeight(totalWeight);
+    }
+    
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    // Load trips associated with this backpack
+    async loadAssociatedTrips() {
+        if (!this.currentPack.id) return;
+        
+        try {
+            // Use the BTT_API to fetch trips for this backpack
+            const response = await fetch(`/BTT/ajax-handler.php?route=trips&backpack_id=${this.currentPack.id}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                this.associatedTrips = result.data || [];
+                // Load packing data for each trip
+                for (const trip of this.associatedTrips) {
+                    await this.loadTripPackingData(trip);
+                }
+                // Re-render panel with trips
+                this.renderItemsPanel();
+            }
+        } catch (error) {
+            console.error('Failed to load associated trips:', error);
+            this.associatedTrips = [];
+        }
+    }
+    
+    // Load packing data for a trip
+    async loadTripPackingData(trip) {
+        try {
+            const response = await fetch(`/BTT/ajax-handler.php?route=trips/${trip.id}/packing-list`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+            
+            const result = await response.json();
+            
+            if (result.success && result.data) {
+                trip.packingData = result.data;
+            }
+        } catch (error) {
+            console.error(`Failed to load packing data for trip ${trip.id}:`, error);
+            trip.packingData = null;
+        }
+    }
+    
+    // Toggle packed item in trip
+    async toggleTripItem(tripId, itemId, isPacked) {
+        try {
+            const response = await fetch(`/BTT/ajax-handler.php?route=trips/${tripId}/packing-list&sub_action=gear&item_id=${itemId}`, {
+                method: 'PUT',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ is_packed: isPacked })
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                // Update local state
+                const trip = this.associatedTrips.find(t => t.id === tripId);
+                if (trip && trip.packingData && trip.packingData.items) {
+                    const item = trip.packingData.items.find(i => 
+                        (i.gear_id && i.gear_id == itemId) || (i.id === `gear-${itemId}`)
+                    );
+                    if (item) {
+                        item.is_packed = isPacked;
+                        
+                        // Update summary
+                        const packed = trip.packingData.items.filter(i => i.is_packed).length;
+                        trip.packingData.summary.packed = packed;
+                        trip.packingData.summary.percent = Math.floor((packed / trip.packingData.summary.total) * 100);
+                    }
+                }
+                
+                // Re-render
+                this.renderItemsPanel();
+                this.showToast(isPacked ? 'Item marked as packed' : 'Item marked as unpacked', 'success');
+            }
+        } catch (error) {
+            console.error('Failed to update trip item:', error);
+            this.showToast('Failed to update packing status', 'error');
+        }
+    }
 }
 
 // Initialize
 $(document).ready(() => {
     console.log('Starting Final Pack Builder...');
     window.packBuilder = new FinalPackBuilder();
+    // Expose as PackBuilder for button onclick
+    window.PackBuilder = window.packBuilder;
 });

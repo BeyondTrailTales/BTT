@@ -165,6 +165,10 @@ function getTripById($id) {
             Response::notFound('Trip not found');
         }
         
+        // Transform field names for frontend compatibility
+        $trip['image_url'] = $trip['photo_path'] ?? null;
+        $trip['image_alt'] = $trip['photo_alt_text'] ?? null;
+        
         error_log("\n=== GET TRIP BY ID DEBUG ===");
         error_log("Trip ID: $id");
         error_log("Trip photo_path: " . ($trip['photo_path'] ?? 'NULL'));
@@ -362,7 +366,7 @@ function updateTrip($id) {
         error_log("=== PHOTO REMOVAL DEBUG ===");
         error_log("remove_photo in data: " . (isset($data['remove_photo']) ? $data['remove_photo'] : 'NOT SET'));
         error_log("remove_photo type: " . gettype($data['remove_photo'] ?? null));
-        error_log("Comparison result: " . ($data['remove_photo'] === '1' ? 'TRUE' : 'FALSE'));
+        error_log("Comparison result: " . ((isset($data['remove_photo']) && $data['remove_photo'] === '1') ? 'TRUE' : 'FALSE'));
         
         if (isset($data['remove_photo']) && $data['remove_photo'] === '1') {
             error_log("✅ Photo removal condition MET - processing removal");

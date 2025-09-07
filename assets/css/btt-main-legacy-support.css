@@ -1,0 +1,65 @@
+/**
+ * Legacy CSS Support File
+ * Temporary file to ensure nothing breaks during migration
+ * This loads ALL the old CSS files in their current order
+ * 
+ * TO BE REMOVED after confirming new CSS works
+ */
+
+/* Theme system files */
+@import url('theme/variables.css');
+@import url('theme/components.css');
+@import url('theme/navigation.css');
+@import url('theme/pages.css');
+@import url('theme/animations.css');
+
+/* Base unified system */
+@import url('btt-unified-clean.css');
+
+/* UI consistency fixes */
+@import url('btt-ui-consistency-fixes.css');
+@import url('btt-mobile-responsive.css');
+@import url('btt-color-harmony.css');
+@import url('btt-spacing-refinements.css');
+
+/* Navigation fixes */
+@import url('nav-dropdown-overlay-fix.css');
+@import url('navigation-spacing-fix.css');
+
+/* Page specific styles still in use */
+@import url('dashboard-clean.css');
+@import url('nav-scrollbar-fix.css');
+@import url('dashboard-dropdown-fix.css');
+@import url('unified-page-headers.css');
+@import url('button-resize-fix.css');
+
+/* Component specific styles */
+@import url('trip-form-improved.css');
+@import url('trips-list-view-and-dropdowns.css');
+@import url('simple-photo-upload.css');
+@import url('photo-edit-overlay.css');
+@import url('trip-packing.css');
+@import url('save-animation.css');
+@import url('trips-form-ui-improvements.css');
+@import url('date-picker-enhanced.css');
+
+/* These inline styles need to be preserved */
+<style>
+/* Emergency override - disable ALL transforms on interaction */
+*:hover,
+*:active,
+*:focus,
+*:focus-visible,
+*:focus-within {
+    transform: none !important;
+    -webkit-transform: none !important;
+    -moz-transform: none !important;
+    -ms-transform: none !important;
+    -o-transform: none !important;
+}
+
+/* Ensure transitions don't include transform */
+* {
+    transition-property: background-color, border-color, box-shadow, color, opacity, fill, stroke !important;
+}
+</style>

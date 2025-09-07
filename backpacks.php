@@ -13,25 +13,31 @@ $pageId = 'backpacks';
 $pageTitle = 'My Backpacks';
 $pageDescription = 'Manage your backpacking gear lists';
 
-// Add essential page scripts - List view + isolated builder
+// Add essential page scripts - Clean modular approach
 $pageScripts = $pageScripts ?? [];
-// Core pack list functionality
-$pageScripts[] = 'js/pack-builder-crud.js'; // Keep for pack list management
-// Add minimal builder scripts for isolated builder tab
-$pageScripts[] = 'js/pack-builder.js'; // Needed for gear library
-$pageScripts[] = 'js/gear-library-fix.js'; // For isolated drag and drop
+// Core API - unified and clean
+$pageScripts[] = 'js/btt-api-unified.js'; // Unified API client
+// Pack management module
+$pageScripts[] = 'js/modules/pack-manager.js'; // Clean pack management
+// Optional: Save animation
+$pageScripts[] = 'js/save-animation.js'; // Save animation module
 
 $pageStyles = $pageStyles ?? [];
 // Force cache refresh with timestamp
 $cacheTime = time();
+$pageStyles[] = 'css/unified-page-headers.css?v=' . $cacheTime; // Unified header styles
 $pageStyles[] = 'css/backpacks-clean.css?v=' . $cacheTime;
 $pageStyles[] = 'css/pack-toast.css?v=' . $cacheTime;
 // Add minimal builder styles for isolated builder tab
 $pageStyles[] = 'css/forest-drag-zones.css?v=' . $cacheTime;
 $pageStyles[] = 'css/gear-color-system.css?v=' . $cacheTime; // Color coordination system
+$pageStyles[] = 'css/button-resize-fix.css?v=' . $cacheTime; // Fix button resize on hover
+$pageStyles[] = 'css/save-animation.css?v=' . $cacheTime; // Save animation styles
+$pageStyles[] = 'css/packed-items-panel.css?v=' . $cacheTime; // Packed items overview panel
 
 // Add backpacks page body class
 $bodyClasses = $bodyClasses ?? [];
+$bodyClasses[] = 'backpacks-page';
 $bodyClasses[] = 'backpacks-forest-page';
 
 // Get database connection and check user
@@ -65,30 +71,61 @@ try {
 require_once __DIR__ . '/includes/template-header.php';
 ?>
 
-<!-- Duolingo Forest Pack Builder Interface -->
-<div class="forest-duo-theme pack-builder-page">
-  
-  <!-- Clean Forest Hero Header -->
-  <div class="hero-forest pack-hero">
-    <div class="hero-particles"></div>
-    <div class="hero-content">
-      <div class="hero-badges">
-        <div class="user-badge">
-          <span class="badge-icon">🏔️</span>
-          <span class="badge-text">Pack Builder</span>
+<!-- Backpacks Page Header -->
+<div class="page-hero">
+  <div class="hero-content">
+    <div class="hero-main-row">
+      <div class="hero-header">
+        <div class="hero-title-section">
+          <h1 class="hero-title">
+            <span class="hero-title-icon">🎒</span>
+            My Backpacks
+          </h1>
+          <p class="hero-subtitle">Organize gear and optimize your loadout</p>
+        </div>
+        
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <span class="hero-stat-value"><?php echo $packStats['total_count']; ?></span>
+            <span class="hero-stat-label">Packs</span>
+          </div>
+          <div class="hero-stat">
+            <span class="hero-stat-value"><?php echo $packStats['avg_weight'] ? round($packStats['avg_weight']) . 'g' : '—'; ?></span>
+            <span class="hero-stat-label">Avg Weight</span>
+          </div>
         </div>
       </div>
-      <h1 class="hero-title">My Backpacks</h1>
-      <p class="hero-subtitle">Organize your gear, plan your adventures, and optimize your loadout</p>
+      
+      <div class="hero-controls">
+        <div class="hero-search">
+          <input type="search" class="search-input" placeholder="Search packs..." id="pack-search-hero" aria-label="Search packs">
+        </div>
+        
+        <select class="sort-select" id="sort-hero" aria-label="Sort packs">
+          <option value="recent">Recent</option>
+          <option value="name">Name</option>
+          <option value="weight">Weight</option>
+        </select>
+        
+        <div class="view-toggle">
+          <button class="view-toggle-btn active" data-view="grid" aria-label="Grid view">⊞</button>
+          <button class="view-toggle-btn" data-view="list" aria-label="List view">☰</button>
+        </div>
+        
+        <button class="btn btn-create" id="createNewPackBtn">
+          <span class="btn-icon">✨</span>
+          <span>Create Pack</span>
+        </button>
+      </div>
     </div>
-    <div class="hero-glow"></div>
   </div>
+</div>
 
   <!-- Clean Main Container -->
   <div class="dashboard" id="main-content">
     
     <!-- Clean Header Section -->
-    <div class="card" style="grid-column: 1 / -1; margin-bottom: var(--space-lg);">
+    <div class="card" style="grid-column: 1 / -1; margin-bottom: var(--space-lg); display: none;">
       <div class="card-header">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: var(--space-lg);">
           <div>
@@ -171,7 +208,7 @@ require_once __DIR__ . '/includes/template-header.php';
           </div>
           
           <!-- Packs Grid -->
-          <div class="dashboard" id="packs-grid-items" style="display: none; margin-top: 0;"></div>
+          <div class="dashboard" id="packs-grid-items" style="margin-top: 0;"></div>
         </div>
       </div>
       
@@ -327,6 +364,53 @@ require_once __DIR__ . '/includes/template-header.php';
   </div>
 </div>
 
+<!-- Packed Items Overview Panel -->
+<div id="packed-items-panel" class="packed-items-panel">
+  <div class="panel-header">
+    <h3>All Packed Items</h3>
+    <button class="btn-icon" onclick="PackManager.togglePackedItemsPanel()">
+      <span>×</span>
+    </button>
+  </div>
+  <div class="panel-controls">
+    <input type="search" id="items-search" placeholder="Search items..." class="items-search">
+    <select id="items-filter" class="items-filter">
+      <option value="all">All Categories</option>
+      <option value="shelter">Shelter</option>
+      <option value="sleep">Sleep System</option>
+      <option value="cooking">Cooking</option>
+      <option value="water">Water</option>
+      <option value="clothing">Clothing</option>
+      <option value="electronics">Electronics</option>
+      <option value="first-aid">First Aid</option>
+      <option value="hygiene">Hygiene</option>
+      <option value="other">Other</option>
+    </select>
+  </div>
+  <div class="panel-content">
+    <div id="items-loading" class="items-loading">
+      <div class="spinner"></div>
+      <p>Loading items...</p>
+    </div>
+    <div id="items-list" class="items-list" style="display: none;">
+      <!-- Items will be loaded here -->
+    </div>
+    <div id="items-empty" class="items-empty" style="display: none;">
+      <p>No items found in your packs</p>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <div class="items-summary">
+      <span class="summary-stat">
+        <strong id="total-items">0</strong> items
+      </span>
+      <span class="summary-stat">
+        <strong id="total-weight">0g</strong> total
+      </span>
+    </div>
+  </div>
+</div>
+
 <!-- Pack Builder Modal -->
 <div class="modal hidden" id="pack-builder-modal">
   <div class="modal-backdrop" onclick="PackManager.closePackBuilder()"></div>
@@ -410,109 +494,31 @@ require_once __DIR__ . '/includes/template-footer.php';
 ?>
 
 <script>
-// Initialize Achievement Manager
+// Clean, simple initialization
 document.addEventListener('DOMContentLoaded', function() {
-    // Set user ID for Achievement Manager
+    // Set user ID for global use
     window.BTT_USER_ID = <?php echo json_encode($user_id); ?>;
     
-    if (window.achievementManager) {
-        // Check for any unshown achievements on page load
-        window.achievementManager.checkForAchievements();
-    }
-    
-    // Listen for backpack saved events
-    document.addEventListener('backpack:saved', function(e) {
-        console.log('Backpack saved:', e.detail);
-    });
-    
     // Tab switching functionality
-    $('.pack-tab').on('click', function() {
-        const view = $(this).data('view');
-        
-        // Update tabs
-        $('.pack-tab').removeClass('active').addClass('btn-ghost');
-        $(this).removeClass('btn-ghost').addClass('active');
-        
-        // Update views
-        $('.pack-view').removeClass('active').hide();
-        $(`#view-${view}`).addClass('active').show();
-        
-        // Initialize view-specific functionality
-        if (view === 'builder' && $('#gear-library').length > 0) {
-            // Load gear library for builder tab
-            setTimeout(function() {
-                if (window.loadAndDisplayGear && typeof window.loadAndDisplayGear === 'function') {
-                    window.loadAndDisplayGear();
-                }
-            }, 100);
-        }
-    });
-    
-    // Initialize pack list on page load
-    setTimeout(function() {
-        if (window.PackBuilderCRUD) {
-            console.log('📋 Initializing PackBuilderCRUD...');
-            // Force initialization for pack list
-            if (typeof window.PackBuilderCRUD.init === 'function') {
-                window.PackBuilderCRUD.init();
-            }
-            // Then load packs
-            if (typeof window.PackBuilderCRUD.loadExistingPacks === 'function') {
-                console.log('📋 Loading existing packs...');
-                window.PackBuilderCRUD.loadExistingPacks();
-            }
-        } else {
-            console.warn('PackBuilderCRUD not available yet, retrying...');
-            // Retry in case scripts are still loading
-            setTimeout(function() {
-                if (window.PackBuilderCRUD && typeof window.PackBuilderCRUD.init === 'function') {
-                    window.PackBuilderCRUD.init();
-                    window.PackBuilderCRUD.loadExistingPacks();
-                }
-            }, 1000);
-        }
-    }, 500);
-    
-    // Simple builder functionality
-    $('#btn-create-new-pack').on('click', function() {
-        $('#builder-workspace').slideDown();
-        $('#quick-pack-name').focus();
-    });
-    
-    // Quick pack creation
-    $('#btn-save-quick-pack').on('click', function() {
-        const packName = $('#quick-pack-name').val().trim();
-        const packType = $('#quick-pack-type').val();
-        
-        if (!packName) {
-            alert('Please enter a pack name');
-            return;
-        }
-        
-        // Create pack and redirect to full builder
-        const packData = {
-            name: packName,
-            type: packType,
-            capacity_l: 65,
-            description: 'Created with Quick Builder'
-        };
-        
-        // Send to backend
-        $.ajax({
-            url: '/BTT/ajax-handler.php?route=backpacks',
-            method: 'POST',
-            data: JSON.stringify(packData),
-            contentType: 'application/json',
-            success: function(response) {
-                if (response.success && response.data) {
-                    // Redirect to full builder with the new pack
-                    window.location.href = `/BTT/pack-builder.php?id=${response.data.id}`;
-                } else {
-                    alert('Failed to create pack: ' + (response.message || 'Unknown error'));
-                }
-            },
-            error: function(xhr, status, error) {
-                alert('Error creating pack: ' + error);
+    document.querySelectorAll('.pack-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            const view = this.dataset.view;
+            
+            // Update tabs
+            document.querySelectorAll('.pack-tab').forEach(t => {
+                t.classList.remove('active');
+                t.classList.add('btn-ghost');
+            });
+            this.classList.remove('btn-ghost');
+            this.classList.add('active');
+            
+            // Update views
+            document.querySelectorAll('.pack-view').forEach(v => {
+                v.style.display = 'none';
+            });
+            const targetView = document.getElementById(`view-${view}`);
+            if (targetView) {
+                targetView.style.display = 'block';
             }
         });
     });

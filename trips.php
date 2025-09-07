@@ -19,33 +19,69 @@ $pageDescription = 'Plan, track, and remember your backpacking adventures on the
 
 // Add page-specific scripts (keeping essential functionality)
 $pageScripts = $pageScripts ?? [];
+$pageScripts[] = 'js/save-animation.js'; // Save animation module
+$pageScripts[] = 'js/trips-tabs.js'; // Tab navigation functionality
 $pageScripts[] = 'js/trips.js'; // Main trips functionality
 $pageScripts[] = 'js/date-range-picker.js'; // Date range picker
 $pageScripts[] = 'js/trip-packing.js'; // Trip packing list functionality
 
 // Add page-specific styles
 $pageStyles = $pageStyles ?? [];
+$pageStyles[] = 'css/unified-page-headers.css'; // Unified header styles
 $pageStyles[] = 'css/trip-form-improved.css'; // Improved form styles
 $pageStyles[] = 'css/trips-list-view-and-dropdowns.css'; // List view and dropdown fixes
 $pageStyles[] = 'css/simple-photo-upload.css'; // Simple photo upload controls
+$pageStyles[] = 'css/photo-edit-overlay.css'; // Click-to-edit photo overlay
 $pageStyles[] = 'css/trip-packing.css'; // Trip packing list styles
+$pageStyles[] = 'css/save-animation.css'; // Save animation styles
+$pageStyles[] = 'css/trips-form-ui-improvements.css?v=' . time(); // Enhanced form UI
+$pageStyles[] = 'css/date-picker-enhanced.css?v=' . time(); // Enhanced date picker styling
+$pageStyles[] = 'css/components/trip-card-duolingo-forest.css?v=' . time(); // Modern trip card styling
+$pageStyles[] = 'css/components/trip-card-animations.css?v=' . time(); // Trip card animations
+
+// Add page class for styling
+$bodyClasses = $bodyClasses ?? [];
+$bodyClasses[] = 'adventures-page';
 
 // Include the unified template header
 require_once __DIR__ . '/includes/template-header.php';
 ?>
 
 <!-- Adventures Page Header -->
-<div class="adventures-hero">
+<div class="page-hero">
   <div class="hero-content">
-    <div class="hero-text">
-      <h1 class="hero-title">🗺️ Your Adventures</h1>
-      <p class="hero-subtitle">Plan, track, and relive your epic trail experiences</p>
-    </div>
-    <div class="hero-actions">
-      <button id="btn-new-trip" class="btn btn-adventure btn-hero">
-        <span class="btn-icon">✨</span>
-        <span>Start New Adventure</span>
-      </button>
+    <div class="hero-main-row">
+      <div class="hero-header">
+        <div class="hero-title-section">
+          <h1 class="hero-title">
+            <span class="hero-title-icon">🗺️</span>
+            Your Adventures
+          </h1>
+          <p class="hero-subtitle">Plan and track your epic trail experiences</p>
+        </div>
+      </div>
+      
+      <div class="hero-controls">
+        <div class="hero-search">
+          <input type="search" class="search-input" placeholder="Search adventures..." id="trip-search-hero" aria-label="Search trips">
+        </div>
+        
+        <select class="sort-select" id="sort-hero" aria-label="Sort trips">
+          <option value="recent">Recent</option>
+          <option value="name">Name</option>
+          <option value="date">Date</option>
+        </select>
+        
+        <div class="view-toggle">
+          <button class="view-toggle-btn active" data-view="grid" aria-label="Grid view">⊞</button>
+          <button class="view-toggle-btn" data-view="list" aria-label="List view">☰</button>
+        </div>
+        
+        <button id="btn-new-trip" class="btn btn-adventure">
+          <span class="btn-icon">✨</span>
+          <span>New Adventure</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -53,25 +89,17 @@ require_once __DIR__ . '/includes/template-header.php';
 <!-- Adventures Layout Container -->
 <div class="adventures-layout" id="main-content">
   <!-- Adventure Controls -->
-  <div class="adventures-controls">
-    <div class="search-control">
-      <div class="search-input-wrapper">
-        <span class="search-icon">🔍</span>
-        <input id="trip-search" type="search" class="search-input" placeholder="Search your adventures..." aria-label="Search trips" />
-      </div>
-    </div>
-    <div class="view-controls">
-      <div class="sort-control">
-        <select id="sort-trips" class="sort-select">
-          <option value="recent">🕰️ Recently Created</option>
-          <option value="name">📝 Name</option>
-          <option value="date">📅 Start Date</option>
-        </select>
-      </div>
-      <div class="view-toggle">
-        <button class="view-btn active" data-mode="grid" title="Grid View">⬜</button>
-        <button class="view-btn" data-mode="list" title="List View">☰</button>
-      </div>
+  <!-- Hidden controls for JavaScript compatibility -->
+  <div class="adventures-controls" style="display: none;">
+    <input id="trip-search" type="search" aria-hidden="true" />
+    <select id="sort-trips" aria-hidden="true">
+      <option value="recent">Recent</option>
+      <option value="name">Name</option>
+      <option value="date">Date</option>
+    </select>
+    <div class="view-toggle">
+      <button class="view-btn active" data-mode="grid" aria-hidden="true">Grid</button>
+      <button class="view-btn" data-mode="list" aria-hidden="true">List</button>
     </div>
   </div>
 
@@ -107,20 +135,15 @@ require_once __DIR__ . '/includes/template-header.php';
         <!-- Adventure Visual Header -->
         <div class="adventure-visual-header">
           <div class="adventure-image-section">
-            <!-- Simple photo display area -->
-            <div class="adventure-image-container" id="adventure-image-display">
+            <!-- Clickable photo display area -->
+            <div class="adventure-image-container" id="adventure-image-display" role="button" tabindex="0" title="Click to add or change photo" style="cursor: pointer;">
               <div class="placeholder-image">
                 <div class="placeholder-icon">🏔️</div>
-                <p class="placeholder-text">No photo uploaded</p>
+                <p class="placeholder-text">Click to add photo</p>
               </div>
             </div>
             
-            <!-- Simple photo upload controls -->
-            <div class="photo-upload-controls">
-              <input id="photo" name="photo" type="file" accept="image/jpeg,image/jpg,image/png" class="form-input-file" />
-              <input id="photo_alt_text" name="photo_alt_text" type="text" placeholder="Photo description (required for accessibility)" class="form-input" style="margin-top: 8px;" />
-              <button type="button" class="btn btn-danger btn-sm" id="btn-remove-photo" style="margin-top: 8px; display: none;">Remove Photo</button>
-            </div>
+            <!-- Photo upload overlay with click-to-edit -->
             <div class="adventure-image-overlay">
               <div class="adventure-title-overlay">
                 <h1 id="trip-editor-title" class="adventure-name-display">New Adventure</h1>
@@ -131,7 +154,21 @@ require_once __DIR__ . '/includes/template-header.php';
                 <div class="stat-chip" id="distance-chip">🥾 Distance</div>
                 <div class="stat-chip" id="difficulty-chip">💪 Difficulty</div>
               </div>
+              
+              <!-- Click-to-edit photo button -->
+              <div class="photo-edit-overlay" id="photo-edit-overlay" title="Click to change photo">
+                <button type="button" class="photo-edit-btn" id="photo-edit-btn">
+                  <span class="photo-edit-icon">📸</span>
+                  <span class="photo-edit-text">Change Photo</span>
+                </button>
+                
+                <!-- Remove photo button -->
+                <button type="button" class="btn btn-danger btn-sm" id="btn-remove-photo" style="display: none;">🗑️ Remove</button>
+              </div>
             </div>
+            
+            <!-- Hidden file input -->
+            <input id="photo" name="photo" type="file" accept="image/jpeg,image/jpg,image/png" class="hidden-file-input" style="display: none;" />
           </div>
         </div>
         
@@ -221,12 +258,15 @@ require_once __DIR__ . '/includes/template-header.php';
                              readonly />
                       <div id="date-picker-popup" class="date-picker-popup">
                         <div class="date-picker-header">
-                          <button type="button" class="btn btn-secondary btn-sm" id="clear-dates">Clear Dates</button>
-                          <button type="button" class="btn btn-adventure btn-sm" id="apply-dates">Apply</button>
+                          <div class="date-picker-info">
+                            <span id="selection-status">Select check-in date</span>
+                          </div>
+                          <div class="date-picker-actions">
+                            <button type="button" class="btn btn-secondary btn-sm" id="clear-dates">Clear</button>
+                          </div>
                         </div>
-                        <div class="date-picker-calendars">
-                          <div id="start-calendar" class="calendar"></div>
-                          <div id="end-calendar" class="calendar"></div>
+                        <div class="single-calendar-container">
+                          <div id="main-calendar" class="calendar"></div>
                         </div>
                       </div>
                     </div>
@@ -288,6 +328,13 @@ require_once __DIR__ . '/includes/template-header.php';
                               placeholder="Goals, highlights, gear notes..."
                               maxlength="1000"></textarea>
                     <small class="form-help">Add any notes about this adventure</small>
+                  </div>
+
+                  <!-- Photo Alt Text (for accessibility) -->
+                  <div class="form-group full-width">
+                    <label for="photo_alt_text" class="form-label">📸 Photo Description</label>
+                    <input id="photo_alt_text" name="photo_alt_text" type="text" placeholder="Describe the photo for accessibility (auto-generated if empty)" class="form-input" />
+                    <small class="form-help">Brief description of your photo for screen readers</small>
                   </div>
 
                   <!-- Photo removal flag -->
@@ -419,6 +466,39 @@ require_once __DIR__ . '/includes/template-header.php';
                         <option value="packed">Packed</option>
                       </select>
                     </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="camping_type" class="form-label">🏕️ Camping Type</label>
+                    <select id="camping_type" name="camping_type" class="form-select">
+                      <option value="">Select camping type...</option>
+                      <option value="dispersed">Dispersed Camping</option>
+                      <option value="designated">Designated Sites</option>
+                      <option value="frontcountry">Frontcountry Campground</option>
+                      <option value="backcountry">Backcountry Sites</option>
+                      <option value="shelter">Trail Shelter</option>
+                      <option value="none">No Camping</option>
+                    </select>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="expected_weather" class="form-label">🌤️ Expected Weather</label>
+                    <textarea id="expected_weather" 
+                              name="expected_weather" 
+                              class="form-textarea" 
+                              rows="2" 
+                              placeholder="Temperature range, precipitation, wind conditions..."
+                              maxlength="500"></textarea>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="emergency_contact" class="form-label">🚨 Emergency Contact</label>
+                    <input id="emergency_contact" 
+                           name="emergency_contact" 
+                           type="text" 
+                           class="form-input" 
+                           placeholder="Name & phone number for emergency situations"
+                           maxlength="255" />
                   </div>
               </section>
 
@@ -589,11 +669,103 @@ require_once __DIR__ . '/includes/template-header.php';
   </div>
 </div>
 
+<style>
+/* Force 2-column layout with sidebar beside form */
+@media (min-width: 1024px) {
+  .editor-layout {
+    display: grid !important;
+    grid-template-columns: 1fr 320px !important;
+    grid-template-areas: 
+      "header header"
+      "content sidebar" !important;
+    gap: 2rem !important;
+    max-width: 1400px !important;
+    margin: 0 auto !important;
+  }
+  
+  .adventure-visual-header {
+    grid-area: header !important;
+    width: 100% !important;
+  }
+  
+  .editor-content {
+    grid-area: content !important;
+    min-width: 0 !important;
+  }
+  
+  .adventure-sidebar {
+    display: flex !important;
+    grid-area: sidebar !important;
+    width: 320px !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-radius: 12px !important;
+    padding: 1.5rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    height: fit-content !important;
+  }
+  
+  /* Make sure planning cards stack properly in sidebar */
+  .planning-card,
+  .quick-stats-card,
+  .backpack-selector-card {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-radius: 8px !important;
+    padding: 1rem !important;
+    margin-bottom: 1rem !important;
+  }
+}
+</style>
+
 <!-- Trips JavaScript is loaded via $pageScripts in the footer -->
 <script>
-// This small script ensures trips.js runs after all dependencies are loaded
-window.addEventListener('load', function() {
-  console.log('Trips page fully loaded');
+// Connect hero controls to existing functionality
+document.addEventListener('DOMContentLoaded', function() {
+  // Wait for the hidden controls to be available
+  const connectControls = function() {
+      
+      // Connect hero search to hidden search input
+      const heroSearch = document.getElementById('trip-search-hero');
+      const hiddenSearch = document.getElementById('trip-search');
+      if (heroSearch && hiddenSearch) {
+        heroSearch.addEventListener('input', function() {
+          hiddenSearch.value = this.value;
+          hiddenSearch.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+      }
+      
+      // Connect hero sort to hidden sort select
+      const heroSort = document.getElementById('sort-hero');
+      const hiddenSort = document.getElementById('sort-trips');
+      if (heroSort && hiddenSort) {
+        heroSort.addEventListener('change', function() {
+          hiddenSort.value = this.value;
+          hiddenSort.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+      }
+      
+      // Connect view toggle buttons
+      document.querySelectorAll('.view-toggle-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const view = this.dataset.view;
+          // Find corresponding view button in the existing UI
+          document.querySelectorAll('.view-btn').forEach(viewBtn => {
+            if (viewBtn.dataset.mode === view) {
+              viewBtn.click();
+            }
+          });
+          // Update active state
+          document.querySelectorAll('.view-toggle-btn').forEach(toggleBtn => {
+            toggleBtn.classList.remove('active');
+          });
+          this.classList.add('active');
+        });
+      });
+  };
+  
+  // Run immediately since controls are in the same file
+  connectControls();
 });
 
 </script>

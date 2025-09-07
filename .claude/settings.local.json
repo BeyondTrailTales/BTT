@@ -58,7 +58,8 @@
       "Bash(git remote add:*)",
       "Bash(powershell Compress-Archive:*)",
       "Bash(powershell:*)",
-      "Bash(dir:*)"
+      "Bash(dir:*)",
+      "Bash(start chrome \"http://localhost/BTT/dashboard.php\")"
     ],
     "deny": []
   }

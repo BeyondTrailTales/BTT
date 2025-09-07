@@ -1,0 +1,325 @@
+/**
+ * BTT Dashboard Page Styles
+ * Page-specific styles for the dashboard (Trailhead)
+ * NO !important declarations
+ */
+
+/* ===== Dashboard Layout ===== */
+
+[data-page="dashboard"] .page-container {
+  max-width: var(--container-xl);
+}
+
+/* Allow dashboard to use full width on large screens */
+@media (min-width: 1536px) {
+  [data-page="dashboard"] .page-container {
+    max-width: var(--container-2xl);
+  }
+}
+
+/* ===== Welcome Section ===== */
+
+.dashboard-welcome {
+  background: linear-gradient(135deg, var(--color-forest-700) 0%, var(--color-forest-600) 100%);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  margin-bottom: var(--space-8);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-welcome::before {
+  content: '🌲';
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  font-size: 120px;
+  opacity: 0.1;
+  transform: rotate(15deg);
+}
+
+.dashboard-welcome h1 {
+  font-size: var(--text-4xl);
+  margin-bottom: var(--space-3);
+  color: var(--text-primary);
+}
+
+.dashboard-welcome p {
+  font-size: var(--text-lg);
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ===== Quick Actions ===== */
+
+.quick-actions-section {
+  margin-bottom: var(--space-12);
+}
+
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+}
+
+.quick-action-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  text-align: center;
+  transition: all var(--transition-base);
+  cursor: pointer;
+}
+
+.quick-action-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-forest-600);
+  background: rgba(78, 156, 95, 0.1);
+  text-decoration: none;
+}
+
+.quick-action-icon {
+  font-size: var(--text-5xl);
+  margin-bottom: var(--space-3);
+  filter: grayscale(0.2);
+  transition: all var(--transition-base);
+}
+
+.quick-action-card:hover .quick-action-icon {
+  transform: scale(1.1);
+  filter: grayscale(0);
+}
+
+.quick-action-title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.quick-action-description {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+/* ===== Stats Overview ===== */
+
+.stats-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-6);
+  margin-bottom: var(--space-12);
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--color-forest-500);
+}
+
+.stat-icon {
+  font-size: var(--text-3xl);
+  margin-bottom: var(--space-3);
+  opacity: 0.8;
+}
+
+.stat-value {
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  color: var(--color-forest-300);
+  margin-bottom: var(--space-2);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+.stat-trend {
+  margin-top: var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--color-success);
+}
+
+.stat-trend.negative {
+  color: var(--color-error);
+}
+
+/* ===== Recent Activity ===== */
+
+.recent-activity {
+  background: var(--bg-card);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.activity-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.activity-title {
+  font-size: var(--text-xl);
+  font-weight: var(--font-semibold);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.activity-item {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+}
+
+.activity-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.activity-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--color-forest-600);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.activity-content {
+  flex: 1;
+}
+
+.activity-text {
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.activity-time {
+  font-size: var(--text-xs);
+  color: var(--text-tertiary);
+}
+
+/* ===== Achievement Section ===== */
+
+.achievements-preview {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(251, 191, 36, 0.05) 100%);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  margin-bottom: var(--space-8);
+}
+
+.achievement-badges {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.achievement-badge {
+  width: 80px;
+  height: 80px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-3xl);
+  position: relative;
+  transition: all var(--transition-base);
+}
+
+.achievement-badge:hover {
+  transform: scale(1.1);
+}
+
+.achievement-badge.locked {
+  opacity: 0.3;
+  filter: grayscale(100%);
+}
+
+.achievement-badge .badge-progress {
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.achievement-badge .badge-progress-fill {
+  height: 100%;
+  background: var(--color-warning);
+  transition: width var(--transition-slow);
+}
+
+/* ===== Responsive Adjustments ===== */
+
+@media (max-width: 768px) {
+  .dashboard-welcome {
+    padding: var(--space-6);
+  }
+  
+  .dashboard-welcome h1 {
+    font-size: var(--text-3xl);
+  }
+  
+  .quick-actions-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+  
+  .stats-overview {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  
+  .activity-item {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .activity-icon {
+    margin: 0 auto;
+  }
+}

@@ -1,0 +1,446 @@
+/**
+ * BTT Color Harmony & Theme Consolidation
+ * Unified color system for consistent theming across all pages
+ * @version 1.0.0
+ * @date 2025-09-06
+ */
+
+/* ===========================================
+   COLOR SYSTEM OVERRIDES
+   =========================================== */
+
+:root {
+  /* Primary Forest Theme Colors */
+  --primary-forest: #2d5a3d;        /* Main forest green */
+  --primary-forest-light: #3d6b4d;  /* Lighter variant */
+  --primary-forest-dark: #1d4a2d;   /* Darker variant */
+  
+  /* Secondary Nature Colors */
+  --secondary-moss: #4a7c59;        /* Moss green */
+  --secondary-fern: #6b9b7e;        /* Fern green */
+  --secondary-bark: #8b6f47;        /* Tree bark brown */
+  --secondary-stone: #9ca3a0;       /* River stone gray */
+  
+  /* Accent Colors - Muted & Natural */
+  --accent-gold: #d4a574;           /* Warm gold */
+  --accent-amber: #c49363;          /* Muted amber */
+  --accent-copper: #b8956b;         /* Copper accent */
+  --accent-sunset: #d49c6a;         /* Sunset orange */
+  
+  /* Semantic Colors - Consistent Actions */
+  --color-success: #4a7c59;         /* Success green */
+  --color-warning: #d4a574;         /* Warning gold */
+  --color-danger: #c4675a;          /* Danger red-brown */
+  --color-info: #5a8fbc;            /* Info blue-gray */
+  
+  /* Background Colors */
+  --bg-primary: #0a1b0f;            /* Deepest forest */
+  --bg-secondary: #1a2f20;          /* Main dark background */
+  --bg-tertiary: #2a4532;           /* Secondary dark */
+  --bg-card: rgba(255, 255, 255, 0.05);
+  --bg-hover: rgba(255, 255, 255, 0.08);
+  
+  /* Border Colors */
+  --border-default: rgba(255, 255, 255, 0.1);
+  --border-hover: rgba(255, 255, 255, 0.2);
+  --border-focus: var(--primary-forest);
+  
+  /* Text Colors */
+  --text-primary: #f5f7f4;
+  --text-secondary: #d1d9d3;
+  --text-muted: #a8b5aa;
+  --text-inverse: #0a1b0f;
+}
+
+/* ===========================================
+   NAVIGATION COLOR CONSISTENCY
+   =========================================== */
+
+/* Navigation background */
+.forest-nav,
+.duo-forest-nav,
+.navbar {
+  background: var(--bg-secondary) !important;
+  border-bottom-color: var(--border-default) !important;
+}
+
+/* Navigation links */
+.nav-link,
+.nav-item a,
+.nav-section-link {
+  color: var(--text-secondary) !important;
+}
+
+.nav-link:hover,
+.nav-item a:hover,
+.nav-section-link:hover {
+  color: var(--text-primary) !important;
+  background: var(--bg-hover) !important;
+}
+
+.nav-link.active,
+.nav-item a.active,
+.nav-section-link.active {
+  color: var(--accent-gold) !important;
+  background: rgba(212, 165, 116, 0.1) !important;
+}
+
+/* ===========================================
+   PAGE HEADER COLOR CONSISTENCY
+   =========================================== */
+
+/* Default page hero */
+.page-hero {
+  background: linear-gradient(135deg, 
+    var(--primary-forest-dark) 0%, 
+    var(--primary-forest) 100%) !important;
+}
+
+/* Adventures page - Blue forest theme */
+.adventures-page .page-hero {
+  background: linear-gradient(135deg, 
+    #1e3a5a 0%,    /* Deep forest blue */
+    #2d5a7d 100%   /* Forest lake blue */
+  ) !important;
+}
+
+.adventures-page .btn-adventure {
+  background: #2d5a7d !important;
+  border-color: #2d5a7d !important;
+}
+
+.adventures-page .btn-adventure:hover {
+  background: #1e3a5a !important;
+  border-color: #1e3a5a !important;
+}
+
+/* Backpacks page - Green forest theme */
+.backpacks-page .page-hero {
+  background: linear-gradient(135deg, 
+    var(--primary-forest-dark) 0%, 
+    var(--secondary-moss) 100%
+  ) !important;
+}
+
+.backpacks-page .btn-create {
+  background: var(--secondary-moss) !important;
+  border-color: var(--secondary-moss) !important;
+}
+
+.backpacks-page .btn-create:hover {
+  background: var(--primary-forest-dark) !important;
+  border-color: var(--primary-forest-dark) !important;
+}
+
+/* Gear page - Amber forest theme */
+.gear-page .page-hero {
+  background: linear-gradient(135deg, 
+    #8b6f47 0%,    /* Dark bark */
+    #d4a574 100%   /* Golden amber */
+  ) !important;
+}
+
+.gear-page .btn-add-gear {
+  background: rgba(0, 0, 0, 0.2) !important;
+  color: var(--text-primary) !important;
+  border-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+.gear-page .btn-add-gear:hover {
+  background: rgba(0, 0, 0, 0.3) !important;
+  border-color: rgba(0, 0, 0, 0.4) !important;
+}
+
+/* ===========================================
+   DASHBOARD COLOR HARMONY
+   =========================================== */
+
+/* Dashboard hero */
+.modern-dashboard-hero {
+  background: linear-gradient(135deg, 
+    var(--primary-forest-dark) 0%, 
+    var(--primary-forest) 50%,
+    var(--secondary-moss) 100%
+  ) !important;
+}
+
+/* Dashboard cards */
+.dashboard-card {
+  background: var(--bg-card) !important;
+  border-color: var(--border-default) !important;
+}
+
+.dashboard-card:hover {
+  background: var(--bg-hover) !important;
+  border-color: var(--border-hover) !important;
+}
+
+/* Stat cards with subtle theming */
+.stat-card:nth-child(1) {
+  border-left: 3px solid #2d5a7d !important; /* Adventures blue */
+}
+
+.stat-card:nth-child(2) {
+  border-left: 3px solid var(--secondary-moss) !important; /* Packs green */
+}
+
+.stat-card:nth-child(3) {
+  border-left: 3px solid var(--accent-gold) !important; /* Gear gold */
+}
+
+.stat-card:nth-child(4) {
+  border-left: 3px solid var(--secondary-fern) !important; /* Progress green */
+}
+
+/* ===========================================
+   BUTTON COLOR CONSISTENCY
+   =========================================== */
+
+/* Primary action buttons */
+.btn-primary,
+.btn-adventures {
+  background: var(--primary-forest) !important;
+  border-color: var(--primary-forest) !important;
+  color: white !important;
+}
+
+.btn-primary:hover,
+.btn-adventures:hover {
+  background: var(--primary-forest-dark) !important;
+  border-color: var(--primary-forest-dark) !important;
+}
+
+/* Success/Create buttons */
+.btn-success,
+.btn-create,
+.btn-backpacks {
+  background: var(--secondary-moss) !important;
+  border-color: var(--secondary-moss) !important;
+  color: white !important;
+}
+
+.btn-success:hover,
+.btn-create:hover,
+.btn-backpacks:hover {
+  background: var(--primary-forest-dark) !important;
+  border-color: var(--primary-forest-dark) !important;
+}
+
+/* Warning/Gear buttons */
+.btn-warning,
+.btn-gear {
+  background: var(--accent-gold) !important;
+  border-color: var(--accent-gold) !important;
+  color: var(--text-inverse) !important;
+}
+
+.btn-warning:hover,
+.btn-gear:hover {
+  background: var(--accent-amber) !important;
+  border-color: var(--accent-amber) !important;
+}
+
+/* Secondary buttons */
+.btn-secondary {
+  background: var(--bg-card) !important;
+  border-color: var(--border-default) !important;
+  color: var(--text-primary) !important;
+}
+
+.btn-secondary:hover {
+  background: var(--bg-hover) !important;
+  border-color: var(--border-hover) !important;
+}
+
+/* ===========================================
+   FORM COLOR CONSISTENCY
+   =========================================== */
+
+/* Form inputs */
+.form-input,
+.form-select,
+.form-textarea,
+input,
+select,
+textarea {
+  background: var(--bg-card) !important;
+  border-color: var(--border-default) !important;
+  color: var(--text-primary) !important;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  background: var(--bg-hover) !important;
+  border-color: var(--primary-forest) !important;
+  box-shadow: 0 0 0 3px rgba(45, 90, 61, 0.2) !important;
+}
+
+/* Placeholders */
+::placeholder {
+  color: var(--text-muted) !important;
+  opacity: 0.7 !important;
+}
+
+/* ===========================================
+   BADGE & TAG COLORS
+   =========================================== */
+
+.badge {
+  font-weight: 600 !important;
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 0.375rem !important;
+}
+
+.badge-success {
+  background: rgba(74, 124, 89, 0.2) !important;
+  color: var(--secondary-moss) !important;
+  border: 1px solid rgba(74, 124, 89, 0.3) !important;
+}
+
+.badge-warning {
+  background: rgba(212, 165, 116, 0.2) !important;
+  color: var(--accent-gold) !important;
+  border: 1px solid rgba(212, 165, 116, 0.3) !important;
+}
+
+.badge-info {
+  background: rgba(90, 143, 188, 0.2) !important;
+  color: #5a8fbc !important;
+  border: 1px solid rgba(90, 143, 188, 0.3) !important;
+}
+
+.badge-danger {
+  background: rgba(196, 103, 90, 0.2) !important;
+  color: #c4675a !important;
+  border: 1px solid rgba(196, 103, 90, 0.3) !important;
+}
+
+/* ===========================================
+   CARD COLOR CONSISTENCY
+   =========================================== */
+
+/* All cards */
+.card,
+.trip-card,
+.pack-card,
+.gear-card {
+  background: var(--bg-card) !important;
+  border-color: var(--border-default) !important;
+}
+
+.card:hover,
+.trip-card:hover,
+.pack-card:hover,
+.gear-card:hover {
+  background: var(--bg-hover) !important;
+  border-color: var(--border-hover) !important;
+}
+
+/* Card headers */
+.card-header {
+  background: transparent !important;
+  border-bottom-color: var(--border-default) !important;
+}
+
+/* Card footers */
+.card-footer {
+  background: transparent !important;
+  border-top-color: var(--border-default) !important;
+}
+
+/* ===========================================
+   MODAL COLOR CONSISTENCY
+   =========================================== */
+
+.modal-content {
+  background: var(--bg-secondary) !important;
+  border-color: var(--border-default) !important;
+}
+
+.modal-header {
+  background: var(--bg-tertiary) !important;
+  border-bottom-color: var(--border-default) !important;
+}
+
+.modal-footer {
+  background: var(--bg-tertiary) !important;
+  border-top-color: var(--border-default) !important;
+}
+
+/* ===========================================
+   TABLE COLOR CONSISTENCY
+   =========================================== */
+
+table {
+  background: var(--bg-card) !important;
+  border-color: var(--border-default) !important;
+}
+
+th {
+  background: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-default) !important;
+}
+
+td {
+  border-color: var(--border-default) !important;
+  color: var(--text-primary) !important;
+}
+
+tr:hover {
+  background: var(--bg-hover) !important;
+}
+
+/* ===========================================
+   SCROLLBAR COLOR CONSISTENCY
+   =========================================== */
+
+/* Webkit browsers */
+::-webkit-scrollbar-track {
+  background: var(--bg-tertiary) !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--secondary-moss) !important;
+  border: 2px solid var(--bg-tertiary) !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-forest) !important;
+}
+
+/* Firefox */
+* {
+  scrollbar-color: var(--secondary-moss) var(--bg-tertiary) !important;
+}
+
+/* ===========================================
+   TOAST & NOTIFICATION COLORS
+   =========================================== */
+
+.toast,
+.notification {
+  background: var(--bg-tertiary) !important;
+  border-color: var(--border-default) !important;
+  color: var(--text-primary) !important;
+}
+
+.toast-success {
+  border-left: 4px solid var(--color-success) !important;
+}
+
+.toast-warning {
+  border-left: 4px solid var(--color-warning) !important;
+}
+
+.toast-error {
+  border-left: 4px solid var(--color-danger) !important;
+}
+
+.toast-info {
+  border-left: 4px solid var(--color-info) !important;
+}

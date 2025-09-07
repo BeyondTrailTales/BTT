@@ -1,0 +1,237 @@
+/**
+ * Gear Card Component
+ * Card layout for gear items
+ */
+
+/* Gear Card Base */
+.c-gear-card {
+  position: relative;
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--radius-lg, 0.5rem);
+  padding: var(--spacing-4, 1rem);
+  transition: all var(--duration-base, 200ms) var(--ease-out);
+  cursor: pointer;
+}
+
+.c-gear-card:hover {
+  background: var(--color-surface-hover, rgba(255, 255, 255, 0.08));
+  border-color: var(--color-primary-alpha, rgba(75, 166, 103, 0.3));
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Gear Card Header */
+.c-gear-card__header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: var(--spacing-3, 0.75rem);
+  margin-bottom: var(--spacing-3, 0.75rem);
+}
+
+.c-gear-card__title {
+  font-size: var(--text-lg, 1.125rem);
+  font-weight: var(--font-semibold, 600);
+  line-height: var(--leading-tight, 1.25);
+  margin: 0;
+  flex: 1;
+}
+
+.c-gear-card__category {
+  padding: var(--spacing-1, 0.25rem) var(--spacing-2, 0.5rem);
+  background: var(--color-primary-alpha, rgba(75, 166, 103, 0.2));
+  color: var(--color-primary, #4ba667);
+  border-radius: var(--radius-sm, 0.25rem);
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: var(--font-medium, 500);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Gear Card Details */
+.c-gear-card__details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-3, 0.75rem);
+  margin-bottom: var(--spacing-3, 0.75rem);
+}
+
+.c-gear-card__detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1, 0.25rem);
+}
+
+.c-gear-card__detail-label {
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.c-gear-card__detail-value {
+  font-size: var(--text-base, 1rem);
+  font-weight: var(--font-medium, 500);
+}
+
+/* Gear Card Actions */
+.c-gear-card__actions {
+  display: flex;
+  gap: var(--spacing-2, 0.5rem);
+  margin-top: var(--spacing-4, 1rem);
+  padding-top: var(--spacing-4, 1rem);
+  border-top: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+}
+
+.c-gear-card__action {
+  flex: 1;
+}
+
+/* Gear Card Status */
+.c-gear-card__status {
+  position: absolute;
+  top: var(--spacing-3, 0.75rem);
+  right: var(--spacing-3, 0.75rem);
+  width: 8px;
+  height: 8px;
+  background: var(--color-success, #10b981);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--color-background, #0a1a0f);
+}
+
+.c-gear-card__status--warning {
+  background: var(--color-warning, #f59e0b);
+}
+
+.c-gear-card__status--danger {
+  background: var(--color-danger, #ef4444);
+}
+
+/* Gear Card Selected State */
+.c-gear-card--selected {
+  background: var(--color-primary-alpha, rgba(75, 166, 103, 0.1));
+  border-color: var(--color-primary, #4ba667);
+}
+
+.c-gear-card--selected::before {
+  content: "";
+  position: absolute;
+  top: var(--spacing-2, 0.5rem);
+  right: var(--spacing-2, 0.5rem);
+  width: 24px;
+  height: 24px;
+  background: var(--color-primary, #4ba667);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.c-gear-card--selected::after {
+  content: "✓";
+  position: absolute;
+  top: var(--spacing-2, 0.5rem);
+  right: var(--spacing-2, 0.5rem);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+}
+
+/* Gear Card Grid Layout */
+.c-gear-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-4, 1rem);
+}
+
+@media (min-width: 768px) {
+  .c-gear-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+}
+
+/* Gear Card List Layout */
+.c-gear-list .c-gear-card {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4, 1rem);
+}
+
+.c-gear-list .c-gear-card__header {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.c-gear-list .c-gear-card__details {
+  display: flex;
+  gap: var(--spacing-4, 1rem);
+  margin-bottom: 0;
+}
+
+.c-gear-list .c-gear-card__actions {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0;
+  flex: 0 0 auto;
+}
+
+/* Gear Card Compact Variant */
+.c-gear-card--compact {
+  padding: var(--spacing-3, 0.75rem);
+}
+
+.c-gear-card--compact .c-gear-card__title {
+  font-size: var(--text-base, 1rem);
+}
+
+.c-gear-card--compact .c-gear-card__details {
+  display: flex;
+  gap: var(--spacing-3, 0.75rem);
+  font-size: var(--text-sm, 0.875rem);
+}
+
+.c-gear-card--compact .c-gear-card__actions {
+  margin-top: var(--spacing-3, 0.75rem);
+  padding-top: var(--spacing-3, 0.75rem);
+}
+
+/* Gear Card Loading State */
+.c-gear-card--loading {
+  pointer-events: none;
+}
+
+.c-gear-card--loading .c-gear-card__title,
+.c-gear-card--loading .c-gear-card__detail-value {
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  color: transparent;
+  min-height: 1em;
+  border-radius: var(--radius-sm, 0.25rem);
+}
+
+/* Responsive */
+@media (max-width: 639px) {
+  .c-gear-card__details {
+    grid-template-columns: 1fr;
+  }
+  
+  .c-gear-card__actions {
+    flex-direction: column;
+  }
+  
+  .c-gear-card__action {
+    width: 100%;
+  }
+}

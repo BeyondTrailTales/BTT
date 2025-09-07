@@ -19,6 +19,9 @@ if (!defined('BASE_PATH')) {
     require_once dirname(dirname(__DIR__)) . '/app/bootstrap.php';
 }
 
+// Load the asset loader
+require_once __DIR__ . '/asset-loader.php';
+
 // Load authentication service
 use App\Services\AuthService;
 
@@ -45,16 +48,6 @@ $uxRefreshEnabled = $_SESSION['ux_refresh'] ?? $_COOKIE['ux_refresh'] ?? true; /
     <title><?php echo e($pageTitle); ?> - BeyondTrailTales</title>
     <meta name="description" content="<?php echo e($pageDescription); ?>">
     
-    <!-- Duolingo Forest Theme System -->
-    <link rel="stylesheet" href="<?php echo asset_url('css/theme/variables.css'); ?>">
-    <link rel="stylesheet" href="<?php echo asset_url('css/theme/components.css'); ?>">
-    <link rel="stylesheet" href="<?php echo asset_url('css/theme/navigation.css'); ?>">
-    <link rel="stylesheet" href="<?php echo asset_url('css/theme/pages.css'); ?>">
-    <link rel="stylesheet" href="<?php echo asset_url('css/theme/animations.css'); ?>">
-    
-    <!-- Clean Unified Design System - Global Application -->
-    <link rel="stylesheet" href="<?php echo asset_url('css/btt-unified-clean.css'); ?>">
-    
     <?php if ($isTestPage): ?>
     <meta name="robots" content="noindex,nofollow">
     <?php endif; ?>
@@ -70,12 +63,39 @@ $uxRefreshEnabled = $_SESSION['ux_refresh'] ?? $_COOKIE['ux_refresh'] ?? true; /
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
     
-    <!-- Page-specific styles -->
-    <?php if (isset($pageStyles)): ?>
-        <?php foreach ($pageStyles as $style): ?>
-        <link rel="stylesheet" href="<?php echo asset_url($style); ?>">
-        <?php endforeach; ?>
-    <?php endif; ?>
+    <?php
+    // Initialize asset loader
+    $loader = asset_loader();
+    
+    // IMPORTANT: Load the new main CSS v2 which includes everything in proper order
+    $loader->addCss('css/btt-main-v2.css', AssetLoader::CSS_PRIORITY_BASE);
+    
+    // Add responsive utilities and grid v2
+    $loader->addCss('css/layouts/grid-v2.css', AssetLoader::CSS_PRIORITY_LAYOUT);
+    $loader->addCss('css/utilities/responsive.css', AssetLoader::CSS_PRIORITY_UTILITIES);
+    
+    // Add page-specific CSS v2
+    if (isset($pageId)) {
+        // Try v2 version first
+        $v2PageFile = "css/pages/{$pageId}-v2.css";
+        if (file_exists(BTT_ROOT . '/assets/' . $v2PageFile)) {
+            $loader->addCss($v2PageFile, AssetLoader::CSS_PRIORITY_PAGE);
+        } else {
+            $loader->addPageCss($pageId);
+        }
+    }
+    
+    // Add any page-specific styles with legacy support
+    if (isset($pageStyles)) {
+        $loader->addLegacyCss($pageStyles);
+    }
+    
+    // TEMPORARY: Add container fix for immediate centering issues
+    $loader->addCss('css/dashboard-container-fix.css', AssetLoader::CSS_PRIORITY_OVERRIDES);
+    
+    // Render all CSS in proper order
+    echo $loader->renderCss();
+    ?>
     
     <!-- Navigation JavaScript -->
     <script src="<?php echo asset_url('js/duolingo-forest-nav.js'); ?>" defer></script>
@@ -94,9 +114,6 @@ if ($uxRefreshEnabled) {
 }
 ?>
 <body data-page="<?php echo e($pageId); ?>" class="<?php echo implode(' ', $bodyClasses); ?>">
-    <!-- Skip Navigation Link for Accessibility -->
-    <a href="#main-content" class="skip-navigation">Skip to main content</a>
-    
     <!-- Floating Forest Leaves Background -->
     <div class="floating-leaves" aria-hidden="true">
         <div class="leaf" style="left: 10%; animation-delay: 0s;">🍃</div>

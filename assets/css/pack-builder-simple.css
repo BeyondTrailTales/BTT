@@ -77,6 +77,12 @@ body {
     flex-shrink: 0;
 }
 
+.header-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
 .builder-header h1 {
     color: white;
     margin: 0;
@@ -296,8 +302,9 @@ body {
 .gear-item-name {
     color: white;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 1.125rem; /* Increased from 1rem to 1.125rem */
     margin-bottom: 0.25rem;
+    line-height: 1.3;
 }
 
 .gear-item-weight {
@@ -630,8 +637,9 @@ body {
 .pack-item-name {
     color: white;
     font-weight: 600;
-    font-size: 0.9375rem;
-    margin-bottom: 0.125rem;
+    font-size: 1.125rem; /* Increased from 0.9375rem to 1.125rem */
+    margin-bottom: 0.25rem;
+    line-height: 1.3;
 }
 
 .pack-item-details {

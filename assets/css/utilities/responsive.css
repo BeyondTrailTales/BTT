@@ -1,0 +1,186 @@
+/**
+ * Responsive Utilities
+ * Visibility and display utilities for different breakpoints
+ * These use !important as they are utilities meant to override
+ */
+
+/* Display utilities */
+.u-hidden { display: none !important; }
+.u-block { display: block !important; }
+.u-inline-block { display: inline-block !important; }
+.u-flex { display: flex !important; }
+.u-inline-flex { display: inline-flex !important; }
+.u-grid { display: grid !important; }
+
+/* Responsive display utilities */
+/* Hide on specific breakpoints and up */
+@media (min-width: 640px) {
+  .u-hidden-sm { display: none !important; }
+  .u-block-sm { display: block !important; }
+  .u-flex-sm { display: flex !important; }
+}
+
+@media (min-width: 768px) {
+  .u-hidden-md { display: none !important; }
+  .u-block-md { display: block !important; }
+  .u-flex-md { display: flex !important; }
+}
+
+@media (min-width: 1024px) {
+  .u-hidden-lg { display: none !important; }
+  .u-block-lg { display: block !important; }
+  .u-flex-lg { display: flex !important; }
+}
+
+@media (min-width: 1280px) {
+  .u-hidden-xl { display: none !important; }
+  .u-block-xl { display: block !important; }
+  .u-flex-xl { display: flex !important; }
+}
+
+/* Show only on specific breakpoints */
+.u-visible-sm-only {
+  display: none !important;
+}
+@media (min-width: 640px) and (max-width: 767px) {
+  .u-visible-sm-only { display: block !important; }
+}
+
+.u-visible-md-only {
+  display: none !important;
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .u-visible-md-only { display: block !important; }
+}
+
+.u-visible-lg-only {
+  display: none !important;
+}
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .u-visible-lg-only { display: block !important; }
+}
+
+/* Width utilities */
+.u-w-full { width: 100% !important; }
+.u-w-auto { width: auto !important; }
+.u-max-w-full { max-width: 100% !important; }
+
+/* Responsive width utilities */
+@media (min-width: 640px) {
+  .u-w-full-sm { width: 100% !important; }
+  .u-w-auto-sm { width: auto !important; }
+}
+
+@media (min-width: 768px) {
+  .u-w-full-md { width: 100% !important; }
+  .u-w-auto-md { width: auto !important; }
+  .u-w-1\/2-md { width: 50% !important; }
+  .u-w-1\/3-md { width: 33.333333% !important; }
+  .u-w-2\/3-md { width: 66.666667% !important; }
+}
+
+@media (min-width: 1024px) {
+  .u-w-full-lg { width: 100% !important; }
+  .u-w-auto-lg { width: auto !important; }
+  .u-w-1\/2-lg { width: 50% !important; }
+  .u-w-1\/3-lg { width: 33.333333% !important; }
+  .u-w-2\/3-lg { width: 66.666667% !important; }
+  .u-w-1\/4-lg { width: 25% !important; }
+  .u-w-3\/4-lg { width: 75% !important; }
+}
+
+/* Flexbox responsive utilities */
+.u-flex-col { flex-direction: column !important; }
+.u-flex-row { flex-direction: row !important; }
+.u-flex-wrap { flex-wrap: wrap !important; }
+.u-flex-nowrap { flex-wrap: nowrap !important; }
+.u-justify-start { justify-content: flex-start !important; }
+.u-justify-center { justify-content: center !important; }
+.u-justify-end { justify-content: flex-end !important; }
+.u-justify-between { justify-content: space-between !important; }
+.u-items-start { align-items: flex-start !important; }
+.u-items-center { align-items: center !important; }
+.u-items-end { align-items: flex-end !important; }
+
+/* Responsive flex utilities */
+@media (min-width: 768px) {
+  .u-flex-col-md { flex-direction: column !important; }
+  .u-flex-row-md { flex-direction: row !important; }
+  .u-justify-start-md { justify-content: flex-start !important; }
+  .u-justify-center-md { justify-content: center !important; }
+  .u-justify-end-md { justify-content: flex-end !important; }
+  .u-justify-between-md { justify-content: space-between !important; }
+}
+
+@media (min-width: 1024px) {
+  .u-flex-col-lg { flex-direction: column !important; }
+  .u-flex-row-lg { flex-direction: row !important; }
+  .u-justify-start-lg { justify-content: flex-start !important; }
+  .u-justify-center-lg { justify-content: center !important; }
+  .u-justify-end-lg { justify-content: flex-end !important; }
+  .u-justify-between-lg { justify-content: space-between !important; }
+}
+
+/* Text alignment responsive */
+.u-text-left { text-align: left !important; }
+.u-text-center { text-align: center !important; }
+.u-text-right { text-align: right !important; }
+
+@media (min-width: 768px) {
+  .u-text-left-md { text-align: left !important; }
+  .u-text-center-md { text-align: center !important; }
+  .u-text-right-md { text-align: right !important; }
+}
+
+@media (min-width: 1024px) {
+  .u-text-left-lg { text-align: left !important; }
+  .u-text-center-lg { text-align: center !important; }
+  .u-text-right-lg { text-align: right !important; }
+}
+
+/* Spacing responsive utilities */
+@media (min-width: 640px) {
+  .u-mt-0-sm { margin-top: 0 !important; }
+  .u-mb-0-sm { margin-bottom: 0 !important; }
+  .u-pt-0-sm { padding-top: 0 !important; }
+  .u-pb-0-sm { padding-bottom: 0 !important; }
+}
+
+@media (min-width: 768px) {
+  .u-mt-0-md { margin-top: 0 !important; }
+  .u-mb-0-md { margin-bottom: 0 !important; }
+  .u-pt-0-md { padding-top: 0 !important; }
+  .u-pb-0-md { padding-bottom: 0 !important; }
+}
+
+@media (min-width: 1024px) {
+  .u-mt-0-lg { margin-top: 0 !important; }
+  .u-mb-0-lg { margin-bottom: 0 !important; }
+  .u-pt-0-lg { padding-top: 0 !important; }
+  .u-pb-0-lg { padding-bottom: 0 !important; }
+}
+
+/* Screen reader only (but visible to screen readers) */
+.u-sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Focus visible (for keyboard navigation) */
+.u-focus-visible:focus {
+  outline: 2px solid var(--color-primary) !important;
+  outline-offset: 2px !important;
+}
+
+/* Print utilities */
+@media print {
+  .u-print-hidden { display: none !important; }
+  .u-print-block { display: block !important; }
+}

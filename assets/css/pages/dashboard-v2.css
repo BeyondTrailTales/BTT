@@ -1,0 +1,306 @@
+/**
+ * Dashboard Page Styles
+ * Ensures proper container centering and responsive layout
+ * Uses new CSS architecture without !important
+ */
+
+/* Dashboard page wrapper */
+[data-page="dashboard"] {
+  min-height: 100vh;
+  background-color: var(--color-background, #0a1a0f);
+}
+
+/* Dashboard Hero Section */
+.modern-dashboard-hero {
+  width: 100%;
+  padding: var(--spacing-8, 2rem) 0;
+  background: linear-gradient(135deg, 
+    var(--color-forest-800, #14321e) 0%, 
+    var(--color-background, #0a1a0f) 100%);
+}
+
+.modern-dashboard-hero-content {
+  max-width: var(--container-xl, 1200px);
+  margin: 0 auto;
+  padding: 0 var(--container-padding-sm, 1rem);
+  text-align: center;
+}
+
+/* Stats Grid - Mobile First */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-4, 1rem);
+  max-width: var(--container-xl, 1200px);
+  margin: var(--spacing-8, 2rem) auto;
+  padding: 0 var(--container-padding-sm, 1rem);
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 640px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0 var(--container-padding-md, 1.5rem);
+  }
+}
+
+/* Desktop: 4 columns */
+@media (min-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    padding: 0 var(--container-padding-lg, 2rem);
+  }
+}
+
+/* Primary Dashboard Grid - Mobile First */
+.dashboard-primary-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-6, 1.5rem);
+  max-width: var(--container-xl, 1200px);
+  margin: var(--spacing-8, 2rem) auto;
+  padding: 0 var(--container-padding-sm, 1rem);
+}
+
+/* Tablet: Still 1 column but wider */
+@media (min-width: 768px) {
+  .dashboard-primary-grid {
+    padding: 0 var(--container-padding-md, 1.5rem);
+  }
+}
+
+/* Desktop: 2 columns */
+@media (min-width: 1024px) {
+  .dashboard-primary-grid {
+    grid-template-columns: 3fr 2fr;
+    padding: 0 var(--container-padding-lg, 2rem);
+  }
+}
+
+/* Large Desktop: Better proportions */
+@media (min-width: 1280px) {
+  .dashboard-primary-grid {
+    grid-template-columns: 2fr 1.5fr;
+  }
+}
+
+/* Secondary Dashboard Grid */
+.dashboard-secondary-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-6, 1.5rem);
+  max-width: var(--container-xl, 1200px);
+  margin: var(--spacing-8, 2rem) auto;
+  padding: 0 var(--container-padding-sm, 1rem);
+}
+
+@media (min-width: 768px) {
+  .dashboard-secondary-grid {
+    padding: 0 var(--container-padding-md, 1.5rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .dashboard-secondary-grid {
+    grid-template-columns: 1fr 1fr;
+    padding: 0 var(--container-padding-lg, 2rem);
+  }
+}
+
+/* Dashboard Cards */
+.dashboard-card {
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border-radius: var(--radius-lg, 0.5rem);
+  padding: var(--spacing-6, 1.5rem);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Responsive card padding */
+@media (min-width: 768px) {
+  .dashboard-card {
+    padding: var(--spacing-8, 2rem);
+  }
+}
+
+/* Stat Cards */
+.stat-card {
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border-radius: var(--radius-lg, 0.5rem);
+  padding: var(--spacing-4, 1rem);
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+}
+
+.stat-number {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 700;
+  color: var(--color-primary, #4ba667);
+  line-height: 1;
+  margin-bottom: var(--spacing-2, 0.5rem);
+}
+
+.stat-label {
+  font-size: clamp(0.75rem, 2vw, 0.875rem);
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+}
+
+/* Quick Actions Grid */
+.modern-dashboard {
+  display: grid;
+  gap: var(--spacing-4, 1rem);
+}
+
+/* Mobile: Stack buttons */
+@media (max-width: 639px) {
+  .modern-dashboard {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tablet+: 3 columns as specified */
+@media (min-width: 640px) {
+  .modern-dashboard {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Recent Trips List */
+.recent-trips-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3, 0.75rem);
+}
+
+.trip-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4, 1rem);
+  padding: var(--spacing-3, 0.75rem);
+  background: var(--color-surface-hover, rgba(255, 255, 255, 0.08));
+  border-radius: var(--radius-md, 0.375rem);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.trip-item:hover {
+  background: var(--color-surface-active, rgba(255, 255, 255, 0.1));
+}
+
+/* Mobile adjustments for trip items */
+@media (max-width: 639px) {
+  .trip-item {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .trip-info {
+    width: 100%;
+  }
+}
+
+/* Backpack Preview Grid */
+.pack-preview-grid {
+  display: grid;
+  gap: var(--spacing-3, 0.75rem);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .pack-preview-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+/* Empty States */
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-8, 2rem) var(--spacing-4, 1rem);
+}
+
+.empty-state-icon {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-bottom: var(--spacing-4, 1rem);
+}
+
+.empty-state-title {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  margin-bottom: var(--spacing-2, 0.5rem);
+}
+
+.empty-state-description {
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+  max-width: 30ch;
+  margin: 0 auto;
+}
+
+/* Activity Feed - Mobile First */
+.activity-feed {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2, 0.5rem);
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-3, 0.75rem);
+  padding: var(--spacing-2, 0.5rem);
+  font-size: clamp(0.75rem, 2vw, 0.875rem);
+}
+
+/* Achievement Grid */
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--spacing-3, 0.75rem);
+}
+
+@media (min-width: 640px) {
+  .achievements-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+}
+
+/* Responsive Typography */
+.modern-dashboard-hero-title {
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  font-weight: 700;
+  margin-bottom: var(--spacing-4, 1rem);
+}
+
+.modern-dashboard-hero-subtitle {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+  max-width: 60ch;
+  margin: 0 auto;
+}
+
+.card-title {
+  font-size: clamp(1.125rem, 3vw, 1.5rem);
+  font-weight: 600;
+  margin-bottom: var(--spacing-2, 0.5rem);
+}
+
+.card-subtitle {
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+}
+
+/* Ensure full width on ultra-wide screens */
+@media (min-width: 1600px) {
+  .modern-dashboard-hero-content,
+  .stats-grid,
+  .dashboard-primary-grid,
+  .dashboard-secondary-grid {
+    max-width: var(--container-2xl, 1400px);
+  }
+}

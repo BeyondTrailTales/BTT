@@ -1,0 +1,228 @@
+/**
+ * Trips Page Form UI Improvements
+ * Enhances form layout, spacing, and visual hierarchy
+ */
+
+/* Trip form container improvements */
+.trip-form-container {
+  max-width: 800px !important;
+  margin: 2rem auto !important;
+  padding: 2rem !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Form group spacing */
+.form-group {
+  margin-bottom: 1.5rem !important;
+}
+
+/* Form labels */
+.form-label {
+  display: block !important;
+  margin-bottom: 0.5rem !important;
+  font-weight: 600 !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-size: 0.95rem !important;
+}
+
+/* Form inputs */
+.form-control,
+.form-input,
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="email"],
+select,
+textarea {
+  width: 100% !important;
+  padding: 0.75rem 1rem !important;
+  background: rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 8px !important;
+  color: #ffffff !important;
+  font-size: 1rem !important;
+  transition: all 0.2s ease !important;
+}
+
+/* Focus states */
+.form-control:focus,
+.form-input:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none !important;
+  border-color: var(--primary-color, #4ade80) !important;
+  background: rgba(0, 0, 0, 0.4) !important;
+  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.1) !important;
+}
+
+/* Textarea specific */
+textarea {
+  min-height: 120px !important;
+  resize: vertical !important;
+}
+
+/* Form sections */
+.form-section {
+  margin-bottom: 2rem !important;
+  padding-bottom: 2rem !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.form-section:last-child {
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.form-section-title {
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 1rem !important;
+  color: #ffffff !important;
+}
+
+/* Form row for side-by-side fields */
+.form-row {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+  gap: 1rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+/* Form buttons */
+.form-actions {
+  display: flex !important;
+  gap: 1rem !important;
+  justify-content: flex-end !important;
+  margin-top: 2rem !important;
+  padding-top: 2rem !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.form-actions .btn {
+  min-width: 120px !important;
+}
+
+/* Trip card improvements */
+.trip-card {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px !important;
+  padding: 1.5rem !important;
+  margin-bottom: 1rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.trip-card:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Trip list grid */
+.trips-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)) !important;
+  gap: 1.5rem !important;
+  margin-top: 2rem !important;
+}
+
+/* Empty state improvements */
+.empty-state {
+  text-align: center !important;
+  padding: 4rem 2rem !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-radius: 16px !important;
+  border: 2px dashed rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Help text */
+.form-help,
+.help-text {
+  display: block !important;
+  margin-top: 0.25rem !important;
+  font-size: 0.875rem !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Error states */
+.form-control.error,
+input.error {
+  border-color: #ef4444 !important;
+}
+
+.form-error,
+.error-message {
+  display: block !important;
+  margin-top: 0.25rem !important;
+  font-size: 0.875rem !important;
+  color: #ef4444 !important;
+}
+
+/* Success states */
+.form-control.success,
+input.success {
+  border-color: #10b981 !important;
+}
+
+/* Checkbox and radio improvements */
+.form-check {
+  display: flex !important;
+  align-items: center !important;
+  margin-bottom: 0.75rem !important;
+}
+
+.form-check-input {
+  width: 20px !important;
+  height: 20px !important;
+  margin-right: 0.75rem !important;
+  cursor: pointer !important;
+}
+
+.form-check-label {
+  cursor: pointer !important;
+  user-select: none !important;
+}
+
+/* File upload area */
+.file-upload-area {
+  padding: 2rem !important;
+  background: rgba(0, 0, 0, 0.2) !important;
+  border: 2px dashed rgba(255, 255, 255, 0.3) !important;
+  border-radius: 12px !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.file-upload-area:hover {
+  background: rgba(0, 0, 0, 0.3) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .trip-form-container {
+    margin: 1rem !important;
+    padding: 1.5rem !important;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .form-actions {
+    flex-direction: column !important;
+  }
+  
+  .form-actions .btn {
+    width: 100% !important;
+  }
+  
+  .trips-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

@@ -1,0 +1,149 @@
+/* Photo Edit Overlay Styles */
+.photo-edit-overlay {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+
+/* Show overlay on hover of the image container */
+.adventure-image-container:hover .photo-edit-overlay,
+.photo-edit-overlay:hover {
+  opacity: 1;
+}
+
+/* Always show when no photo exists (placeholder showing) */
+.adventure-image-container:has(.placeholder-image:not([style*="display: none"])) .photo-edit-overlay {
+  opacity: 1;
+}
+
+.photo-edit-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.photo-edit-btn:hover {
+  background: rgba(0, 0, 0, 0.9);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.photo-edit-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.photo-edit-icon {
+  font-size: 1.125rem;
+}
+
+.photo-edit-text {
+  white-space: nowrap;
+}
+
+/* When image exists, change text to "Change Photo" */
+.adventure-image-container:has(.adventure-image) .photo-edit-text::after {
+  content: "Change Photo";
+}
+
+.adventure-image-container:has(.placeholder-image:not([style*="display: none"])) .photo-edit-text::after {
+  content: "Add Photo";
+}
+
+/* Hide the original text and use pseudo-element */
+.photo-edit-text {
+  font-size: 0;
+}
+
+.photo-edit-text::after {
+  font-size: 0.875rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .photo-edit-overlay {
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+  
+  .photo-edit-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+  
+  .photo-edit-text {
+    display: none;
+  }
+  
+  .photo-edit-icon {
+    font-size: 1rem;
+  }
+}
+
+/* Hidden file input */
+.hidden-file-input {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Make image container show it's clickable */
+.adventure-image-container {
+  transition: all 0.2s ease;
+  border-radius: 1.5rem;
+}
+
+.adventure-image-container:hover {
+  transform: scale(1.002);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.adventure-image-container:focus {
+  outline: 2px solid #4ade80;
+  outline-offset: 2px;
+}
+
+/* Update placeholder text on hover */
+.adventure-image-container:hover .placeholder-text::after {
+  content: " 📸";
+}
+
+/* Remove photo button - now inside the overlay */
+.photo-edit-overlay #btn-remove-photo {
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+  align-self: flex-start;
+}
+
+.photo-edit-overlay #btn-remove-photo:hover {
+  background: rgba(239, 68, 68, 1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}

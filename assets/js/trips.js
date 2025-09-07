@@ -145,6 +145,9 @@ document.addEventListener('DOMContentLoaded', function() {
     els.crowdLevel = document.getElementById('crowd_level');
     els.waterSources = document.getElementById('water_sources');
     els.trailConditions = document.getElementById('trail_conditions');
+    els.campingType = document.getElementById('camping_type');
+    els.expectedWeather = document.getElementById('expected_weather');
+    els.emergencyContact = document.getElementById('emergency_contact');
     els.preTripNotes = document.getElementById('pre_trip_notes');
     els.postTripNotes = document.getElementById('post_trip_notes');
     els.lessons = document.getElementById('lessons_learned');
@@ -181,6 +184,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // New Trip
     els.btnNew.addEventListener('click', () => openEditor({mode:'create'}));
     if (els.btnEmptyCreate) els.btnEmptyCreate.addEventListener('click', () => openEditor({mode:'create'}));
+    
+    // Form tab navigation is now handled by trips-tabs.js
+    // Listen for tab change events
+    document.addEventListener('tripTabChanged', function(e) {
+      state.formTab = e.detail.tab;
+      console.log('Tab changed to:', state.formTab);
+    });
 
     // Search + sort
     els.search.addEventListener('input', debounce(filterTrips, 200));
@@ -273,7 +283,31 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
     
-    // Photo upload handling
+    // Photo edit button click - triggers hidden file input
+    const photoEditBtn = document.getElementById('photo-edit-btn');
+    if (photoEditBtn && els.photoInput) {
+      photoEditBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent event bubbling to image container
+        els.photoInput.click(); // Trigger the hidden file input
+      });
+    }
+    
+    // Make entire image container clickable
+    if (els.adventureImageDisplay && els.photoInput) {
+      els.adventureImageDisplay.addEventListener('click', () => {
+        els.photoInput.click(); // Trigger the hidden file input
+      });
+      
+      // Also handle keyboard access
+      els.adventureImageDisplay.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          els.photoInput.click();
+        }
+      });
+    }
+    
+    // Photo upload handling (hidden input)
     if (els.photoInput) {
       els.photoInput.addEventListener('change', (e) => {
         handlePhotoSelect(e);
@@ -347,7 +381,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         switch(action) {
           case 'edit':
-            openEditor({id, mode:'edit'});
+            // Redirect to standalone edit page
+            window.location.href = `edit-trip.php?id=${id}`;
             break;
           case 'view':
             openEditor({id, mode:'view'});
@@ -361,8 +396,8 @@ document.addEventListener('DOMContentLoaded', function() {
             break;
         }
       } else {
-        // Card was clicked (not a button) - open editor
-        openEditor({id, mode:'edit'});
+        // Card was clicked (not a button) - redirect to standalone edit page
+        window.location.href = `edit-trip.php?id=${id}`;
       }
     });
   }
@@ -913,12 +948,9 @@ document.addEventListener('DOMContentLoaded', function() {
           placeholderImage.style.display = 'none';
         }
         
-        // Show upload overlay and remove button
-        if (els.uploadOverlay) {
-          els.uploadOverlay.classList.remove('hidden');
-        }
+        // Show remove button when photo exists
         if (els.removePhotoBtn) {
-          els.removePhotoBtn.classList.remove('hidden');
+          els.removePhotoBtn.style.display = 'inline-block';
         }
         
         // Create or update adventure image
@@ -958,12 +990,9 @@ document.addEventListener('DOMContentLoaded', function() {
           placeholderImage.style.display = 'block';
         }
         
-        // Hide upload overlay and remove button
-        if (els.uploadOverlay) {
-          els.uploadOverlay.classList.add('hidden');
-        }
+        // Hide remove button when no photo
         if (els.removePhotoBtn) {
-          els.removePhotoBtn.classList.add('hidden');
+          els.removePhotoBtn.style.display = 'none';
         }
         
         if (adventureImage) {
@@ -974,6 +1003,21 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function openEditor({id=null, mode='create'}){
+    // Redirect to standalone edit-trip.php for consistent experience
+    if (mode === 'create') {
+      // For new trips, redirect to edit-trip.php without an ID
+      // The edit-trip.php will handle the creation flow
+      window.location.href = 'edit-trip.php?mode=create';
+      return;
+    }
+    
+    // For existing trips, redirect to edit-trip.php with the trip ID
+    if (id) {
+      window.location.href = `edit-trip.php?id=${id}`;
+      return;
+    }
+    
+    // Fallback to old behavior (should not reach here)
     state.mode = mode;
     state.currentId = id;
     switchTopView('editor');
@@ -1077,6 +1121,9 @@ document.addEventListener('DOMContentLoaded', function() {
     els.crowdLevel.value = t.crowd_level || '';
     els.waterSources.value = t.water_sources || '';
     els.trailConditions.value = t.trail_conditions || '';
+    els.campingType.value = t.camping_type || '';
+    els.expectedWeather.value = t.expected_weather || '';
+    els.emergencyContact.value = t.emergency_contact || '';
     els.preTripNotes.value = t.pre_trip_notes || '';
     els.postTripNotes.value = t.post_trip_notes || '';
     els.lessons.value = t.lessons_learned || '';
@@ -1092,6 +1139,15 @@ document.addEventListener('DOMContentLoaded', function() {
   function serializeForm(){
     const data = new FormData(els.form);
     const obj = Object.fromEntries(data.entries());
+    
+    // Debug: Check if these specific fields are present
+    if (!obj.hasOwnProperty('expected_weather')) {
+      console.warn('WARNING: expected_weather field not found in form!');
+    }
+    if (!obj.hasOwnProperty('emergency_contact')) {
+      console.warn('WARNING: emergency_contact field not found in form!');
+    }
+    
     // Normalize booleans/numbers expected by API
     // Handle backpack_id specially - empty string or 0 should be null
     if (obj.backpack_id && obj.backpack_id !== '' && obj.backpack_id !== '0') {
@@ -1150,6 +1206,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Disable form during save
     setFormBusy(true);
     
+    // Show save animation
+    if (window.SaveAnimation) {
+      window.SaveAnimation.showSaving('Saving your adventure...');
+      window.SaveAnimation.setButtonLoading(els.btnSave, true);
+    }
+    
     try {
       console.log('Saving trip:', body);
       let newTripId = null;
@@ -1187,18 +1249,110 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('BTT config:', window.BTT);
         
         try {
-          result = id ? await BTTApi.put('trips', id, body, files) : await BTTApi.post('trips', body, files);
-          console.log('API result received:', result);
-          console.log('Result type:', typeof result);
-          console.log('Result photo_path:', result?.photo_path);
-          console.log('Result photo_alt_text:', result?.photo_alt_text);
+          console.log('🚀 Using direct fetch (like working test) instead of BTTApi');
+          console.log('📝 Data being sent:', body);
           
-          // Show detailed success confirmation
-          if (result && result.id) {
-            const photoStatus = result.photo_path ? `✅ Photo: ${result.photo_path}` : '📷 No photo';
-            showNotification(`✅ Trip saved successfully!\n📝 ID: ${result.id}\n📍 Title: ${result.title || 'Untitled'}\n${photoStatus}`, 'success', 5000);
+          // Use the same method as the working test page
+          const formData = new FormData();
+          
+          // Add all the form fields
+          for (const [key, value] of Object.entries(body)) {
+            if (value !== null && value !== undefined) {
+              formData.append(key, value);
+              console.log(`📋 Added to FormData: ${key} = ${value}`);
+            }
+          }
+          
+          // Add the photo file
+          if (files && files.photo) {
+            formData.append('photo', files.photo);
+            console.log('📸 Added photo to FormData:', files.photo.name, files.photo.size, 'bytes');
+          }
+          
+          // Log what we're about to send
+          console.log('📦 FormData contents:');
+          for (let pair of formData.entries()) {
+            if (pair[1] instanceof File) {
+              console.log(`  ${pair[0]}: [File] ${pair[1].name} (${pair[1].size} bytes)`);
+            } else {
+              console.log(`  ${pair[0]}: ${pair[1]}`);
+            }
+          }
+          
+          // Use POST with method override for file uploads (PUT with files doesn't work reliably)
+          const apiUrl = id ? `api/trips/${id}` : 'api/trips';
+          let method, requestBody;
+          
+          if (id) {
+            // For updates, use POST with method override to properly handle file uploads
+            method = 'POST';
+            requestBody = new FormData();
+            requestBody.append('_method', 'PUT'); // Method override
+            
+            // Add all form fields
+            for (const [key, value] of Object.entries(body)) {
+              if (value !== null && value !== undefined) {
+                requestBody.append(key, value);
+              }
+            }
+            
+            // Add the photo file
+            if (files && files.photo) {
+              requestBody.append('photo', files.photo);
+            }
+            
+            console.log('🌐 Using POST with _method=PUT override for file upload');
           } else {
-            showNotification('✅ Trip saved (no confirmation data returned)', 'success', 3000);
+            // For creates, regular POST works fine
+            method = 'POST';
+            requestBody = formData;
+          }
+          
+          console.log('🌐 Calling:', method, apiUrl);
+          
+          const response = await fetch(apiUrl, {
+            method: method,
+            body: requestBody
+          });
+          
+          console.log('📡 Response status:', response.status, response.statusText);
+          
+          if (!response.ok) {
+            // Get the error details from the server
+            let errorDetails = '';
+            let errorText = '';
+            try {
+              errorText = await response.text();
+              console.log('🚨 Server error response:', errorText);
+              
+              // Try to parse as JSON to get detailed error
+              const errorJson = JSON.parse(errorText);
+              errorDetails = errorJson.message || errorJson.error || errorText;
+            } catch (parseError) {
+              console.log('📝 Raw error text:', errorText);
+              errorDetails = errorText || response.statusText;
+            }
+            
+            throw new Error(`HTTP ${response.status}: ${errorDetails}`);
+          }
+          
+          result = await response.json();
+          console.log('✅ API result received:', result);
+          console.log('📊 Result details:', {
+            success: result?.success,
+            id: result?.data?.id,
+            photo_path: result?.data?.photo_path,
+            photo_alt_text: result?.data?.photo_alt_text
+          });
+          
+          // Show detailed success confirmation with all relevant info
+          if (result && result.success && result.data?.id) {
+            const photoStatus = result.data.photo_path ? `📸 Photo saved: ${result.data.photo_path.split('/').pop()}` : '📷 No photo';
+            showNotification(`🎉 TRIP SAVED SUCCESSFULLY!\n📝 Trip ID: ${result.data.id}\n📍 Title: ${result.data.title || body.title || 'Untitled'}\n${photoStatus}\n⏰ ${new Date().toLocaleTimeString()}`, 'success', 7000);
+          } else if (result && result.data?.id) {
+            showNotification(`✅ Trip saved (ID: ${result.data.id}) but missing success flag`, 'warning', 5000);
+          } else {
+            showNotification('⚠️ Trip may have saved but no confirmation received', 'warning', 5000);
           }
         } catch (apiError) {
           console.error('BTTApi call failed:', apiError);
@@ -1208,17 +1362,17 @@ document.addEventListener('DOMContentLoaded', function() {
           });
           
           // Show detailed error message
-          let errorMsg = '❌ Photo upload failed!\n';
+          let errorMsg = '💥 PHOTO UPLOAD FAILED!\n';
           if (apiError.message.includes('404')) {
-            errorMsg += '🔍 Cause: API endpoint not found\n💡 Check: Main API may not be accessible';
+            errorMsg += '🔍 API endpoint not found\n💡 Solution: Check server configuration';
           } else if (apiError.message.includes('413')) {
-            errorMsg += '📂 Cause: File too large\n💡 Check: Photo must be under 4MB';
-          } else if (apiError.message.includes('401')) {
-            errorMsg += '🔐 Cause: Not authenticated\n💡 Check: Try refreshing the page';
+            errorMsg += '📂 File too large (max 4MB)\n💡 Solution: Compress the image';
+          } else if (apiError.message.includes('401') || apiError.message.includes('Authentication required')) {
+            errorMsg += '🔐 Session expired or not authenticated\n💡 Solution: Please refresh the page and log in again';
           } else {
-            errorMsg += `🐛 Error: ${apiError.message}\n💡 Check console for details`;
+            errorMsg += `🐛 Error: ${apiError.message}\n💡 Check browser console (F12) for details\n⏰ Time: ${new Date().toLocaleTimeString()}`;
           }
-          showNotification(errorMsg, 'error', 7000);
+          showNotification(errorMsg, 'error', 10000);
           throw apiError; // Re-throw to be caught by outer try-catch
         }
         console.log('=== PHOTO UPLOAD DEBUG END ===\n');
@@ -1302,27 +1456,34 @@ document.addEventListener('DOMContentLoaded', function() {
       if (id){
         console.log('Updated existing trip:', id, result);
         console.log('DEBUG: hasPhoto:', hasPhoto, 'result:', result);
-        console.log('DEBUG: result.photo_path:', result?.photo_path);
+        console.log('DEBUG: result.data.photo_path:', result?.data?.photo_path);
         
         announceStatus('Trip updated successfully');
-        // Use Duolingo-style notification
+        
+        // Show success animation
+        if (window.SaveAnimation) {
+          const tripTitle = result?.data?.title || result?.title || body.title || 'Trip';
+          window.SaveAnimation.showSuccess('Adventure saved!', `"${tripTitle}" has been updated`);
+        }
+        
+        // Also show notification
         showNotification('✅ Trip saved successfully!', 'success');
         // Update the current trip in state with the full result from API
         const tripIndex = state.trips.findIndex(t => t.id === parseInt(id));
         if (tripIndex !== -1) {
           // Always update with the result from API when we have it
-          if (result && result.id) {
-            console.log('DEBUG: Updating state.trips[tripIndex] with result:', result);
-            state.trips[tripIndex] = result;
+          if (result && result.data && result.data.id) {
+            console.log('DEBUG: Updating state.trips[tripIndex] with result.data:', result.data);
+            state.trips[tripIndex] = result.data;
             // Update the existing photo state - avoid double prefixing
-            if (result.photo_path) {
-              console.log('DEBUG: Setting state.existingPhoto to:', result.photo_path);
-              if (result.photo_path.startsWith('http')) {
-                state.existingPhoto = result.photo_path;
-              } else if (result.photo_path.startsWith('assets/img/')) {
-                state.existingPhoto = result.photo_path; // Already has full path
+            if (result.data.photo_path) {
+              console.log('DEBUG: Setting state.existingPhoto to:', result.data.photo_path);
+              if (result.data.photo_path.startsWith('http')) {
+                state.existingPhoto = result.data.photo_path;
+              } else if (result.data.photo_path.startsWith('assets/img/')) {
+                state.existingPhoto = result.data.photo_path; // Already has full path
               } else {
-                state.existingPhoto = `assets/img/trips/${result.photo_path}`; // Add prefix only if needed
+                state.existingPhoto = `assets/img/trips/${result.data.photo_path}`; // Add prefix only if needed
               }
             }
           } else {
@@ -1335,11 +1496,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       } else {
         console.log('Creating new trip, result:', result);
-        // For new trips, result is the complete trip object
-        const newTrip = result.id ? result : {id: result, ...body};
+        // For new trips, result.data is the complete trip object
+        const newTrip = result.data?.id ? result.data : {id: result, ...body};
         newTripId = newTrip.id;
         announceStatus('Trip created successfully');
-        // Use Duolingo-style notification
+        
+        // Show success animation
+        if (window.SaveAnimation) {
+          const tripTitle = newTrip.title || body.title || 'New Adventure';
+          window.SaveAnimation.showSuccess('Adventure created!', `"${tripTitle}" is ready for planning`);
+        }
+        
+        // Also show notification
         showNotification('✅ Trip created successfully!', 'success');
         // Update the trip ID in the form so subsequent saves are updates
         document.getElementById('trip-id').value = newTripId;
@@ -1363,8 +1531,19 @@ document.addEventListener('DOMContentLoaded', function() {
       await loadTrips();
       filterTrips();
       
+      // If we just uploaded a photo and we're editing an existing trip, refresh the form data
+      if (hasPhoto && photoFile && id) {
+        console.log('🔄 Refreshing form data after photo upload...');
+        try {
+          const refreshedTrip = await loadTripById(id);
+          populateForm(refreshedTrip);
+          console.log('✅ Form data refreshed with latest trip data');
+        } catch (error) {
+          console.error('Failed to refresh form data:', error);
+        }
+      }
+      
       // Stay on the current editor view and tab
-      // The form is already populated with the saved data
       // Just update the insights panel and adventure display
       updateInsights();
       updateAdventureDisplay();
@@ -1394,6 +1573,21 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error('Error message:', err.message);
       console.error('Error stack:', err.stack);
       
+      // Show error animation
+      if (window.SaveAnimation) {
+        let errorDetails = err.message;
+        if (err.message.includes('fetch')) {
+          errorDetails = 'Network issue - check your connection';
+        } else if (err.message.includes('401')) {
+          errorDetails = 'Session expired - please refresh the page';
+        } else if (err.message.includes('500')) {
+          errorDetails = 'Server error - please try again';
+        } else if (err.message.includes('413')) {
+          errorDetails = 'File too large - max 4MB for photos';
+        }
+        window.SaveAnimation.showError('Save failed', errorDetails);
+      }
+      
       // Show detailed error message with debugging info
       let errorMsg = `❌ Failed to save trip!\n🐛 Error: ${err.message}`;
       
@@ -1412,6 +1606,10 @@ document.addEventListener('DOMContentLoaded', function() {
       showNotification(errorMsg, 'error', 8000);
     } finally {
       setFormBusy(false);
+      // Reset button state
+      if (window.SaveAnimation) {
+        window.SaveAnimation.setButtonLoading(els.btnSave, false);
+      }
     }
   }
 
@@ -1547,11 +1745,17 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function handlePhotoSelect(e) {
-    console.log('Simple photo select');
+    console.log('Photo selected for replacement');
     const file = e.target.files[0];
     if (!file) return;
     
-    // Clear remove flag
+    // If there's an existing photo, mark it for deletion when the new one is uploaded
+    if (state.existingPhoto) {
+      console.log('Will replace existing photo:', state.existingPhoto);
+      showNotification('📷 New photo selected - existing photo will be replaced when saved', 'info');
+    }
+    
+    // Clear remove flag since we're uploading a replacement
     if (els.removePhotoField) {
       els.removePhotoField.value = '0';
     }
@@ -1571,17 +1775,21 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
-    // Show simple preview
+    // Show preview of the new photo
     const reader = new FileReader();
     reader.onload = function(e) {
       const container = document.getElementById('adventure-image-display');
       if (container) {
-        container.innerHTML = `<img src="${e.target.result}" alt="Photo preview" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;" />`;
-        document.getElementById('btn-remove-photo').style.display = 'block';
+        container.innerHTML = `<img src="${e.target.result}" alt="New photo preview" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px;" />`;
+        const removeBtn = document.getElementById('btn-remove-photo');
+        if (removeBtn) {
+          removeBtn.style.display = 'block';
+          removeBtn.textContent = 'Remove New Photo';
+        }
       }
     };
     reader.readAsDataURL(file);
-    showNotification('📷 Photo ready - click Save to upload', 'success');
+    showNotification('📷 New photo ready - click Save to replace existing photo', 'success');
   }
   
   function handlePhotoRemove(e) {
@@ -1589,6 +1797,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Clear file input
     els.photoInput.value = '';
+    
+    // Clear existing photo state
+    state.existingPhoto = null;
     
     // Mark for removal
     els.removePhotoField.value = '1';
@@ -1599,7 +1810,7 @@ document.addEventListener('DOMContentLoaded', function() {
       container.innerHTML = `
         <div class="placeholder-image">
           <div class="placeholder-icon">🏔️</div>
-          <p class="placeholder-text">No photo uploaded</p>
+          <p class="placeholder-text">Photo will be removed when saved</p>
         </div>
       `;
     }

@@ -1,0 +1,102 @@
+/**
+ * Dashboard Immediate Centering Fix
+ * Temporary solution to fix dashboard alignment while CSS revamp is in progress
+ * 
+ * NOTE: This file uses !important as a temporary measure to override
+ * the existing cascade of !important declarations. This will be removed
+ * during the CSS revamp project.
+ */
+
+/* Reset all container rules with higher specificity */
+body[data-page="dashboard"] .page-container {
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+/* Hero section proper centering */
+body[data-page="dashboard"] .modern-dashboard-hero {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 2rem 0 !important;
+  background: linear-gradient(135deg, #2a4532 0%, #3a5a42 100%);
+}
+
+body[data-page="dashboard"] .modern-dashboard-hero-content {
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 0 1rem !important;
+  text-align: center;
+}
+
+/* Main content grids proper centering */
+body[data-page="dashboard"] .stats-grid,
+body[data-page="dashboard"] .dashboard-primary-grid,
+body[data-page="dashboard"] .dashboard-secondary-grid {
+  max-width: 1200px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: 0 1rem !important;
+}
+
+/* Override conflicting container rules */
+body[data-page="dashboard"] .container {
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 0 1rem !important;
+}
+
+/* Fix any elements that might be breaking out */
+body[data-page="dashboard"] * {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Ensure no horizontal scroll */
+body[data-page="dashboard"] {
+  overflow-x: hidden !important;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  body[data-page="dashboard"] .modern-dashboard-hero-content,
+  body[data-page="dashboard"] .stats-grid,
+  body[data-page="dashboard"] .dashboard-primary-grid,
+  body[data-page="dashboard"] .dashboard-secondary-grid,
+  body[data-page="dashboard"] .container,
+  body[data-page="dashboard"] .page-container {
+    padding: 0 0.75rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  body[data-page="dashboard"] .modern-dashboard-hero-content,
+  body[data-page="dashboard"] .stats-grid,
+  body[data-page="dashboard"] .dashboard-primary-grid,
+  body[data-page="dashboard"] .dashboard-secondary-grid,
+  body[data-page="dashboard"] .container,
+  body[data-page="dashboard"] .page-container {
+    padding: 0 0.5rem !important;
+  }
+}
+
+/* Temporary notice for developers */
+body[data-page="dashboard"]::before {
+  content: "CSS Revamp in Progress - See CSS_REVAMP_PROJECT.md";
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: #ff6b6b;
+  color: white;
+  padding: 5px 10px;
+  font-size: 11px;
+  border-radius: 3px;
+  z-index: 99999;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Show notice on hover (for developers) */
+body[data-page="dashboard"]:hover::before {
+  opacity: 0.3;
+}

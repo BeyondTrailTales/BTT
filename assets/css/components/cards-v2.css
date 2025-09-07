@@ -1,0 +1,332 @@
+/**
+ * Card Component - BEM Architecture
+ * Responsive cards for all BTT pages
+ * No !important declarations
+ */
+
+/* ==============================================
+   Base Card Component
+   ============================================== */
+.c-card {
+  /* Display & Layout */
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  
+  /* Box Model */
+  padding: var(--spacing-4, 1rem);
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--radius-lg, 0.5rem);
+  
+  /* Behavior */
+  transition: all var(--duration-base, 200ms) var(--ease-out);
+}
+
+/* Responsive padding */
+@media (min-width: 640px) {
+  .c-card {
+    padding: var(--spacing-6, 1.5rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .c-card {
+    padding: var(--spacing-8, 2rem);
+  }
+}
+
+/* Card Elements */
+.c-card__header {
+  margin-bottom: var(--spacing-4, 1rem);
+}
+
+.c-card__title {
+  font-size: clamp(1.125rem, 3vw, 1.5rem);
+  font-weight: var(--font-semibold, 600);
+  line-height: var(--leading-tight, 1.25);
+  margin: 0 0 var(--spacing-2, 0.5rem) 0;
+}
+
+.c-card__subtitle {
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+  line-height: var(--leading-normal, 1.5);
+  margin: 0;
+}
+
+.c-card__body {
+  flex: 1;
+  margin-bottom: var(--spacing-4, 1rem);
+}
+
+.c-card__body:last-child {
+  margin-bottom: 0;
+}
+
+.c-card__footer {
+  margin-top: auto;
+  padding-top: var(--spacing-4, 1rem);
+  border-top: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+}
+
+/* ==============================================
+   Card Variants
+   ============================================== */
+
+/* Interactive Card */
+.c-card--interactive {
+  cursor: pointer;
+}
+
+.c-card--interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  background: var(--color-surface-hover, rgba(255, 255, 255, 0.08));
+}
+
+/* Featured Card */
+.c-card--featured {
+  border-color: var(--color-primary, #4ba667);
+  border-width: 2px;
+}
+
+/* Compact Card */
+.c-card--compact {
+  padding: var(--spacing-3, 0.75rem);
+}
+
+@media (min-width: 640px) {
+  .c-card--compact {
+    padding: var(--spacing-4, 1rem);
+  }
+}
+
+/* Glass Card */
+.c-card--glass {
+  background: var(--color-surface-glass, rgba(255, 255, 255, 0.03));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* ==============================================
+   Themed Cards
+   ============================================== */
+
+/* Adventure Card */
+.c-card--adventure {
+  border-color: var(--adventure-primary, #3b82f6);
+}
+
+.c-card--adventure .c-card__title {
+  color: var(--adventure-primary, #3b82f6);
+}
+
+/* Gear Card */
+.c-card--gear {
+  border-color: var(--gear-primary, #f59e0b);
+}
+
+.c-card--gear .c-card__title {
+  color: var(--gear-primary, #f59e0b);
+}
+
+/* Backpack Card */
+.c-card--backpack {
+  border-color: var(--pack-primary, #10b981);
+}
+
+.c-card--backpack .c-card__title {
+  color: var(--pack-primary, #10b981);
+}
+
+/* ==============================================
+   Card Grid Layouts
+   ============================================== */
+
+/* Base Card Grid */
+.c-card-grid {
+  display: grid;
+  gap: var(--spacing-4, 1rem);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+}
+
+/* Responsive gaps */
+@media (min-width: 640px) {
+  .c-card-grid {
+    gap: var(--spacing-6, 1.5rem);
+  }
+}
+
+/* Grid Variants */
+.c-card-grid--2 {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 400px), 1fr));
+}
+
+.c-card-grid--3 {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+}
+
+.c-card-grid--4 {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+}
+
+/* Fixed column grids for precise layouts */
+@media (min-width: 768px) {
+  .c-card-grid--fixed-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .c-card-grid--fixed-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .c-card-grid--fixed-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ==============================================
+   Specialized Card Types
+   ============================================== */
+
+/* Stat Card */
+.c-card--stat {
+  text-align: center;
+  padding: var(--spacing-4, 1rem);
+}
+
+.c-card--stat .c-stat__number {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: var(--font-bold, 700);
+  color: var(--color-primary, #4ba667);
+  line-height: 1;
+  margin-bottom: var(--spacing-2, 0.5rem);
+}
+
+.c-card--stat .c-stat__label {
+  font-size: clamp(0.75rem, 2vw, 0.875rem);
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Media Card (with image) */
+.c-card--media {
+  padding: 0;
+  overflow: hidden;
+}
+
+.c-card__media {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.c-card--media .c-card__body {
+  padding: var(--spacing-4, 1rem);
+}
+
+@media (min-width: 640px) {
+  .c-card__media {
+    height: 250px;
+  }
+  
+  .c-card--media .c-card__body {
+    padding: var(--spacing-6, 1.5rem);
+  }
+}
+
+/* List Card */
+.c-card__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.c-card__list-item {
+  padding: var(--spacing-3, 0.75rem) 0;
+  border-bottom: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+}
+
+.c-card__list-item:last-child {
+  border-bottom: none;
+}
+
+/* ==============================================
+   Card Loading States
+   ============================================== */
+
+.c-card--loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.c-card--loading::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-surface-hover, rgba(255, 255, 255, 0.08)) 50%,
+    transparent 100%
+  );
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ==============================================
+   Legacy Class Mapping
+   ============================================== */
+
+.card {
+  composes: c-card;
+}
+
+.card-header {
+  composes: c-card__header;
+}
+
+.card-title {
+  composes: c-card__title;
+}
+
+.card-body {
+  composes: c-card__body;
+}
+
+.card-footer {
+  composes: c-card__footer;
+}
+
+.dashboard-card {
+  composes: c-card;
+}
+
+.stat-card {
+  composes: c-card c-card--stat;
+}
+
+/* Theme-specific cards */
+.card-adventures {
+  composes: c-card c-card--adventure;
+}
+
+.card-gear {
+  composes: c-card c-card--gear;
+}
+
+.card-backpacks {
+  composes: c-card c-card--backpack;
+}

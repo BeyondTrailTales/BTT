@@ -1,0 +1,183 @@
+/**
+ * BeyondTrailTales - Temporary Migration CSS
+ * This file contains temporary fixes while migrating to the new CSS architecture
+ * Each rule here should be documented with:
+ * 1. What it fixes
+ * 2. Which old CSS file it's replacing
+ * 3. When it can be removed
+ * 
+ * GOAL: This file should be empty when migration is complete
+ */
+
+/* ===========================================
+   DASHBOARD CENTERING FIX
+   Replaces: dashboard-dropdown-fix.css, navigation-spacing-fix.css
+   Can be removed: When dashboard.css is implemented
+   =========================================== */
+
+/* Override all the conflicting container rules */
+[data-page="dashboard"] .page-container {
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+[data-page="dashboard"] .container {
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 0 1rem !important;
+}
+
+/* Dashboard hero centering */
+[data-page="dashboard"] .modern-dashboard-hero {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 2rem 0 !important;
+}
+
+[data-page="dashboard"] .modern-dashboard-hero-content {
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding: 0 1rem !important;
+}
+
+/* Dashboard grids centering */
+[data-page="dashboard"] .stats-grid,
+[data-page="dashboard"] .dashboard-primary-grid,
+[data-page="dashboard"] .dashboard-secondary-grid {
+  max-width: 1200px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: 0 1rem !important;
+}
+
+/* ===========================================
+   NAVIGATION Z-INDEX FIX
+   Replaces: nav-dropdown-overlay-fix.css
+   Can be removed: When navigation.css is implemented
+   =========================================== */
+
+.forest-nav {
+  z-index: 1000 !important;
+}
+
+.dropdown-menu,
+.quick-actions-menu {
+  z-index: 1001 !important;
+}
+
+/* ===========================================
+   REMOVE BODY PADDING/MARGIN ISSUES
+   Replaces: Various conflicting rules
+   Can be removed: When base.css is fully adopted
+   =========================================== */
+
+body {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+main,
+.page-content {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* ===========================================
+   TEMPORARY COMPONENT STYLES
+   Until components are properly migrated
+   =========================================== */
+
+/* Buttons - minimal styles to maintain functionality */
+.btn,
+.modern-btn {
+  padding: 0.75rem 1.5rem !important;
+  border-radius: 0.5rem !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 200ms ease-out !important;
+  cursor: pointer !important;
+}
+
+/* Cards - minimal styles to maintain visibility */
+.card {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 1rem !important;
+  padding: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+/* Stats grid - ensure visibility */
+.stats-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+  gap: 1.5rem !important;
+  margin-bottom: 2rem !important;
+}
+
+.stat-card {
+  text-align: center !important;
+  padding: 1.5rem !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-radius: 1rem !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.stat-number {
+  font-size: 2.5rem !important;
+  font-weight: 900 !important;
+  color: #fff !important;
+}
+
+.stat-label {
+  font-size: 0.875rem !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+/* Dashboard grids - ensure visibility */
+.dashboard-primary-grid,
+.dashboard-secondary-grid {
+  display: grid !important;
+  gap: 2rem !important;
+  margin-bottom: 2rem !important;
+}
+
+.dashboard-primary-grid {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+}
+
+@media (min-width: 768px) {
+  .dashboard-secondary-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .dashboard-secondary-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+/* ===========================================
+   DEBUG MODE
+   Uncomment to see container boundaries
+   =========================================== */
+
+/*
+[data-page="dashboard"] * {
+  outline: 1px dashed rgba(255, 0, 0, 0.2);
+}
+
+[data-page="dashboard"] .container,
+[data-page="dashboard"] .page-container {
+  outline: 2px solid red;
+}
+*/

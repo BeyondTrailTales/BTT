@@ -1,0 +1,269 @@
+/**
+ * Gear Grid Display Fix
+ * Ensures grid views work properly with JavaScript
+ * @version 1.0.0
+ */
+
+/* ===========================================
+   GRID VIEW MODE FIXES
+   =========================================== */
+
+/* Default Grid View */
+.gear-page .gear-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.25rem;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+/* List View - Override grid display */
+.gear-page .gear-grid.list-view {
+    display: flex !important;
+    flex-direction: column;
+    gap: 0.625rem;
+}
+
+.gear-page .gear-grid.list-view .gear-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-height: 75px;
+    max-height: 80px;
+    padding: 0.875rem 1.25rem;
+}
+
+.gear-page .gear-grid.list-view .gear-card-header {
+    flex: 0 0 240px;
+    margin-bottom: 0;
+    margin-right: 1.25rem;
+}
+
+.gear-page .gear-grid.list-view .gear-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0;
+}
+
+.gear-page .gear-grid.list-view .gear-meta {
+    border: none;
+    padding: 0;
+}
+
+.gear-page .gear-grid.list-view .gear-notes {
+    display: none;
+}
+
+.gear-page .gear-grid.list-view .gear-card-actions {
+    margin: 0 0 0 auto;
+    padding: 0;
+    border: none;
+}
+
+/* Compact Density (JavaScript uses 'compact' class) */
+.gear-page .gear-grid.compact {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.gear-page .gear-grid.compact .gear-card {
+    padding: 1rem;
+    min-height: 180px;
+    max-height: 200px;
+}
+
+.gear-page .gear-grid.compact .gear-name {
+    font-size: 0.9375rem;
+}
+
+.gear-page .gear-grid.compact .gear-icon {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.125rem;
+}
+
+/* Ultra-Compact Density (JavaScript uses 'ultra-compact' class) */
+.gear-page .gear-grid.ultra-compact {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0.625rem;
+}
+
+.gear-page .gear-grid.ultra-compact .gear-card {
+    padding: 0.75rem;
+    min-height: 150px;
+    max-height: 170px;
+}
+
+.gear-page .gear-grid.ultra-compact .gear-name {
+    font-size: 0.875rem;
+    -webkit-line-clamp: 1;
+}
+
+.gear-page .gear-grid.ultra-compact .gear-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 1rem;
+}
+
+.gear-page .gear-grid.ultra-compact .gear-notes {
+    display: none;
+}
+
+.gear-page .gear-grid.ultra-compact .gear-card-actions .btn-icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.75rem;
+}
+
+/* ===========================================
+   VIEW MODE BUTTON SYNCHRONIZATION
+   =========================================== */
+
+/* Ensure view mode buttons in hero match sidebar */
+.gear-page .view-toggle-btn {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.gear-page .view-toggle-btn.active,
+.gear-page .view-mode-btn.active {
+    background: rgba(0, 0, 0, 0.2);
+    color: rgba(0, 0, 0, 0.9);
+}
+
+/* ===========================================
+   DENSITY CLASS ON BODY
+   =========================================== */
+
+/* Apply density at the page level for consistency */
+.gear-page.density-comfortable .gear-grid:not(.list-view) {
+    gap: 1.5rem;
+}
+
+.gear-page.density-comfortable .gear-card {
+    padding: 1.5rem;
+}
+
+.gear-page.density-compact .gear-grid:not(.list-view) {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.gear-page.density-ultra-compact .gear-grid:not(.list-view) {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0.625rem;
+}
+
+/* ===========================================
+   RESPONSIVE GRID ADJUSTMENTS
+   =========================================== */
+
+@media (max-width: 1400px) {
+    .gear-page .gear-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+    
+    .gear-page .gear-grid.compact {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+    
+    .gear-page .gear-grid.ultra-compact {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+}
+
+@media (max-width: 1200px) {
+    .gear-page .gear-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+    
+    .gear-page .gear-grid.compact {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    }
+    
+    .gear-page .gear-grid.ultra-compact {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    /* Force single column on mobile */
+    .gear-page .gear-grid,
+    .gear-page .gear-grid.compact,
+    .gear-page .gear-grid.ultra-compact {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    .gear-page .gear-grid.list-view .gear-card-header {
+        flex: 1;
+        min-width: 0;
+    }
+}
+
+/* ===========================================
+   LOADING AND EMPTY STATE FIXES
+   =========================================== */
+
+/* Ensure containers are properly sized */
+.gear-page .gear-items-container {
+    min-height: 400px;
+    position: relative;
+}
+
+.gear-page #gear-loading,
+.gear-page #gear-empty,
+.gear-page #gear-no-results {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+}
+
+/* ===========================================
+   SMOOTH TRANSITIONS
+   =========================================== */
+
+/* Animate grid changes */
+.gear-page .gear-grid {
+    transition: grid-template-columns 0.3s ease, gap 0.3s ease;
+}
+
+.gear-page .gear-card {
+    transition: all 0.3s ease;
+}
+
+/* Prevent layout shift during view mode changes */
+.gear-page .gear-grid:not(.list-view) .gear-card {
+    aspect-ratio: unset;
+    height: auto;
+}
+
+/* ===========================================
+   DEBUG HELPERS
+   =========================================== */
+
+/* Visual indicator for current view mode (can be removed in production) */
+.gear-page .gear-grid::before {
+    content: attr(data-view);
+    position: absolute;
+    top: -1.5rem;
+    right: 0;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: none; /* Hidden by default */
+}
+
+/* Show debug info when needed */
+.gear-page.debug .gear-grid::before {
+    display: block;
+}

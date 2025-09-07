@@ -1,0 +1,158 @@
+/* ========================================
+   BUTTON RESIZE FIX
+   Prevents buttons from scaling on hover/active
+   ======================================== */
+
+/* Override CSS variables that cause scaling */
+:root {
+  --active-scale: 1 !important;
+  --hover-scale: 1 !important;
+}
+
+/* Override all button transformations with more specific selectors */
+button,
+.btn,
+.btn-primary,
+.btn-secondary,
+.btn-ghost,
+.btn-sm,
+.btn-lg,
+.btn-xl,
+.tab-btn,
+.pack-tab,
+button.btn,
+button.tab-btn,
+button.pack-tab,
+a.btn,
+a.tab-btn,
+a.pack-tab,
+[class*="btn"],
+[class*="tab"] {
+  transform: none !important;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease !important;
+}
+
+/* Hover states - only subtle shadow, no transform */
+button:hover,
+.btn:hover,
+.btn-primary:hover,
+.btn-secondary:hover,
+.btn-ghost:hover,
+.btn-sm:hover,
+.btn-lg:hover,
+.btn-xl:hover,
+.tab-btn:hover,
+.pack-tab:hover,
+button.btn:hover,
+button.tab-btn:hover,
+button.pack-tab:hover,
+a.btn:hover,
+a.tab-btn:hover,
+a.pack-tab:hover,
+[class*="btn"]:hover,
+[class*="tab"]:hover {
+  transform: none !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Active states - no transform */
+button:active,
+.btn:active,
+.btn-primary:active,
+.btn-secondary:active,
+.btn-ghost:active,
+.btn-sm:active,
+.btn-lg:active,
+.btn-xl:active,
+.tab-btn:active,
+.pack-tab:active,
+button.btn:active,
+button.tab-btn:active,
+button.pack-tab:active,
+a.btn:active,
+a.tab-btn:active,
+a.pack-tab:active,
+[class*="btn"]:active,
+[class*="tab"]:active {
+  transform: none !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Focus states - no transform */
+button:focus,
+button:focus-visible,
+.btn:focus,
+.btn:focus-visible,
+.tab-btn:focus,
+.tab-btn:focus-visible,
+.pack-tab:focus,
+.pack-tab:focus-visible,
+[class*="btn"]:focus,
+[class*="btn"]:focus-visible,
+[class*="tab"]:focus,
+[class*="tab"]:focus-visible {
+  transform: none !important;
+}
+
+/* Disable all scale transforms globally for interactive elements */
+*:hover,
+*:active,
+*:focus {
+  transform: none !important;
+}
+
+/* More specific overrides for theme buttons */
+.btn-adventure,
+.btn-adventure:hover,
+.btn-adventure:active,
+.btn-adventure:focus,
+.btn-hero,
+.btn-hero:hover,
+.btn-hero:active,
+.btn-hero:focus,
+.btn-adventure.btn-hero,
+.btn-adventure.btn-hero:hover,
+.btn-adventure.btn-hero:active,
+.btn-adventure.btn-hero:focus {
+  transform: none !important;
+}
+
+/* Override any button with any combination of classes */
+[class*="btn"]:hover,
+[class*="btn"]:active,
+[class*="btn"]:focus,
+button:hover,
+button:active,
+button:focus,
+a[class*="btn"]:hover,
+a[class*="btn"]:active,
+a[class*="btn"]:focus,
+input[type="button"]:hover,
+input[type="button"]:active,
+input[type="button"]:focus,
+input[type="submit"]:hover,
+input[type="submit"]:active,
+input[type="submit"]:focus {
+  transform: none !important;
+  -webkit-transform: none !important;
+  -moz-transform: none !important;
+  -ms-transform: none !important;
+  -o-transform: none !important;
+}
+
+/* Nuclear option - disable ALL transforms on ANY element interaction */
+* {
+  transition-property: background-color, border-color, box-shadow, color, opacity, fill, stroke !important;
+}
+
+*:hover,
+*:active,
+*:focus,
+*:focus-visible,
+*:focus-within {
+  transform: none !important;
+  -webkit-transform: none !important;
+  -moz-transform: none !important;
+  -ms-transform: none !important;
+  -o-transform: none !important;
+}

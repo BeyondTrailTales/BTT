@@ -6,60 +6,98 @@
 require_once __DIR__ . '/card.php';
 
 function render_trip_card($trip) {
-    // Prepare badges
+    // Prepare badges - separate top and bottom
     $badges = [];
+    $bottom_badges = [];
+    
+    // Status badges (bottom)
     if ($trip['favorite'] == 1) {
-        $badges[] = ['text' => '⭐ Favorite', 'type' => 'warning'];
+        $bottom_badges[] = ['text' => '⭐ Favorite', 'type' => 'warning'];
     }
     if ($trip['completed'] == 1) {
-        $badges[] = ['text' => '✅ Completed', 'type' => 'success'];
+        $bottom_badges[] = ['text' => '✅ Completed', 'type' => 'success'];
+    } else {
+        // Show status for non-completed trips
+        $status_labels = [
+            'planning' => '📋 Planning',
+            'upcoming' => '🎯 Upcoming',
+            'active' => '🔥 Active'
+        ];
+        $status = $trip['status'] ?? 'planning';
+        $bottom_badges[] = ['text' => $status_labels[$status] ?? '📋 Planning', 'type' => 'info'];
     }
+    
+    // Trip type badges (top right - minimal)
     if ($trip['trip_type']) {
         $type_labels = [
-            'day_hike' => '🥾 Day Hike',
-            'overnight' => '🏕️ Overnight',
-            'weekend' => '🎒 Weekend',
-            'section_hike' => '🗺️ Section',
-            'thru_hike' => '🏔️ Thru-Hike'
+            'day_hike' => 'Day Hike',
+            'overnight' => 'Overnight',
+            'weekend' => 'Weekend',
+            'section_hike' => 'Section',
+            'thru_hike' => 'Thru-Hike'
         ];
         $badges[] = $type_labels[$trip['trip_type']] ?? $trip['trip_type'];
     }
     
-    // Prepare meta information
+    // Difficulty badge (top right)
+    if (!empty($trip['difficulty'])) {
+        $badges[] = ucfirst($trip['difficulty']);
+    }
+    
+    // Prepare meta information with improved structure
     $meta = [];
+    
+    // Location
     if (!empty($trip['location'])) {
-        $meta[] = ['icon' => '📍', 'text' => $trip['location']];
+        $meta[] = [
+            'icon' => '📍', 
+            'label' => 'Location',
+            'text' => $trip['location']
+        ];
     }
     
     // Date range
     if (!empty($trip['start_date'])) {
-        $start = date('M j, Y', strtotime($trip['start_date']));
-        $end = !empty($trip['end_date']) ? date('M j, Y', strtotime($trip['end_date'])) : '';
+        $start = date('M j', strtotime($trip['start_date']));
+        $end = !empty($trip['end_date']) ? date('M j', strtotime($trip['end_date'])) : '';
         $date_text = $end && $end !== $start ? "$start - $end" : $start;
-        $meta[] = ['icon' => '📅', 'text' => $date_text];
+        $meta[] = [
+            'icon' => '📅', 
+            'label' => 'Dates',
+            'text' => $date_text
+        ];
+    }
+    
+    // Duration
+    if (!empty($trip['start_date']) && !empty($trip['end_date'])) {
+        $start_date = new DateTime($trip['start_date']);
+        $end_date = new DateTime($trip['end_date']);
+        $duration = $start_date->diff($end_date)->days + 1;
+        $duration_text = $duration == 1 ? '1 day' : "$duration days";
+        $meta[] = [
+            'icon' => '⏱️', 
+            'label' => 'Duration',
+            'text' => $duration_text
+        ];
     }
     
     // Distance
     if (!empty($trip['distance'])) {
         $unit = $trip['distance_unit'] ?? 'miles';
-        $meta[] = ['icon' => '📏', 'text' => "{$trip['distance']} {$unit}"];
+        $meta[] = [
+            'icon' => '🥾', 
+            'label' => 'Distance',
+            'text' => "{$trip['distance']} {$unit}"
+        ];
     }
     
     // Elevation
     if (!empty($trip['elevation_gain'])) {
-        $meta[] = ['icon' => '📈', 'text' => "{$trip['elevation_gain']}ft gain"];
-    }
-    
-    // Difficulty
-    if (!empty($trip['difficulty'])) {
-        $difficulty_icons = [
-            'easy' => '🟢',
-            'moderate' => '🟡', 
-            'hard' => '🔴',
-            'expert' => '⚫'
+        $meta[] = [
+            'icon' => '⛰️', 
+            'label' => 'Elevation',
+            'text' => number_format($trip['elevation_gain']) . ' ft'
         ];
-        $icon = $difficulty_icons[$trip['difficulty']] ?? '⚪';
-        $meta[] = ['icon' => $icon, 'text' => ucfirst($trip['difficulty'])];
     }
     
     // Prepare actions
@@ -88,6 +126,7 @@ function render_trip_card($trip) {
         'image' => $image,
         'image_alt' => $image_alt,
         'badges' => $badges,
+        'bottom_badges' => $bottom_badges,
         'meta' => $meta,
         'actions' => $actions,
         'class' => 'trip-card',

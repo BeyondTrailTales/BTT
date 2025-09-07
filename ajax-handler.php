@@ -50,6 +50,280 @@ if (defined('BTT_DEBUG') && BTT_DEBUG) {
     error_log("AJAX Handler: User=$user_id, Method=$method, Route=$route, ID=$id");
 }
 
+/**
+ * Handle create trip action for standalone edit page
+ */
+function handleCreateTripAction($db, $user_id) {
+    try {
+        // Validate required fields
+        $title = $_POST['title'] ?? '';
+        if (empty(trim($title))) {
+            ob_clean();
+            echo json_encode(['success' => false, 'error' => 'Adventure name is required']);
+            exit;
+        }
+
+        // Handle photo upload
+        $photoPath = null;
+        if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = __DIR__ . '/assets/img/trips/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+            
+            $fileExtension = strtolower(pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION));
+            $allowedExtensions = ['jpg', 'jpeg', 'png'];
+            
+            if (!in_array($fileExtension, $allowedExtensions)) {
+                ob_clean();
+                echo json_encode(['success' => false, 'error' => 'Invalid file type. Please upload JPG, JPEG, or PNG files only.']);
+                exit;
+            }
+            
+            // Create unique filename
+            $timestamp = date('Ymd_His');
+            $randomId = substr(md5(uniqid()), 0, 13);
+            $newFilename = "{$timestamp}_{$randomId}.{$fileExtension}";
+            $uploadPath = $uploadDir . $newFilename;
+            
+            if (move_uploaded_file($_FILES['photo']['tmp_name'], $uploadPath)) {
+                $photoPath = 'assets/img/trips/' . $newFilename;
+            } else {
+                ob_clean();
+                echo json_encode(['success' => false, 'error' => 'Failed to upload photo']);
+                exit;
+            }
+        }
+
+        // Prepare insert data
+        $insertData = [
+            'title' => $title,
+            'location' => $_POST['location'] ?? '',
+            'start_date' => $_POST['start_date'] ?? null,
+            'end_date' => $_POST['end_date'] ?? null,
+            'distance' => $_POST['distance'] ? floatval($_POST['distance']) : null,
+            'distance_unit' => $_POST['distance_unit'] ?? 'miles',
+            'elevation_gain' => $_POST['elevation_gain'] ? intval($_POST['elevation_gain']) : null,
+            'difficulty' => $_POST['difficulty'] ?? null,
+            'trip_type' => $_POST['trip_type'] ?? null,
+            'description' => $_POST['description'] ?? '',
+            'favorite' => isset($_POST['favorite']) ? intval($_POST['favorite']) : 0,
+            'completed' => isset($_POST['completed']) ? intval($_POST['completed']) : 0,
+            'backpack_id' => $_POST['backpack_id'] ?: null,
+            'photo_path' => $photoPath,
+            'photo_alt_text' => $_POST['photo_alt_text'] ?? '',
+            // Logistics fields
+            'permit_required' => isset($_POST['permit_required']) ? intval($_POST['permit_required']) : 0,
+            'permit_cost' => $_POST['permit_cost'] ? floatval($_POST['permit_cost']) : null,
+            'permit_info' => $_POST['permit_info'] ?? '',
+            'trailhead_parking' => $_POST['trailhead_parking'] ?? '',
+            'parking_cost' => $_POST['parking_cost'] ? floatval($_POST['parking_cost']) : null,
+            // Conditions fields
+            'water_sources' => $_POST['water_sources'] ?? '',
+            'trail_conditions' => $_POST['trail_conditions'] ?? '',
+            'cell_coverage' => $_POST['cell_coverage'] ?? '',
+            'crowd_level' => $_POST['crowd_level'] ?? '',
+            'camping_type' => $_POST['camping_type'] ?? '',
+            'expected_weather' => $_POST['expected_weather'] ?? '',
+            'emergency_contact' => $_POST['emergency_contact'] ?? '',
+            // Notes fields
+            'pre_trip_notes' => $_POST['pre_trip_notes'] ?? '',
+            'post_trip_notes' => $_POST['post_trip_notes'] ?? '',
+            'lessons_learned' => $_POST['lessons_learned'] ?? '',
+            // System fields
+            'user_id' => $user_id,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
+
+        // Build insert query
+        $fields = array_keys($insertData);
+        $placeholders = array_fill(0, count($fields), '?');
+        $sql = "INSERT INTO trips (" . implode(', ', $fields) . ") VALUES (" . implode(', ', $placeholders) . ")";
+        
+        $stmt = $db->prepare($sql);
+        $stmt->execute(array_values($insertData));
+        
+        // Get the created trip
+        $newTripId = $db->lastInsertId();
+        if (!$newTripId) {
+            ob_clean();
+            echo json_encode(['success' => false, 'error' => 'Failed to get created trip ID']);
+            exit;
+        }
+        
+        $stmt = $db->prepare("SELECT * FROM trips WHERE id = ? AND user_id = ?");
+        $stmt->execute([$newTripId, $user_id]);
+        $createdTrip = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$createdTrip) {
+            ob_clean();
+            echo json_encode(['success' => false, 'error' => 'Failed to retrieve created trip']);
+            exit;
+        }
+
+        ob_clean();
+        echo json_encode([
+            'success' => true,
+            'message' => 'Adventure created successfully!',
+            'trip' => $createdTrip
+        ]);
+        exit;
+        
+    } catch (Exception $e) {
+        ob_clean();
+        echo json_encode(['success' => false, 'error' => 'Failed to create trip: ' . $e->getMessage()]);
+        exit;
+    }
+}
+
+/**
+ * Handle update trip action for standalone edit page
+ */
+function handleUpdateTripAction($db, $user_id) {
+    try {
+        $tripId = $_POST['id'] ?? null;
+        if (!$tripId) {
+            ob_clean();
+            echo json_encode(['success' => false, 'error' => 'Trip ID is required']);
+            exit;
+        }
+
+        // Verify trip belongs to user
+        $stmt = $db->prepare("SELECT * FROM trips WHERE id = ? AND user_id = ?");
+        $stmt->execute([$tripId, $user_id]);
+        $existingTrip = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$existingTrip) {
+            ob_clean();
+            echo json_encode(['success' => false, 'error' => 'Trip not found']);
+            exit;
+        }
+
+        // Handle photo upload
+        $photoPath = $existingTrip['photo_path'];
+        // Extract filename from the path if it exists
+        $photoFilename = $photoPath ? basename($photoPath) : null;
+        
+        if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+            $uploadDir = __DIR__ . '/assets/img/trips/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+            
+            $fileExtension = strtolower(pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION));
+            $allowedExtensions = ['jpg', 'jpeg', 'png'];
+            
+            if (!in_array($fileExtension, $allowedExtensions)) {
+                ob_clean();
+                echo json_encode(['success' => false, 'error' => 'Invalid file type. Please upload JPG, JPEG, or PNG files only.']);
+                exit;
+            }
+            
+            // Create unique filename
+            $timestamp = date('Ymd_His');
+            $randomId = substr(md5(uniqid()), 0, 13);
+            $newFilename = "{$timestamp}_{$randomId}.{$fileExtension}";
+            $uploadPath = $uploadDir . $newFilename;
+            
+            if (move_uploaded_file($_FILES['photo']['tmp_name'], $uploadPath)) {
+                // Delete old photo if exists
+                if ($photoFilename && file_exists($uploadDir . $photoFilename)) {
+                    unlink($uploadDir . $photoFilename);
+                }
+                
+                $photoPath = 'assets/img/trips/' . $newFilename;
+                $photoFilename = $newFilename;
+            } else {
+                ob_clean();
+                echo json_encode(['success' => false, 'error' => 'Failed to upload photo']);
+                exit;
+            }
+        }
+        
+        // Handle photo removal
+        if (isset($_POST['remove_photo']) && $_POST['remove_photo'] === '1') {
+            if ($photoFilename && file_exists(__DIR__ . '/assets/img/trips/' . $photoFilename)) {
+                unlink(__DIR__ . '/assets/img/trips/' . $photoFilename);
+            }
+            $photoPath = null;
+            $photoFilename = null;
+        }
+
+        // Prepare update data - include all fields
+        $updateData = [
+            'title' => $_POST['title'] ?? $existingTrip['title'],
+            'location' => $_POST['location'] ?? $existingTrip['location'],
+            'start_date' => $_POST['start_date'] ?? $existingTrip['start_date'],
+            'end_date' => $_POST['end_date'] ?? $existingTrip['end_date'],
+            'description' => $_POST['description'] ?? $existingTrip['description'],
+            'trip_type' => $_POST['trip_type'] ?? $existingTrip['trip_type'],
+            'distance' => $_POST['distance'] ? floatval($_POST['distance']) : $existingTrip['distance'],
+            'distance_unit' => $_POST['distance_unit'] ?? $existingTrip['distance_unit'],
+            'elevation_gain' => $_POST['elevation_gain'] ? floatval($_POST['elevation_gain']) : $existingTrip['elevation_gain'],
+            'difficulty' => $_POST['difficulty'] ?? $existingTrip['difficulty'],
+            'favorite' => isset($_POST['favorite']) ? intval($_POST['favorite']) : $existingTrip['favorite'],
+            'completed' => isset($_POST['completed']) ? intval($_POST['completed']) : $existingTrip['completed'],
+            'backpack_id' => $_POST['backpack_id'] ?: null,
+            'photo_path' => $photoPath,
+            'photo_alt_text' => $_POST['photo_alt_text'] ?? $existingTrip['photo_alt_text'],
+            // Logistics fields
+            'permit_required' => isset($_POST['permit_required']) ? intval($_POST['permit_required']) : $existingTrip['permit_required'],
+            'permit_cost' => $_POST['permit_cost'] ? floatval($_POST['permit_cost']) : $existingTrip['permit_cost'],
+            'permit_info' => $_POST['permit_info'] ?? $existingTrip['permit_info'],
+            'trailhead_parking' => $_POST['trailhead_parking'] ?? $existingTrip['trailhead_parking'],
+            'parking_cost' => $_POST['parking_cost'] ? floatval($_POST['parking_cost']) : $existingTrip['parking_cost'],
+            // Conditions fields
+            'water_sources' => $_POST['water_sources'] ?? $existingTrip['water_sources'],
+            'trail_conditions' => $_POST['trail_conditions'] ?? $existingTrip['trail_conditions'],
+            'cell_coverage' => $_POST['cell_coverage'] ?? $existingTrip['cell_coverage'],
+            'crowd_level' => $_POST['crowd_level'] ?? $existingTrip['crowd_level'],
+            'camping_type' => $_POST['camping_type'] ?? $existingTrip['camping_type'],
+            'expected_weather' => $_POST['expected_weather'] ?? $existingTrip['expected_weather'],
+            'emergency_contact' => $_POST['emergency_contact'] ?? $existingTrip['emergency_contact'],
+            // Notes fields
+            'pre_trip_notes' => $_POST['pre_trip_notes'] ?? $existingTrip['pre_trip_notes'],
+            'post_trip_notes' => $_POST['post_trip_notes'] ?? $existingTrip['post_trip_notes'],
+            'lessons_learned' => $_POST['lessons_learned'] ?? $existingTrip['lessons_learned'],
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
+
+        // Build update query
+        $updateFields = [];
+        $updateValues = [];
+        
+        foreach ($updateData as $field => $value) {
+            $updateFields[] = "$field = ?";
+            $updateValues[] = $value;
+        }
+        
+        $updateValues[] = $tripId;
+        $updateValues[] = $user_id;
+
+        $sql = "UPDATE trips SET " . implode(', ', $updateFields) . " WHERE id = ? AND user_id = ?";
+        $stmt = $db->prepare($sql);
+        $stmt->execute($updateValues);
+
+        // Get updated trip
+        $stmt = $db->prepare("SELECT * FROM trips WHERE id = ? AND user_id = ?");
+        $stmt->execute([$tripId, $user_id]);
+        $updatedTrip = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        ob_clean();
+        echo json_encode([
+            'success' => true,
+            'message' => 'Adventure updated successfully!',
+            'trip' => $updatedTrip
+        ]);
+        exit;
+        
+    } catch (Exception $e) {
+        ob_clean();
+        echo json_encode(['success' => false, 'error' => 'Failed to update trip: ' . $e->getMessage()]);
+        exit;
+    }
+}
+
 // Check if required tables exist and create them if not
 try {
     $tables = $db->query("SELECT name FROM sqlite_master WHERE type='table'")->fetchAll(PDO::FETCH_COLUMN);
@@ -356,6 +630,19 @@ try {
         }
     }
     
+    // Handle trips and trip packing list routes
+    if (strpos($route, 'trips/') === 0) {
+        // Parse trip ID and sub-route
+        $routeParts = explode('/', $route);
+        if (count($routeParts) >= 3 && $routeParts[2] === 'packing-list') {
+            // trips/{id}/packing-list route
+            $tripId = $routeParts[1];
+            require_once __DIR__ . '/api/routes/trip_packing.php';
+            handleTripPackingRoute($method, [$tripId]);
+            exit;
+        }
+    }
+    
     // Handle trips
     if ($route === 'trips') {
         try {
@@ -375,9 +662,16 @@ try {
                     echo json_encode($trip ?: ['success' => false, 'message' => 'Trip not found']);
                     exit;
                 } else {
-                    // Get all trips
-                    $stmt = $db->prepare("SELECT * FROM trips WHERE user_id = ? ORDER BY created_at DESC");
-                    $stmt->execute([$user_id]);
+                    // Get all trips - support backpack_id filter
+                    $backpackId = isset($_GET['backpack_id']) ? intval($_GET['backpack_id']) : null;
+                    
+                    if ($backpackId) {
+                        $stmt = $db->prepare("SELECT * FROM trips WHERE user_id = ? AND backpack_id = ? ORDER BY created_at DESC");
+                        $stmt->execute([$user_id, $backpackId]);
+                    } else {
+                        $stmt = $db->prepare("SELECT * FROM trips WHERE user_id = ? ORDER BY created_at DESC");
+                        $stmt->execute([$user_id]);
+                    }
                     $trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     
                     ob_clean();
@@ -845,9 +1139,32 @@ try {
                                         (backpack_id, gear_id, custom_name, custom_weight, custom_category, quantity, section, position, custom_notes, worn, consumable) 
                                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                                     ");
+                                    // Properly validate and handle gear_id (same logic as PUT)
+                                    $gearId = null;
+                                    if (!(isset($item['is_custom']) && $item['is_custom']) && isset($item['gear_id'])) {
+                                        $rawGearId = $item['gear_id'];
+                                        
+                                        // Handle different gear_id formats
+                                        if (is_numeric($rawGearId) && $rawGearId > 0) {
+                                            // Valid numeric gear_id - verify it exists in database
+                                            $checkStmt = $db->prepare("SELECT id FROM gear_items WHERE id = ?");
+                                            $checkStmt->execute([$rawGearId]);
+                                            if ($checkStmt->fetch()) {
+                                                $gearId = (int)$rawGearId;
+                                            }
+                                        } elseif (is_string($rawGearId) && !empty($rawGearId)) {
+                                            // String gear_id (like "def-def-clothing-baselayer-bottom")
+                                            // These are template/default items that don't exist in gear_items table
+                                            // Treat them as custom items instead
+                                            $gearId = null;
+                                            $item['is_custom'] = true;
+                                            error_log("Converting template gear_id '$rawGearId' to custom item: " . ($item['name'] ?? 'Unknown'));
+                                        }
+                                    }
+                                    
                                     $stmt->execute([
                                         $packId,
-                                        (isset($item['is_custom']) && $item['is_custom']) ? null : ($item['gear_id'] ?? null),
+                                        $gearId,
                                         $item['name'] ?? 'Unknown',
                                         $item['weight_g'] ?? 0,
                                         $item['category'] ?? 'other',
@@ -977,6 +1294,29 @@ try {
                     foreach ($data['sections'] as $sectionIndex => $section) {
                         if (isset($section['items']) && is_array($section['items'])) {
                             foreach ($section['items'] as $itemIndex => $item) {
+                                // Properly validate and handle gear_id BEFORE any database operations
+                                $gearId = null;
+                                if (!(isset($item['is_custom']) && $item['is_custom']) && isset($item['gear_id'])) {
+                                    $rawGearId = $item['gear_id'];
+                                    
+                                    // Handle different gear_id formats
+                                    if (is_numeric($rawGearId) && $rawGearId > 0) {
+                                        // Valid numeric gear_id - verify it exists in database
+                                        $checkStmt = $db->prepare("SELECT id FROM gear_items WHERE id = ?");
+                                        $checkStmt->execute([$rawGearId]);
+                                        if ($checkStmt->fetch()) {
+                                            $gearId = (int)$rawGearId;
+                                        }
+                                    } elseif (is_string($rawGearId) && !empty($rawGearId)) {
+                                        // String gear_id (like "def-def-clothing-baselayer-bottom")
+                                        // These are template/default items that don't exist in gear_items table
+                                        // Treat them as custom items instead
+                                        $gearId = null;
+                                        $item['is_custom'] = true;
+                                        error_log("Converting template gear_id '$rawGearId' to custom item: " . ($item['name'] ?? 'Unknown'));
+                                    }
+                                }
+                                
                                 try {
                                     // Try with all columns first
                                     $stmt = $db->prepare("
@@ -984,9 +1324,10 @@ try {
                                         (backpack_id, gear_id, custom_name, custom_weight, custom_category, quantity, section, position, custom_notes, worn, consumable) 
                                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                                     ");
+                                    
                                     $stmt->execute([
                                         $id,
-                                        (isset($item['is_custom']) && $item['is_custom']) ? null : ($item['gear_id'] ?? null),
+                                        $gearId,
                                         $item['name'] ?? 'Unknown',
                                         $item['weight_g'] ?? 0,
                                         $item['category'] ?? 'other',
@@ -998,7 +1339,7 @@ try {
                                         isset($item['consumable']) && $item['consumable'] ? 1 : 0
                                     ]);
                                 } catch (PDOException $e) {
-                                    // Fallback if columns don't exist
+                                    // Fallback if columns don't exist - reuse the same gear_id logic
                                     $stmt = $db->prepare("
                                         INSERT INTO backpack_gear 
                                         (backpack_id, gear_id, custom_name, custom_weight, custom_category, quantity, section, position) 
@@ -1006,7 +1347,7 @@ try {
                                     ");
                                     $stmt->execute([
                                         $id,
-                                        (isset($item['is_custom']) && $item['is_custom']) ? null : ($item['gear_id'] ?? null),
+                                        $gearId, // Use the already validated gear_id
                                         $item['name'] ?? 'Unknown',
                                         $item['weight_g'] ?? 0,
                                         $item['category'] ?? 'other',
@@ -1125,6 +1466,23 @@ try {
                 INSERT INTO backpack_gear (backpack_id, custom_name, custom_weight, custom_category, quantity, section, gear_id, custom_notes) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             ");
+            // Validate gear_id exists if provided
+            if ($gear_id !== null && $gear_id !== '') {
+                try {
+                    $checkStmt = $db->prepare("SELECT id FROM gear_items WHERE id = ?");
+                    $checkStmt->execute([$gear_id]);
+                    if (!$checkStmt->fetch()) {
+                        error_log("Invalid gear_id: $gear_id for custom item: $custom_name");
+                        $gear_id = null; // Set to null if doesn't exist
+                    }
+                } catch (Exception $e) {
+                    error_log("Error validating custom gear_id $gear_id: " . $e->getMessage());
+                    $gear_id = null; // Set to null on error
+                }
+            } else {
+                $gear_id = null;
+            }
+            
             $stmt->execute([$backpack_id, $custom_name, $custom_weight, $custom_category, $quantity, $section, $gear_id, $notes ?? '']);
             
             // Update backpack's updated_at timestamp
@@ -1168,6 +1526,28 @@ try {
         }
     }
     
+    // Handle direct action-based requests (for standalone pages)
+    $action = $_POST['action'] ?? null;
+    if ($action) {
+        switch ($action) {
+            case 'create_trip':
+                handleCreateTripAction($db, $user_id);
+                break;
+                
+            case 'update_trip':
+                handleUpdateTripAction($db, $user_id);
+                break;
+            
+            default:
+                ob_clean();
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Unknown action: ' . $action
+                ]);
+                exit;
+        }
+    }
+    
     // If no route matched, return error
     ob_clean();
     echo json_encode([
@@ -1175,7 +1555,7 @@ try {
         'message' => 'Unknown route: ' . $route
     ]);
     exit;
-    
+
 } catch (Exception $e) {
     // Clean any output buffer before error response
     while (ob_get_level()) {

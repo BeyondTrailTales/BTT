@@ -30,6 +30,7 @@ $pageStyles[] = 'css/pack-toast.css?v=' . $cacheTime;
 $pageStyles[] = 'css/pack-builder-simple.css?v=' . $cacheTime;
 $pageStyles[] = 'css/gear-color-system.css?v=' . $cacheTime; // Color coordination system
 $pageStyles[] = 'css/pack-builder-soft-forest.css?v=' . $cacheTime; // Soft forest theme - easy on the eyes
+$pageStyles[] = 'css/packed-items-panel.css?v=' . $cacheTime; // Packed items panel for current pack
 
 $bodyClasses = $bodyClasses ?? [];
 $bodyClasses[] = 'pack-builder-page';
@@ -70,7 +71,10 @@ require_once __DIR__ . '/includes/template-header.php';
     <div class="builder-header">
         <a href="/BTT/backpacks.php" class="btn btn-secondary">← Back to Packs</a>
         <h1><?= $isEdit ? 'Edit Pack: ' . htmlspecialchars($packData['name']) : '🎒 Simple Pack Builder' ?></h1>
-        <button id="save-pack-btn" class="btn btn-primary">💾 Save Pack</button>
+        <div class="header-actions">
+            <button id="view-all-items-btn" class="btn btn-secondary" onclick="PackBuilder.toggleItemsPanel()">📦 View All Items</button>
+            <button id="save-pack-btn" class="btn btn-primary">💾 Save Pack</button>
+        </div>
     </div>
 
     <!-- Main Content -->
@@ -148,9 +152,68 @@ require_once __DIR__ . '/includes/template-header.php';
     </div>
 </div>
 
+<!-- Packed Items Overview Panel -->
+<div id="packed-items-panel" class="packed-items-panel">
+  <div class="panel-header">
+    <h3>Pack Items Overview</h3>
+    <button class="btn-icon" onclick="PackBuilder.toggleItemsPanel()">
+      <span>×</span>
+    </button>
+  </div>
+  <div class="panel-controls">
+    <input type="search" id="items-search" placeholder="Search items..." class="items-search">
+    <div class="panel-controls-row">
+      <select id="items-filter" class="items-filter">
+        <option value="all">All Sections</option>
+        <option value="main">Main Compartment</option>
+        <option value="lid">Top Lid</option>
+        <option value="pockets">Side Pockets</option>
+        <option value="external">External</option>
+      </select>
+      <button class="btn-refresh" onclick="PackBuilder.refreshItemsPanel()" title="Refresh items list">
+        <span class="refresh-icon">↻</span>
+        <span>Refresh</span>
+      </button>
+    </div>
+  </div>
+  <div class="panel-content">
+    <div id="items-loading" class="items-loading">
+      <div class="spinner"></div>
+      <p>Loading items...</p>
+    </div>
+    <div id="items-list" class="items-list" style="display: none;">
+      <!-- Items will be loaded here -->
+    </div>
+    <div id="items-empty" class="items-empty" style="display: none;">
+      <p>No items in this pack yet</p>
+    </div>
+  </div>
+  <div class="panel-footer">
+    <div class="items-summary">
+      <span class="summary-stat">
+        <strong id="total-items">0</strong> items
+      </span>
+      <span class="summary-stat">
+        <strong id="total-weight">0g</strong> total
+      </span>
+    </div>
+  </div>
+</div>
+
 <?php require_once __DIR__ . '/includes/template-footer.php'; ?>
 
 <script>
+// Set global BTT configuration
+window.BTT = {
+    baseUrl: "<?php echo BASE_URL; ?>",
+    apiUrl: "<?php echo BASE_URL; ?>/ajax-handler.php",
+    assetsUrl: "<?php echo BTT_ASSETS_URL; ?>",
+    publicUrl: "<?php echo BTT_PUBLIC_URL; ?>",
+    userId: "<?php echo $user_id; ?>",
+    csrfToken: "<?php echo csrf_token(); ?>",
+    debug: <?php echo BTT_DEBUG ? 'true' : 'false'; ?>
+};
+
 // Set user ID and pack data for Simple Pack Builder
 window.BTT_USER_ID = <?php echo json_encode($user_id); ?>;
 <?php if ($isEdit): ?>

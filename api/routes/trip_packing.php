@@ -205,52 +205,102 @@ function getPackingList($tripId) {
             // Process backpack items
             foreach ($backpackItems as $item) {
                 $category = normalizeCategory($item['section'] ?? 'main');
-                $isPacked = $packedStates[$item['gear_id']] ?? false;
                 
-                $processedItem = [
-                    'id' => 'gear-' . $item['gear_id'],
-                    'gear_id' => $item['gear_id'],
-                    'type' => 'gear',
-                    'name' => $item['name'],
-                    'quantity' => (int)$item['quantity'],
-                    'weight' => (float)$item['weight'],
-                    'category' => $category,
-                    'gear_category' => $item['gear_category'],
-                    'notes' => $item['gear_notes'],
-                    'is_packed' => $isPacked,
-                    'is_custom' => false
-                ];
+                // Determine if this is a real gear item or a custom backpack item
+                $hasValidGearId = !empty($item['gear_id']) && $item['gear_id'] > 0;
+                
+                if ($hasValidGearId) {
+                    // This is a real gear item
+                    $isPacked = $packedStates[$item['gear_id']] ?? false;
+                    
+                    $processedItem = [
+                        'id' => 'gear-' . $item['gear_id'],
+                        'gear_id' => (int)$item['gear_id'],
+                        'type' => 'gear',
+                        'name' => $item['name'],
+                        'quantity' => (int)$item['quantity'],
+                        'weight' => (float)$item['weight'],
+                        'category' => $category,
+                        'gear_category' => $item['gear_category'],
+                        'notes' => $item['gear_notes'],
+                        'is_packed' => $isPacked,
+                        'is_custom' => false
+                    ];
+                } else {
+                    // This is a custom backpack item - treat it as a custom item
+                    // We'll create a unique ID based on the backpack item
+                    $customId = 'bp-' . $trip['backpack_id'] . '-' . md5($item['name'] . $item['section'] . $item['quantity']);
+                    
+                    // Check if there's already a packed state for this custom item
+                    $stmt = $db->prepare("SELECT is_packed FROM trip_packed_items WHERE trip_id = ? AND item_name = ? AND category = ? AND is_custom = 1");
+                    $stmt->execute([$tripId, $item['name'], $category]);
+                    $customPacked = $stmt->fetch(PDO::FETCH_ASSOC);
+                    $isPacked = $customPacked ? (bool)$customPacked['is_packed'] : false;
+                    
+                    $processedItem = [
+                        'id' => 'custom-' . $customId,
+                        'custom_id' => $customId,
+                        'type' => 'custom',
+                        'name' => $item['name'],
+                        'quantity' => (int)$item['quantity'],
+                        'weight' => (float)$item['weight'],
+                        'category' => $category,
+                        'gear_category' => $item['gear_category'],
+                        'notes' => $item['gear_notes'],
+                        'is_packed' => $isPacked,
+                        'is_custom' => true
+                    ];
+                }
                 
                 $items[] = $processedItem;
                 $categories[$category][] = $processedItem;
             }
         }
         
-        // Get custom items for this trip
-        $stmt = $db->prepare(
-            "SELECT * FROM trip_packed_items 
-             WHERE trip_id = ? AND is_custom = 1
-             ORDER BY category, sort_order, item_name"
-        );
-        $stmt->execute([$tripId]);
-        $customItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        foreach ($customItems as $item) {
-            $processedItem = [
-                'id' => 'custom-' . $item['id'],
-                'custom_id' => $item['id'],
-                'type' => 'custom',
-                'name' => $item['item_name'],
-                'quantity' => (int)$item['quantity'],
-                'category' => $item['category'],
-                'notes' => $item['notes'],
-                'is_packed' => (bool)$item['is_packed'],
-                'is_custom' => true,
-                'sort_order' => (int)$item['sort_order']
-            ];
+        // Only get custom items that AREN'T represented by the backpack items
+        // This prevents orphaned items from showing up when a backpack is selected
+        if ($trip['backpack_id']) {
+            // Don't load separate custom items - backpack is the source of truth
+            // Any items not in the backpack shouldn't appear in the packing list
             
-            $items[] = $processedItem;
-            $categories[$item['category']][] = $processedItem;
+            // However, we can provide a migration opportunity by checking for orphaned items
+            $stmt = $db->prepare(
+                "SELECT COUNT(*) as orphaned_count FROM trip_packed_items 
+                 WHERE trip_id = ? AND is_custom = 1"
+            );
+            $stmt->execute([$tripId]);
+            $orphanedCheck = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            if ($orphanedCheck['orphaned_count'] > 0) {
+                error_log("Trip $tripId has {$orphanedCheck['orphaned_count']} orphaned custom items that aren't in the selected backpack");
+            }
+        } else {
+            // No backpack selected - show custom items for the trip
+            $stmt = $db->prepare(
+                "SELECT * FROM trip_packed_items 
+                 WHERE trip_id = ? AND is_custom = 1
+                 ORDER BY category, sort_order, item_name"
+            );
+            $stmt->execute([$tripId]);
+            $customItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            foreach ($customItems as $item) {
+                $processedItem = [
+                    'id' => 'custom-' . $item['id'],
+                    'custom_id' => $item['id'],
+                    'type' => 'custom',
+                    'name' => $item['item_name'],
+                    'quantity' => (int)$item['quantity'],
+                    'category' => $item['category'],
+                    'notes' => $item['notes'],
+                    'is_packed' => (bool)$item['is_packed'],
+                    'is_custom' => true,
+                    'sort_order' => (int)$item['sort_order']
+                ];
+                
+                $items[] = $processedItem;
+                $categories[$item['category']][] = $processedItem;
+            }
         }
         
         // Calculate progress
@@ -341,7 +391,8 @@ function getPackingProgress($tripId) {
 }
 
 /**
- * Add a custom item to the packing list
+ * Add a custom item to the packing list AND to the backpack's gear inventory
+ * This makes the packing checklist bidirectional with the backpack
  */
 function addCustomItem($tripId) {
     global $db, $user_id;
@@ -356,7 +407,25 @@ function addCustomItem($tripId) {
             exit;
         }
         
-        // Insert custom item directly into the database
+        // Get trip details to find the selected backpack
+        $stmt = $db->prepare("SELECT backpack_id FROM trips WHERE id = ? AND user_id = ?");
+        $stmt->execute([$tripId, $user_id]);
+        $trip = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$trip) {
+            ob_clean();
+            echo json_encode(['success' => false, 'message' => 'Trip not found']);
+            exit;
+        }
+        
+        $category = $data['category'] ?? 'main';
+        $quantity = (int)($data['quantity'] ?? 1);
+        $notes = $data['notes'] ?? null;
+        $itemName = $data['item_name'];
+        
+        $db->beginTransaction();
+        
+        // 1. Add the item to the trip's packing list
         $stmt = $db->prepare("
             INSERT INTO trip_packed_items (
                 trip_id, item_name, category, quantity, notes, 
@@ -367,31 +436,91 @@ function addCustomItem($tripId) {
             )
         ");
         
-        $category = $data['category'] ?? 'main';
-        $quantity = (int)($data['quantity'] ?? 1);
-        $notes = $data['notes'] ?? null;
-        
         $stmt->execute([
-            $tripId, $data['item_name'], $category, $quantity, $notes, $tripId, $category
+            $tripId, $itemName, $category, $quantity, $notes, $tripId, $category
         ]);
         
-        $itemId = $db->lastInsertId();
+        $packingItemId = $db->lastInsertId();
+        
+        // 2. If the trip has a selected backpack, also add the item to the backpack's gear inventory
+        if ($trip['backpack_id']) {
+            // Map category to backpack section
+            $sectionMapping = [
+                'main' => 'main',
+                'lid' => 'lid', 
+                'pockets' => 'pockets',
+                'external' => 'external'
+            ];
+            $section = $sectionMapping[$category] ?? 'main';
+            
+            // Check if this exact item already exists in the backpack
+            $stmt = $db->prepare("
+                SELECT id FROM backpack_gear 
+                WHERE backpack_id = ? AND custom_name = ? AND section = ?
+            ");
+            $stmt->execute([$trip['backpack_id'], $itemName, $section]);
+            $existingGear = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            if (!$existingGear) {
+                // Get the next position in this section
+                $stmt = $db->prepare("
+                    SELECT COALESCE(MAX(position), 0) + 1 as next_position 
+                    FROM backpack_gear 
+                    WHERE backpack_id = ? AND section = ?
+                ");
+                $stmt->execute([$trip['backpack_id'], $section]);
+                $positionResult = $stmt->fetch(PDO::FETCH_ASSOC);
+                $position = $positionResult['next_position'];
+                
+                // Add the custom item to the backpack's gear inventory
+                $stmt = $db->prepare("
+                    INSERT INTO backpack_gear (
+                        backpack_id, gear_id, custom_name, custom_category, 
+                        custom_weight, custom_notes, quantity, section, position, created_at
+                    ) VALUES (?, NULL, ?, 'other', 0, ?, ?, ?, ?, datetime('now'))
+                ");
+                
+                $stmt->execute([
+                    $trip['backpack_id'], 
+                    $itemName, 
+                    $notes, 
+                    $quantity, 
+                    $section, 
+                    $position
+                ]);
+                
+                error_log("Added custom item '$itemName' to backpack {$trip['backpack_id']} in section '$section'");
+            }
+        }
+        
+        $db->commit();
         
         $item = [
-            'id' => $itemId,
+            'id' => $packingItemId,
             'trip_id' => $tripId,
-            'item_name' => $data['item_name'],
+            'item_name' => $itemName,
             'category' => $category,
             'quantity' => $quantity,
             'notes' => $notes,
             'is_packed' => false,
-            'is_custom' => true
+            'is_custom' => true,
+            'added_to_backpack' => !empty($trip['backpack_id'])
         ];
         
         ob_clean();
-        echo json_encode(['success' => true, 'data' => $item]);
+        echo json_encode([
+            'success' => true, 
+            'data' => $item,
+            'message' => !empty($trip['backpack_id']) ? 
+                "Item added to packing list and backpack inventory" : 
+                "Item added to packing list"
+        ]);
         exit;
+        
     } catch (Exception $e) {
+        if ($db->inTransaction()) {
+            $db->rollback();
+        }
         throw $e;
     }
 }
@@ -516,23 +645,66 @@ function bulkUpdateItems($tripId) {
             $type = $item['type'] ?? 'gear';
             $isPacked = (bool)($item['is_packed'] ?? false);
             
-            if ($type === 'gear' && isset($item['gear_id'])) {
-                // Update or insert gear item packed state
+            error_log("Processing bulk update item: " . json_encode($item));
+            
+            if ($type === 'gear' && isset($item['gear_id']) && $item['gear_id'] > 0) {
+                $gearId = $item['gear_id'];
+                
+                // For gear items, we use INSERT OR REPLACE to handle both new and existing packed states
+                // This ensures we don't create duplicates - it will update existing records or create new ones
+                // Note: item_name must be NULL for gear items per the CHECK constraint
                 $stmt = $db->prepare("
                     INSERT OR REPLACE INTO trip_packed_items 
-                    (trip_id, gear_id, is_packed, is_custom, updated_at)
-                    VALUES (?, ?, ?, 0, datetime('now'))
+                    (trip_id, gear_id, is_packed, is_custom, item_name, user_id, created_at, updated_at)
+                    VALUES (?, ?, ?, 0, NULL, ?, datetime('now'), datetime('now'))
                 ");
-                $stmt->execute([$tripId, $item['gear_id'], $isPacked]);
+                $stmt->execute([$tripId, $gearId, $isPacked, $user_id]);
+                error_log("Updated gear item $gearId packed state to " . ($isPacked ? 'true' : 'false'));
                 
             } elseif ($type === 'custom' && isset($item['id'])) {
-                // Update custom item packed state
-                $stmt = $db->prepare("
-                    UPDATE trip_packed_items 
-                    SET is_packed = ?, updated_at = datetime('now')
-                    WHERE trip_id = ? AND id = ? AND is_custom = 1
-                ");
-                $stmt->execute([$isPacked, $tripId, $item['id']]);
+                $customId = $item['id'];
+                
+                // Check if this is a regular custom item (numeric ID) or backpack custom item (string ID)
+                if (is_numeric($customId)) {
+                    // Regular custom trip item - update existing record
+                    $stmt = $db->prepare("
+                        UPDATE trip_packed_items 
+                        SET is_packed = ?, updated_at = datetime('now')
+                        WHERE trip_id = ? AND id = ? AND is_custom = 1
+                    ");
+                    $result = $stmt->execute([$isPacked, $tripId, $customId]);
+                    error_log("Updated custom item $customId packed state to " . ($isPacked ? 'true' : 'false') . " (affected rows: " . $stmt->rowCount() . ")");
+                } else {
+                    // Custom backpack item - these are derived from backpack gear but treated as custom
+                    // We DON'T want to create database records for these, as they're handled by the UI
+                    // These items only exist in the context of the current trip's backpack selection
+                    // The packed state is managed in memory and doesn't persist as separate custom items
+                    
+                    if (strpos($customId, 'bp-') === 0) {
+                        // This is a backpack-derived custom item
+                        // We'll handle the packed state by creating a temporary record that matches by name and category
+                        $itemName = $item['name'] ?? 'Custom Item';
+                        $category = $item['category'] ?? 'main';
+                        
+                        // Use INSERT OR IGNORE followed by UPDATE to avoid duplications
+                        // First, try to insert a new record
+                        $stmt = $db->prepare("
+                            INSERT OR IGNORE INTO trip_packed_items 
+                            (trip_id, item_name, category, quantity, is_packed, is_custom, user_id, created_at, updated_at)
+                            VALUES (?, ?, ?, 1, ?, 1, ?, datetime('now'), datetime('now'))
+                        ");
+                        $stmt->execute([$tripId, $itemName, $category, $isPacked, $user_id]);
+                        
+                        // Then update the existing record if it was already there
+                        $stmt = $db->prepare("
+                            UPDATE trip_packed_items 
+                            SET is_packed = ?, updated_at = datetime('now')
+                            WHERE trip_id = ? AND item_name = ? AND category = ? AND is_custom = 1
+                        ");
+                        $stmt->execute([$isPacked, $tripId, $itemName, $category]);
+                        error_log("Updated backpack custom item '$itemName' in category '$category' packed state to " . ($isPacked ? 'true' : 'false'));
+                    }
+                }
             }
         }
         

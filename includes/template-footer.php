@@ -66,9 +66,6 @@ $uxRefreshEnabled = $_SESSION['ux_refresh'] ?? $_COOKIE['ux_refresh'] ?? true;
             <span class="mobile-nav-icon" aria-hidden="true">🗺️</span>
             <span class="mobile-nav-label">Trips</span>
         </a>
-        <button class="mobile-nav-item nav-quick-add" aria-label="Quick actions menu" onclick="UX.quickAdd.toggle()">
-            <span class="mobile-nav-icon" aria-hidden="true">➕</span>
-        </button>
         <a href="<?php echo route_url('backpacks'); ?>" class="mobile-nav-item <?php echo active_class('backpacks'); ?>">
             <span class="mobile-nav-icon" aria-hidden="true">🎒</span>
             <span class="mobile-nav-label">Packs</span>
@@ -145,46 +142,27 @@ $uxRefreshEnabled = $_SESSION['ux_refresh'] ?? $_COOKIE['ux_refresh'] ?? true;
         // User dropdown and logout handlers are now in navigation.js
     </script>
     
-    <!-- Load jQuery first (required by many components) -->
+    <!-- Load jQuery first (still needed for some legacy components) -->
     <script src="<?php echo BTT_VENDOR_URL; ?>/jquery-3.7.1.min.js"></script>
     
     <!-- Load Sortable.js for drag-and-drop functionality -->
     <script src="<?php echo BTT_VENDOR_URL; ?>/sortable.min.js"></script>
     
-    <!-- Load BTT utilities and API client before everything else -->
-    <script src="<?php echo asset_url('js/btt-utils.js'); ?>?v=<?php echo time(); ?>"></script>
-    <script src="<?php echo asset_url('js/api.js'); ?>?v=<?php echo time(); ?>"></script>
+    <!-- BTT Global JavaScript - Unified API and utilities -->
+    <script src="<?php echo asset_url('js/btt-global.js'); ?>?v=<?php echo BTT_APP_VERSION; ?>"></script>
     
-    <!-- Load utilities and app scripts -->
-    <script src="<?php echo asset_url('js/app.js'); ?>?v=<?php echo time(); ?>"></script>
-    <!-- UX Refresh UI Utilities (toasts, accordions, steppers) -->
+    <!-- Core modules (loaded by btt-global.js but listed for clarity) -->
+    <!-- btt-api-unified.js - Clean API client -->
+    <!-- modules/toast.js - Toast notifications -->
+    
+    <!-- Optional legacy scripts (to be refactored) -->
     <?php if ($uxRefreshEnabled): ?>
-    <script src="<?php echo asset_url('js/ux-ui.js'); ?>"></script>
+    <script src="<?php echo asset_url('js/ux-ui.js'); ?>?v=<?php echo BTT_APP_VERSION; ?>"></script>
     <?php endif; ?>
-    <!-- Navigation handlers now handled by duolingo-forest-nav.js in header -->
-    <!-- Duolingo-style notifications and popups -->
-    <script src="<?php echo asset_url('js/duo-notifications.js'); ?>"></script>
-    <script src="<?php echo asset_url('js/gamification.js'); ?>"></script>
-    <!-- Achievement System -->
-    <script src="<?php echo asset_url('js/confetti.js'); ?>"></script>
-    <script src="<?php echo asset_url('js/achievement-manager.js'); ?>"></script>
-    <!-- Loading Animations and Transitions -->
-    <script src="<?php echo asset_url('js/loading-transitions.js'); ?>"></script>
-    <!-- Toast Notifications System -->
-    <script src="<?php echo asset_url('js/toast-notifications.js'); ?>"></script>
     
-    <!-- Keyboard Shortcuts System -->
-    <script src="<?php echo asset_url('js/keyboard-shortcuts.js'); ?>" defer></script>
-    
-    <!-- Performance Optimizer -->
-    <script src="<?php echo asset_url('js/performance-optimizer.js'); ?>" defer></script>
-    
-    <!-- Accessibility Enhancements -->
-    <script src="<?php echo asset_url('js/accessibility-enhancements.js'); ?>" defer></script>
-    
-    <!-- Modern Unified JavaScript - Global Application -->
-    <script src="<?php echo asset_url('js/btt-state-manager.js'); ?>"></script>
-    <script src="<?php echo asset_url('js/btt-compatibility-layer.js'); ?>"></script>
+    <!-- Achievement System (to be modularized) -->
+    <script src="<?php echo asset_url('js/confetti.js'); ?>?v=<?php echo BTT_APP_VERSION; ?>"></script>
+    <script src="<?php echo asset_url('js/achievement-manager.js'); ?>?v=<?php echo BTT_APP_VERSION; ?>"></script>
     
     <!-- Page-specific scripts with aggressive cache busting -->
     <?php if (isset($pageScripts)): ?>

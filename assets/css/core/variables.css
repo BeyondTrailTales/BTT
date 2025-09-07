@@ -1,0 +1,231 @@
+/**
+ * BeyondTrailTales - CSS Variables
+ * Central design tokens for the entire application
+ * Forest/Duolingo theme with WCAG AA compliance
+ */
+
+:root {
+  /* ===========================================
+     COLOR SYSTEM - Forest Theme
+     =========================================== */
+  
+  /* Base Forest Palette */
+  --color-forest-50: #f0f9f4;      /* Lightest mint */
+  --color-forest-100: #d1ead9;     /* Light sage */
+  --color-forest-200: #a3d5b3;     /* Soft fern */
+  --color-forest-300: #74c08d;     /* Fresh green */
+  --color-forest-400: #4ba667;     /* Forest green */
+  --color-forest-500: #3d8b54;     /* Deep forest - PRIMARY */
+  --color-forest-600: #2f6e42;     /* Dark forest */
+  --color-forest-700: #215030;     /* Shadow forest */
+  --color-forest-800: #14321e;     /* Midnight forest */
+  --color-forest-900: #0a1a0f;     /* Darkest forest - BACKGROUND */
+  
+  /* Semantic Colors */
+  --color-primary: var(--color-forest-500);
+  --color-primary-hover: var(--color-forest-600);
+  --color-primary-active: var(--color-forest-700);
+  --color-secondary: var(--color-forest-300);
+  --color-secondary-hover: var(--color-forest-400);
+  
+  /* Background Colors */
+  --color-background: var(--color-forest-900);
+  --color-surface: rgba(255, 255, 255, 0.05);
+  --color-surface-hover: rgba(255, 255, 255, 0.08);
+  --color-surface-active: rgba(255, 255, 255, 0.1);
+  
+  /* Text Colors */
+  --color-text: #ffffff;
+  --color-text-muted: rgba(255, 255, 255, 0.7);
+  --color-text-dim: rgba(255, 255, 255, 0.5);
+  --color-text-inverse: var(--color-forest-900);
+  
+  /* Functional Colors */
+  --color-success: #52c41a;
+  --color-warning: #faad14;
+  --color-error: #ff4d4f;
+  --color-info: #1890ff;
+  
+  /* Border Colors */
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-hover: rgba(255, 255, 255, 0.2);
+  
+  /* ===========================================
+     TYPOGRAPHY SYSTEM
+     =========================================== */
+  
+  /* Font Families */
+  --font-primary: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'SF Mono', Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  
+  /* Font Sizes - Modular Scale (1.25 ratio) */
+  --text-xs: 0.75rem;      /* 12px */
+  --text-sm: 0.875rem;     /* 14px */
+  --text-base: 1rem;       /* 16px */
+  --text-lg: 1.25rem;      /* 20px */
+  --text-xl: 1.563rem;     /* 25px */
+  --text-2xl: 1.953rem;    /* 31px */
+  --text-3xl: 2.441rem;    /* 39px */
+  --text-4xl: 3.052rem;    /* 49px */
+  --text-5xl: 3.815rem;    /* 61px */
+  
+  /* Font Weights */
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+  --font-black: 900;
+  
+  /* Line Heights */
+  --leading-none: 1;
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 1.75;
+  
+  /* Letter Spacing */
+  --tracking-tighter: -0.05em;
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
+  
+  /* ===========================================
+     SPACING SYSTEM - 8pt Grid
+     =========================================== */
+  
+  --space-0: 0;
+  --space-1: 0.25rem;     /* 4px */
+  --space-2: 0.5rem;      /* 8px */
+  --space-3: 0.75rem;     /* 12px */
+  --space-4: 1rem;        /* 16px */
+  --space-5: 1.5rem;      /* 24px */
+  --space-6: 2rem;        /* 32px */
+  --space-7: 2.5rem;      /* 40px */
+  --space-8: 3rem;        /* 48px */
+  --space-9: 3.5rem;      /* 56px */
+  --space-10: 4rem;       /* 64px */
+  --space-12: 6rem;       /* 96px */
+  --space-16: 8rem;       /* 128px */
+  --space-20: 10rem;      /* 160px */
+  --space-24: 12rem;      /* 192px */
+  
+  /* ===========================================
+     LAYOUT SYSTEM
+     =========================================== */
+  
+  /* Breakpoints */
+  --screen-xs: 480px;
+  --screen-sm: 640px;
+  --screen-md: 768px;
+  --screen-lg: 1024px;
+  --screen-xl: 1280px;
+  --screen-2xl: 1536px;
+  
+  /* Container Widths */
+  --container-xs: 100%;
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1200px;
+  --container-2xl: 1400px;
+  
+  /* Container Padding */
+  --container-padding-xs: var(--space-3);
+  --container-padding-sm: var(--space-4);
+  --container-padding-md: var(--space-5);
+  --container-padding-lg: var(--space-6);
+  --container-padding-xl: var(--space-8);
+  
+  /* ===========================================
+     COMPONENTS
+     =========================================== */
+  
+  /* Border Radius */
+  --radius-none: 0;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  
+  /* Transitions */
+  --transition-fastest: 100ms;
+  --transition-fast: 200ms;
+  --transition-normal: 300ms;
+  --transition-slow: 400ms;
+  --transition-slowest: 500ms;
+  
+  /* Animation Curves */
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  
+  /* Z-index Scale */
+  --z-negative: -1;
+  --z-0: 0;
+  --z-10: 10;
+  --z-20: 20;
+  --z-30: 30;
+  --z-40: 40;
+  --z-50: 50;
+  --z-auto: auto;
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+  
+  /* ===========================================
+     SPECIFIC COMPONENTS
+     =========================================== */
+  
+  /* Navigation */
+  --nav-height: 72px;
+  --nav-bg: rgba(31, 47, 35, 0.95);
+  --nav-border: var(--color-border);
+  
+  /* Cards */
+  --card-bg: var(--color-surface);
+  --card-border: var(--color-border);
+  --card-padding: var(--space-5);
+  --card-radius: var(--radius-2xl);
+  
+  /* Buttons */
+  --btn-padding-x: var(--space-5);
+  --btn-padding-y: var(--space-3);
+  --btn-radius: var(--radius-lg);
+  --btn-font-weight: var(--font-semibold);
+  --btn-transition: all var(--transition-fast) var(--ease-out);
+  
+  /* Forms */
+  --form-bg: var(--color-surface);
+  --form-border: var(--color-border);
+  --form-radius: var(--radius-lg);
+  --form-padding: var(--space-3) var(--space-4);
+  --form-focus-ring: 2px solid var(--color-primary);
+  
+  /* Modals */
+  --modal-bg: var(--color-surface);
+  --modal-backdrop: rgba(0, 0, 0, 0.8);
+  --modal-radius: var(--radius-2xl);
+  --modal-padding: var(--space-6);
+}

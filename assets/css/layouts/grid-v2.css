@@ -1,0 +1,184 @@
+/**
+ * Responsive Grid System
+ * Mobile-first CSS Grid implementation
+ * Covers all BTT pages with proper breakpoints
+ */
+
+/* Base Grid */
+.o-grid {
+  display: grid;
+  gap: var(--spacing-4, 1rem);
+  width: 100%;
+}
+
+/* Grid gap modifiers */
+.o-grid--gap-0 { gap: 0; }
+.o-grid--gap-2 { gap: var(--spacing-2, 0.5rem); }
+.o-grid--gap-4 { gap: var(--spacing-4, 1rem); }
+.o-grid--gap-6 { gap: var(--spacing-6, 1.5rem); }
+.o-grid--gap-8 { gap: var(--spacing-8, 2rem); }
+
+/* Mobile First Grid Columns */
+.o-grid--cols-1 { grid-template-columns: 1fr; }
+.o-grid--cols-2 { grid-template-columns: repeat(2, 1fr); }
+.o-grid--cols-3 { grid-template-columns: repeat(3, 1fr); }
+.o-grid--cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+/* Auto-fit responsive grid */
+.o-grid--auto-fit {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+}
+
+.o-grid--auto-fill {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+}
+
+/* Responsive breakpoints */
+/* Small devices (640px+) */
+@media (min-width: 640px) {
+  .o-grid--cols-sm-1 { grid-template-columns: 1fr; }
+  .o-grid--cols-sm-2 { grid-template-columns: repeat(2, 1fr); }
+  .o-grid--cols-sm-3 { grid-template-columns: repeat(3, 1fr); }
+  .o-grid--cols-sm-4 { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Medium devices (768px+) */
+@media (min-width: 768px) {
+  .o-grid--cols-md-1 { grid-template-columns: 1fr; }
+  .o-grid--cols-md-2 { grid-template-columns: repeat(2, 1fr); }
+  .o-grid--cols-md-3 { grid-template-columns: repeat(3, 1fr); }
+  .o-grid--cols-md-4 { grid-template-columns: repeat(4, 1fr); }
+  .o-grid--cols-md-5 { grid-template-columns: repeat(5, 1fr); }
+  .o-grid--cols-md-6 { grid-template-columns: repeat(6, 1fr); }
+}
+
+/* Large devices (1024px+) */
+@media (min-width: 1024px) {
+  .o-grid--cols-lg-1 { grid-template-columns: 1fr; }
+  .o-grid--cols-lg-2 { grid-template-columns: repeat(2, 1fr); }
+  .o-grid--cols-lg-3 { grid-template-columns: repeat(3, 1fr); }
+  .o-grid--cols-lg-4 { grid-template-columns: repeat(4, 1fr); }
+  .o-grid--cols-lg-5 { grid-template-columns: repeat(5, 1fr); }
+  .o-grid--cols-lg-6 { grid-template-columns: repeat(6, 1fr); }
+}
+
+/* Extra large devices (1280px+) */
+@media (min-width: 1280px) {
+  .o-grid--cols-xl-1 { grid-template-columns: 1fr; }
+  .o-grid--cols-xl-2 { grid-template-columns: repeat(2, 1fr); }
+  .o-grid--cols-xl-3 { grid-template-columns: repeat(3, 1fr); }
+  .o-grid--cols-xl-4 { grid-template-columns: repeat(4, 1fr); }
+  .o-grid--cols-xl-5 { grid-template-columns: repeat(5, 1fr); }
+  .o-grid--cols-xl-6 { grid-template-columns: repeat(6, 1fr); }
+}
+
+/* Page-specific grid configurations */
+
+/* Dashboard Stats Grid */
+.dashboard-stats-grid {
+  display: grid;
+  gap: var(--spacing-4, 1rem);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .dashboard-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .dashboard-stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Adventures/Trips Grid */
+.adventures-grid {
+  display: grid;
+  gap: var(--spacing-6, 1.5rem);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+}
+
+/* Gear Library Grid */
+.gear-grid {
+  display: grid;
+  gap: var(--spacing-4, 1rem);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+}
+
+/* Backpacks Grid */
+.backpacks-grid {
+  display: grid;
+  gap: var(--spacing-6, 1.5rem);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .backpacks-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .backpacks-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Pack Builder Layout Grid */
+.pack-builder-grid {
+  display: grid;
+  gap: var(--spacing-6, 1.5rem);
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "search"
+    "categories"
+    "gear"
+    "pack";
+}
+
+@media (min-width: 768px) {
+  .pack-builder-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "search search"
+      "categories categories"
+      "gear pack";
+  }
+}
+
+@media (min-width: 1024px) {
+  .pack-builder-grid {
+    grid-template-columns: 2fr 3fr 2fr;
+    grid-template-areas:
+      "search search search"
+      "categories gear pack";
+  }
+}
+
+.pack-builder-search { grid-area: search; }
+.pack-builder-categories { grid-area: categories; }
+.pack-builder-gear { grid-area: gear; }
+.pack-builder-pack { grid-area: pack; }
+
+/* Grid item utilities */
+.o-grid__item--span-2 { grid-column: span 2; }
+.o-grid__item--span-3 { grid-column: span 3; }
+.o-grid__item--span-4 { grid-column: span 4; }
+.o-grid__item--span-full { grid-column: 1 / -1; }
+
+/* Responsive spans */
+@media (min-width: 768px) {
+  .o-grid__item--span-md-2 { grid-column: span 2; }
+  .o-grid__item--span-md-3 { grid-column: span 3; }
+  .o-grid__item--span-md-4 { grid-column: span 4; }
+  .o-grid__item--span-md-full { grid-column: 1 / -1; }
+}
+
+@media (min-width: 1024px) {
+  .o-grid__item--span-lg-2 { grid-column: span 2; }
+  .o-grid__item--span-lg-3 { grid-column: span 3; }
+  .o-grid__item--span-lg-4 { grid-column: span 4; }
+  .o-grid__item--span-lg-full { grid-column: 1 / -1; }
+}

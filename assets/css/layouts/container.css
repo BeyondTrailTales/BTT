@@ -1,0 +1,206 @@
+/**
+ * BeyondTrailTales - Container Layout
+ * Single source of truth for container styles
+ * NO !important declarations needed
+ */
+
+/* ===========================================
+   Base Container
+   =========================================== */
+
+.container {
+  width: 100%;
+  max-width: var(--container-xl);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding-sm);
+  padding-right: var(--container-padding-sm);
+}
+
+/* Container Variants */
+.container-sm {
+  max-width: var(--container-sm);
+}
+
+.container-md {
+  max-width: var(--container-md);
+}
+
+.container-lg {
+  max-width: var(--container-lg);
+}
+
+.container-xl {
+  max-width: var(--container-xl);
+}
+
+.container-2xl {
+  max-width: var(--container-2xl);
+}
+
+.container-full {
+  max-width: 100%;
+}
+
+/* Fluid Container */
+.container-fluid {
+  width: 100%;
+  max-width: 100%;
+  padding-left: var(--container-padding-sm);
+  padding-right: var(--container-padding-sm);
+}
+
+/* ===========================================
+   Page Container
+   =========================================== */
+
+.page-container {
+  width: 100%;
+  max-width: var(--container-xl);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding-sm);
+  padding-right: var(--container-padding-sm);
+}
+
+/* ===========================================
+   Section Container
+   =========================================== */
+
+.section {
+  padding-top: var(--space-8);
+  padding-bottom: var(--space-8);
+}
+
+.section-sm {
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-6);
+}
+
+.section-lg {
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-12);
+}
+
+/* ===========================================
+   Content Container
+   =========================================== */
+
+.content {
+  max-width: 65ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.content-narrow {
+  max-width: 45ch;
+}
+
+.content-wide {
+  max-width: 85ch;
+}
+
+/* ===========================================
+   Responsive Container Padding
+   =========================================== */
+
+@media (min-width: 640px) {
+  .container,
+  .container-fluid,
+  .page-container {
+    padding-left: var(--container-padding-md);
+    padding-right: var(--container-padding-md);
+  }
+}
+
+@media (min-width: 768px) {
+  .container,
+  .container-fluid,
+  .page-container {
+    padding-left: var(--container-padding-lg);
+    padding-right: var(--container-padding-lg);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container,
+  .container-fluid,
+  .page-container {
+    padding-left: var(--container-padding-xl);
+    padding-right: var(--container-padding-xl);
+  }
+}
+
+/* ===========================================
+   Container Utilities
+   =========================================== */
+
+/* Remove padding */
+.container-no-padding {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Centered content */
+.container-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* ===========================================
+   Page-specific Container Overrides
+   =========================================== */
+
+/* Dashboard Container Fix */
+[data-page="dashboard"] .page-container,
+[data-page="dashboard"] .container {
+  max-width: var(--container-xl);
+  margin: 0 auto;
+}
+
+/* Ensure dashboard hero is full width */
+[data-page="dashboard"] .modern-dashboard-hero {
+  width: 100%;
+  margin: 0;
+}
+
+/* Dashboard content grids */
+[data-page="dashboard"] .stats-grid,
+[data-page="dashboard"] .dashboard-primary-grid,
+[data-page="dashboard"] .dashboard-secondary-grid {
+  max-width: var(--container-xl);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding-sm);
+  padding-right: var(--container-padding-sm);
+}
+
+@media (min-width: 768px) {
+  [data-page="dashboard"] .stats-grid,
+  [data-page="dashboard"] .dashboard-primary-grid,
+  [data-page="dashboard"] .dashboard-secondary-grid {
+    padding-left: var(--container-padding-lg);
+    padding-right: var(--container-padding-lg);
+  }
+}
+
+/* ===========================================
+   Container Debug Mode
+   =========================================== */
+
+/* Uncomment for debugging container issues */
+/*
+.container,
+.container-fluid,
+.page-container {
+  outline: 2px dashed red;
+}
+
+.container > *,
+.container-fluid > *,
+.page-container > * {
+  outline: 1px dashed blue;
+}
+*/

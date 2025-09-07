@@ -1,0 +1,19 @@
+/**
+ * Fix for mobile navigation displaying on desktop for gear page
+ * Properly hide the hamburger mobile menu (#mobile-nav) on desktop screens
+ */
+
+/* Hide the mobile navigation menu on desktop screens */
+@media (min-width: 769px) {
+  #mobile-nav,
+  .mobile-nav-menu {
+    transform: translateX(-100%);
+    visibility: hidden;
+    opacity: 0;
+  }
+  
+  /* Ensure the mobile toggle button is hidden on desktop too */
+  .mobile-nav-toggle {
+    display: none;
+  }
+}

@@ -31,6 +31,30 @@ if (AuthService::isAuthenticated()) {
   <link rel="stylesheet" href="<?php echo BTT_ASSETS_URL; ?>/css/forest-animations.css">
   <link rel="stylesheet" href="<?php echo BTT_ASSETS_URL; ?>/css/auth-nav.css">
   
+  <!-- Button Resize Fix - With cache buster -->
+  <link rel="stylesheet" href="<?php echo BTT_ASSETS_URL; ?>/css/button-resize-fix.css?v=<?php echo time(); ?>">
+  
+  <!-- Inline override to absolutely prevent button transforms -->
+  <style>
+      /* Emergency override - disable ALL transforms on interaction */
+      *:hover,
+      *:active,
+      *:focus,
+      *:focus-visible,
+      *:focus-within {
+          transform: none !important;
+          -webkit-transform: none !important;
+          -moz-transform: none !important;
+          -ms-transform: none !important;
+          -o-transform: none !important;
+      }
+      
+      /* Ensure transitions don't include transform */
+      * {
+          transition-property: background-color, border-color, box-shadow, color, opacity, fill, stroke !important;
+      }
+  </style>
+  
 </head>
 <body data-page="<?php echo htmlspecialchars($pageId ?? 'home'); ?>">
   <a class="skip-link" href="#main-content">Skip to content</a>

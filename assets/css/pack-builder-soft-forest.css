@@ -1,203 +1,230 @@
 /* Pack Builder Soft Forest Theme - Easy on the Eyes */
 
-/* Base colors - muted forest palette */
+/* Base colors - high contrast readable palette */
 :root {
-    --forest-primary: #5a7a65;      /* Soft sage green */
-    --forest-secondary: #6b8e7f;    /* Muted mint */
-    --forest-accent: #7fa392;       /* Soft teal */
-    --forest-dark: #3a4a42;         /* Deep forest */
-    --forest-darker: #2c3a34;       /* Darker forest */
-    --warm-accent: #a8896c;         /* Warm brown */
-    --soft-blue: #728fa3;           /* Muted blue */
-    --soft-orange: #c4946a;         /* Soft terracotta */
-    --soft-red: #a67b7b;            /* Muted rose */
+    --forest-primary: #4a9d5a;      /* Bright forest green */
+    --forest-secondary: #5bab78;    /* Vivid mint */
+    --forest-accent: #6db3a3;       /* Clear teal */
+    --forest-dark: #2d4a35;         /* Deep forest */
+    --forest-darker: #1f3527;       /* Darker forest */
+    --warm-accent: #d4a574;         /* Warm tan */
+    --soft-blue: #6b9ed4;           /* Clear blue */
+    --soft-orange: #e6a973;         /* Bright orange */
+    --soft-red: #d18888;            /* Clear rose */
+    --purple-accent: #9f7bc7;       /* Soft purple */
+    --yellow-accent: #d4c765;       /* Clear yellow */
 }
 
-/* Section color differentiation - subtle background tints */
+/* Section color differentiation - distinct, high contrast colors */
 .pack-section {
-    background: linear-gradient(135deg, rgba(90, 122, 101, 0.08) 0%, rgba(90, 122, 101, 0.12) 100%);
-    border: 1px solid rgba(90, 122, 101, 0.25);
+    background: linear-gradient(135deg, rgba(74, 157, 90, 0.15) 0%, rgba(74, 157, 90, 0.20) 100%);
+    border: 2px solid rgba(74, 157, 90, 0.4);
+    box-shadow: 0 2px 8px rgba(74, 157, 90, 0.1);
 }
 
 .pack-section[data-section-id="main"] {
-    background: linear-gradient(135deg, rgba(90, 122, 101, 0.08) 0%, rgba(90, 122, 101, 0.12) 100%);
-    border: 1px solid rgba(90, 122, 101, 0.3);
+    background: linear-gradient(135deg, rgba(74, 157, 90, 0.15) 0%, rgba(74, 157, 90, 0.20) 100%);
+    border: 2px solid rgba(74, 157, 90, 0.5);
 }
 
 .pack-section[data-section-id="worn"] {
-    background: linear-gradient(135deg, rgba(168, 137, 108, 0.08) 0%, rgba(168, 137, 108, 0.12) 100%);
-    border: 1px solid rgba(168, 137, 108, 0.3);
+    background: linear-gradient(135deg, rgba(212, 165, 116, 0.15) 0%, rgba(212, 165, 116, 0.20) 100%);
+    border: 2px solid rgba(212, 165, 116, 0.5);
 }
 
 .pack-section[data-section-id="consumables"] {
-    background: linear-gradient(135deg, rgba(142, 120, 142, 0.08) 0%, rgba(142, 120, 142, 0.12) 100%);
-    border: 1px solid rgba(142, 120, 142, 0.3);
+    background: linear-gradient(135deg, rgba(159, 123, 199, 0.15) 0%, rgba(159, 123, 199, 0.20) 100%);
+    border: 2px solid rgba(159, 123, 199, 0.5);
 }
 
 .pack-section:nth-of-type(4) {
-    background: linear-gradient(135deg, rgba(114, 143, 163, 0.08) 0%, rgba(114, 143, 163, 0.12) 100%);
-    border: 1px solid rgba(114, 143, 163, 0.3);
+    background: linear-gradient(135deg, rgba(107, 158, 212, 0.15) 0%, rgba(107, 158, 212, 0.20) 100%);
+    border: 2px solid rgba(107, 158, 212, 0.5);
 }
 
 .pack-section:nth-of-type(5) {
-    background: linear-gradient(135deg, rgba(196, 148, 106, 0.08) 0%, rgba(196, 148, 106, 0.12) 100%);
-    border: 1px solid rgba(196, 148, 106, 0.3);
+    background: linear-gradient(135deg, rgba(230, 169, 115, 0.15) 0%, rgba(230, 169, 115, 0.20) 100%);
+    border: 2px solid rgba(230, 169, 115, 0.5);
 }
 
 .pack-section:nth-of-type(6) {
-    background: linear-gradient(135deg, rgba(166, 123, 123, 0.08) 0%, rgba(166, 123, 123, 0.12) 100%);
-    border: 1px solid rgba(166, 123, 123, 0.3);
+    background: linear-gradient(135deg, rgba(209, 136, 136, 0.15) 0%, rgba(209, 136, 136, 0.20) 100%);
+    border: 2px solid rgba(209, 136, 136, 0.5);
 }
 
 .pack-section:nth-of-type(7) {
-    background: linear-gradient(135deg, rgba(127, 163, 146, 0.08) 0%, rgba(127, 163, 146, 0.12) 100%);
-    border: 1px solid rgba(127, 163, 146, 0.3);
+    background: linear-gradient(135deg, rgba(109, 179, 163, 0.15) 0%, rgba(109, 179, 163, 0.20) 100%);
+    border: 2px solid rgba(109, 179, 163, 0.5);
 }
 
 .pack-section:nth-of-type(8) {
-    background: linear-gradient(135deg, rgba(140, 140, 120, 0.08) 0%, rgba(140, 140, 120, 0.12) 100%);
-    border: 1px solid rgba(140, 140, 120, 0.3);
+    background: linear-gradient(135deg, rgba(212, 199, 101, 0.15) 0%, rgba(212, 199, 101, 0.20) 100%);
+    border: 2px solid rgba(212, 199, 101, 0.5);
 }
 
-/* Section Headers - Soft gradient */
+/* Section Headers - Dark but visible colors */
 .section-header {
-    background: linear-gradient(135deg, rgba(90, 122, 101, 0.3) 0%, rgba(90, 122, 101, 0.25) 100%);
-    color: rgba(255, 255, 255, 0.95);
-    border-bottom: 1px solid rgba(90, 122, 101, 0.3);
+    background: linear-gradient(135deg, rgba(45, 74, 53, 0.8) 0%, rgba(45, 74, 53, 0.7) 100%);
+    color: white;
+    border-bottom: 2px solid rgba(45, 74, 53, 0.6);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
 .section-header:hover {
-    background: linear-gradient(135deg, rgba(90, 122, 101, 0.35) 0%, rgba(90, 122, 101, 0.3) 100%);
+    background: linear-gradient(135deg, rgba(45, 74, 53, 0.9) 0%, rgba(45, 74, 53, 0.8) 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(45, 74, 53, 0.3);
 }
 
-/* Section inputs - subtle dark */
+/* Section inputs - high contrast */
 .section-name-input {
-    background: rgba(0, 0, 0, 0.2) !important;
-    border: 1px solid transparent !important;
-    color: rgba(255, 255, 255, 0.95) !important;
+    background: rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+    font-weight: 600 !important;
 }
 
 .section-name-input:focus {
-    background: rgba(0, 0, 0, 0.3) !important;
-    border-color: rgba(90, 122, 101, 0.5) !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    border-color: rgba(74, 157, 90, 0.7) !important;
+    box-shadow: 0 0 0 2px rgba(74, 157, 90, 0.2) !important;
 }
 
-/* Section weight - muted */
+/* Section weight - high contrast */
 .section-weight {
-    background: rgba(0, 0, 0, 0.2);
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 0.8125rem;
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Section delete - subtle */
+/* Section delete - clear visibility */
 .section-delete {
-    background: rgba(166, 123, 123, 0.2);
-    color: rgba(255, 255, 255, 0.8);
+    background: rgba(209, 136, 136, 0.4);
+    color: white;
+    font-weight: 600;
+    border: 1px solid rgba(209, 136, 136, 0.5);
 }
 
 .section-delete:hover {
-    background: rgba(166, 123, 123, 0.3);
+    background: rgba(209, 136, 136, 0.6);
+    border-color: rgba(209, 136, 136, 0.7);
+    transform: scale(1.05);
 }
 
-/* Section color differentiation - subtle muted colors */
+/* Section headers - darker but distinct colors for each section */
 .pack-section[data-section-id="main"] .section-header {
-    background: linear-gradient(135deg, rgba(90, 122, 101, 0.3) 0%, rgba(90, 122, 101, 0.25) 100%);
+    background: linear-gradient(135deg, rgba(45, 74, 53, 0.85) 0%, rgba(45, 74, 53, 0.75) 100%);
+    border-bottom-color: rgba(45, 74, 53, 0.7);
 }
 
 .pack-section[data-section-id="worn"] .section-header {
-    background: linear-gradient(135deg, rgba(168, 137, 108, 0.3) 0%, rgba(168, 137, 108, 0.25) 100%);
+    background: linear-gradient(135deg, rgba(85, 66, 46, 0.85) 0%, rgba(85, 66, 46, 0.75) 100%);
+    border-bottom-color: rgba(85, 66, 46, 0.7);
 }
 
 .pack-section[data-section-id="consumables"] .section-header {
-    background: linear-gradient(135deg, rgba(142, 120, 142, 0.3) 0%, rgba(142, 120, 142, 0.25) 100%);
+    background: linear-gradient(135deg, rgba(70, 54, 87, 0.85) 0%, rgba(70, 54, 87, 0.75) 100%);
+    border-bottom-color: rgba(70, 54, 87, 0.7);
 }
 
-/* Custom sections get rotating colors */
+/* Custom sections get darker, rotating colors */
 .pack-section:nth-of-type(4) .section-header {
-    background: linear-gradient(135deg, rgba(114, 143, 163, 0.3) 0%, rgba(114, 143, 163, 0.25) 100%);
+    background: linear-gradient(135deg, rgba(48, 71, 95, 0.85) 0%, rgba(48, 71, 95, 0.75) 100%);
+    border-bottom-color: rgba(48, 71, 95, 0.7);
 }
 
 .pack-section:nth-of-type(5) .section-header {
-    background: linear-gradient(135deg, rgba(196, 148, 106, 0.3) 0%, rgba(196, 148, 106, 0.25) 100%);
+    background: linear-gradient(135deg, rgba(92, 67, 46, 0.85) 0%, rgba(92, 67, 46, 0.75) 100%);
+    border-bottom-color: rgba(92, 67, 46, 0.7);
 }
 
 .pack-section:nth-of-type(6) .section-header {
-    background: linear-gradient(135deg, rgba(166, 123, 123, 0.3) 0%, rgba(166, 123, 123, 0.25) 100%);
+    background: linear-gradient(135deg, rgba(83, 54, 54, 0.85) 0%, rgba(83, 54, 54, 0.75) 100%);
+    border-bottom-color: rgba(83, 54, 54, 0.7);
 }
 
 .pack-section:nth-of-type(7) .section-header {
-    background: linear-gradient(135deg, rgba(127, 163, 146, 0.3) 0%, rgba(127, 163, 146, 0.25) 100%);
+    background: linear-gradient(135deg, rgba(49, 80, 73, 0.85) 0%, rgba(49, 80, 73, 0.75) 100%);
+    border-bottom-color: rgba(49, 80, 73, 0.7);
 }
 
 .pack-section:nth-of-type(8) .section-header {
-    background: linear-gradient(135deg, rgba(140, 140, 120, 0.3) 0%, rgba(140, 140, 120, 0.25) 100%);
+    background: linear-gradient(135deg, rgba(85, 80, 40, 0.85) 0%, rgba(85, 80, 40, 0.75) 100%);
+    border-bottom-color: rgba(85, 80, 40, 0.7);
 }
 
-/* Drop zones - match section colors with subtle backgrounds */
+/* Drop zones - clear, distinct colors matching sections */
 .pack-section[data-section-id="main"] .section-items {
-    background: rgba(90, 122, 101, 0.05);
-    border: 2px dashed rgba(90, 122, 101, 0.2);
+    background: rgba(74, 157, 90, 0.08);
+    border: 2px dashed rgba(74, 157, 90, 0.3);
 }
 
 .pack-section[data-section-id="worn"] .section-items {
-    background: rgba(168, 137, 108, 0.05);
-    border: 2px dashed rgba(168, 137, 108, 0.2);
+    background: rgba(212, 165, 116, 0.08);
+    border: 2px dashed rgba(212, 165, 116, 0.3);
 }
 
 .pack-section[data-section-id="consumables"] .section-items {
-    background: rgba(142, 120, 142, 0.05);
-    border: 2px dashed rgba(142, 120, 142, 0.2);
+    background: rgba(159, 123, 199, 0.08);
+    border: 2px dashed rgba(159, 123, 199, 0.3);
 }
 
 .pack-section:nth-of-type(4) .section-items {
-    background: rgba(114, 143, 163, 0.05);
-    border: 2px dashed rgba(114, 143, 163, 0.2);
+    background: rgba(107, 158, 212, 0.08);
+    border: 2px dashed rgba(107, 158, 212, 0.3);
 }
 
 .pack-section:nth-of-type(5) .section-items {
-    background: rgba(196, 148, 106, 0.05);
-    border: 2px dashed rgba(196, 148, 106, 0.2);
+    background: rgba(230, 169, 115, 0.08);
+    border: 2px dashed rgba(230, 169, 115, 0.3);
 }
 
 .pack-section:nth-of-type(6) .section-items {
-    background: rgba(166, 123, 123, 0.05);
-    border: 2px dashed rgba(166, 123, 123, 0.2);
+    background: rgba(209, 136, 136, 0.08);
+    border: 2px dashed rgba(209, 136, 136, 0.3);
 }
 
 .pack-section:nth-of-type(7) .section-items {
-    background: rgba(127, 163, 146, 0.05);
-    border: 2px dashed rgba(127, 163, 146, 0.2);
+    background: rgba(109, 179, 163, 0.08);
+    border: 2px dashed rgba(109, 179, 163, 0.3);
 }
 
 .pack-section:nth-of-type(8) .section-items {
-    background: rgba(140, 140, 120, 0.05);
-    border: 2px dashed rgba(140, 140, 120, 0.2);
+    background: rgba(212, 199, 101, 0.08);
+    border: 2px dashed rgba(212, 199, 101, 0.3);
 }
 
 .section-items.drag-over {
-    border-color: rgba(90, 122, 101, 0.4);
-    box-shadow: inset 0 0 10px rgba(90, 122, 101, 0.1);
+    border-color: rgba(74, 157, 90, 0.6) !important;
+    box-shadow: inset 0 0 15px rgba(74, 157, 90, 0.2), 0 0 10px rgba(74, 157, 90, 0.3);
+    background: rgba(74, 157, 90, 0.15) !important;
+    transform: scale(1.02);
 }
 
-/* Pack items - alternating colors for better readability */
+/* Pack items - high contrast alternating colors */
 .pack-item {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.08) 100%) !important;
+    border: 2px solid rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .pack-item:nth-child(even) {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0.04) 100%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.15) 0%, rgba(0, 0, 0, 0.08) 100%) !important;
+    border: 2px solid rgba(255, 255, 255, 0.2) !important;
 }
 
 .pack-item:hover {
-    background: linear-gradient(135deg, rgba(90, 122, 101, 0.15) 0%, rgba(90, 122, 101, 0.1) 100%) !important;
-    border-color: rgba(90, 122, 101, 0.4) !important;
+    background: linear-gradient(135deg, rgba(74, 157, 90, 0.25) 0%, rgba(74, 157, 90, 0.15) 100%) !important;
+    border-color: rgba(74, 157, 90, 0.6) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(74, 157, 90, 0.2);
 }
 
 .pack-item:nth-child(even):hover {
-    background: linear-gradient(135deg, rgba(90, 122, 101, 0.2) 0%, rgba(90, 122, 101, 0.15) 100%) !important;
-    border-color: rgba(90, 122, 101, 0.4) !important;
+    background: linear-gradient(135deg, rgba(74, 157, 90, 0.3) 0%, rgba(74, 157, 90, 0.2) 100%) !important;
+    border-color: rgba(74, 157, 90, 0.6) !important;
 }
 
 /* Pack items that will be saved to library */
@@ -252,10 +279,10 @@
     color: rgba(255, 255, 255, 0.9) !important;
 }
 
-/* Gear items - cleaner card layout */
+/* Gear items - high contrast card layout */
 .gear-item {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
     padding: 1rem;
     margin-bottom: 0.75rem;
@@ -263,13 +290,14 @@
     align-items: center;
     gap: 1rem;
     transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .gear-item:hover {
-    background: rgba(90, 122, 101, 0.12);
-    border-color: rgba(90, 122, 101, 0.4);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: rgba(74, 157, 90, 0.18);
+    border-color: rgba(74, 157, 90, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 10px rgba(74, 157, 90, 0.1);
 }
 
 /* Gear item layout improvements */
@@ -291,11 +319,12 @@
 }
 
 .gear-item-name {
-    font-size: 1rem !important;
-    font-weight: 600 !important;
-    color: rgba(255, 255, 255, 0.95) !important;
+    font-size: 1.125rem !important;
+    font-weight: 700 !important;
+    color: white !important;
     margin-bottom: 0.5rem !important;
-    line-height: 1.2;
+    line-height: 1.3;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important;
 }
 
 .gear-item-meta {
@@ -495,19 +524,26 @@
 /* Search input - enhanced visibility and interaction */
 .gear-search {
     position: relative !important;
-    margin-bottom: 1rem !important;
+    margin: 1rem 0 1rem 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    height: 48px !important;
+    max-height: 48px !important;
 }
 
 #gear-search {
     background: rgba(0, 0, 0, 0.15) !important;
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
     color: rgba(255, 255, 255, 0.95) !important;
-    padding: 0.75rem 1rem !important;
+    padding: 0.75rem 2.5rem 0.75rem 1rem !important;
     border-radius: 8px !important;
     font-size: 0.9375rem !important;
     width: 100% !important;
     box-sizing: border-box !important;
     transition: all 0.2s ease !important;
+    display: block !important;
+    height: 46px !important;
+    line-height: 1.5 !important;
 }
 
 #gear-search::placeholder {
@@ -521,14 +557,19 @@
     box-shadow: 0 0 0 3px rgba(90, 122, 101, 0.1) !important;
 }
 
-.search-icon {
+.gear-search .search-icon {
     position: absolute !important;
-    right: 0.75rem !important;
+    right: 0.875rem !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
-    color: rgba(255, 255, 255, 0.4) !important;
+    color: rgba(255, 255, 255, 0.7) !important;
     font-size: 1rem !important;
     pointer-events: none !important;
+    z-index: 2 !important;
+    display: inline !important;
+    width: auto !important;
+    height: auto !important;
+    line-height: 1 !important;
 }
 
 /* Gear browser - enhanced container styling */
@@ -621,43 +662,53 @@
     font-size: 0.9375rem !important;
 }
 
-/* Text readability - better contrast */
+/* Text readability - maximum contrast */
 .gear-item-name,
 .section-name-input,
 .pack-name {
-    color: rgba(255, 255, 255, 0.95) !important;
+    color: white !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
 }
 
-/* Pack item name - white and bold for visibility - override gear-color-system */
+/* Pack item name - crisp white text */
 .pack-builder-page .pack-item .pack-item-name,
 .pack-section .pack-item .pack-item-name,
 .section-items .pack-item .pack-item-name {
     color: white !important;
     font-weight: 700 !important;
-    font-size: 0.9375rem !important;
+    font-size: 1.125rem !important;
+    line-height: 1.3 !important;
+    margin-bottom: 0.25rem !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important;
 }
 
 .gear-item-weight,
 .pack-item-details,
 .gear-item-meta {
-    color: rgba(255, 255, 255, 0.85) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3) !important;
 }
 
 .pack-item:hover .pack-item-name {
     color: white !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) !important;
 }
 
 .pack-item:hover .pack-item-details {
-    color: rgba(255, 255, 255, 0.95) !important;
+    color: white !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important;
 }
 
-/* Ensure pack-item details spans are visible */
+/* Ensure pack-item details spans are crisp */
 .pack-item-details span {
-    color: rgba(255, 255, 255, 0.85) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3) !important;
 }
 
 .section-empty {
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
 }
 
 /* Inline quantity editing */

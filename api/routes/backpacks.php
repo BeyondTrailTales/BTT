@@ -108,6 +108,7 @@ function getAllBackpacks() {
         }
         
         $db = Database::getInstance();
+        $includeItems = isset($_GET['include_items']) && $_GET['include_items'] === 'true';
         
         if ($db->isSQLite()) {
             // Simplified query - just get the backpacks first
@@ -119,6 +120,29 @@ function getAllBackpacks() {
                 $backpack['total_items'] = 0;
                 $backpack['total_weight_g'] = floatval($backpack['weight_empty_g'] ?? 0);
                 $backpack['trip_count'] = 0;
+                
+                // If include_items is requested, load sections and items
+                if ($includeItems) {
+                    $backpack['sections'] = loadBackpackSections($backpack['id'], $user['id']);
+                    
+                    // Flatten items for easy access
+                    $backpack['items'] = [];
+                    foreach ($backpack['sections'] as $section) {
+                        foreach ($section['items'] as $item) {
+                            $item['section'] = $section['id'];
+                            $item['section_name'] = $section['name'];
+                            $backpack['items'][] = $item;
+                        }
+                    }
+                    
+                    // Update totals
+                    $backpack['total_items'] = count($backpack['items']);
+                    $totalWeight = $backpack['weight_empty_g'] ?? 0;
+                    foreach ($backpack['items'] as $item) {
+                        $totalWeight += ($item['weight_g'] ?? 0) * ($item['quantity'] ?? 1);
+                    }
+                    $backpack['total_weight_g'] = $totalWeight;
+                }
             }
         } else {
             // JSON fallback - filter by user

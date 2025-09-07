@@ -1,0 +1,687 @@
+/**
+ * Gear Page Final Refinements
+ * Fixes tab text spacing, tightens item layouts, improves overall polish
+ * @version 1.0.0
+ */
+
+/* ===========================================
+   SIDEBAR TAB TEXT SPACING FIX
+   =========================================== */
+
+/* Fix tabs with text running together */
+.gear-page .gear-tabs.forest-tabs {
+    display: flex;
+    gap: 0.5rem !important; /* Increase gap between tabs */
+    padding: 0.5rem !important;
+    margin-bottom: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gear-page .gear-tab {
+    flex: 1;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    padding: 0.75rem 1rem !important; /* More padding */
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem !important; /* Space between icon and text */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 2.5rem;
+}
+
+.gear-page .gear-tab:hover {
+    background: rgba(76, 175, 80, 0.08);
+    color: rgba(255, 255, 255, 0.85);
+    border-color: rgba(76, 175, 80, 0.2);
+}
+
+.gear-page .gear-tab.active {
+    background: rgba(76, 175, 80, 0.18);
+    color: #ffffff;
+    border: 1px solid rgba(76, 175, 80, 0.35);
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.15);
+}
+
+/* Tab content spacing */
+.gear-page .tab-icon {
+    font-size: 1.125rem !important;
+    flex-shrink: 0;
+}
+
+.gear-page .tab-text {
+    font-size: 0.8125rem !important;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+}
+
+.gear-page .tab-count {
+    margin-left: 0.5rem !important;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.125rem 0.5rem !important;
+    border-radius: 12px;
+    font-size: 0.6875rem !important;
+    font-weight: 700;
+    min-width: 1.375rem;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+/* ===========================================
+   TIGHTER GEAR ITEM CARDS
+   =========================================== */
+
+/* Main grid adjustments */
+.gear-page .gear-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)) !important;
+    gap: 1rem !important;
+    padding: 0.25rem 0;
+}
+
+/* Tighter card layout */
+.gear-page .gear-card {
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.08) 0%, 
+        rgba(255, 255, 255, 0.04) 100%);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 14px;
+    padding: 1.125rem !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 190px !important;
+    max-height: 220px !important;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+.gear-page .gear-card:hover {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 
+        0 12px 32px rgba(0, 0, 0, 0.2),
+        0 2px 8px rgba(76, 175, 80, 0.2);
+    border-color: rgba(76, 175, 80, 0.45);
+    background: linear-gradient(135deg, 
+        rgba(255, 255, 255, 0.12) 0%, 
+        rgba(255, 255, 255, 0.06) 100%);
+}
+
+/* Tighter card header */
+.gear-page .gear-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem !important;
+    margin-bottom: 0.75rem !important;
+}
+
+.gear-page .gear-icon {
+    font-size: 1.375rem !important;
+    width: 2.25rem !important;
+    height: 2.25rem !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, 
+        rgba(76, 175, 80, 0.2) 0%, 
+        rgba(76, 175, 80, 0.1) 100%);
+    border-radius: 10px;
+    flex-shrink: 0;
+    border: 1px solid rgba(76, 175, 80, 0.2);
+}
+
+/* Better title layout */
+.gear-page .gear-name {
+    flex: 1;
+    font-size: 0.9375rem !important;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.35 !important;
+    margin: 0;
+    letter-spacing: -0.01em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+}
+
+/* Tighter card body */
+.gear-page .gear-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem !important;
+    margin-bottom: 0.625rem !important;
+}
+
+/* Refined meta section */
+.gear-page .gear-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.625rem !important;
+    padding-bottom: 0.5rem !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.gear-page .gear-category-badge {
+    background: rgba(76, 175, 80, 0.15);
+    color: #81c784;
+    padding: 0.1875rem 0.5rem !important;
+    border-radius: 10px;
+    font-size: 0.6875rem !important;
+    font-weight: 600;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+    border: 1px solid rgba(76, 175, 80, 0.25);
+}
+
+.gear-page .gear-weight {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0.1875rem 0.5rem !important;
+    border-radius: 8px;
+    font-size: 0.8125rem !important;
+    font-weight: 700;
+    color: #e8f5e9;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Compact notes section */
+.gear-page .gear-notes {
+    margin-top: 0.375rem !important;
+}
+
+.gear-page .gear-notes-text {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.75rem !important;
+    line-height: 1.35 !important;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Tighter card actions */
+.gear-page .gear-card-actions {
+    display: flex;
+    gap: 0.375rem !important;
+    justify-content: flex-end;
+    margin-top: auto;
+    padding-top: 0.625rem !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.gear-page .gear-card-actions .btn-icon {
+    width: 2rem !important;
+    height: 2rem !important;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.875rem !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.gear-page .gear-card-actions .btn-icon:hover {
+    background: rgba(76, 175, 80, 0.15);
+    border-color: rgba(76, 175, 80, 0.35);
+    color: #81c784;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+}
+
+/* ===========================================
+   REFINED SIDEBAR LAYOUT
+   =========================================== */
+
+.gear-page .gear-sidebar {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 1.25rem !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Tighter action bar */
+.gear-page .gear-action-bar {
+    margin-bottom: 1.5rem !important;
+}
+
+/* Better title section */
+.gear-page .gear-view-title {
+    font-size: 1.125rem !important;
+    font-weight: 700;
+    margin: 0 0 0.875rem !important;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+.gear-page .title-icon {
+    font-size: 1.25rem !important;
+    opacity: 0.9;
+}
+
+/* Refined stats summary */
+.gear-page .gear-stats-summary {
+    display: flex;
+    gap: 0.625rem !important;
+    margin-bottom: 1.25rem !important;
+}
+
+.gear-page .stat-chip {
+    flex: 1;
+    background: linear-gradient(135deg,
+        rgba(76, 175, 80, 0.15) 0%,
+        rgba(76, 175, 80, 0.08) 100%);
+    border: 1px solid rgba(76, 175, 80, 0.25);
+    border-radius: 10px;
+    padding: 0.5rem 0.625rem !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1875rem !important;
+}
+
+.gear-page .stat-icon {
+    font-size: 0.875rem !important;
+    opacity: 0.85;
+}
+
+.gear-page .stat-value {
+    font-size: 0.9375rem !important;
+    font-weight: 700;
+    color: #81c784;
+    margin: 0;
+}
+
+.gear-page .stat-label {
+    font-size: 0.625rem !important;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ===========================================
+   REFINED FILTER CHIPS
+   =========================================== */
+
+.gear-page .quick-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem !important;
+    margin-bottom: 1.25rem;
+}
+
+.gear-page .filter-chip {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 0.4375rem 0.75rem !important;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.75rem !important;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem !important;
+}
+
+.gear-page .chip-icon {
+    font-size: 0.875rem !important;
+}
+
+.gear-page .chip-text {
+    font-size: 0.75rem !important;
+    letter-spacing: 0.01em;
+}
+
+/* ===========================================
+   LIST VIEW REFINEMENTS
+   =========================================== */
+
+.gear-page .gear-grid.list-view {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem !important;
+}
+
+.gear-page .gear-grid.list-view .gear-card {
+    flex-direction: row;
+    align-items: center;
+    padding: 0.75rem 1rem !important;
+    min-height: 70px !important;
+    max-height: 70px !important;
+}
+
+.gear-page .gear-grid.list-view .gear-card-header {
+    flex: 0 0 220px;
+    margin-bottom: 0;
+    margin-right: 1rem !important;
+    display: flex;
+    align-items: center;
+}
+
+.gear-page .gear-grid.list-view .gear-icon {
+    width: 2rem !important;
+    height: 2rem !important;
+    font-size: 1.125rem !important;
+}
+
+.gear-page .gear-grid.list-view .gear-name {
+    font-size: 0.875rem !important;
+    -webkit-line-clamp: 1;
+}
+
+.gear-page .gear-grid.list-view .gear-card-body {
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem !important;
+    margin-bottom: 0;
+}
+
+.gear-page .gear-grid.list-view .gear-meta {
+    border: none;
+    padding: 0;
+    gap: 1rem !important;
+}
+
+.gear-page .gear-grid.list-view .gear-card-actions {
+    margin: 0;
+    padding: 0;
+    border: none;
+    gap: 0.375rem !important;
+}
+
+.gear-page .gear-grid.list-view .gear-card-actions .btn-icon {
+    width: 1.75rem !important;
+    height: 1.75rem !important;
+    font-size: 0.8125rem !important;
+}
+
+/* ===========================================
+   COMPACT VIEW REFINEMENTS
+   =========================================== */
+
+.gear-page .gear-grid.compact-view {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+    gap: 0.75rem !important;
+}
+
+.gear-page .gear-grid.compact-view .gear-card {
+    padding: 0.875rem !important;
+    min-height: 160px !important;
+    max-height: 180px !important;
+}
+
+.gear-page .gear-grid.compact-view .gear-icon {
+    width: 2rem !important;
+    height: 2rem !important;
+    font-size: 1.125rem !important;
+}
+
+.gear-page .gear-grid.compact-view .gear-name {
+    font-size: 0.875rem !important;
+    -webkit-line-clamp: 1;
+}
+
+.gear-page .gear-grid.compact-view .gear-card-body {
+    gap: 0.375rem !important;
+}
+
+.gear-page .gear-grid.compact-view .gear-notes {
+    display: none;
+}
+
+/* ===========================================
+   DENSITY MODE REFINEMENTS
+   =========================================== */
+
+/* Ultra-Compact adjustments */
+.gear-page.density-ultra-compact .gear-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important;
+    gap: 0.5rem !important;
+}
+
+.gear-page.density-ultra-compact .gear-card {
+    padding: 0.75rem !important;
+    min-height: 140px !important;
+    max-height: 160px !important;
+}
+
+.gear-page.density-ultra-compact .gear-icon {
+    width: 1.75rem !important;
+    height: 1.75rem !important;
+    font-size: 1rem !important;
+}
+
+.gear-page.density-ultra-compact .gear-name {
+    font-size: 0.8125rem !important;
+}
+
+.gear-page.density-ultra-compact .gear-category-badge {
+    font-size: 0.625rem !important;
+    padding: 0.125rem 0.375rem !important;
+}
+
+.gear-page.density-ultra-compact .gear-weight {
+    font-size: 0.75rem !important;
+    padding: 0.125rem 0.375rem !important;
+}
+
+/* ===========================================
+   RESPONSIVE REFINEMENTS
+   =========================================== */
+
+@media (max-width: 1400px) {
+    .gear-page .gear-grid {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+    }
+}
+
+@media (max-width: 1200px) {
+    .gear-page .gear-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+    }
+    
+    .gear-page .gear-tabs {
+        flex-wrap: wrap;
+    }
+    
+    .gear-page .gear-tab {
+        flex: 1 1 calc(33.333% - 0.333rem);
+        min-width: 140px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Stack tabs vertically on mobile */
+    .gear-page .gear-tabs {
+        flex-direction: column;
+        gap: 0.375rem !important;
+    }
+    
+    .gear-page .gear-tab {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 0.625rem 0.875rem !important;
+    }
+    
+    .gear-page .gear-grid {
+        grid-template-columns: 1fr !important;
+        gap: 0.75rem !important;
+    }
+    
+    .gear-page .gear-card {
+        min-height: auto !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .gear-page .gear-card {
+        padding: 0.875rem !important;
+    }
+    
+    .gear-page .gear-name {
+        font-size: 0.875rem !important;
+    }
+    
+    .gear-page .filter-chip {
+        padding: 0.375rem 0.5rem !important;
+        font-size: 0.6875rem !important;
+    }
+    
+    .gear-page .chip-icon {
+        font-size: 0.75rem !important;
+    }
+    
+    .gear-page .chip-text {
+        font-size: 0.6875rem !important;
+    }
+}
+
+/* ===========================================
+   ANIMATION REFINEMENTS
+   =========================================== */
+
+/* Smooth transitions for all interactive elements */
+.gear-page .gear-card,
+.gear-page .gear-tab,
+.gear-page .filter-chip,
+.gear-page .btn-icon,
+.gear-page .view-mode-btn {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Subtle hover effects */
+.gear-page .gear-card:hover {
+    animation: subtle-lift 0.3s ease forwards;
+}
+
+@keyframes subtle-lift {
+    to {
+        transform: translateY(-3px) scale(1.01);
+    }
+}
+
+/* Tab switch animation */
+.gear-page .gear-tab.active {
+    animation: tab-activate 0.3s ease;
+}
+
+@keyframes tab-activate {
+    0% {
+        background-color: transparent;
+        transform: scale(0.98);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* ===========================================
+   FINAL POLISH & DETAILS
+   =========================================== */
+
+/* Subtle gradients for depth */
+.gear-page .gear-sidebar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(180deg, 
+        rgba(255, 255, 255, 0.03) 0%, 
+        transparent 100%);
+    pointer-events: none;
+    border-radius: 16px 16px 0 0;
+}
+
+/* Better focus states */
+.gear-page .gear-tab:focus-visible,
+.gear-page .filter-chip:focus-visible {
+    outline: 2px solid rgba(76, 175, 80, 0.5);
+    outline-offset: 2px;
+}
+
+/* Improved scrollbar for sidebar */
+.gear-page .gear-sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.gear-page .gear-sidebar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+}
+
+.gear-page .gear-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.gear-page .gear-sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Loading state improvements */
+.gear-page .loading-spinner {
+    padding: 3rem 2rem;
+}
+
+.gear-page .spinner {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 3px solid rgba(76, 175, 80, 0.1);
+    border-top-color: #4caf50;
+}
+
+/* Empty state refinements */
+.gear-page .packs-empty-state {
+    padding: 3rem 2rem;
+}
+
+.gear-page .packs-empty-icon {
+    font-size: 3rem !important;
+    opacity: 0.5;
+    margin-bottom: 0.875rem !important;
+}
+
+.gear-page .packs-empty-text {
+    font-size: 1.125rem !important;
+    font-weight: 600;
+    margin-bottom: 0.5rem !important;
+}
+
+.gear-page .packs-empty-subtext {
+    font-size: 0.875rem !important;
+    opacity: 0.7;
+    margin-bottom: 1.25rem !important;
+}

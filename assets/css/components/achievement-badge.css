@@ -1,0 +1,257 @@
+/**
+ * Achievement Badge Component
+ * Gamification badges and achievement displays
+ */
+
+/* Achievement Badge Base */
+.c-achievement-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border: 2px solid var(--color-border, rgba(255, 255, 255, 0.1));
+  border-radius: 50%;
+  transition: all var(--duration-base, 200ms) var(--ease-out);
+  cursor: pointer;
+}
+
+.c-achievement-badge:hover {
+  transform: scale(1.1) rotate(5deg);
+  border-color: var(--color-primary, #4ba667);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Badge Icon */
+.c-achievement-badge__icon {
+  font-size: 1.5rem;
+  color: var(--color-primary, #4ba667);
+}
+
+/* Badge Variants */
+.c-achievement-badge--bronze {
+  background: linear-gradient(135deg, #cd7f32 0%, #8b4513 100%);
+  border-color: #cd7f32;
+}
+
+.c-achievement-badge--silver {
+  background: linear-gradient(135deg, #c0c0c0 0%, #808080 100%);
+  border-color: #c0c0c0;
+}
+
+.c-achievement-badge--gold {
+  background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+  border-color: #ffd700;
+}
+
+.c-achievement-badge--platinum {
+  background: linear-gradient(135deg, #e5e5e5 0%, #b8b8b8 100%);
+  border-color: #e5e5e5;
+  box-shadow: 0 0 20px rgba(229, 229, 229, 0.5);
+}
+
+/* Badge States */
+.c-achievement-badge--locked {
+  opacity: 0.5;
+  filter: grayscale(100%);
+  cursor: not-allowed;
+}
+
+.c-achievement-badge--locked:hover {
+  transform: none;
+  border-color: var(--color-border, rgba(255, 255, 255, 0.1));
+  box-shadow: none;
+}
+
+.c-achievement-badge--new {
+  animation: badgePulse 2s infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 var(--color-primary-alpha, rgba(75, 166, 103, 0.4));
+  }
+  50% {
+    box-shadow: 0 0 0 10px var(--color-primary-alpha, rgba(75, 166, 103, 0));
+  }
+}
+
+/* Badge Progress Ring */
+.c-achievement-badge__progress {
+  position: absolute;
+  inset: -4px;
+  width: calc(100% + 8px);
+  height: calc(100% + 8px);
+  pointer-events: none;
+}
+
+.c-achievement-badge__progress-ring {
+  transform: rotate(-90deg);
+}
+
+.c-achievement-badge__progress-circle {
+  fill: none;
+  stroke: var(--color-surface, rgba(255, 255, 255, 0.1));
+  stroke-width: 2;
+}
+
+.c-achievement-badge__progress-circle--fill {
+  fill: none;
+  stroke: var(--color-primary, #4ba667);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transition: stroke-dashoffset var(--duration-base, 200ms) var(--ease-out);
+}
+
+/* Badge Count */
+.c-achievement-badge__count {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 var(--spacing-1, 0.25rem);
+  background: var(--color-danger, #ef4444);
+  color: white;
+  border-radius: var(--radius-full, 9999px);
+  font-size: var(--text-xs, 0.75rem);
+  font-weight: var(--font-bold, 700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 2px var(--color-background, #0a1a0f);
+}
+
+/* Achievement Card */
+.c-achievement-card {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4, 1rem);
+  padding: var(--spacing-4, 1rem);
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--radius-lg, 0.5rem);
+  transition: all var(--duration-base, 200ms) var(--ease-out);
+}
+
+.c-achievement-card:hover {
+  background: var(--color-surface-hover, rgba(255, 255, 255, 0.08));
+  border-color: var(--color-primary-alpha, rgba(75, 166, 103, 0.3));
+}
+
+.c-achievement-card__content {
+  flex: 1;
+}
+
+.c-achievement-card__title {
+  font-size: var(--text-lg, 1.125rem);
+  font-weight: var(--font-semibold, 600);
+  margin: 0 0 var(--spacing-1, 0.25rem) 0;
+}
+
+.c-achievement-card__description {
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+  margin: 0 0 var(--spacing-2, 0.5rem) 0;
+}
+
+.c-achievement-card__progress {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2, 0.5rem);
+  font-size: var(--text-sm, 0.875rem);
+}
+
+.c-achievement-card__progress-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--color-surface, rgba(255, 255, 255, 0.1));
+  border-radius: var(--radius-full, 9999px);
+  overflow: hidden;
+}
+
+.c-achievement-card__progress-fill {
+  height: 100%;
+  background: var(--color-primary, #4ba667);
+  border-radius: var(--radius-full, 9999px);
+  transition: width var(--duration-base, 200ms) var(--ease-out);
+}
+
+.c-achievement-card__progress-text {
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+  white-space: nowrap;
+}
+
+/* Achievement Grid */
+.c-achievement-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: var(--spacing-4, 1rem);
+}
+
+/* Achievement List */
+.c-achievement-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3, 0.75rem);
+}
+
+/* Badge Sizes */
+.c-achievement-badge--sm {
+  width: 48px;
+  height: 48px;
+}
+
+.c-achievement-badge--sm .c-achievement-badge__icon {
+  font-size: 1.25rem;
+}
+
+.c-achievement-badge--lg {
+  width: 96px;
+  height: 96px;
+}
+
+.c-achievement-badge--lg .c-achievement-badge__icon {
+  font-size: 2rem;
+}
+
+/* Badge Tooltip */
+.c-achievement-badge__tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: var(--spacing-2, 0.5rem);
+  padding: var(--spacing-2, 0.5rem) var(--spacing-3, 0.75rem);
+  background: var(--color-surface, rgba(0, 0, 0, 0.9));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--radius-md, 0.375rem);
+  font-size: var(--text-sm, 0.875rem);
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--duration-base, 200ms) var(--ease-out);
+  pointer-events: none;
+  z-index: var(--z-tooltip, 1080);
+}
+
+.c-achievement-badge:hover .c-achievement-badge__tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Responsive */
+@media (max-width: 639px) {
+  .c-achievement-grid {
+    grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  }
+  
+  .c-achievement-card {
+    flex-direction: column;
+    text-align: center;
+  }
+}

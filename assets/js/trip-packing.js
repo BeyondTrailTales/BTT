@@ -97,6 +97,7 @@
       
       const result = await response.json();
       console.log('Packing list API response:', result);
+      
       state.packingData = result.data || result;
       
       // Check if we have a backpack or any items
@@ -161,6 +162,17 @@
         const isChecked = item.is_packed ? 'checked' : '';
         const customBadge = item.is_custom ? '<span class="item-badge">Custom</span>' : '';
         
+        // Determine the correct ID for data-id attribute
+        let dataId;
+        if (item.type === 'gear') {
+          dataId = item.gear_id;
+        } else if (item.type === 'custom') {
+          dataId = item.custom_id;
+        } else {
+          console.error('⚠️ Unknown item type:', item.type, item);
+          dataId = item.gear_id || item.custom_id || 'unknown';
+        }
+        
         html += `
           <div class="packing-item ${item.is_packed ? 'packed' : ''}" data-item-id="${itemId}">
             <div class="item-checkbox">
@@ -169,7 +181,7 @@
                      class="pack-checkbox" 
                      ${isChecked}
                      data-type="${item.type}"
-                     data-id="${item.gear_id || item.custom_id}"
+                     data-id="${dataId}"
                      aria-label="Pack ${item.name}">
               <label for="pack-${itemId}" class="item-label">
                 <span class="item-name">${escapeHtml(item.name)}</span>
@@ -178,7 +190,7 @@
               </label>
             </div>
             ${item.notes ? `<div class="item-notes">${escapeHtml(item.notes)}</div>` : ''}
-            ${item.is_custom ? `
+            ${item.is_custom && typeof item.custom_id === 'number' ? `
               <button class="btn-delete-custom" 
                       data-id="${item.custom_id}"
                       aria-label="Delete ${item.name}">
@@ -242,6 +254,9 @@
     const key = `${type}-${id}`;
     state.pendingUpdates.set(key, { type, id, isPacked });
     
+    console.log('📝 Queued update:', key, '→', { type, id, isPacked });
+    console.log('📝 Total pending updates:', state.pendingUpdates.size);
+    
     // Clear existing timer
     if (state.updateTimer) {
       clearTimeout(state.updateTimer);
@@ -257,12 +272,29 @@
   async function sendBatchUpdates() {
     if (state.pendingUpdates.size === 0) return;
     
-    const updates = Array.from(state.pendingUpdates.values()).map(item => ({
-      type: item.type,
-      gear_id: item.type === 'gear' ? item.id : undefined,
-      id: item.type === 'custom' ? item.id : undefined,
-      is_packed: item.isPacked
-    }));
+    const updates = Array.from(state.pendingUpdates.values()).map(item => {
+      // Find the full item data to get name and category for custom items
+      let fullItem = null;
+      if (state.packingData && state.packingData.items) {
+        if (item.type === 'gear') {
+          fullItem = state.packingData.items.find(i => i.type === 'gear' && i.gear_id == item.id);
+        } else if (item.type === 'custom') {
+          fullItem = state.packingData.items.find(i => i.type === 'custom' && i.custom_id === item.id);
+        }
+      }
+      
+      const update = {
+        type: item.type,
+        gear_id: item.type === 'gear' ? item.id : undefined,
+        id: item.type === 'custom' ? item.id : undefined,
+        is_packed: item.isPacked,
+        // Add name and category for custom backpack items
+        name: fullItem ? fullItem.name : undefined,
+        category: fullItem ? fullItem.category : undefined
+      };
+      console.log('🔄 Mapping update for item:', item, '→', update);
+      return update;
+    });
     
     console.log('📦 Sending batch updates:', updates);
     console.log('🌐 API URL:', `${API_BASE}?route=trips&id=${state.currentTripId}&action=packing-list&sub_action=bulk`);
@@ -286,19 +318,19 @@
       if (result.success) {
         console.log('✅ Batch update successful');
         showToast('Packing status updated', 'success');
+        
+        // Update progress without full reload
+        updateProgressOptimistic();
       } else {
         console.log('❌ Batch update failed:', result.message);
         throw new Error(result.message || 'Update failed');
       }
       
-      // Refresh data to ensure consistency
-      await loadPackingList(state.currentTripId);
-      
     } catch (error) {
       console.error('❌ Error updating packing status:', error);
       showToast('Failed to save changes. Please try again.', 'error');
-      // Reload to revert optimistic updates
-      await loadPackingList(state.currentTripId);
+      // Revert optimistic updates without full reload to prevent duplication
+      revertOptimisticUpdates();
     }
   }
   
@@ -329,12 +361,29 @@
     
     if (items.length === 0) return;
     
-    const updates = items.map(item => ({
-      type: item.type,
-      gear_id: item.gear_id,
-      id: item.custom_id,
-      is_packed: action === 'pack'
-    }));
+    console.log('🔄 Bulk action:', action, 'on', items.length, 'items');
+    
+    // Create properly formatted updates for backend
+    const updates = items.map(item => {
+      const update = {
+        type: item.type,
+        is_packed: action === 'pack'
+      };
+      
+      // Add the correct identifier based on item type
+      if (item.type === 'gear') {
+        update.gear_id = item.gear_id;
+      } else if (item.type === 'custom') {
+        update.id = item.custom_id;
+        // For backpack custom items, include name and category
+        update.name = item.name;
+        update.category = item.category;
+      }
+      
+      return update;
+    });
+    
+    console.log('📦 Sending bulk updates:', updates);
     
     try {
       const response = await fetch(`${API_BASE}?route=trips&id=${state.currentTripId}&action=packing-list&sub_action=bulk`, {
@@ -347,8 +396,34 @@
       
       if (!response.ok) throw new Error('Failed to update items');
       
-      await loadPackingList(state.currentTripId);
-      showToast(`All items ${action === 'pack' ? 'packed' : 'unpacked'}`, 'success');
+      const result = await response.json();
+      if (result.success) {
+        // Update the in-memory data to prevent duplications on next load
+        items.forEach(item => {
+          item.is_packed = action === 'pack';
+        });
+        
+        // Update UI to reflect the changes
+        const checkboxes = document.querySelectorAll('.pack-checkbox');
+        checkboxes.forEach(checkbox => {
+          if (state.activeCategory === 'all' || 
+              checkbox.closest('.packing-category').dataset.category === state.activeCategory) {
+            checkbox.checked = action === 'pack';
+            const itemDiv = checkbox.closest('.packing-item');
+            if (itemDiv) {
+              itemDiv.classList.toggle('packed', action === 'pack');
+              // Update screen reader text
+              const statusSpan = itemDiv.querySelector('.sr-only');
+              if (statusSpan) {
+                statusSpan.textContent = action === 'pack' ? 'Packed' : 'Not packed';
+              }
+            }
+          }
+        });
+        
+        updateProgressOptimistic();
+        showToast(`All items ${action === 'pack' ? 'packed' : 'unpacked'}`, 'success');
+      }
       
     } catch (error) {
       console.error('Error with bulk action:', error);
@@ -396,14 +471,20 @@
       
       if (!response.ok) throw new Error('Failed to add custom item');
       
-      // Clear form
-      nameInput.value = '';
-      notesInput.value = '';
-      quantityInput.value = '1';
-      
-      // Reload list
-      await loadPackingList(state.currentTripId);
-      showToast('Custom item added', 'success');
+      const result = await response.json();
+      if (result.success) {
+        // Clear form
+        nameInput.value = '';
+        notesInput.value = '';
+        quantityInput.value = '1';
+        
+        // Show enhanced feedback message
+        const message = result.message || 'Custom item added';
+        showToast(message, 'success');
+        
+        // Only reload if we successfully added the item
+        await loadPackingList(state.currentTripId);
+      }
       
     } catch (error) {
       console.error('Error adding custom item:', error);
@@ -419,21 +500,61 @@
     const btn = event.target;
     const itemId = btn.dataset.id;
     
-    if (!confirm('Delete this custom item?')) return;
+    console.log('🗑️ Deleting custom item:', itemId);
+    
+    if (!itemId || !confirm('Delete this custom item?')) return;
     
     try {
       const response = await fetch(`${API_BASE}?route=trips&id=${state.currentTripId}&action=packing-list&sub_action=custom&item_id=${itemId}`, {
         method: 'DELETE'
       });
       
-      if (!response.ok) throw new Error('Failed to delete item');
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Delete response not ok:', response.status, errorText);
+        throw new Error('Failed to delete item');
+      }
       
-      await loadPackingList(state.currentTripId);
-      showToast('Item deleted', 'success');
+      const result = await response.json();
+      console.log('Delete result:', result);
+      
+      if (result.success) {
+        // Remove item from in-memory data
+        if (state.packingData && state.packingData.items) {
+          const itemIndex = state.packingData.items.findIndex(item => 
+            item.type === 'custom' && item.custom_id == itemId
+          );
+          if (itemIndex > -1) {
+            state.packingData.items.splice(itemIndex, 1);
+            
+            // Also remove from categories
+            Object.keys(state.packingData.categories).forEach(category => {
+              const categoryItems = state.packingData.categories[category];
+              const catIndex = categoryItems.findIndex(item => 
+                item.type === 'custom' && item.custom_id == itemId
+              );
+              if (catIndex > -1) {
+                categoryItems.splice(catIndex, 1);
+              }
+            });
+          }
+        }
+        
+        // Remove item from UI immediately
+        const itemDiv = btn.closest('.packing-item');
+        if (itemDiv) {
+          itemDiv.remove();
+          updateProgressOptimistic();
+        }
+        
+        showToast('Item deleted', 'success');
+      } else {
+        throw new Error(result.message || 'Delete failed');
+      }
       
     } catch (error) {
       console.error('Error deleting custom item:', error);
-      showToast('Failed to delete item. Please try again.', 'error');
+      showToast('Failed to delete item: ' + error.message, 'error');
     }
   }
   
@@ -488,6 +609,32 @@
     if (progressBar) {
       progressBar.style.width = `${percent}%`;
     }
+  }
+  
+  // Revert optimistic UI updates when server update fails
+  function revertOptimisticUpdates() {
+    // Revert all checkbox states back to their original packed state from data
+    if (!state.packingData || !state.packingData.items) return;
+    
+    state.packingData.items.forEach(item => {
+      const itemId = item.type === 'gear' ? `gear-${item.gear_id}` : `custom-${item.custom_id}`;
+      const checkbox = document.getElementById(`pack-${itemId}`);
+      const itemDiv = document.querySelector(`[data-item-id="${itemId}"]`);
+      
+      if (checkbox && itemDiv) {
+        // Revert checkbox to original state
+        checkbox.checked = item.is_packed;
+        itemDiv.classList.toggle('packed', item.is_packed);
+        
+        const statusSpan = itemDiv.querySelector('.sr-only');
+        if (statusSpan) {
+          statusSpan.textContent = item.is_packed ? 'Packed' : 'Not packed';
+        }
+      }
+    });
+    
+    // Update progress to match reverted state
+    updateProgress();
   }
   
   // Clear data when switching trips

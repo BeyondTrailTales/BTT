@@ -1476,17 +1476,37 @@
 }
 
 .editor-layout {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: var(--space-6);
   max-width: 1400px;
   margin: 0 auto;
+  grid-template-areas: 
+    "header"
+    "content"
+    "sidebar";
+}
+
+@media (min-width: 1024px) {
+  .editor-layout {
+    grid-template-columns: 1fr 1fr 320px;
+    gap: var(--space-8);
+    grid-template-areas: 
+      "header header header"
+      "content content sidebar";
+  }
 }
 
 /* Adventure Visual Header */
 .adventure-visual-header {
   width: 100%;
   margin-bottom: var(--space-4);
+  grid-area: header;
+}
+
+/* Editor Content */
+.editor-content {
+  grid-area: content;
 }
 
 .adventure-image-section {
@@ -2116,6 +2136,16 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+  grid-area: sidebar;
+}
+
+@media (min-width: 1024px) {
+  .adventure-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    min-width: 300px;
+  }
 }
 
 .planning-card,

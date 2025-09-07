@@ -1,0 +1,210 @@
+/**
+ * Notifications Component
+ * Toast notifications and alerts
+ */
+
+/* Notification Container */
+.c-notifications {
+  position: fixed;
+  top: var(--spacing-4, 1rem);
+  right: var(--spacing-4, 1rem);
+  z-index: var(--z-toast, 1070);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3, 0.75rem);
+  max-width: 400px;
+  pointer-events: none;
+}
+
+@media (max-width: 639px) {
+  .c-notifications {
+    left: var(--spacing-4, 1rem);
+    right: var(--spacing-4, 1rem);
+    max-width: none;
+  }
+}
+
+/* Notification Item */
+.c-notification {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-3, 0.75rem);
+  padding: var(--spacing-4, 1rem);
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--radius-md, 0.375rem);
+  box-shadow: var(--shadow-lg);
+  pointer-events: auto;
+  transform: translateX(400px);
+  opacity: 0;
+  transition: all var(--duration-base, 200ms) var(--ease-out);
+}
+
+.c-notification.is-visible {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* Notification Icon */
+.c-notification__icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+/* Notification Content */
+.c-notification__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.c-notification__title {
+  font-size: var(--text-base, 1rem);
+  font-weight: var(--font-medium, 500);
+  margin-bottom: var(--spacing-1, 0.25rem);
+}
+
+.c-notification__message {
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+  line-height: var(--leading-relaxed, 1.75);
+}
+
+/* Notification Close Button */
+.c-notification__close {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+  cursor: pointer;
+  transition: color var(--duration-base, 200ms) var(--ease-out);
+  opacity: 0.5;
+}
+
+.c-notification__close:hover {
+  color: var(--color-text, #ffffff);
+  opacity: 1;
+}
+
+/* Notification Variants */
+.c-notification--success {
+  border-color: var(--color-success, #10b981);
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.c-notification--success .c-notification__icon {
+  color: var(--color-success, #10b981);
+}
+
+.c-notification--error {
+  border-color: var(--color-danger, #ef4444);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.c-notification--error .c-notification__icon {
+  color: var(--color-danger, #ef4444);
+}
+
+.c-notification--warning {
+  border-color: var(--color-warning, #f59e0b);
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.c-notification--warning .c-notification__icon {
+  color: var(--color-warning, #f59e0b);
+}
+
+.c-notification--info {
+  border-color: var(--color-info, #3b82f6);
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.c-notification--info .c-notification__icon {
+  color: var(--color-info, #3b82f6);
+}
+
+/* Progress Bar */
+.c-notification__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--color-primary, #4ba667);
+  border-radius: 0 0 var(--radius-md, 0.375rem) var(--radius-md, 0.375rem);
+  transform-origin: left;
+  animation: notificationProgress 5s linear forwards;
+}
+
+@keyframes notificationProgress {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+/* Exit Animation */
+.c-notification.is-exiting {
+  transform: translateX(400px);
+  opacity: 0;
+}
+
+/* Alert Component (Inline) */
+.c-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-3, 0.75rem);
+  padding: var(--spacing-4, 1rem);
+  background: var(--color-surface, rgba(255, 255, 255, 0.05));
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+  border-radius: var(--radius-md, 0.375rem);
+  margin-bottom: var(--spacing-4, 1rem);
+}
+
+.c-alert__icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+.c-alert__content {
+  flex: 1;
+  font-size: var(--text-sm, 0.875rem);
+  line-height: var(--leading-relaxed, 1.75);
+}
+
+/* Alert Variants */
+.c-alert--success {
+  border-color: var(--color-success, #10b981);
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--color-success, #10b981);
+}
+
+.c-alert--error {
+  border-color: var(--color-danger, #ef4444);
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--color-danger, #ef4444);
+}
+
+.c-alert--warning {
+  border-color: var(--color-warning, #f59e0b);
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--color-warning, #f59e0b);
+}
+
+.c-alert--info {
+  border-color: var(--color-info, #3b82f6);
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--color-info, #3b82f6);
+}

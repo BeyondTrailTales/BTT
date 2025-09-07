@@ -1,0 +1,223 @@
+/**
+ * CSS Variables - Single Source of Truth
+ * All design tokens and variables used across the site
+ */
+
+:root {
+  /* ===========================================
+     Color System - Forest Theme
+     =========================================== */
+  
+  /* Primary Palette */
+  --color-forest-darkest: #0d1f0f;
+  --color-forest-dark: #1a3a1f;
+  --color-forest-medium: #2d5a3d;
+  --color-forest-light: #4a7c59;
+  --color-forest-lightest: #73a580;
+  
+  /* Accent Colors */
+  --color-moss: #8fbc8f;
+  --color-sage: #9caf88;
+  --color-fern: #77a26d;
+  --color-pine: #2f5233;
+  --color-bark: #4a3c28;
+  
+  /* Functional Colors */
+  --color-success: #4ade80;
+  --color-warning: #fbbf24;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+  
+  /* Neutral Colors */
+  --color-white: #ffffff;
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  --color-black: #000000;
+  
+  /* Background Colors */
+  --bg-primary: var(--color-forest-darkest);
+  --bg-secondary: rgba(26, 26, 26, 0.95);
+  --bg-elevated: rgba(255, 255, 255, 0.05);
+  --bg-overlay: rgba(0, 0, 0, 0.7);
+  
+  /* Text Colors */
+  --text-primary: var(--color-white);
+  --text-secondary: rgba(255, 255, 255, 0.8);
+  --text-tertiary: rgba(255, 255, 255, 0.6);
+  --text-inverse: var(--color-gray-900);
+  
+  /* ===========================================
+     Typography System
+     =========================================== */
+  
+  /* Font Families */
+  --font-primary: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'Fira Code', 'Consolas', 'Monaco', monospace;
+  
+  /* Font Sizes */
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.875rem;   /* 14px */
+  --text-base: 1rem;     /* 16px */
+  --text-lg: 1.125rem;   /* 18px */
+  --text-xl: 1.25rem;    /* 20px */
+  --text-2xl: 1.5rem;    /* 24px */
+  --text-3xl: 1.875rem;  /* 30px */
+  --text-4xl: 2.25rem;   /* 36px */
+  --text-5xl: 3rem;      /* 48px */
+  
+  /* Font Weights */
+  --font-thin: 200;
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+  --font-black: 900;
+  
+  /* Line Heights */
+  --leading-none: 1;
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
+  
+  /* ===========================================
+     Spacing System (8pt Grid)
+     =========================================== */
+  
+  --space-0: 0;
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+  
+  /* ===========================================
+     Layout System
+     =========================================== */
+  
+  /* Container Widths */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1200px;
+  --container-2xl: 1440px;
+  --container-full: 100%;
+  
+  /* Breakpoints */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+  
+  /* ===========================================
+     Effects & Animations
+     =========================================== */
+  
+  /* Border Radius */
+  --radius-none: 0;
+  --radius-sm: 0.25rem;  /* 4px */
+  --radius-md: 0.5rem;   /* 8px */
+  --radius-lg: 0.75rem;  /* 12px */
+  --radius-xl: 1rem;     /* 16px */
+  --radius-2xl: 1.5rem;  /* 24px */
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 300ms ease;
+  --transition-slower: 500ms ease;
+  
+  /* ===========================================
+     Z-Index System
+     =========================================== */
+  
+  --z-negative: -1;
+  --z-0: 0;
+  --z-10: 10;
+  --z-20: 20;
+  --z-30: 30;
+  --z-40: 40;
+  --z-50: 50;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-tooltip: 700;
+  --z-notification: 800;
+  --z-max: 9999;
+  
+  /* ===========================================
+     Component Specific Variables
+     =========================================== */
+  
+  /* Navigation */
+  --nav-height: 60px;
+  --nav-bg: var(--bg-secondary);
+  --nav-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  
+  /* Cards */
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --card-border: rgba(255, 255, 255, 0.1);
+  --card-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  
+  /* Buttons */
+  --btn-padding-x: var(--space-4);
+  --btn-padding-y: var(--space-3);
+  --btn-border-width: 2px;
+  --btn-font-weight: var(--font-semibold);
+  
+  /* Forms */
+  --input-bg: rgba(0, 0, 0, 0.3);
+  --input-border: rgba(255, 255, 255, 0.2);
+  --input-focus-border: var(--color-success);
+  --input-padding-x: var(--space-4);
+  --input-padding-y: var(--space-3);
+  
+  /* Page Specific Colors */
+  --dashboard-primary: #ffd93d;
+  --adventures-primary: #4ecdc4;
+  --backpacks-primary: #95e1d3;
+  --gear-primary: #f38181;
+}
+
+/* Dark theme override (if needed) */
+[data-theme="dark"] {
+  /* Dark theme specific overrides */
+}
+
+/* Responsive font size adjustments */
+@media (max-width: 768px) {
+  :root {
+    --text-base: 0.9375rem; /* 15px on mobile */
+  }
+}
